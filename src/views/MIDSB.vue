@@ -65,8 +65,8 @@ defineProps({
 })
 
 import bridge from "../assets/MIDSB/images/bridge.png"
-import v1 from "../assets/MIDSB/images/visualization/SI2259_1112_snr=-2.4_1.png"
-
+import v1 from "../assets/MIDSB/images/visualization/SI2259_1112_snr=-2.4.png"
+import v2 from "../assets/MIDSB/images/visualization/SI1900_1223_snr=3.9.png"
 
 import {Mail} from '@icon-park/vue-next'
 
@@ -103,7 +103,8 @@ function getSampleSrc(folder, sample) {
       <div class="content-part">
         <h2>Audio Samples</h2>
         <div>
-          <p>Here are the enhanced audio samples on the Voicebank+DEMAND<a href="#ref-0">[1]</a> dataset using proposed MIDSB and other advanced speech enhancement methods. All other methods are implemented using publicly available official codes, as well as default training and sampling settings.</p>
+          <p>Here are the enhanced audio samples on the Voicebank+DEMAND<a href="#ref-0">[1]</a> dataset using proposed MIDSB and other advanced speech enhancement methods. All other methods are implemented using publicly available official
+            codes, as well as default training and sampling settings.</p>
           <h3>Voicebank+DEMAND<a href="#ref-0">[1]</a></h3>
           <div class="audio-table">
             <div class="audio-header">
@@ -134,14 +135,16 @@ function getSampleSrc(folder, sample) {
     </section>
 
     <section class="content">
-       <div class="content-part">
+      <div class="content-part">
         <h2>Visualizations</h2>
+         <h3>TIMIT+WHAM!</h3>
         <img :src="v1" width="1000px"/>
+        <img :src="v2" width="1000px"/>
       </div>
     </section>
 
-     <section class="content">
-       <div class="content-part">
+    <section class="content">
+      <div class="content-part">
         <h2>References</h2>
         <div class="reference">
           <p v-for="(ref, index) in reference" :key="index" :id="'ref-'+ index"><a>[{{ index + 1 }}]</a> <span v-html="ref"></span></p>
@@ -164,8 +167,8 @@ function getSampleSrc(folder, sample) {
   border-radius: 12px;
 }
 
-.paper-container p{
-   line-height: 1.7;
+.paper-container p {
+  line-height: 1.7;
 }
 
 h1.title {
@@ -216,8 +219,8 @@ a {
   background-color: #fff;
 }
 
-.content-part p{
-    text-align: justify;
+.content-part p {
+  text-align: justify;
 }
 
 h2 {
