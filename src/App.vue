@@ -9,7 +9,7 @@
 
 
 :root {
-  --background-color: #f8f8f8;
+  --background-color: #FFF;
   --primary-color: #007aff;
   --secondary-color: #2F88FF;
   --text-color: #333;
