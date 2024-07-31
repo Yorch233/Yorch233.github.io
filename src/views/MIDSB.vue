@@ -70,6 +70,24 @@ import v2 from "../assets/MIDSB/images/visualization/SI1900_1223_snr=3.9.png"
 
 import {Mail} from '@icon-park/vue-next'
 
+import { onMounted, watch, ref } from 'vue';
+import busuanzi from 'busuanzi.pure.js';
+
+const script = ref(null);
+
+onMounted(() => {
+  script.value = busuanzi; // 注意：可能需要根据实际导出情况调整
+});
+
+watch(
+  () => window.location.pathname,
+  (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      script.value?.fetch();
+    }
+  }
+);
+
 function getSampleSrc(folder, sample) {
   return new URL(`../assets/MIDSB/audio/samples/${folder}/${sample}`, import.meta.url).href;
 }
@@ -151,6 +169,20 @@ function getSampleSrc(folder, sample) {
         </div>
       </div>
     </section>
+  </div>
+  <div class="footer">
+      <div class="busuanzi">
+         Copyright © 2024 Qing Yao. All rights reserved.
+          <span id="busuanzi_container_site_pv" style="display:none">
+            Views
+            <span id="busuanzi_value_site_pv"></span>
+            <span class="post-meta-divider">. </span>
+          </span>
+          <span id="busuanzi_container_site_uv" style="display:none">
+            Vistors:
+            <span id="busuanzi_value_site_uv"></span>
+          </span>
+      </div>
   </div>
 </template>
 
@@ -288,4 +320,9 @@ section h2 {
   margin-top: 0;
 }
 
+.footer {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: var(--text-color);
+}
 </style>
