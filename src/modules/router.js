@@ -21,8 +21,8 @@ const router = createRouter({
             meta: { title: 'Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge - Qing Yao - Jiangsu University' }
         },
         {
-            name:"misb",
-            path:"/misb",
+            name:"midsb",
+            path:"/midsb",
             component:()=>import("../views/MISB.vue"),
             meta: { title: 'Generative Speech Enhancement using Mean-Inverting Diffusion Schrödinger Bridge - Qing Yao - Jiangsu University' }
         }
