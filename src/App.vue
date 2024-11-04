@@ -7,7 +7,6 @@
 
 <style>
 
-
 :root {
   --background-color: #FFF;
   --primary-color: #007aff;
