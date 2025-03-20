@@ -38,7 +38,7 @@ function scrollToId(id) {
         <!-- <li><i class="icon">🔍</i> Google Scholar</li> -->
         <!-- <li><i class="icon">🆔</i> ORCID</li> --> 
         <li><image src="https://github.githubassets.com/favicons/favicon.svg" width="24" height="24" style="margin-right:5px;"/> <a href="https://github.com/Yorch233/"> Github</a></li>
-        <li><image src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="24" height="24" style="margin-right:5px;"/> <a href="https://github.com/Yorch233/"> Hugging Face</a></li>
+        <li><image src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="24" height="24" style="margin-right:5px;"/> <a href="https://huggingface.co/Yorch233/"> Hugging Face</a></li>
 
       </ul>
     </aside>
