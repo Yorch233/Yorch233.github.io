@@ -1,5 +1,5 @@
 <script setup>
-import profile from "../assets/profile/qingyao.png";
+import profile from "../assets/profile/profile.jpeg";
 import ChatBox from "../components/ChatBox.vue";
 
 function scrollToId(id) {
@@ -19,59 +19,31 @@ function scrollToId(id) {
 </script>
 
 <template>
-  <nav class="header">
+  <!-- <nav class="header">
     <ul>
       <li><a @click="scrollToId('#about-me')">About Me</a></li>
       <li><a @click="scrollToId('#publications')">Publications</a></li>
     </ul>
-  </nav>
+  </nav> -->
   <div class="content-wrapper">
     <aside class="sidebar">
       <div class="profile">
-        <img :src="profile" alt="Profile"/>
+        <img :src="profile" alt="Profile" style="font-"/>
         <h2>Qing Yao 姚庆</h2>
         <p>Jiangsu University</p>
         <p>Speech Enhancement, Diffusion Models</p>
+        <p><a href="mailto:qyao@stmail.ujs.edu.cn"> qyao@stmail.ujs.edu.cn</a></p>
       </div>
       <ul class="links">
-        <li><i class="icon">📍</i> Zhenjiang, China</li>
-        <li><i class="icon">✉️</i> qyao@stmail.ujs.edu.cn</li>
-        <!--      <li><i class="icon">🔍</i> Google Scholar</li>-->
-        <li><i class="icon">🆔</i> ORCID</li>
-        <li><i class="icon">💻</i> Github</li>
+        <!-- <li><i class="icon">🔍</i> Google Scholar</li> -->
+        <!-- <li><i class="icon">🆔</i> ORCID</li> --> 
+        <li><image src="https://github.githubassets.com/favicons/favicon.svg" width="24" height="24" style="margin-right:5px;"/> <a href="https://github.com/Yorch233/"> Github</a></li>
+        <li><image src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" width="24" height="24" style="margin-right:5px;"/> <a href="https://github.com/Yorch233/"> Hugging Face</a></li>
+
       </ul>
     </aside>
     <div class="content-container">
       <ChatBox />
-<!--      &lt;!&ndash; BIO Section &ndash;&gt;-->
-<!--      <div class="content" id="about-me">-->
-<!--        <h1 class="title">BIO</h1>-->
-<!--        <p>-->
-<!--          John Doe is a software engineer with over 10 years of experience in front-end development.-->
-<!--          He has worked on various high-profile projects, focusing on creating user-friendly interfaces-->
-<!--          and improving overall user experience. He is passionate about clean code, design patterns,-->
-<!--          and enjoys mentoring new developers.-->
-<!--        </p>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Publications Section &ndash;&gt;-->
-<!--      <div class="content">-->
-<!--        <h1 class="title" id="publications">Publications</h1>-->
-<!--        <ul>-->
-<!--          <li>-->
-<!--            <strong>2023</strong> - "Mastering Vue.js: A Complete Guide"-->
-<!--            - Published by Tech Press.-->
-<!--          </li>-->
-<!--          <li>-->
-<!--            <strong>2022</strong> - "Advanced CSS Techniques"-->
-<!--            - Published by Web Dev Weekly.-->
-<!--          </li>-->
-<!--          <li>-->
-<!--            <strong>2021</strong> - "Building Scalable Front-End Applications"-->
-<!--            - Published by Code Chronicles.-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
     </div>
   </div>
 </template>
@@ -106,10 +78,10 @@ function scrollToId(id) {
 }
 
 .sidebar {
-  width: 250px;
+  width: 300px;
   background-color: var(--background-color);
   color: var(--text-color);
-  height: 100vh;
+  min-height: 600px;
   padding: 20px;
 }
 
@@ -152,7 +124,7 @@ function scrollToId(id) {
 }
 
 .content-container {
-  height: 100vh;
+  min-height: 600px;
 }
 
 .content h1.title {
@@ -179,5 +151,10 @@ function scrollToId(id) {
 
 .content {
   margin-bottom: 2em;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
 }
 </style>

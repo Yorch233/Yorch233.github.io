@@ -28,14 +28,11 @@
 // });
 const messages = [
   { content: 'Hello, can you briefly introduce yourself?', sent: true },
-  { content: 'My name is <u>Qing Yao</u>, a P.h.D student from Jiangsu University. My major is computer science and technology. My research focuses on developing deep learning methods to understand multimdedia data. My current interests are in generative modeling, diffusion models and speech enhancmenet.', sent: false },
-  { content: 'How about your research?', sent: true  },
-  { content: 'Papers:<ul style="list-style:none;padding: 0;margin: 0;">' +
-    '<li>[1] <u>Mastering A Complete Guide - Published by Tech Press. </u>[Under-Reviewng]</li>' +
-    '</ul>',
-    sent: false, date:'2024-08-13'},
-  { content: 'Thanks. What\'s more?', sent: true},
-  { content: 'There are lots of things to say.', sent: false, date:'2024-08-13' },
+  { content: 'My name is <u>Qing Yao</u>, a P.h.D student from Jiangsu University. My research focuses on developing deep learning methods to understand multimdedia data. My current interests are in generative modeling, diffusion models and speech enhancmenet.', sent: false },
+  { content: 'Very nice to meet you!', sent: false},
+  { content: 'Long time no seen! How are you?', sent: false, date:'2024-07-20'},
+  { content: 'I have released something interesting about my new work, namely "<u>Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge</u>". Click <a href="/MISB"><u>here</u></a> to learn more about it.',
+    sent: false}
 ];
 </script>
 

@@ -68,9 +68,10 @@ defineProps({
   links: {
     type: Object,
     default: () => ({
-      paper: "https://www.example.com/paper",
-      code: "https://github.com/qyao1999/MISB",
-      checkpoint: "https://www.example.com/checkpoint"
+      paper: ["Paper", ""],
+      oneline_demo:["Oneline Demo", "https://huggingface.co/spaces/Yorch233/MISB"], 
+      github: ["Github", "https://github.com/Yorch233/MISB"],
+      huggingface: ["Hugging Face", "https://huggingface.co/Yorch233/MISB"]
     })
   }
 })
@@ -115,9 +116,7 @@ function getSampleSrc(model, folder, sample) {
       </a>
     </p>
     <p class="links">
-      <span class="disabled">[Paper]</span> |
-      <a :href="links.code" target="_blank">[Code]</a> |
-      <span class="disabled">[Checkpoint]</span>
+      <template v-for="(v, k) in links" > <a :href="v[1]" target="_blank">[{{v[0]}}] </a> </template>
     </p>
     <section class="abstract">
       <h2>Abstract</h2>
