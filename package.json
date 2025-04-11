@@ -11,12 +11,15 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
     "busuanzi.pure.js": "^1.0.3",
+    "element-plus": "^2.9.7",
     "vue": "^3.4.21",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
+    "@iconify-json/vaadin": "^1.2.1",
     "@vitejs/plugin-vue": "^5.0.4",
     "pinia": "^2.1.7",
+    "unocss": "^66.1.0-beta.10",
     "unplugin-vue-components": "^0.27.2",
     "vite": "^5.2.0"
   }
