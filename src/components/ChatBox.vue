@@ -23,11 +23,11 @@ const messages = [
 	},
 	{ content: 'Very nice to meet you!', sent: false },
 	{ content: 'Long time no seen! How are you?', sent: false, date: '2024-07-20' },
-	{
-		content:
-			'I have released something interesting about my new work, namely <strong>Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge</strong>. Click <a href="/MISB">here</a> to learn more about it.',
-		sent: false
-	}
+	// {
+	// 	content:
+	// 		'I have released something interesting about my new work, namely <strong>Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge</strong>. Click <a href="/MISB">here</a> to learn more about it.',
+	// 	sent: false
+	// }
 ];
 </script>
 
