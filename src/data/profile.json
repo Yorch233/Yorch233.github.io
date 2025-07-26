@@ -1,0 +1,61 @@
+{
+  "avatar": "/profile/profile.png",
+  "name": "Qing Yao",
+  "links": [
+    {
+      "label": "Github",
+      "url": "https://github.com/Yorch233/",
+      "tooltip": "@Yorch233",
+      "icon": "https://github.githubassets.com/favicons/favicon.svg",
+      "type": "indigo",
+      "iconSize": {
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "label": "Hugging Face",
+      "url": "https://huggingface.co/Yorch233/",
+      "tooltip": "@Yorch233",
+      "icon": "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+      "type": "orange",
+      "iconSize": {
+        "width": 16,
+        "height": 16
+      }
+    }
+  ],
+  "contact": {
+    "institution": "Jiangsu University",
+    "email": "qyao@stmail.ujs.edu.cn"
+  },
+  "research": {
+    "title": "Research Interests",
+    "items": [
+      {
+        "label": "Diffusion Models",
+        "icon": "/logo/speech.svg",
+        "type": "purple",
+        "url": ""
+      },
+      {
+        "label": "Schrödinger Bridge",
+        "icon": "/logo/speech.svg",
+        "type": "blue",
+        "url": ""
+      },
+      {
+        "label": "Inverse Problems",
+        "icon": "/logo/speech.svg",
+        "type": "indigo",
+        "url": ""
+      },
+      {
+        "label": "Speech Enhancement",
+        "icon": "/logo/speech.svg",
+        "type": "teal",
+        "url": ""
+      }
+    ]
+  }
+}

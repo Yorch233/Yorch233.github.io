@@ -1,7 +1,31 @@
-<script setup></script>
+<script setup>
+import Tabs from './components/Tabs.vue';
+import profileData from './data/profile.json'
+import ProfileSidebar from './components/ProfileSidebar.vue'
+
+
+const tabList = [
+	{ label: 'Home', url: '/' },
+	{ label: 'Publications', url: '/publications' },
+];
+</script>
 
 <template>
-	<router-view class="font-mono" />
+	<div class="w-full h-full">
+		<el-container class="m-auto max-w-screen-2xl">
+			<el-header>
+				<Tabs :tabs="tabList"/>
+			</el-header>
+			<el-container>
+				<el-aside class="w-1/4">
+					<ProfileSidebar :profile-data="profileData" />
+				</el-aside>
+				<el-main>
+					<router-view class="font-mono" />
+				</el-main>
+			</el-container>
+		</el-container>
+	</div>
 </template>
 
 <style>

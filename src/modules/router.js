@@ -5,7 +5,7 @@ const router = createRouter({
         {
             name:"Home",
             path:"/",
-            component:()=>import("../views/Profile.vue"),
+            component:()=>import("../views/Home.vue"),
             meta: { title: 'Qing Yao - Jiangsu University' }
         },
         // {
