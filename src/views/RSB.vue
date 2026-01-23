@@ -363,6 +363,8 @@
 	padding: 16px 18px;
 	border-radius: 16px;
 	background: #f5f5f7;
+	text-align: justify;
+	text-justify: inter-word;
 	transition:
 		transform 0.25s ease,
 		box-shadow 0.25s ease,
