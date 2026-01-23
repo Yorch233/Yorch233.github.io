@@ -59,15 +59,15 @@
 					<span class="rsb-nav-icon rsb-nav-icon-demo" aria-hidden="true"></span>
 					Paper
 				</a>
-				<a class="rsb-nav-link rsb-nav-disabled" href="" aria-label="Github repository link" aria-disabled="true" tabindex="-1">
+				<a class="rsb-nav-link rsb-nav-disabled" href="https://github.com/Yorch233/RSB/" aria-label="Github repository link" aria-disabled="true" tabindex="-1">
 					<img class="rsb-nav-icon" src="https://github.githubassets.com/favicons/favicon.svg" alt="" />
 					Github
 				</a>
-				<a class="rsb-nav-link rsb-nav-disabled" href="" aria-label="Hugging Face repository link" aria-disabled="true" tabindex="-1">
+				<a class="rsb-nav-link rsb-nav-disabled" href="https://huggingface.co/Yorch233/RSB/" aria-label="Hugging Face repository link" aria-disabled="true" tabindex="-1">
 					<img class="rsb-nav-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" />
 					Hugging Face
 				</a>
-				<a class="rsb-nav-link rsb-nav-disabled" href="" aria-label="Online demo link" aria-disabled="true" tabindex="-1">
+				<a class="rsb-nav-link rsb-nav-disabled" href="https://huggingface.co/spaces/Yorch233/RSB/" aria-label="Online demo link" aria-disabled="true" tabindex="-1">
 					<img class="rsb-nav-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" />
 					Online Demo
 				</a>
