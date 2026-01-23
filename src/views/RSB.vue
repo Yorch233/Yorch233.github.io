@@ -124,6 +124,7 @@
 	padding: 64px 20px 96px;
 	color: #1d1d1f;
 	font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+	user-select: none;
 }
 
 .rsb-article {
@@ -231,6 +232,7 @@
 .rsb-email {
 	color: #0071e3;
 	font-weight: 600;
+	user-select: text;
 }
 
 .rsb-tag {
