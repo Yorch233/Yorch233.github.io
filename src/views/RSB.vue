@@ -1,6 +1,7 @@
 <template>
 	<section class="rsb-page">
 		<article class="rsb-article">
+			<img class="rsb-watermark" src="/logo/icon.png" alt="" aria-hidden="true" />
 			<header class="rsb-hero">
 				<p class="rsb-kicker">Paper demo</p>
 				<h1 class="rsb-title">Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement</h1>
@@ -136,9 +137,27 @@
 	border-radius: 24px;
 	padding: 48px 56px 56px;
 	backdrop-filter: blur(18px);
+	position: relative;
+	overflow: hidden;
+}
+
+.rsb-watermark {
+	position: absolute;
+	top: 90px;
+	right: -80px;
+	width: 260px;
+	height: 260px;
+	opacity: 0.035;
+	filter: blur(0.5px);
+	filter: grayscale(100%);
+	pointer-events: none;
+	user-select: none;
+	z-index: 0;
 }
 
 .rsb-hero {
+	position: relative;
+	z-index: 1;
 	padding-bottom: 24px;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
