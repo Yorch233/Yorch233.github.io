@@ -17,17 +17,11 @@
 const messages = [
 	{ content: 'Hello, can you briefly introduce yourself?', sent: true },
 	{
-		content:
-			'My name is <strong>Qing Yao</strong>, a P.h.D student from Jiangsu University. My research focuses on developing deep learning methods to understand multimdedia data. My current interests are in generative modeling, diffusion models and speech enhancmenet.',
+		content: 'My name is <strong>Qing Yao</strong>, a P.h.D student from Jiangsu University. My current research interests are in diffusion-based generative modeling.',
 		sent: false
 	},
 	{ content: 'Very nice to meet you!', sent: false },
-	{ content: 'Long time no seen! How are you?', sent: false, date: '2024-07-20' },
-	// {
-	// 	content:
-	// 		'I have released something interesting about my new work, namely <strong>Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge</strong>. Click <a href="/MISB">here</a> to learn more about it.',
-	// 	sent: false
-	// }
+	{ content: 'Long time no seen! How are you?', sent: false, date: '2024-07-20' }
 ];
 </script>
 

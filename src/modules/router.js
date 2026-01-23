@@ -1,21 +1,21 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
-    routes:[
-        {
-            name:"Home",
-            path:"/",
-            component:()=>import("../views/Home.vue"),
-            meta: { title: 'Qing Yao - Jiangsu University' }
-        },
-        // {
-        //     name:"misb",
-        //     path:"/misb",
-        //     component:()=>import("../views/MISB.vue"),
-        //     meta: { title: 'Generative Speech Enhancement using Mean-Inverting Schrödinger Bridge - Qing Yao - Jiangsu University' }
-        // }
-    ],
-    history:createWebHistory()
-})
+	routes: [
+		{
+			name: 'Home',
+			path: '/',
+			component: () => import('../views/Home.vue'),
+			meta: { title: 'Qing Yao - Jiangsu University' }
+		},
+		{
+			name: 'RSB',
+			path: '/RSB',
+			component: () => import('../views/RSB.vue'),
+			meta: { title: 'Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement - Qing Yao - Jiangsu University' }
+		}
+	],
+	history: createWebHistory()
+});
 
-export default router
+export default router;

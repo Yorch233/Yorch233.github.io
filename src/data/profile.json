@@ -39,21 +39,9 @@
         "url": ""
       },
       {
-        "label": "Schrödinger Bridge",
-        "icon": "/logo/speech.svg",
-        "type": "blue",
-        "url": ""
-      },
-      {
         "label": "Inverse Problems",
         "icon": "/logo/speech.svg",
         "type": "indigo",
-        "url": ""
-      },
-      {
-        "label": "Speech Enhancement",
-        "icon": "/logo/speech.svg",
-        "type": "teal",
         "url": ""
       }
     ]
