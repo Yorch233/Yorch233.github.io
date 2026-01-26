@@ -1,3 +1,57 @@
+<script setup>
+import { computed, ref } from 'vue';
+import AudioWaveCompare from '../components/AudioWaveCompare.vue';
+
+const denoiseSamples = ['051o020a_c1_454_snr=5.2.wav', '051o020t_c1_473_snr=8.3.wav', '053c010d_c1_896_snr=1.1.wav', '053c010k_c1_903_snr=-5.0.wav', '421o0307_c1_1896_snr=8.7.wav'];
+
+const dereverbSamples = ['050a050v_c1_152_t60=1.57.wav', '22gc0110_c1_1161_t60=1.72.wav', '420c020o_c1_1633_t60=1.19.wav', '421c0214_c2_1769_t60=1.86.wav', '422c020d_c2_1982_t60=1.68.wav'];
+
+const showDenoiseAll = ref(false);
+const showDereverbAll = ref(false);
+const denoiseIndex = ref(0);
+const dereverbIndex = ref(0);
+
+const visibleDenoiseSamples = computed(() => (showDenoiseAll.value ? denoiseSamples : [denoiseSamples[denoiseIndex.value] ?? denoiseSamples[0]].filter(Boolean)));
+const visibleDereverbSamples = computed(() => (showDereverbAll.value ? dereverbSamples : [dereverbSamples[dereverbIndex.value] ?? dereverbSamples[0]].filter(Boolean)));
+
+const goPrevDenoise = () => {
+	if (!denoiseSamples.length) {
+		return;
+	}
+	denoiseIndex.value = (denoiseIndex.value - 1 + denoiseSamples.length) % denoiseSamples.length;
+};
+
+const goNextDenoise = () => {
+	if (!denoiseSamples.length) {
+		return;
+	}
+	denoiseIndex.value = (denoiseIndex.value + 1) % denoiseSamples.length;
+};
+
+const goPrevDereverb = () => {
+	if (!dereverbSamples.length) {
+		return;
+	}
+	dereverbIndex.value = (dereverbIndex.value - 1 + dereverbSamples.length) % dereverbSamples.length;
+};
+
+const goNextDereverb = () => {
+	if (!dereverbSamples.length) {
+		return;
+	}
+	dereverbIndex.value = (dereverbIndex.value + 1) % dereverbSamples.length;
+};
+
+const methodOptions = [
+	{ key: 'Ground_Truth', label: 'Ground Truth' },
+	{ key: 'Measurement', label: 'Measurement' },
+	{ key: 'NCSN++M', label: 'NCSN++M' },
+	{ key: 'StoRM', label: 'StoRM' },
+	{ key: 'SB', label: 'SB' },
+	{ key: 'RSB', label: 'RSB (Ours)' }
+];
+</script>
+
 <template>
 	<section class="rsb-page">
 		<article class="rsb-article">
@@ -113,7 +167,47 @@
 					<span class="rsb-wave" aria-hidden="true"><span></span></span>
 					Audio Samples
 				</h2>
-				<p class="rsb-muted">Audio samples are coming soon.</p>
+				<p class="rsb-muted">We publicly release 10 samples in total, drawn from two synthetic datasets: WSJ0+WHAM is the denoising dataset and WSJ0+REVERB is the dereverberation dataset.</p>
+				<div class="rsb-audio-group">
+					<h3 class="rsb-subtitle">WSJ0+WHAM (Denoising)</h3>
+					<div class="rsb-audio-list">
+						<AudioWaveCompare
+							v-for="(sample, idx) in visibleDenoiseSamples"
+							:key="sample"
+							:sample-name="sample"
+							:sample-index="showDenoiseAll ? idx + 1 : denoiseIndex + 1"
+							:methods="methodOptions"
+							default-method="Measurement"
+						/>
+					</div>
+					<div class="rsb-audio-actions">
+						<button class="rsb-nav-btn" type="button" :disabled="showDenoiseAll" @click="goPrevDenoise">Previous</button>
+						<button class="rsb-show-more" type="button" @click="showDenoiseAll = !showDenoiseAll">
+							{{ showDenoiseAll ? 'Hiden' : 'Show More' }}
+						</button>
+						<button class="rsb-nav-btn" type="button" :disabled="showDenoiseAll" @click="goNextDenoise">Next</button>
+					</div>
+				</div>
+				<div class="rsb-audio-group">
+					<h3 class="rsb-subtitle">WSJ0+REVERB (Dereverberation)</h3>
+					<div class="rsb-audio-list">
+						<AudioWaveCompare
+							v-for="(sample, idx) in visibleDereverbSamples"
+							:key="sample"
+							:sample-name="sample"
+							:sample-index="showDereverbAll ? idx + 1 : dereverbIndex + 1"
+							:methods="methodOptions"
+							default-method="Measurement"
+						/>
+					</div>
+					<div class="rsb-audio-actions">
+						<button class="rsb-nav-btn" type="button" :disabled="showDereverbAll" @click="goPrevDereverb">Previous</button>
+						<button class="rsb-show-more" type="button" @click="showDereverbAll = !showDereverbAll">
+							{{ showDereverbAll ? 'Hiden' : 'Show More' }}
+						</button>
+						<button class="rsb-nav-btn" type="button" :disabled="showDereverbAll" @click="goNextDereverb">Next</button>
+					</div>
+				</div>
 			</section>
 		</article>
 	</section>
@@ -372,7 +466,6 @@
 }
 
 .rsb-abstract:hover {
-	transform: translateY(-2px);
 	background: #ffffff;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
 }
@@ -421,6 +514,85 @@
 
 .rsb-muted {
 	color: #6e6e73;
+}
+
+.rsb-audio-group {
+	margin-top: 20px;
+}
+
+.rsb-audio-actions {
+	display: grid;
+	grid-template-columns: 1fr 2fr 1fr;
+	gap: 12px;
+	align-items: center;
+	margin-top: 14px;
+}
+
+.rsb-nav-btn {
+	width: 100%;
+	padding: 12px 18px;
+	border-radius: 999px;
+	border: 1px solid rgba(15, 23, 42, 0.15);
+	background: #ffffff;
+	color: #0f172a;
+	font-size: 0.9rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		opacity 0.2s ease,
+		border-color 0.2s ease;
+}
+
+.rsb-nav-btn:hover {
+	border-color: rgba(15, 23, 42, 0.35);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+	transform: translateY(-1px);
+}
+
+.rsb-nav-btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+	box-shadow: none;
+	transform: none;
+}
+
+.rsb-show-more {
+	width: 100%;
+	padding: 12px 18px;
+	border-radius: 999px;
+	border: none;
+	background: #0f172a;
+	color: #ffffff;
+	font-size: 0.9rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		opacity 0.2s ease;
+}
+
+.rsb-show-more:hover {
+	opacity: 0.9;
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
+	transform: translateY(-1px);
+}
+
+.rsb-subtitle {
+	font-size: 1.15rem;
+	margin: 18px 0 10px;
+	color: #1d1d1f;
+}
+
+.rsb-audio-list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+	margin-top: 18px;
 }
 
 :global(.rsb-dark) .rsb-page {

@@ -16,7 +16,9 @@
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
+    "@iconify-json/tabler": "^1.2.26",
     "@iconify-json/vaadin": "^1.2.1",
+    "@unocss/preset-icons": "^66.6.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "pinia": "^2.1.7",
     "unocss": "^66.1.0-beta.10",

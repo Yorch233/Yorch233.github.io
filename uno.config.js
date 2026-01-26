@@ -1,5 +1,15 @@
 // uno.config.ts
-import { defineConfig } from 'unocss';
+import { defineConfig, presetIcons, presetUno } from 'unocss';
+
 export default defineConfig({
-	// ...UnoCSS options
+	presets: [
+		presetUno(),
+		presetIcons({
+			scale: 1,
+			warn: true,
+			collections: {
+				tabler: () => import('@iconify-json/tabler/icons.json').then((i) => i.default)
+			}
+		})
+	]
 });
