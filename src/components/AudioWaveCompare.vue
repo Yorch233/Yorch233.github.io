@@ -179,6 +179,7 @@ const statusText = computed(() => {
 	}
 	return '';
 });
+const isVisualizationLoading = computed(() => isWaveformRendering.value || isSpectrogramRendering.value);
 
 const audioContextState = { instance: null, decodeContext: null };
 const audioBufferCache = new Map();
@@ -309,6 +310,16 @@ const getScaleFactor = (audioBuffer) => {
 		return 1;
 	}
 	return 0.95 / maxAbs;
+};
+
+const getFallbackDuration = () => {
+	if (selectedMethod.value === props.measurementKey) {
+		return measurementBuffer.value?.duration ?? methodBuffer.value?.duration ?? cleanBuffer.value?.duration ?? 0;
+	}
+	if (selectedMethod.value === props.cleanKey) {
+		return cleanBuffer.value?.duration ?? methodBuffer.value?.duration ?? measurementBuffer.value?.duration ?? 0;
+	}
+	return methodBuffer.value?.duration ?? measurementBuffer.value?.duration ?? cleanBuffer.value?.duration ?? 0;
 };
 
 const drawWaveform = (ctx, audioBuffer, width, height, options = {}) => {
@@ -903,6 +914,9 @@ const renderMethod = async () => {
 			measurementBuffer.value = buffer;
 			measurementScale.value = getScaleFactor(buffer);
 		}
+		if (!Number.isFinite(duration.value) || duration.value <= 0) {
+			duration.value = buffer.duration || 0;
+		}
 		drawCombinedWaveforms();
 	} catch (error) {
 		methodError.value = 'Load failed';
@@ -1171,7 +1185,8 @@ const updateTimeState = () => {
 	}
 	lastUpdate = now;
 	currentTime.value = audio.currentTime || 0;
-	duration.value = audio.duration || 0;
+	const nextDuration = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : getFallbackDuration();
+	duration.value = nextDuration || 0;
 	if (viewMode.value === 'waveform') {
 		drawCombinedWaveforms();
 	}
@@ -1407,7 +1422,7 @@ watch(
 							}
 						]"
 						:style="getMethodStyle(method.key)"
-						:disabled="!isMethodReady(method.key)"
+						:disabled="!isMethodReady(method.key) || isVisualizationLoading"
 						@click="handleMethodClick(method.key)"
 						type="button"
 					>
@@ -1431,7 +1446,7 @@ watch(
 								playing: isPlaying && playingMethod === method.key
 							}"
 							:style="getMethodStyle(method.key)"
-							:disabled="!isMethodReady(method.key)"
+							:disabled="!isMethodReady(method.key) || isVisualizationLoading"
 							@click="handleMethodClick(method.key)"
 							type="button"
 						>
