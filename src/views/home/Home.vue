@@ -1,9 +1,9 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import Tabs from '../components/Tabs.vue';
-import profileData from '../data/profile.json';
-import ProfileSidebar from '../components/ProfileSidebar.vue';
+import Tabs from '../../components/Tabs.vue';
+import profileData from '../../data/profile.json';
+import ProfileSidebar from '../../components/ProfileSidebar.vue';
 
 const tabList = [
 	{ label: 'Home', url: '/' },
@@ -23,6 +23,32 @@ const mainBodyRef = ref(null);
 const isScrolling = ref(false);
 let scrollTimer;
 
+const lockClass = 'home-scroll-lock';
+
+const applyScrollLock = () => {
+	if (typeof document === 'undefined') {
+		return;
+	}
+	document.documentElement?.classList.add(lockClass);
+	document.body?.classList.add(lockClass);
+	const appRoot = document.getElementById('app');
+	if (appRoot) {
+		appRoot.classList.add(lockClass);
+	}
+};
+
+const removeScrollLock = () => {
+	if (typeof document === 'undefined') {
+		return;
+	}
+	document.documentElement?.classList.remove(lockClass);
+	document.body?.classList.remove(lockClass);
+	const appRoot = document.getElementById('app');
+	if (appRoot) {
+		appRoot.classList.remove(lockClass);
+	}
+};
+
 const handleScroll = () => {
 	isScrolling.value = true;
 	if (scrollTimer) {
@@ -34,6 +60,7 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
+	applyScrollLock();
 	if (mainBodyRef.value) {
 		mainBodyRef.value.addEventListener('scroll', handleScroll, { passive: true });
 	}
@@ -46,6 +73,7 @@ onBeforeUnmount(() => {
 	if (scrollTimer) {
 		clearTimeout(scrollTimer);
 	}
+	removeScrollLock();
 });
 </script>
 
@@ -92,9 +120,9 @@ onBeforeUnmount(() => {
 	overflow: hidden;
 }
 
-:global(html),
-:global(body),
-:global(#app) {
+:global(html.home-scroll-lock),
+:global(body.home-scroll-lock),
+:global(#app.home-scroll-lock) {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
@@ -224,6 +252,7 @@ onBeforeUnmount(() => {
 	min-height: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
+	scrollbar-gutter: stable;
 	scrollbar-width: thin;
 	scrollbar-color: transparent transparent;
 	mask-image: linear-gradient(transparent, #000 110px, #000 100%);

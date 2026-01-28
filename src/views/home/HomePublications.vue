@@ -41,6 +41,8 @@ const isExpanded = ref(false);
 .home-publications {
 	display: grid;
 	gap: 16px;
+	width: 100%;
+	min-width: 0;
 }
 
 .fade-in {
@@ -65,6 +67,8 @@ const isExpanded = ref(false);
 }
 
 .pub-card {
+	width: 100%;
+	box-sizing: border-box;
 	padding: 18px 20px;
 	border-radius: 20px;
 	background: rgba(255, 255, 255, 0.7);

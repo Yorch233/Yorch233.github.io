@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import AudioWaveCompare from '../components/AudioWaveCompare.vue';
+import AudioWaveCompare from '../../components/AudioWaveCompare.vue';
 
 const denoiseSamples = ['051o020a_c1_454_snr=5.2.wav', '051o020t_c1_473_snr=8.3.wav', '053c010d_c1_896_snr=1.1.wav', '053c010k_c1_903_snr=-5.0.wav', '421o0307_c1_1896_snr=8.7.wav'];
 

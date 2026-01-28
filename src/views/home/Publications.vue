@@ -1,7 +1,7 @@
 <script setup>
-import Tabs from '../components/Tabs.vue';
-import profileData from '../data/profile.json';
-import ProfileSidebar from '../components/ProfileSidebar.vue';
+import Tabs from '../../components/Tabs.vue';
+import profileData from '../../data/profile.json';
+import ProfileSidebar from '../../components/ProfileSidebar.vue';
 
 const tabList = [
 	{ label: 'Home', url: '/' },

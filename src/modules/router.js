@@ -5,25 +5,25 @@ const router = createRouter({
 		{
 			name: 'Home',
 			path: '/',
-			component: () => import('../views/Home.vue'),
+			component: () => import('../views/home/Home.vue'),
 			meta: { title: 'Qing Yao - Jiangsu University' },
 			children: [
 				{
 					name: 'HomeChat',
 					path: '',
-					component: () => import('../views/HomeChat.vue')
+					component: () => import('../views/home/HomeChat.vue')
 				},
 				{
 					name: 'HomePublications',
 					path: 'publications',
-					component: () => import('../views/HomePublications.vue')
+					component: () => import('../views/home/HomePublications.vue')
 				}
 			]
 		},
 		{
 			name: 'RSB',
 			path: '/RSB',
-			component: () => import('../views/RSB.vue'),
+			component: () => import('../views/paper/RSB.vue'),
 			meta: { title: 'Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement - Qing Yao - Jiangsu University' }
 		}
 	],
