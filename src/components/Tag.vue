@@ -1,76 +1,111 @@
 <!-- src/components/Tag.vue -->
 <template>
-  <div 
-    class="min-w-120px inline-flex items-center justify-center rd-10px px-3 py-1 text-14px cursor-pointer transition-all-300 ease font-medium border-0 shadow-sm"
-    :class="tagClasses"
-    @click="handleClick"
-  >
-    <slot />
-  </div>
+	<div class="tag" :class="tagClass" @click="handleClick">
+		<slot />
+	</div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 // Props
 const props = defineProps({
-  type: {
-    type: String,
-    default: 'default'
-  }
-})
+	type: {
+		type: String,
+		default: 'default'
+	}
+});
 
 // Emits
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click']);
 
-// 高透明度现代渐变配色方案
-const typeStyles = {
-  default: {
-    base: 'bg-gradient-to-r from-gray-100/60 to-white/80 text-gray-700 border border-gray-200/50',
-    hover: 'hover:from-gray-100/70 hover:to-white/90 hover:shadow-md'
-  },
-  blue: {
-    base: 'bg-gradient-to-r from-blue-50/40 to-blue-100/30 text-blue-700 border border-blue-200/40',
-    hover: 'hover:from-blue-100/50 hover:to-blue-50/60 hover:shadow-md hover:shadow-blue-100/30'
-  },
-  purple: {
-    base: 'bg-gradient-to-r from-purple-50/40 to-purple-100/30 text-purple-700 border border-purple-200/40',
-    hover: 'hover:from-purple-100/50 hover:to-purple-50/60 hover:shadow-md hover:shadow-purple-100/30'
-  },
-  indigo: {
-    base: 'bg-gradient-to-r from-indigo-50/40 to-indigo-100/30 text-indigo-700 border border-indigo-200/40',
-    hover: 'hover:from-indigo-100/50 hover:to-indigo-50/60 hover:shadow-md hover:shadow-indigo-100/30'
-  },
-  teal: {
-    base: 'bg-gradient-to-r from-teal-50/40 to-teal-100/30 text-teal-700 border border-teal-200/40',
-    hover: 'hover:from-teal-100/50 hover:to-teal-50/60 hover:shadow-md hover:shadow-teal-100/30'
-  },
-  green: {
-    base: 'bg-gradient-to-r from-green-50/40 to-green-100/30 text-green-700 border border-green-200/40',
-    hover: 'hover:from-green-100/50 hover:to-green-50/60 hover:shadow-md hover:shadow-green-100/30'
-  },
-  yellow: {
-    base: 'bg-gradient-to-r from-yellow-50/40 to-yellow-100/30 text-yellow-700 border border-yellow-200/40',
-    hover: 'hover:from-yellow-100/50 hover:to-yellow-50/60 hover:shadow-md hover:shadow-yellow-100/30'
-  },
-  orange: {
-    base: 'bg-gradient-to-r from-orange-50/40 to-orange-100/30 text-orange-700 border border-orange-200/40',
-    hover: 'hover:from-orange-100/50 hover:to-orange-50/60 hover:shadow-md hover:shadow-orange-100/30'
-  },
-  red: {
-    base: 'bg-gradient-to-r from-red-50/40 to-red-100/30 text-red-700 border border-red-200/40',
-    hover: 'hover:from-red-100/50 hover:to-red-50/60 hover:shadow-md hover:shadow-red-100/30'
-  }
-}
-
-// 计算标签类
-const tagClasses = computed(() => {
-  const style = typeStyles[props.type] || typeStyles.default
-  return [style.base, style.hover]
-})
+const tagClass = computed(() => `tag--${props.type || 'default'}`);
 
 // 处理点击事件
 const handleClick = (event) => {
-  emit('click', event)
-}
+	emit('click', event);
+};
 </script>
+
+<style scoped>
+.tag {
+	min-width: 120px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	padding: 4px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		background 0.2s ease,
+		color 0.2s ease;
+	border: 1px solid transparent;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.tag--default {
+	background: linear-gradient(90deg, rgba(243, 244, 246, 0.7), rgba(255, 255, 255, 0.9));
+	color: #374151;
+	border-color: rgba(229, 231, 235, 0.6);
+}
+
+.tag--default:hover {
+	box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.tag--blue {
+	background: linear-gradient(90deg, rgba(219, 234, 254, 0.6), rgba(239, 246, 255, 0.8));
+	color: #1d4ed8;
+	border-color: rgba(191, 219, 254, 0.6);
+}
+
+.tag--purple {
+	background: linear-gradient(90deg, rgba(237, 233, 254, 0.6), rgba(245, 243, 255, 0.85));
+	color: #6d28d9;
+	border-color: rgba(221, 214, 254, 0.6);
+}
+
+.tag--indigo {
+	background: linear-gradient(90deg, rgba(224, 231, 255, 0.6), rgba(238, 242, 255, 0.85));
+	color: #4338ca;
+	border-color: rgba(199, 210, 254, 0.6);
+}
+
+.tag--teal {
+	background: linear-gradient(90deg, rgba(204, 251, 241, 0.55), rgba(240, 253, 250, 0.85));
+	color: #0f766e;
+	border-color: rgba(153, 246, 228, 0.6);
+}
+
+.tag--green {
+	background: linear-gradient(90deg, rgba(220, 252, 231, 0.55), rgba(240, 253, 244, 0.85));
+	color: #15803d;
+	border-color: rgba(187, 247, 208, 0.6);
+}
+
+.tag--yellow {
+	background: linear-gradient(90deg, rgba(254, 249, 195, 0.65), rgba(254, 252, 232, 0.9));
+	color: #a16207;
+	border-color: rgba(253, 224, 71, 0.35);
+}
+
+.tag--orange {
+	background: linear-gradient(90deg, rgba(255, 237, 213, 0.65), rgba(255, 247, 237, 0.9));
+	color: #c2410c;
+	border-color: rgba(254, 215, 170, 0.6);
+}
+
+.tag--red {
+	background: linear-gradient(90deg, rgba(254, 226, 226, 0.65), rgba(254, 242, 242, 0.9));
+	color: #b91c1c;
+	border-color: rgba(254, 202, 202, 0.6);
+}
+
+.tag:hover {
+	transform: translateY(-1px);
+}
+</style>

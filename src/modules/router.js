@@ -6,7 +6,19 @@ const router = createRouter({
 			name: 'Home',
 			path: '/',
 			component: () => import('../views/Home.vue'),
-			meta: { title: 'Qing Yao - Jiangsu University' }
+			meta: { title: 'Qing Yao - Jiangsu University' },
+			children: [
+				{
+					name: 'HomeChat',
+					path: '',
+					component: () => import('../views/HomeChat.vue')
+				},
+				{
+					name: 'HomePublications',
+					path: 'publications',
+					component: () => import('../views/HomePublications.vue')
+				}
+			]
 		},
 		{
 			name: 'RSB',

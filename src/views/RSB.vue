@@ -56,9 +56,14 @@ const methodOptions = [
 	<section class="rsb-page">
 		<article class="rsb-article">
 			<img class="rsb-watermark" src="/logo/icon.png" alt="" aria-hidden="true" />
-			<header class="rsb-hero">
+			<header class="rsb-hero rsb-fade rsb-delay-1">
 				<p class="rsb-kicker">Paper demo</p>
-				<h1 class="rsb-title">Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement</h1>
+				<h1 class="rsb-title">
+					Regularized
+					<span class="rsb-highlight">Schrödinger Bridge</span>
+					via Distortion-Perception Perturbation for High-Fidelity
+					<span class="rsb-highlight">Speech Enhancement</span>
+				</h1>
 				<p class="rsb-authors">
 					<span class="rsb-author">
 						<span class="rsb-author-name">
@@ -107,7 +112,7 @@ const methodOptions = [
 				</p>
 			</header>
 
-			<nav class="rsb-nav">
+			<nav class="rsb-nav rsb-fade rsb-delay-2">
 				<span class="rsb-nav-title">Quick Access</span>
 				<a class="rsb-nav-link rsb-nav-disabled" href="" aria-label="Paper link" aria-disabled="true" tabindex="-1">
 					<span class="rsb-nav-icon rsb-nav-icon-demo" aria-hidden="true"></span>
@@ -127,28 +132,50 @@ const methodOptions = [
 				</a>
 			</nav>
 
-			<section class="rsb-section">
+			<section class="rsb-section rsb-fade rsb-delay-3">
 				<h2>
 					<span class="rsb-wave" aria-hidden="true"><span></span></span>
 					Abstract
 				</h2>
-				<p class="rsb-abstract">
-					Speech enhancement (SE) requires high-fidelity reconstruction of clean speech that preserves linguistic and paralinguistic cues while maintaining high perceptual quality. Recently,
-					Schrödinger Bridge (SB), a family of diffusion-based generative models, has advanced SE by bridging degraded and clean speech distributions in a principled formulation, enabling
-					higher-quality reconstructions with fewer sampling steps. However, diffusion-based SE methods still face two challenges: (1) the fidelity-realism tradeoff, where they often
-					prioritize perceptual realism encouraged by the learned speech prior, at the expense of fidelity; and (2) the exposure bias issue, where iterative multi-step sampling causes
-					early-step prediction errors to accumulate along the sampling trajectory and degrade enhanced speech quality. In this paper, we analyze standard SB training and show that it
-					induces a systematic prediction drift, which biases the multi-step trajectory and amplifies error accumulation. To address this, we propose Regularized Schrödinger Bridge (RSB) for
-					high-fidelity SE, a generative approach that reconciles fidelity and realism while mitigating exposure bias. RSB regularizes training with a Distortion-Perception Perturbation that
-					constructs time-varying targets by interpolating between clean speech and posterior-mean estimates, and trains the network on perturbed intermediate states to correct toward the
-					ground truth progressively. Consequently, such perturbation simulates inference-time prediction errors, mitigating the training–inference mismatch and thereby reducing exposure
-					bias. Furthermore, it also injects posterior-mean estimates as fidelity-preserving guidance, facilitating reconstruction fidelity. Experiments on the WSJ0 corpus and
-					VoiceBank+DEMAND dataset demonstrate that RSB improves reconstruction fidelity over the advanced SE baselines, yielding a favorable fidelity-realism tradeoff and reducing exposure
-					bias.
-				</p>
+				<div class="rsb-abstract-wrap">
+					<p class="rsb-abstract">
+						<span class="rsb-highlight">Speech enhancement</span>
+						(SE) requires high-fidelity reconstruction of clean speech that preserves linguistic and paralinguistic cues while maintaining high perceptual quality. Recently,
+						<span class="rsb-highlight">Schrödinger Bridge</span>
+						(SB), a family of diffusion-based generative models, has advanced SE by bridging degraded and clean speech distributions in a principled formulation, enabling higher-quality
+						reconstructions with fewer sampling steps. However, diffusion-based SE methods still face two challenges:
+						<span class="rsb-issue">
+							(1) the fidelity-realism tradeoff, where they often prioritize perceptual realism encouraged by the learned speech prior, at the expense of fidelity;
+						</span>
+						<span class="rsb-issue">
+							(2) the exposure bias issue, where iterative multi-step sampling causes early-step prediction errors to accumulate along the sampling trajectory and degrade enhanced speech
+							quality.
+						</span>
+						In this paper, we analyze standard SB training and show that it induces a systematic prediction drift, which biases the multi-step trajectory and amplifies error accumulation.
+						To address this, we propose
+						<span class="rsb-highlight">Regularized Schrödinger Bridge (RSB)</span>
+						for high-fidelity SE, a generative approach that reconciles fidelity and realism while mitigating exposure bias.
+						<span class="rsb-highlight">RSB regularizes training with a Distortion-Perception Perturbation</span>
+						that constructs time-varying targets by interpolating between clean speech and posterior-mean estimates, and trains the network on perturbed intermediate states to correct
+						toward the ground truth progressively. Consequently, such perturbation simulates inference-time prediction errors, mitigating the training–inference mismatch and thereby
+						reducing exposure bias. Furthermore, it also injects posterior-mean estimates as fidelity-preserving guidance, facilitating reconstruction fidelity. Experiments on the WSJ0
+						corpus and VoiceBank+DEMAND dataset demonstrate that RSB improves reconstruction fidelity over the advanced SE baselines, yielding a favorable fidelity-realism tradeoff and
+						reducing exposure bias.
+					</p>
+					<div class="rsb-legend" aria-hidden="true">
+						<span class="rsb-legend-item">
+							<span class="rsb-legend-swatch rsb-legend-swatch-highlight"></span>
+							Key Concepts
+						</span>
+						<span class="rsb-legend-item">
+							<span class="rsb-legend-swatch rsb-legend-swatch-issue"></span>
+							Issues
+						</span>
+					</div>
+				</div>
 			</section>
 
-			<section class="rsb-section">
+			<section class="rsb-section rsb-fade rsb-delay-4">
 				<h2>
 					<span class="rsb-wave" aria-hidden="true"><span></span></span>
 					Keywords
@@ -162,12 +189,20 @@ const methodOptions = [
 				</div>
 			</section>
 
-			<section class="rsb-section">
+			<section class="rsb-section rsb-fade rsb-delay-5">
 				<h2>
 					<span class="rsb-wave" aria-hidden="true"><span></span></span>
 					Audio Samples
 				</h2>
-				<p class="rsb-muted">We publicly release 10 samples in total, drawn from two synthetic datasets: WSJ0+WHAM is the denoising dataset and WSJ0+REVERB is the dereverberation dataset.</p>
+				<p class="rsb-muted">
+					We publicly release
+					<span class="rsb-accent">10 samples</span>
+					in total, drawn from two synthetic datasets:
+					<span class="rsb-accent">WSJ0+WHAM</span>
+					is the denoising dataset and
+					<span class="rsb-accent">WSJ0+REVERB</span>
+					is the dereverberation dataset.
+				</p>
 				<div class="rsb-audio-group">
 					<h3 class="rsb-subtitle">WSJ0+WHAM (Denoising)</h3>
 					<div class="rsb-audio-list">
@@ -452,22 +487,153 @@ const methodOptions = [
 	color: #1d1d1f;
 }
 
+.rsb-fade {
+	opacity: 0;
+	animation: rsbFadeInUp 0.8s ease both;
+}
+
+.rsb-delay-1 {
+	animation-delay: 0.08s;
+}
+
+.rsb-delay-2 {
+	animation-delay: 0.16s;
+}
+
+.rsb-delay-3 {
+	animation-delay: 0.24s;
+}
+
+.rsb-delay-4 {
+	animation-delay: 0.32s;
+}
+
+.rsb-delay-5 {
+	animation-delay: 0.4s;
+}
+
 .rsb-abstract {
 	margin: 0;
 	padding: 16px 18px;
 	border-radius: 16px;
 	background: #f5f5f7;
 	text-align: justify;
-	text-justify: inter-word;
+	text-justify: inter-character;
 	transition:
 		transform 0.25s ease,
 		box-shadow 0.25s ease,
 		background 0.25s ease;
 }
 
+.rsb-abstract-wrap {
+	position: relative;
+}
+
+.rsb-legend {
+	position: absolute;
+	top: -45px;
+	right: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 0;
+	opacity: 0;
+	transform: translateY(-6px);
+	max-height: 0;
+	pointer-events: none;
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease,
+		max-height 0.2s ease;
+}
+
+.rsb-abstract-wrap:hover .rsb-legend {
+	opacity: 1;
+	transform: translateY(0);
+	max-height: 120px;
+	pointer-events: auto;
+}
+
+.rsb-legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #1d1d1f;
+	padding: 6px 12px;
+	border-radius: 999px;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.rsb-legend-swatch {
+	width: 12px;
+	height: 12px;
+	border-radius: 4px;
+	display: inline-block;
+}
+
+.rsb-legend-swatch-highlight {
+	background: rgba(0, 113, 227, 0.6);
+}
+
+.rsb-legend-swatch-issue {
+	background: rgba(249, 115, 22, 0.7);
+}
+
+.rsb-highlight {
+	font-weight: 700;
+	color: inherit;
+	background: transparent;
+	border-radius: 8px;
+	padding: 2px 6px;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+.rsb-issue {
+	font-weight: 700;
+	color: inherit;
+	background: transparent;
+	border-radius: 8px;
+	padding: 2px 6px;
+	margin-right: 6px;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+.rsb-abstract-wrap:hover .rsb-highlight {
+	color: #0b5ad7;
+	background: rgba(0, 113, 227, 0.12);
+}
+
+.rsb-abstract-wrap:hover .rsb-issue {
+	color: #c2410c;
+	background: rgba(249, 115, 22, 0.16);
+}
 .rsb-abstract:hover {
 	background: #ffffff;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes rsbFadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rsb-fade {
+		animation: none !important;
+		opacity: 1;
+	}
 }
 
 .rsb-section h2 {
@@ -500,6 +666,12 @@ const methodOptions = [
 	background: #0071e3;
 }
 
+.rsb-chip-strong {
+	color: #ffffff;
+	background: #0071e3;
+	box-shadow: 0 8px 16px rgba(0, 113, 227, 0.25);
+}
+
 .rsb-wave::before {
 	height: 12px;
 }
@@ -514,6 +686,11 @@ const methodOptions = [
 
 .rsb-muted {
 	color: #6e6e73;
+}
+
+.rsb-accent {
+	font-weight: 700;
+	color: #0071e3;
 }
 
 .rsb-audio-group {
@@ -653,11 +830,47 @@ const methodOptions = [
 	background: #1b1d23;
 }
 
+:global(.rsb-dark) .rsb-legend-item {
+	color: #f5f5f7;
+	background: #111318;
+	border-color: rgba(255, 255, 255, 0.1);
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+:global(.rsb-dark) .rsb-highlight {
+	color: inherit;
+	background: transparent;
+}
+
+:global(.rsb-dark) .rsb-issue {
+	color: inherit;
+	background: transparent;
+}
+
+:global(.rsb-dark) .rsb-abstract-wrap:hover .rsb-highlight {
+	color: #a7d3ff;
+	background: rgba(141, 193, 255, 0.2);
+}
+
+:global(.rsb-dark) .rsb-abstract-wrap:hover .rsb-issue {
+	color: #fdba74;
+	background: rgba(249, 115, 22, 0.22);
+}
+
+:global(.rsb-dark) .rsb-emphasis {
+	color: #f5f5f7;
+	background: linear-gradient(180deg, rgba(255, 208, 77, 0.35), rgba(255, 208, 77, 0.2));
+}
+
 :global(.rsb-dark) .rsb-muted,
 :global(.rsb-dark) .rsb-nav-title,
 :global(.rsb-dark) .rsb-affiliations,
 :global(.rsb-dark) .rsb-affiliation-note {
 	color: rgba(245, 245, 247, 0.7);
+}
+
+:global(.rsb-dark) .rsb-accent {
+	color: #8dc1ff;
 }
 
 @media (max-width: 720px) {

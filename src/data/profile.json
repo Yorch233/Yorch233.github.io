@@ -31,18 +31,18 @@
   },
   "research": {
     "title": "Research Interests",
-    "items": [
+    "focus": [
       {
-        "label": "Diffusion Models",
-        "icon": "/logo/speech.svg",
-        "type": "purple",
-        "url": ""
+        "label": "Diffusion-based Generative Modeling",
+        "value": 45
       },
       {
         "label": "Inverse Problems",
-        "icon": "/logo/speech.svg",
-        "type": "indigo",
-        "url": ""
+        "value": 35
+      },
+      {
+        "label": "Foundation Models",
+        "value": 20
       }
     ]
   }

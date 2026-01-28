@@ -1,90 +1,136 @@
 <template>
-  <div class="w-full min-h-60px bg-transparent">
-    <div class="flex justify-center py-10px">
-      <div class="relative inline-flex items-center bg-white rounded-30px shadow-md h-60px px-20px">
-        <div
-          class="absolute h-44px bg-blue-500 rounded-22px top-8px transition-all-300 ease-custom z-1"
-          :style="sliderStyle"
-        />
-        
-        <router-link
-          v-for="tab in tabs"
-          :key="tab.url"
-          class="relative w-120px h-60px flex items-center justify-center no-underline cursor-pointer z-2 transition-colors-300 ease"
-          :to="tab.url"
-          ref="tabItems"
-        >
-          <span class="text-14px transition-all-300 ease" :class="{
-            'text-white font-bold': $route.path === tab.url,
-            'text-gray-500 hover:text-gray-700': $route.path !== tab.url
-          }">
-            {{ tab.label }}
-          </span>
-        </router-link>
-      </div>
-    </div>
-  </div>
+	<nav class="app-tabs">
+		<div class="app-tabs-track">
+			<div class="app-tabs-slider" :style="sliderStyle" />
+			<router-link v-for="tab in tabs" :key="tab.url" class="app-tab" :class="{ 'is-active': $route.path === tab.url }" :to="tab.url" ref="tabItems">
+				<span>{{ tab.label }}</span>
+			</router-link>
+		</div>
+	</nav>
 </template>
 
 <script setup>
-import { ref, computed, nextTick, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, nextTick, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 // Props
 const props = defineProps({
-  tabs: {
-    type: Array,
-    required: true,
-    default: () => []
-  }
-})
+	tabs: {
+		type: Array,
+		required: true,
+		default: () => []
+	}
+});
 
 // Composables
-const route = useRoute()
+const route = useRoute();
 
 // Refs
-const tabItems = ref([])
-const sliderPosition = ref(0)
-const sliderWidth = ref(0)
+const tabItems = ref([]);
+const sliderPosition = ref(0);
+const sliderWidth = ref(0);
 
 // Computed
 const sliderStyle = computed(() => ({
-  left: `${sliderPosition.value}px`,
-  width: `${sliderWidth.value}px`
-}))
+	left: `${sliderPosition.value}px`,
+	width: `${sliderWidth.value}px`
+}));
 
 // Methods
 const updateSlider = async () => {
-  await nextTick()
-  const activeIndex = props.tabs.findIndex(tab => route.path === tab.url)
-  
-  if (activeIndex !== -1 && tabItems.value[activeIndex]) {
-    const activeItem = tabItems.value[activeIndex].$el || tabItems.value[activeIndex]
-    sliderPosition.value = activeItem.offsetLeft
-    sliderWidth.value = activeItem.offsetWidth
-  } else {
-    sliderPosition.value = 0
-    sliderWidth.value = 0
-  }
-}
+	await nextTick();
+	const activeIndex = props.tabs.findIndex((tab) => route.path === tab.url);
+
+	if (activeIndex !== -1 && tabItems.value[activeIndex]) {
+		const activeItem = tabItems.value[activeIndex].$el || tabItems.value[activeIndex];
+		sliderPosition.value = activeItem.offsetLeft;
+		sliderWidth.value = activeItem.offsetWidth;
+	} else {
+		sliderPosition.value = 0;
+		sliderWidth.value = 0;
+	}
+};
 
 // Lifecycle
 onMounted(() => {
-  updateSlider()
-})
+	updateSlider();
+});
 
 // Watchers
-watch(() => route.path, () => {
-  updateSlider()
-})
+watch(
+	() => route.path,
+	() => {
+		updateSlider();
+	}
+);
 
-watch(() => props.tabs, () => {
-  updateSlider()
-})
+watch(
+	() => props.tabs,
+	() => {
+		updateSlider();
+	}
+);
 </script>
 
 <style scoped>
-.ease-custom {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+.app-tabs {
+	display: flex;
+	justify-content: center;
+}
+
+.app-tabs-track {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px;
+	border-radius: 999px;
+	background: linear-gradient(140deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	box-shadow:
+		0 12px 30px rgba(15, 23, 42, 0.15),
+		0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+	backdrop-filter: blur(22px) saturate(160%);
+}
+
+.app-tabs-track::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: 999px;
+	background: linear-gradient(120deg, rgba(255, 255, 255, 0.45), transparent 45%);
+	opacity: 0.65;
+	pointer-events: none;
+}
+
+.app-tabs-slider {
+	position: absolute;
+	top: 6px;
+	left: 0;
+	height: calc(100% - 12px);
+	background: linear-gradient(135deg, #0a84ff, #5ac8fa);
+	border-radius: 999px;
+	transition: all 0.3s ease;
+	box-shadow: 0 10px 24px rgba(10, 132, 255, 0.35);
+}
+
+.app-tab {
+	position: relative;
+	padding: 10px 22px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	color: rgba(15, 23, 42, 0.6);
+	text-decoration: none;
+	border-radius: 999px;
+	transition: color 0.2s ease;
+	z-index: 1;
+}
+
+.app-tab:hover {
+	color: rgba(15, 23, 42, 0.85);
+}
+
+.app-tab.is-active {
+	color: #ffffff;
 }
 </style>
