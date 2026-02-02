@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import AudioWaveCompare from '../../components/AudioWaveCompare.vue';
 
 const denoiseSamples = ['051o020a_c1_454_snr=5.2.wav', '051o020t_c1_473_snr=8.3.wav', '053c010d_c1_896_snr=1.1.wav', '053c010k_c1_903_snr=-5.0.wav', '421o0307_c1_1896_snr=8.7.wav'];
@@ -50,6 +50,72 @@ const methodOptions = [
 	{ key: 'SB', label: 'SB' },
 	{ key: 'RSB', label: 'RSB (Ours)' }
 ];
+
+const trimFixed = (value, digits = 1) => {
+	const fixed = value.toFixed(digits);
+	return fixed.replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1');
+};
+
+const formatCount = (value) => {
+	if (value >= 1_000_000_000) {
+		return `${trimFixed(value / 1_000_000_000)}B`;
+	}
+	if (value >= 1_000_000) {
+		return `${trimFixed(value / 1_000_000)}M`;
+	}
+	if (value >= 1_000) {
+		return `${trimFixed(value / 1_000)}K`;
+	}
+	return value.toString();
+};
+
+const applyBusuanziFormat = () => {
+	const valueEl = document.getElementById('busuanzi_value_site_pv');
+	if (!valueEl) {
+		return false;
+	}
+	const rawText = valueEl.textContent?.trim() ?? '';
+	if (!rawText) {
+		return false;
+	}
+	const numericValue = Number(rawText.replace(/,/g, ''));
+	if (!Number.isFinite(numericValue)) {
+		return false;
+	}
+	valueEl.textContent = formatCount(numericValue);
+	valueEl.setAttribute('title', numericValue.toLocaleString());
+	return true;
+};
+
+const setupBusuanziFormatting = () => {
+	applyBusuanziFormat();
+	const waitForValue = window.setInterval(() => {
+		if (applyBusuanziFormat()) {
+			window.clearInterval(waitForValue);
+		}
+	}, 300);
+
+	const observer = new MutationObserver(() => {
+		if (applyBusuanziFormat()) {
+			observer.disconnect();
+		}
+	});
+	const container = document.getElementById('busuanzi_container_site_pv');
+	if (container) {
+		observer.observe(container, { childList: true, subtree: true });
+	}
+};
+
+onMounted(() => {
+	if (!document.querySelector('script[data-busuanzi]')) {
+		const script = document.createElement('script');
+		script.async = true;
+		script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+		script.setAttribute('data-busuanzi', 'true');
+		document.body.appendChild(script);
+	}
+	setupBusuanziFormatting();
+});
 </script>
 
 <template>
@@ -245,6 +311,14 @@ const methodOptions = [
 				</div>
 			</section>
 		</article>
+		<footer class="rsb-footer rsb-fade rsb-delay-5">
+			<span id="busuanzi_container_site_pv">
+				Total site visits
+				<span id="busuanzi_value_site_pv"></span>
+				times
+			</span>
+			<span class="rsb-footer-copy">© 2026 Qing Yao. All rights reserved.</span>
+		</footer>
 	</section>
 </template>
 
@@ -770,6 +844,22 @@ const methodOptions = [
 	grid-template-columns: 1fr;
 	gap: 24px;
 	margin-top: 18px;
+}
+
+.rsb-footer {
+	margin-top: 32px;
+	text-align: center;
+	font-size: 0.9rem;
+	color: #9ca3af;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+}
+
+.rsb-footer-copy {
+	font-size: 0.85rem;
+	letter-spacing: 0.01em;
 }
 
 :global(.rsb-dark) .rsb-page {
