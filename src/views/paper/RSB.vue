@@ -10,6 +10,8 @@ const showDenoiseAll = ref(false);
 const showDereverbAll = ref(false);
 const denoiseIndex = ref(0);
 const dereverbIndex = ref(0);
+const showDenoiseVisualization = ref(true);
+const showDereverbVisualization = ref(true);
 
 const visibleDenoiseSamples = computed(() => (showDenoiseAll.value ? denoiseSamples : [denoiseSamples[denoiseIndex.value] ?? denoiseSamples[0]].filter(Boolean)));
 const visibleDereverbSamples = computed(() => (showDereverbAll.value ? dereverbSamples : [dereverbSamples[dereverbIndex.value] ?? dereverbSamples[0]].filter(Boolean)));
@@ -43,13 +45,27 @@ const goNextDereverb = () => {
 };
 
 const methodOptions = [
-	{ key: 'Ground_Truth', label: 'Ground Truth' },
 	{ key: 'Measurement', label: 'Measurement' },
 	{ key: 'NCSN++M', label: 'NCSN++M' },
 	{ key: 'StoRM', label: 'StoRM' },
 	{ key: 'SB', label: 'SB' },
-	{ key: 'RSB', label: 'RSB (Ours)' }
+	{ key: 'RSB', label: 'RSB (Ours)' },
+	{ key: 'Ground_Truth', label: 'Ground Truth' }
 ];
+
+const buildAudioUrl = (folderName, sampleName) => new URL(`../../assets/RSB/audio/${folderName}/${sampleName}`, import.meta.url).href;
+
+const getSampleMetric = (sampleName) => {
+	const snrMatch = sampleName.match(/snr=([\-\d]+(?:\.\d+)?)/i);
+	if (snrMatch) {
+		return `SNR ${snrMatch[1]} dB`;
+	}
+	const t60Match = sampleName.match(/t60=([\-\d]+(?:\.\d+)?)/i);
+	if (t60Match) {
+		return `T60 ${t60Match[1]} s`;
+	}
+	return '—';
+};
 
 const trimFixed = (value, digits = 1) => {
 	const fixed = value.toFixed(digits);
@@ -270,18 +286,47 @@ onMounted(() => {
 					is the dereverberation dataset.
 				</p>
 				<div class="rsb-audio-group">
-					<h3 class="rsb-subtitle">WSJ0+WHAM (Denoising)</h3>
-					<div class="rsb-audio-list">
-						<AudioWaveCompare
-							v-for="(sample, idx) in visibleDenoiseSamples"
-							:key="sample"
-							:sample-name="sample"
-							:sample-index="showDenoiseAll ? idx + 1 : denoiseIndex + 1"
-							:methods="methodOptions"
-							default-method="Measurement"
-						/>
+					<div class="rsb-audio-header">
+						<h3 class="rsb-subtitle">WSJ0+WHAM (Denoising)</h3>
+						<label class="rsb-visual-toggle">
+							<span class="rsb-toggle-label">Visualization</span>
+							<input v-model="showDenoiseVisualization" type="checkbox" />
+							<span class="rsb-toggle-slider" aria-hidden="true"></span>
+						</label>
 					</div>
-					<div class="rsb-audio-actions">
+					<div class="rsb-audio-list" :class="{ 'rsb-audio-list-simple': !showDenoiseVisualization }">
+						<template v-if="showDenoiseVisualization">
+							<AudioWaveCompare
+								v-for="(sample, idx) in visibleDenoiseSamples"
+								:key="sample"
+								:sample-name="sample"
+								:sample-index="showDenoiseAll ? idx + 1 : denoiseIndex + 1"
+								:methods="methodOptions"
+								default-method="Measurement"
+							/>
+						</template>
+						<div v-else class="rsb-simple-table-wrap">
+							<table class="rsb-simple-table">
+								<thead>
+									<tr>
+										<th>Sample Name</th>
+										<th>SNR/T60</th>
+										<th v-for="method in methodOptions" :key="method.key">{{ method.label }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="sample in denoiseSamples" :key="sample">
+										<td class="rsb-cell-sample">{{ sample }}</td>
+										<td class="rsb-cell-metric">{{ getSampleMetric(sample) }}</td>
+										<td v-for="method in methodOptions" :key="`${sample}-${method.key}`" class="rsb-cell-audio">
+											<audio class="rsb-simple-audio" :src="buildAudioUrl(method.key, sample)" controls preload="none" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div v-if="showDenoiseVisualization" class="rsb-audio-actions">
 						<button class="rsb-nav-btn" type="button" :disabled="showDenoiseAll" @click="goPrevDenoise">Previous</button>
 						<button class="rsb-show-more" type="button" @click="showDenoiseAll = !showDenoiseAll">
 							{{ showDenoiseAll ? 'Hiden' : 'Show More' }}
@@ -290,18 +335,47 @@ onMounted(() => {
 					</div>
 				</div>
 				<div class="rsb-audio-group">
-					<h3 class="rsb-subtitle">WSJ0+REVERB (Dereverberation)</h3>
-					<div class="rsb-audio-list">
-						<AudioWaveCompare
-							v-for="(sample, idx) in visibleDereverbSamples"
-							:key="sample"
-							:sample-name="sample"
-							:sample-index="showDereverbAll ? idx + 1 : dereverbIndex + 1"
-							:methods="methodOptions"
-							default-method="Measurement"
-						/>
+					<div class="rsb-audio-header">
+						<h3 class="rsb-subtitle">WSJ0+REVERB (Dereverberation)</h3>
+						<label class="rsb-visual-toggle">
+							<span class="rsb-toggle-label">Visualization</span>
+							<input v-model="showDereverbVisualization" type="checkbox" />
+							<span class="rsb-toggle-slider" aria-hidden="true"></span>
+						</label>
 					</div>
-					<div class="rsb-audio-actions">
+					<div class="rsb-audio-list" :class="{ 'rsb-audio-list-simple': !showDereverbVisualization }">
+						<template v-if="showDereverbVisualization">
+							<AudioWaveCompare
+								v-for="(sample, idx) in visibleDereverbSamples"
+								:key="sample"
+								:sample-name="sample"
+								:sample-index="showDereverbAll ? idx + 1 : dereverbIndex + 1"
+								:methods="methodOptions"
+								default-method="Measurement"
+							/>
+						</template>
+						<div v-else class="rsb-simple-table-wrap">
+							<table class="rsb-simple-table">
+								<thead>
+									<tr>
+										<th>Sample Name</th>
+										<th>SNR/T60</th>
+										<th v-for="method in methodOptions" :key="method.key">{{ method.label }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="sample in dereverbSamples" :key="sample">
+										<td class="rsb-cell-sample">{{ sample }}</td>
+										<td class="rsb-cell-metric">{{ getSampleMetric(sample) }}</td>
+										<td v-for="method in methodOptions" :key="`${sample}-${method.key}`" class="rsb-cell-audio">
+											<audio class="rsb-simple-audio" :src="buildAudioUrl(method.key, sample)" controls preload="none" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div v-if="showDereverbVisualization" class="rsb-audio-actions">
 						<button class="rsb-nav-btn" type="button" :disabled="showDereverbAll" @click="goPrevDereverb">Previous</button>
 						<button class="rsb-show-more" type="button" @click="showDereverbAll = !showDereverbAll">
 							{{ showDereverbAll ? 'Hiden' : 'Show More' }}
@@ -332,7 +406,7 @@ onMounted(() => {
 }
 
 .rsb-article {
-	max-width: 960px;
+	max-width: 1120px;
 	margin: 0 auto;
 	background: rgba(255, 255, 255, 0.92);
 	border: 1px solid rgba(0, 0, 0, 0.04);
@@ -771,6 +845,13 @@ onMounted(() => {
 	margin-top: 20px;
 }
 
+.rsb-audio-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
 .rsb-audio-actions {
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr;
@@ -844,6 +925,118 @@ onMounted(() => {
 	grid-template-columns: 1fr;
 	gap: 24px;
 	margin-top: 18px;
+	background: rgba(15, 23, 42, 0.04);
+	border-radius: 16px;
+	padding: 18px;
+	box-sizing: border-box;
+}
+
+.rsb-audio-list :deep(.wave-compare) {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.rsb-audio-list-simple {
+	gap: 0;
+}
+
+.rsb-visual-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: #1d1d1f;
+	user-select: none;
+	position: relative;
+}
+
+.rsb-visual-toggle input {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+}
+
+.rsb-toggle-label {
+	color: #6e6e73;
+}
+
+.rsb-toggle-slider {
+	width: 44px;
+	height: 24px;
+	border-radius: 999px;
+	background: rgba(15, 23, 42, 0.2);
+	position: relative;
+	transition: background 0.2s ease;
+}
+
+.rsb-toggle-slider::after {
+	content: '';
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	transition: transform 0.2s ease;
+}
+
+.rsb-visual-toggle input:checked + .rsb-toggle-slider {
+	background: rgba(0, 113, 227, 0.55);
+}
+
+.rsb-visual-toggle input:checked + .rsb-toggle-slider::after {
+	transform: translateX(20px);
+}
+
+.rsb-simple-table-wrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.rsb-simple-table {
+	width: 100%;
+	border-collapse: collapse;
+	min-width: 720px;
+	background: transparent;
+}
+
+.rsb-simple-table th,
+.rsb-simple-table td {
+	padding: 10px 12px;
+	border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+	text-align: left;
+	vertical-align: middle;
+}
+
+.rsb-simple-table th {
+	font-size: 0.85rem;
+	letter-spacing: 0.02em;
+	text-transform: none;
+	color: #4b5563;
+	font-weight: 700;
+}
+
+.rsb-cell-sample {
+	font-weight: 600;
+	color: #111827;
+}
+
+.rsb-cell-metric {
+	color: #374151;
+	white-space: nowrap;
+}
+
+.rsb-cell-audio {
+	min-width: 140px;
+}
+
+.rsb-simple-audio {
+	width: 140px;
+	height: 28px;
 }
 
 .rsb-footer {
