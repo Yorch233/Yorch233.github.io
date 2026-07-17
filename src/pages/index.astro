@@ -1,0 +1,126 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import profile from '../data/profile.json';
+import { publications } from '../data/publications.js';
+import '../styles/reference-home.css';
+
+const socialLinks = [
+	{ label: 'GitHub', href: profile.contact.github, icon: 'simple-icons:github', external: true },
+	{ label: 'Hugging Face', href: profile.contact.huggingFace, icon: 'simple-icons:huggingface', external: true },
+	{ label: 'ORCID', href: 'https://orcid.org/0009-0001-2172-8004', icon: 'simple-icons:orcid', external: true }
+];
+---
+
+<BaseLayout
+	title="Qing Yao — Jiangsu University"
+	description="Qing Yao is a PhD student at Jiangsu University researching diffusion-based generative modeling and speech enhancement."
+	bodyClass="reference-home-page"
+>
+	<main class="reference-home-shell">
+		<article class="reference-home-panel">
+			<aside class="reference-identity" aria-label="Profile">
+				<div class="reference-home-avatar">
+					<img src={profile.avatar} width="204" height="204" alt="Qing Yao" />
+				</div>
+				<h1>{profile.name}</h1>
+				<div class="reference-home-contact">
+					<p>
+						<Icon name="ph:graduation-cap" aria-hidden="true" />
+						<span>{profile.contact.institution}</span>
+					</p>
+					<a href={`mailto:${profile.contact.email}`}>
+						<Icon name="ph:envelope-simple" aria-hidden="true" />
+						<span>{profile.contact.email}</span>
+					</a>
+				</div>
+
+				<nav class="reference-home-links" aria-label="Social profiles">
+					{socialLinks.map((link) => (
+						<a
+							href={link.href}
+							target={link.external ? '_blank' : undefined}
+							rel={link.external ? 'noreferrer' : undefined}
+							aria-label={link.label}
+							title={link.label}
+						>
+							<Icon name={link.icon} aria-hidden="true" />
+						</a>
+					))}
+				</nav>
+
+				<section class="reference-identity-research" aria-labelledby="home-research-title">
+					<h2 id="home-research-title">{profile.research.title}</h2>
+					<div class="reference-research-grid">
+						{profile.research.focus.map((focus) => (
+							<div class="reference-research-item">
+								<strong>{focus.label}</strong>
+							</div>
+						))}
+					</div>
+				</section>
+			</aside>
+
+			<div class="reference-home-content">
+				<section class="reference-home-section reference-introduction" aria-labelledby="home-about-title">
+					<p class="reference-section-kicker">About</p>
+					<h2 id="home-about-title"><span aria-hidden="true"></span>Personal Introduction</h2>
+					<p class="reference-home-bio">{profile.bio}</p>
+				</section>
+
+				<section class="reference-home-section" aria-labelledby="home-education-title">
+					<h2 id="home-education-title"><span aria-hidden="true"></span>Education</h2>
+					<div class="reference-education-list">
+						{profile.education.map((item) => (
+							<article class="reference-education-item">
+								<span class="reference-education-node" aria-hidden="true"></span>
+								<p class="reference-education-period">{item.period}</p>
+								<div>
+									<h3>{item.degree}</h3>
+									<p>{item.institution}</p>
+									<p class="reference-education-description">{item.description}</p>
+								</div>
+							</article>
+						))}
+					</div>
+				</section>
+
+				<section class="reference-home-section reference-home-publications" aria-labelledby="home-publications-title">
+					<div class="reference-section-heading">
+						<h2 id="home-publications-title"><span aria-hidden="true"></span>Publications</h2>
+						<a href="/publications/">View all publications <Icon name="ph:arrow-right" aria-hidden="true" /></a>
+					</div>
+
+					<div class="reference-publication-list">
+						{publications.map((publication) => (
+							<article class="reference-publication">
+								<div class="reference-publication-year">{publication.year}</div>
+								<div class="reference-publication-copy">
+									<p class="reference-publication-meta">
+										<span>{publication.venue}</span>
+										<span>{publication.tags[0]}</span>
+									</p>
+									<h3><a href={publication.demo}>{publication.title}</a></h3>
+								</div>
+								<div class="reference-publication-actions">
+									<span class="is-disabled" title="Paper coming soon" aria-label="Paper coming soon">
+										<Icon name="ph:file-text" aria-hidden="true" />
+									</span>
+									<a href={publication.code} target="_blank" rel="noreferrer" aria-label="View source code" title="Source code">
+										<Icon name="ph:code" aria-hidden="true" />
+									</a>
+									<a href={publication.demo} aria-label="Open interactive demo" title="Interactive demo">
+										<Icon name="ph:arrow-square-out" aria-hidden="true" />
+									</a>
+								</div>
+							</article>
+						))}
+					</div>
+				</section>
+			</div>
+		</article>
+
+		<SiteNav active="home" />
+	</main>
+</BaseLayout>

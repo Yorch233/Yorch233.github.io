@@ -1,24 +1,26 @@
 {
-  "name": "github_io",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite build & vite preview"
-  },
-  "dependencies": {
-    "@icon-park/vue-next": "^1.4.2",
-    "busuanzi.pure.js": "^1.0.3",
-    "element-plus": "^2.9.7",
-    "vue": "^3.4.21",
-    "vue-router": "^4.4.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.4",
-    "pinia": "^2.1.7",
-    "unplugin-vue-components": "^0.27.2",
-    "vite": "^5.2.0"
-  }
+	"name": "yorch233-github-io",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"check": "astro check",
+		"audio:build": "./scripts/encode-audio.sh",
+		"verify:runtime": "node scripts/verify-runtime.mjs"
+	},
+	"dependencies": {
+		"@astrojs/preact": "^6.0.1",
+		"@iconify-json/ph": "^1.2.2",
+		"@iconify-json/simple-icons": "^1.2.90",
+		"astro": "^7.0.9",
+		"astro-icon": "^1.1.5",
+		"preact": "^10.29.7"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.4",
+		"typescript": "^5.9.3"
+	}
 }

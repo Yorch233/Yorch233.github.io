@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const { active = 'home' } = Astro.props;
+
+const links = [
+	{ key: 'home', href: '/', label: 'Home', icon: 'ph:house-fill' },
+	{ key: 'publications', href: '/publications/', label: 'Publications', icon: 'ph:books' }
+];
+---
+
+<nav class="app-tabs" aria-label="Primary navigation">
+	<div class="app-tabs-track">
+		{links.map((link) => (
+			<a class:list={['app-tab', { 'is-active': active === link.key }]} href={link.href} aria-current={active === link.key ? 'page' : undefined}>
+				<Icon name={link.icon} aria-hidden="true" />
+				{link.label}
+			</a>
+		))}
+	</div>
+</nav>
