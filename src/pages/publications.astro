@@ -1,0 +1,96 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteNav from '../components/SiteNav.astro';
+import { publications } from '../data/publications.js';
+---
+
+<BaseLayout
+	title="Publications — Qing Yao"
+	description="Publications by Qing Yao in speech enhancement, diffusion models, and generative modeling."
+	bodyClass="home-page publications-page"
+>
+	<main class="publications-shell">
+		<section class="publications-window" aria-labelledby="publications-title">
+			<header class="publications-toolbar">
+				<div class="publications-title">
+					<p>Library</p>
+					<h1 id="publications-title">Publications</h1>
+				</div>
+
+				<label class="publications-search">
+					<Icon name="ph:magnifying-glass" aria-hidden="true" />
+					<span class="sr-only">Search publications</span>
+					<input type="search" placeholder="Search publications" autocomplete="off" data-publication-search />
+				</label>
+
+				<span class="publications-count" data-publication-count>{publications.length} publication</span>
+			</header>
+
+			<div class="publications-list" data-publication-list>
+				{publications.map((publication) => (
+					<article
+						class="publication-list-item"
+						data-publication-item
+						data-search={`${publication.title} ${publication.year} ${publication.venue} ${publication.tags.join(' ')}`.toLowerCase()}
+					>
+						<div class="publication-year">{publication.year}</div>
+						<div class="publication-list-copy">
+							<div class="publication-list-meta">
+								<span>{publication.venue}</span>
+								<span>{publication.tags[0]}</span>
+							</div>
+							<h2><a href={`/${publication.slug}/`}>{publication.title}</a></h2>
+							<p>{publication.summary}</p>
+							<div class="tag-list">
+								{publication.tags.map((tag) => <span>{tag}</span>)}
+							</div>
+						</div>
+						<div class="publication-list-actions">
+							<a href={publication.demo} aria-label={`Open demo for ${publication.title}`} title="Interactive demo">
+								<Icon name="ph:arrow-square-out" aria-hidden="true" />
+							</a>
+							<a href={publication.code} target="_blank" rel="noreferrer" aria-label={`View source code for ${publication.title}`} title="Source code">
+								<Icon name="ph:code" aria-hidden="true" />
+							</a>
+						</div>
+					</article>
+				))}
+			</div>
+
+			<div class="publications-empty" data-publication-empty hidden>
+				<Icon name="ph:file-text" aria-hidden="true" />
+				<h2>No publications found</h2>
+				<p>Try a different title, keyword, year, or status.</p>
+			</div>
+		</section>
+
+		<SiteNav active="publications" />
+	</main>
+
+	<script is:inline>
+		(() => {
+			const input = document.querySelector('[data-publication-search]');
+			const items = [...document.querySelectorAll('[data-publication-item]')];
+			const count = document.querySelector('[data-publication-count]');
+			const empty = document.querySelector('[data-publication-empty]');
+			if (!input || !count || !empty) return;
+
+			const update = () => {
+				const query = input.value.trim().toLowerCase();
+				let visible = 0;
+
+				items.forEach((item) => {
+					const matches = !query || item.dataset.search.includes(query);
+					item.hidden = !matches;
+					if (matches) visible += 1;
+				});
+
+				count.textContent = `${visible} publication${visible === 1 ? '' : 's'}`;
+				empty.hidden = visible !== 0;
+			};
+
+			input.addEventListener('input', update);
+		})();
+	</script>
+</BaseLayout>

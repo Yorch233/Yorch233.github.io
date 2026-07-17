@@ -1,0 +1,341 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AudioDemoIsland from '../../components/preact/AudioDemoIsland.jsx';
+import { audioBasePath, denoiseSamples, dereverbSamples, methodOptions } from '../../data/rsb.js';
+import '../../styles/rsb.css';
+import '../../styles/audio-demo.css';
+
+const title = 'Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement';
+const bibtex = `@article{yao2026regularized,
+  title   = {Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement},
+  author  = {Yao, Qing and Gao, Lijian and Mao, Qirong and Dong, Ming},
+  year    = {2026},
+  note    = {Accepted}
+}`;
+
+const figures = [
+	{
+		src: '/images/RSB/rsb-framework.png',
+		width: 1352,
+		height: 936,
+		label: 'Figure 1',
+		title: 'RSB Training and Inference',
+		alt: 'Diagram of the Regularized Schrödinger Bridge training and inference pipeline.',
+		description:
+			'During training, RSB uses a pretrained predictive model to obtain a posterior-mean reference, then interpolates it with clean speech to form time-varying targets and matched perturbed states. At inference, finite-step sampling moves from degraded speech toward a high-fidelity, perceptually realistic estimate.'
+	},
+	{
+		src: '/images/RSB/distortion-perception-tradeoff.png',
+		width: 329,
+		height: 193,
+		label: 'Figure 3',
+		title: 'Distortion-Perception Tradeoff',
+		alt: 'Plot comparing the sampling paths of a standard Schrödinger Bridge and RSB on the distortion-perception plane.',
+		description:
+			'The distortion-perception plane contrasts reconstruction fidelity with perceptual quality. Standard SB can drift away from the optimal frontier during sampling, whereas RSB finishes closer to it and achieves a more favorable balance between fidelity and realism.'
+	},
+	{
+		src: '/images/RSB/dp-perturbation.png',
+		width: 1168,
+		height: 455,
+		label: 'Figure 4',
+		title: 'Distortion-Perception Perturbation',
+		alt: 'Diagram showing time-varying targets and perturbed intermediate states in distortion-perception perturbation.',
+		description:
+			'DP Perturbation jointly perturbs supervision targets and intermediate states. Interpolation between the posterior mean and clean speech provides early fidelity guidance, simulates accumulated prediction errors, and reduces the mismatch between training and multi-step inference.'
+	}
+];
+---
+
+<BaseLayout
+	title={`${title} — Qing Yao`}
+	description="Interactive audio demo for Regularized Schrödinger Bridge, a high-fidelity speech-enhancement method."
+	bodyClass="rsb-body"
+>
+	<main class="rsb-page">
+		<article class="rsb-article">
+			<img class="rsb-watermark" src="/logo/icon.png" alt="" aria-hidden="true" />
+
+			<header class="rsb-hero rsb-fade rsb-delay-1">
+				<div class="rsb-kicker-row">
+					<p class="rsb-kicker">Paper demo</p>
+					<span class="rsb-status">Accepted</span>
+				</div>
+				<h1 class="rsb-title">
+					Regularized
+					<span class="rsb-highlight">Schrödinger Bridge</span>
+					via Distortion-Perception Perturbation for High-Fidelity
+					<span class="rsb-highlight">Speech Enhancement</span>
+				</h1>
+
+				<p class="rsb-authors">
+					<span class="rsb-author">
+						<span class="rsb-author-name">Qing Yao <sup>1</sup></span>
+						<a class="rsb-email" href="mailto:qyao@stmail.ujs.edu.cn">qyao@stmail.ujs.edu.cn</a>
+					</span>
+					<span class="rsb-author">
+						<span class="rsb-author-name">Lijian Gao <sup>1</sup></span>
+						<a class="rsb-email" href="mailto:ljgao@ujs.edu.cn">ljgao@ujs.edu.cn</a>
+					</span>
+					<span class="rsb-author">
+						<span class="rsb-author-name">Qirong Mao <sup>1</sup><sup class="rsb-tag">†</sup></span>
+						<a class="rsb-email" href="mailto:mao_qr@ujs.edu.cn">mao_qr@ujs.edu.cn</a>
+					</span>
+					<span class="rsb-author">
+						<span class="rsb-author-name">Ming Dong <sup>2</sup><sup class="rsb-tag">†</sup></span>
+						<a class="rsb-email" href="mailto:mdong@wayne.edu">mdong@wayne.edu</a>
+					</span>
+				</p>
+
+				<ol class="rsb-affiliations">
+					<li><sup>1</sup> Jiangsu University</li>
+					<li><sup>2</sup> Wayne State University</li>
+				</ol>
+				<p class="rsb-affiliation-note"><sup class="rsb-tag">†</sup> Corresponding Author</p>
+			</header>
+
+			<nav class="rsb-nav rsb-fade rsb-delay-2" aria-label="Paper resources">
+				<span class="rsb-nav-title">Quick Access</span>
+				<span class="rsb-nav-link rsb-nav-disabled" aria-disabled="true">
+					<span class="rsb-nav-icon rsb-nav-icon-demo" aria-hidden="true"></span>
+					Paper
+				</span>
+				<a class="rsb-nav-link" href="https://github.com/Yorch233/RSB/" target="_blank" rel="noreferrer">
+					<img class="rsb-nav-icon" src="https://github.githubassets.com/favicons/favicon.svg" alt="" />
+					Github
+				</a>
+				<a class="rsb-nav-link" href="https://huggingface.co/Yorch233/RSB/" target="_blank" rel="noreferrer">
+					<img class="rsb-nav-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" />
+					Hugging Face
+				</a>
+			</nav>
+
+			<section class="rsb-section rsb-fade rsb-delay-3" aria-labelledby="abstract-heading">
+				<h2 id="abstract-heading">
+					<span class="rsb-wave" aria-hidden="true"><span></span></span>
+					Abstract
+				</h2>
+				<div class="rsb-abstract-wrap">
+					<p class="rsb-abstract">
+						<span class="rsb-highlight">Speech enhancement</span>
+						(SE) requires high-fidelity reconstruction of clean speech that preserves linguistic and paralinguistic cues while maintaining high perceptual quality. Recently,
+						<span class="rsb-highlight">Schrödinger Bridge</span>
+						(SB), a family of diffusion-based generative models, has advanced SE by bridging degraded and clean speech distributions in a principled formulation, enabling higher-quality
+						reconstructions with fewer sampling steps. However, diffusion-based SE methods still face two challenges:
+						<span class="rsb-issue">(1) the fidelity-realism tradeoff, where they often prioritize perceptual realism encouraged by the learned speech prior, at the expense of fidelity;</span>
+						<span class="rsb-issue">
+							(2) the exposure bias issue, where iterative multi-step sampling causes early-step prediction errors to accumulate along the sampling trajectory and degrade enhanced speech
+							quality.
+						</span>
+						In this paper, we analyze standard SB training and show that it induces a systematic prediction drift, which biases the multi-step trajectory and amplifies error accumulation.
+						To address this, we propose
+						<span class="rsb-highlight">Regularized Schrödinger Bridge (RSB)</span>
+						for high-fidelity SE, a generative approach that reconciles fidelity and realism while mitigating exposure bias.
+						<span class="rsb-highlight">RSB regularizes training with a Distortion-Perception Perturbation</span>
+						that constructs time-varying targets by interpolating between clean speech and posterior-mean estimates, and trains the network on perturbed intermediate states to correct toward
+						the ground truth progressively. Consequently, such perturbation simulates inference-time prediction errors, mitigating the training–inference mismatch and thereby reducing
+						exposure bias. Furthermore, it also injects posterior-mean estimates as fidelity-preserving guidance, facilitating reconstruction fidelity. Experiments on the WSJ0 corpus and
+						VoiceBank+DEMAND dataset demonstrate that RSB improves reconstruction fidelity over the advanced SE baselines, yielding a favorable fidelity-realism tradeoff and reducing exposure
+						bias.
+					</p>
+					<div class="rsb-legend" aria-hidden="true">
+						<span class="rsb-legend-item">
+							<span class="rsb-legend-swatch rsb-legend-swatch-highlight"></span>
+							Key Concepts
+						</span>
+						<span class="rsb-legend-item">
+							<span class="rsb-legend-swatch rsb-legend-swatch-issue"></span>
+							Issues
+						</span>
+					</div>
+				</div>
+
+				<div
+					class="rsb-figure-carousel"
+					data-figure-carousel
+					role="region"
+					aria-roledescription="carousel"
+					aria-label="RSB method figures"
+					tabindex="0"
+				>
+					<div class="rsb-figure-viewport">
+						<div class="rsb-figure-track" data-figure-track>
+							{
+								figures.map((figure, index) => (
+									<figure
+										class="rsb-figure-slide"
+										data-figure-slide
+										aria-roledescription="slide"
+										aria-label={`${index + 1} of ${figures.length}`}
+										aria-hidden={index === 0 ? 'false' : 'true'}
+									>
+										<div class="rsb-figure-media">
+											<img
+												src={figure.src}
+												alt={figure.alt}
+												width={figure.width}
+												height={figure.height}
+												loading="lazy"
+												decoding="async"
+											/>
+										</div>
+										<figcaption class="rsb-figure-caption">
+											<span class="rsb-figure-label">{figure.label}</span>
+											<h3>{figure.title}</h3>
+											<p>{figure.description}</p>
+										</figcaption>
+									</figure>
+								))
+							}
+						</div>
+					</div>
+					<div class="rsb-figure-controls">
+						<button class="rsb-figure-nav" type="button" data-figure-previous aria-label="Show previous figure">Previous</button>
+						<div class="rsb-figure-dots" aria-label="Choose a figure">
+							{
+								figures.map((figure, index) => (
+									<button
+										class="rsb-figure-dot"
+										type="button"
+										data-figure-dot
+										data-index={index}
+										aria-label={`Show ${figure.label}: ${figure.title}`}
+										aria-current={index === 0 ? 'true' : undefined}
+									></button>
+								))
+							}
+						</div>
+						<span class="rsb-figure-count" data-figure-count aria-live="polite">1 / {figures.length}</span>
+						<button class="rsb-figure-nav" type="button" data-figure-next aria-label="Show next figure">Next</button>
+					</div>
+				</div>
+			</section>
+
+			<section class="rsb-section rsb-section-separated rsb-fade rsb-delay-4" aria-labelledby="keywords-heading">
+				<h2 id="keywords-heading">
+					<span class="rsb-wave" aria-hidden="true"><span></span></span>
+					Keywords
+				</h2>
+				<div class="rsb-meta">
+					<span class="rsb-chip">Speech enhancement</span>
+					<span class="rsb-chip">Schrödinger bridge</span>
+					<span class="rsb-chip">Diffusion models</span>
+					<span class="rsb-chip">Distortion-perception tradeoff</span>
+					<span class="rsb-chip">Exposure bias</span>
+				</div>
+			</section>
+
+			<section class="rsb-section rsb-section-separated rsb-audio-section rsb-fade rsb-delay-5" aria-labelledby="audio-heading">
+				<h2 id="audio-heading">
+					<span class="rsb-wave" aria-hidden="true"><span></span></span>
+					Audio Samples
+				</h2>
+				<p class="rsb-muted">
+					We publicly release <span class="rsb-accent">10 samples</span> in total, drawn from two synthetic datasets:
+					<span class="rsb-accent">WSJ0+WHAM</span> is the denoising dataset and <span class="rsb-accent">WSJ0+REVERB</span> is the dereverberation dataset.
+				</p>
+				<AudioDemoIsland
+					client:visible
+					denoiseSamples={denoiseSamples}
+					dereverbSamples={dereverbSamples}
+					methods={methodOptions}
+					basePath={audioBasePath}
+				/>
+			</section>
+
+			<section class="rsb-section rsb-section-separated rsb-citation-section rsb-fade rsb-delay-5" aria-labelledby="citation-heading">
+				<h2 id="citation-heading">
+					<span class="rsb-wave" aria-hidden="true"><span></span></span>
+					Citation
+				</h2>
+				<div class="rsb-citation">
+					<div class="rsb-citation-header">
+						<span class="rsb-citation-label">BibTeX</span>
+						<button class="rsb-copy-button" type="button" data-copy-bib aria-label="Copy BibTeX citation">
+							<img src="/logo/copy.svg" alt="" aria-hidden="true" />
+							<span data-copy-label>Copy</span>
+						</button>
+					</div>
+					<pre class="rsb-bibtex"><code data-bibtex>{bibtex}</code></pre>
+					<p class="rsb-copy-status" data-copy-status aria-live="polite"></p>
+				</div>
+			</section>
+		</article>
+
+		<footer class="rsb-footer rsb-fade rsb-delay-5">
+			<span class="rsb-footer-copy">© 2026 Qing Yao. All rights reserved.</span>
+		</footer>
+	</main>
+
+	<script is:inline>
+		(() => {
+			const button = document.querySelector('[data-copy-bib]');
+			const code = document.querySelector('[data-bibtex]');
+			const label = document.querySelector('[data-copy-label]');
+			const status = document.querySelector('[data-copy-status]');
+			if (!button || !code || !label || !status) return;
+
+			let resetTimer;
+			const setCopied = () => {
+				label.textContent = 'Copied';
+				status.textContent = 'BibTeX copied to clipboard.';
+				button.classList.add('is-copied');
+				window.clearTimeout(resetTimer);
+				resetTimer = window.setTimeout(() => {
+					label.textContent = 'Copy';
+					status.textContent = '';
+					button.classList.remove('is-copied');
+				}, 2000);
+			};
+
+			button.addEventListener('click', async () => {
+				const text = code.textContent || '';
+				try {
+					await navigator.clipboard.writeText(text);
+					setCopied();
+				} catch {
+					status.textContent = 'Copy failed. Please select the BibTeX manually.';
+				}
+			});
+		})();
+
+		(() => {
+			const carousels = document.querySelectorAll('[data-figure-carousel]');
+			carousels.forEach((carousel) => {
+				const track = carousel.querySelector('[data-figure-track]');
+				const slides = Array.from(carousel.querySelectorAll('[data-figure-slide]'));
+				const dots = Array.from(carousel.querySelectorAll('[data-figure-dot]'));
+				const previous = carousel.querySelector('[data-figure-previous]');
+				const next = carousel.querySelector('[data-figure-next]');
+				const count = carousel.querySelector('[data-figure-count]');
+				if (!track || !slides.length || !previous || !next || !count) return;
+
+				let activeIndex = 0;
+				const showFigure = (requestedIndex) => {
+					activeIndex = (requestedIndex + slides.length) % slides.length;
+					track.style.transform = `translateX(-${activeIndex * 100}%)`;
+					slides.forEach((slide, index) => slide.setAttribute('aria-hidden', String(index !== activeIndex)));
+					dots.forEach((dot, index) => {
+						if (index === activeIndex) dot.setAttribute('aria-current', 'true');
+						else dot.removeAttribute('aria-current');
+					});
+					count.textContent = `${activeIndex + 1} / ${slides.length}`;
+				};
+
+				previous.addEventListener('click', () => showFigure(activeIndex - 1));
+				next.addEventListener('click', () => showFigure(activeIndex + 1));
+				dots.forEach((dot) => dot.addEventListener('click', () => showFigure(Number(dot.dataset.index))));
+				carousel.addEventListener('keydown', (event) => {
+					if (event.key === 'ArrowLeft') {
+						event.preventDefault();
+						showFigure(activeIndex - 1);
+					}
+					if (event.key === 'ArrowRight') {
+						event.preventDefault();
+						showFigure(activeIndex + 1);
+					}
+				});
+			});
+		})();
+	</script>
+</BaseLayout>

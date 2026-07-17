@@ -1,0 +1,60 @@
+---
+import profile from '../data/profile.json';
+---
+
+<aside class="profile-shell" aria-label="Profile">
+	<div class="profile-card">
+		<header class="profile-header">
+			<div class="profile-avatar">
+				<img class="profile-avatar-img" src={profile.avatar} width="100" height="100" alt="Profile" />
+			</div>
+			<div class="profile-name">{profile.name}</div>
+			<p class="profile-role">{profile.role}</p>
+		</header>
+
+		<div class="profile-content">
+			<div class="profile-links">
+				{profile.links.map((link) => (
+					<a class={`profile-link profile-link--${link.type || 'default'}`} href={link.url} target="_blank" rel="noreferrer" title={link.tooltip}>
+						<img src={link.icon} width={link.iconSize?.width ?? 16} height={link.iconSize?.height ?? 16} alt="" />
+						<span>{link.label}</span>
+					</a>
+				))}
+			</div>
+
+			<div class="profile-divider"></div>
+
+			<div class="profile-contact">
+				<div class="profile-contact-item">
+					<img src="/logo/school.svg" width="20" height="20" alt="" />
+					<span>{profile.contact.institution}</span>
+				</div>
+				<div class="profile-contact-item">
+					<img src="/logo/mail.svg" width="20" height="20" alt="" />
+					<a class="profile-email" href={`mailto:${profile.contact.email}`}>{profile.contact.email}</a>
+				</div>
+			</div>
+
+			<div class="profile-divider"></div>
+
+			<section class="profile-section" aria-labelledby="research-title">
+				<h2 class="profile-section-title" id="research-title">{profile.research.title}</h2>
+				<div class="profile-focus">
+					{profile.research.focus.map((focus) => (
+						<div class="profile-focus-row">
+							<div class="profile-focus-header">
+								<span class="profile-focus-label">{focus.label}</span>
+								{'value' in focus && <span class="profile-focus-value">{focus.value}%</span>}
+							</div>
+							{'value' in focus && (
+								<div class="profile-focus-bar">
+									<span class="profile-focus-fill" style={`width: ${focus.value}%`}></span>
+								</div>
+							)}
+						</div>
+					))}
+				</div>
+			</section>
+		</div>
+	</div>
+</aside>

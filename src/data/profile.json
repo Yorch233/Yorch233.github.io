@@ -1,6 +1,8 @@
 {
   "avatar": "/profile/profile.png",
   "name": "Qing Yao",
+  "role": "PhD Student in Generative Modeling & Speech Enhancement",
+  "bio": "My research focuses on diffusion-based generative modeling and speech enhancement. I aim to develop faithful and efficient generative methods for realistic audio reconstruction.",
   "links": [
     {
       "label": "Github",
@@ -27,22 +29,27 @@
   ],
   "contact": {
     "institution": "Jiangsu University",
-    "email": "qyao@stmail.ujs.edu.cn"
+    "location": "Jiangsu University, China",
+    "email": "qyao@stmail.ujs.edu.cn",
+    "github": "https://github.com/Yorch233/",
+    "huggingFace": "https://huggingface.co/Yorch233/"
   },
+  "education": [
+    {
+      "period": "Current",
+      "degree": "PhD Student",
+      "institution": "Jiangsu University",
+      "description": "Research in diffusion-based generative modeling and speech enhancement."
+    }
+  ],
   "research": {
     "title": "Research Interests",
     "focus": [
       {
-        "label": "Diffusion-based Generative Modeling",
-        "value": 45
+        "label": "Speech Enhancement"
       },
       {
-        "label": "Inverse Problems",
-        "value": 35
-      },
-      {
-        "label": "Foundation Models",
-        "value": 20
+        "label": "Diffusion-based Generative Modeling"
       }
     ]
   }
