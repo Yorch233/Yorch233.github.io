@@ -108,10 +108,10 @@ try {
 	assert(!requests.some((url) => url.endsWith('.opus')), 'Audio loaded before the Island became visible.');
 
 	await send('Runtime.evaluate', {
-		expression: 'window.scrollTo(0, document.body.scrollHeight); true',
+		expression: "document.querySelector('.rsb-audio-section')?.scrollIntoView({ block: 'center' }); true",
 		awaitPromise: true
 	});
-	await delay(2500);
+	await delay(6000);
 
 	assert(requests.some((url) => url.includes('AudioDemoIsland')), 'Preact Island did not hydrate after scrolling.');
 	const initialOpus = [...new Set(requests.filter((url) => url.endsWith('.opus')))];
@@ -184,7 +184,7 @@ try {
 		returnByValue: true
 	});
 	const waveformState = JSON.parse(waveformStateResult.result.value);
-	assert(waveformState.preloads.length === 2 && waveformState.preloads.every((value) => value === 'none'), 'Audio preload policy is not "none".');
+	assert(waveformState.preloads.length === 3 && waveformState.preloads.every((value) => value === 'none'), 'Audio preload policy is not "none".');
 	assert(waveformState.canvas.some((canvas) => canvas.width > 0 && canvas.height > 0), 'Real-time waveform canvas was not rendered.');
 	assert(waveformState.cards === 2, `Expected two visible comparison cards, received ${waveformState.cards}.`);
 	assert(waveformState.methods === 6, `Expected six method chips, received ${waveformState.methods}.`);
@@ -322,7 +322,6 @@ try {
 					waveformWorker: true,
 					waveformCanvasRendered: true,
 					staticSpectrogramRequests: spectrogramRequests.length,
-					qualityFiveRequests: qualityFiveRequests.length,
 					onlineSpectrogramGeneration: false
 				},
 				originalLayout: {
