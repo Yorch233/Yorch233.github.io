@@ -11,9 +11,9 @@ const bibtex = `@article{yao2026rsb,
   title   = {Regularized Schr{\\"o}dinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement},
   journal = {IEEE Transactions on Audio, Speech and Language Processing},
   year    = {2026},
-  month   = jul,
-  doi     = {10.1109/TASLPRO.2026.3717234},
-  note    = {Early Access}
+  volume  = {34},
+  pages   = {3886-3900},
+  doi     = {10.1109/TASLPRO.2026.3717234}
 }`;
 
 const figures = [
@@ -60,10 +60,7 @@ const figures = [
 			<img class="rsb-watermark" src="/logo/icon.png" alt="" aria-hidden="true" />
 
 			<header class="rsb-hero rsb-fade rsb-delay-1">
-				<div class="rsb-kicker-row">
-					<p class="rsb-kicker">Paper demo</p>
-					<span class="rsb-status">Accepted</span>
-				</div>
+				<p class="rsb-kicker">Paper demo</p>
 				<h1 class="rsb-title">
 					Regularized
 					<span class="rsb-highlight">Schrödinger Bridge</span>
@@ -95,23 +92,46 @@ const figures = [
 					<li><sup>2</sup> Wayne State University</li>
 				</ol>
 				<p class="rsb-affiliation-note"><sup class="rsb-tag">†</sup> Corresponding Author</p>
-			</header>
 
-			<nav class="rsb-nav rsb-fade rsb-delay-2" aria-label="Paper resources">
-				<span class="rsb-nav-title">Quick Access</span>
-				<span class="rsb-nav-link rsb-nav-disabled" aria-disabled="true">
-					<span class="rsb-nav-icon rsb-nav-icon-demo" aria-hidden="true"></span>
-					Paper
-				</span>
-				<a class="rsb-nav-link" href="https://github.com/Yorch233/RSB/" target="_blank" rel="noreferrer">
-					<img class="rsb-nav-icon" src="https://github.githubassets.com/favicons/favicon.svg" alt="" />
-					Github
-				</a>
-				<a class="rsb-nav-link" href="https://huggingface.co/Yorch233/RSB/" target="_blank" rel="noreferrer">
-					<img class="rsb-nav-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" />
-					Hugging Face
-				</a>
-			</nav>
+				<div class="rsb-links">
+					<p class="rsb-links-title">LINKS</p>
+					<nav class="rsb-nav rsb-fade rsb-delay-2" aria-label="Paper resources">
+						<a
+							class="rsb-nav-link"
+							href="https://ieeexplore.ieee.org/document/11623672"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="Read the paper on IEEE Xplore"
+							title="IEEE Xplore paper"
+						>
+							<img class="rsb-nav-icon" src="https://ieeexplore.ieee.org/assets/img/favicon.ico" alt="" />
+							<span class="rsb-nav-label">IEEE Xplore</span>
+						</a>
+						<a
+							class="rsb-nav-link"
+							href="https://arxiv.org/abs/2511.11686"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="Read the arXiv preprint"
+							title="arXiv preprint"
+						>
+							<img class="rsb-nav-icon" src="https://cdn.simpleicons.org/arxiv" alt="" />
+							<span class="rsb-nav-label">arXiv</span>
+						</a>
+						<a
+							class="rsb-nav-link"
+							href="https://github.com/Yorch233/RSB/"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="View source code on GitHub"
+							title="GitHub"
+						>
+							<img class="rsb-nav-icon" src="https://cdn.simpleicons.org/github" alt="" />
+							<span class="rsb-nav-label">GitHub</span>
+						</a>
+					</nav>
+				</div>
+			</header>
 
 			<section class="rsb-section rsb-fade rsb-delay-3" aria-labelledby="abstract-heading">
 				<h2 id="abstract-heading">
@@ -120,27 +140,47 @@ const figures = [
 				</h2>
 				<div class="rsb-abstract-wrap">
 					<p class="rsb-abstract">
-						<span class="rsb-highlight">Speech enhancement</span>
-						(SE) requires high-fidelity reconstruction of clean speech that preserves linguistic and paralinguistic cues while maintaining high perceptual quality. Recently,
-						<span class="rsb-highlight">Schrödinger Bridge</span>
+						<span class="rsb-highlight">Speech enhancement</span>{' '}
+						(SE) requires high-fidelity reconstruction of clean speech that preserves linguistic and paralinguistic cues while maintaining high perceptual quality. Recently,{' '}
+						<span class="rsb-highlight">Schrödinger Bridge</span>{' '}
 						(SB), a family of diffusion-based generative models, has advanced SE by bridging degraded and clean speech distributions in a principled formulation, enabling higher-quality
-						reconstructions with fewer sampling steps. However, diffusion-based SE methods still face two challenges:
-						<span class="rsb-issue">(1) the fidelity-realism tradeoff, where they often prioritize perceptual realism encouraged by the learned speech prior, at the expense of fidelity;</span>
+						reconstructions with fewer sampling steps. However, diffusion-based SE methods still face two challenges:{' '}
+						<span class="rsb-issue">(1) the fidelity-realism tradeoff, where they often prioritize perceptual realism encouraged by the learned speech prior, at the expense of fidelity;</span>{' '}
 						<span class="rsb-issue">
 							(2) the exposure bias issue, where iterative multi-step sampling causes early-step prediction errors to accumulate along the sampling trajectory and degrade enhanced speech
 							quality.
 						</span>
-						In this paper, we analyze standard SB training and show that it induces a systematic prediction drift, which biases the multi-step trajectory and amplifies error accumulation.
-						To address this, we propose
-						<span class="rsb-highlight">Regularized Schrödinger Bridge (RSB)</span>
-						for high-fidelity SE, a generative approach that reconciles fidelity and realism while mitigating exposure bias.
-						<span class="rsb-highlight">RSB regularizes training with a Distortion-Perception Perturbation</span>
+						{' '}In this paper, we analyze standard SB training and show that it induces a systematic prediction drift, which biases the multi-step trajectory and amplifies error accumulation.
+						To address this, we propose{' '}
+						<span class="rsb-highlight">Regularized Schrödinger Bridge (RSB)</span>{' '}
+						for high-fidelity SE, a generative approach that reconciles fidelity and realism while mitigating exposure bias.{' '}
+						<span class="rsb-highlight">RSB regularizes training with a Distortion-Perception Perturbation</span>{' '}
 						that constructs time-varying targets by interpolating between clean speech and posterior-mean estimates, and trains the network on perturbed intermediate states to correct toward
-						the ground truth progressively. Consequently, such perturbation simulates inference-time prediction errors, mitigating the training–inference mismatch and thereby reducing
-						exposure bias. Furthermore, it also injects posterior-mean estimates as fidelity-preserving guidance, facilitating reconstruction fidelity. Experiments on the WSJ0 corpus and
-						VoiceBank+DEMAND dataset demonstrate that RSB improves reconstruction fidelity over the advanced SE baselines, yielding a favorable fidelity-realism tradeoff and reducing exposure
+						the ground truth progressively. By simulating inference-time prediction errors, this perturbation mitigates the training-inference mismatch and thereby alleviates
+						exposure bias. It also injects posterior-mean estimates as fidelity-preserving guidance, thereby improving reconstruction fidelity. Experiments on the WSJ0 corpus and the
+						VoiceBank+DEMAND dataset demonstrate that RSB improves reconstruction fidelity over strong diffusion-based generative methods, yielding a favorable fidelity-realism tradeoff and reducing exposure
 						bias.
 					</p>
+					<div class="rsb-abstract-audio" role="group" aria-label="Abstract narration">
+						<button
+							class="rsb-read-aloud"
+							type="button"
+							data-read-aloud
+							aria-label="Read the title and abstract aloud"
+							aria-pressed="false"
+						>
+							<span class="rsb-read-aloud-icon" aria-hidden="true">
+								<span></span><span></span><span></span><span></span><span></span>
+							</span>
+						</button>
+						<audio
+							id="rsb-abstract-narration"
+							preload="none"
+							data-audio-src="/audio/RSB/rsb-abstract-narration.opus"
+							aria-label="Narration of the RSB title and abstract"
+						></audio>
+						<span class="rsb-audio-status" data-read-aloud-status aria-live="polite"></span>
+					</div>
 					<div class="rsb-legend" aria-hidden="true">
 						<span class="rsb-legend-item">
 							<span class="rsb-legend-swatch rsb-legend-swatch-highlight"></span>
@@ -153,6 +193,23 @@ const figures = [
 					</div>
 				</div>
 
+			</section>
+
+			<section class="rsb-section rsb-section-separated rsb-fade rsb-delay-4" aria-labelledby="keywords-heading">
+				<h2 id="keywords-heading">
+					<span class="rsb-wave" aria-hidden="true"><span></span></span>
+					Keywords
+				</h2>
+				<div class="rsb-meta">
+					<span class="rsb-chip">Speech enhancement</span>
+					<span class="rsb-chip">Schrödinger bridge</span>
+					<span class="rsb-chip">Diffusion models</span>
+					<span class="rsb-chip">Distortion-perception tradeoff</span>
+					<span class="rsb-chip">Exposure bias</span>
+				</div>
+			</section>
+
+			<section class="rsb-section rsb-section-separated rsb-figure-section rsb-fade rsb-delay-5" aria-label="RSB method figures">
 				<div
 					class="rsb-figure-carousel"
 					data-figure-carousel
@@ -173,14 +230,24 @@ const figures = [
 										aria-hidden={index === 0 ? 'false' : 'true'}
 									>
 										<div class="rsb-figure-media">
-											<img
-												src={figure.src}
-												alt={figure.alt}
-												width={figure.width}
-												height={figure.height}
-												loading="lazy"
-												decoding="async"
-											/>
+											<button
+												class="rsb-figure-open"
+												type="button"
+												data-figure-open
+												data-figure-src={figure.src}
+												data-figure-label={figure.label}
+												data-figure-title={figure.title}
+												aria-label={`Open ${figure.label}: ${figure.title} in full screen`}
+											>
+												<img
+													src={figure.src}
+													alt={figure.alt}
+													width={figure.width}
+													height={figure.height}
+													loading="lazy"
+													decoding="async"
+												/>
+											</button>
 										</div>
 										<figcaption class="rsb-figure-caption">
 											<span class="rsb-figure-label">{figure.label}</span>
@@ -193,7 +260,11 @@ const figures = [
 						</div>
 					</div>
 					<div class="rsb-figure-controls">
-						<button class="rsb-figure-nav" type="button" data-figure-previous aria-label="Show previous figure">Previous</button>
+						<button class="rsb-figure-nav" type="button" data-figure-previous aria-label="Show previous figure">
+							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" />
+							</svg>
+						</button>
 						<div class="rsb-figure-dots" aria-label="Choose a figure">
 							{
 								figures.map((figure, index) => (
@@ -209,24 +280,29 @@ const figures = [
 							}
 						</div>
 						<span class="rsb-figure-count" data-figure-count aria-live="polite">1 / {figures.length}</span>
-						<button class="rsb-figure-nav" type="button" data-figure-next aria-label="Show next figure">Next</button>
+						<button class="rsb-figure-nav" type="button" data-figure-next aria-label="Show next figure">
+							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" />
+							</svg>
+						</button>
 					</div>
 				</div>
 			</section>
 
-			<section class="rsb-section rsb-section-separated rsb-fade rsb-delay-4" aria-labelledby="keywords-heading">
-				<h2 id="keywords-heading">
-					<span class="rsb-wave" aria-hidden="true"><span></span></span>
-					Keywords
-				</h2>
-				<div class="rsb-meta">
-					<span class="rsb-chip">Speech enhancement</span>
-					<span class="rsb-chip">Schrödinger bridge</span>
-					<span class="rsb-chip">Diffusion models</span>
-					<span class="rsb-chip">Distortion-perception tradeoff</span>
-					<span class="rsb-chip">Exposure bias</span>
+			<dialog class="rsb-figure-modal" data-figure-modal aria-labelledby="rsb-figure-modal-title">
+				<div class="rsb-figure-modal-surface" data-figure-modal-surface>
+					<button class="rsb-figure-modal-close" type="button" data-figure-modal-close aria-label="Close full-screen figure">
+						<span aria-hidden="true">×</span>
+					</button>
+					<div class="rsb-figure-modal-media">
+						<img data-figure-modal-image alt="" decoding="async" />
+					</div>
+					<div class="rsb-figure-modal-caption">
+						<span class="rsb-figure-label" data-figure-modal-label></span>
+						<h2 id="rsb-figure-modal-title" data-figure-modal-title></h2>
+					</div>
 				</div>
-			</section>
+			</dialog>
 
 			<section class="rsb-section rsb-section-separated rsb-audio-section rsb-fade rsb-delay-5" aria-labelledby="audio-heading">
 				<h2 id="audio-heading">
@@ -267,6 +343,15 @@ const figures = [
 
 		<footer class="rsb-footer rsb-fade rsb-delay-5">
 			<span class="rsb-footer-copy">© 2026 Qing Yao. All rights reserved.</span>
+			<span class="rsb-footer-copy rsb-footer-tech">
+				Built with
+				<a class="rsb-footer-tech-link" href="https://astro.build/" target="_blank" rel="noreferrer" aria-label="Astro">
+					<img class="rsb-footer-tech-logo rsb-footer-tech-logo-astro" src="/images/RSB/astro-logo-light-gradient.svg" alt="Astro" loading="lazy" decoding="async" />
+				</a>, TTS powered by{' '}
+				<a class="rsb-footer-tech-link" href="https://github.com/QwenLM/Qwen3-TTS" target="_blank" rel="noreferrer" aria-label="Qwen 3 TTS">
+					<img class="rsb-footer-tech-logo rsb-footer-tech-logo-qwen" src="/images/RSB/qwen3_tts_logo.png" alt="Qwen 3 TTS" loading="lazy" decoding="async" />
+				</a>
+			</span>
 		</footer>
 	</main>
 
@@ -299,6 +384,56 @@ const figures = [
 				} catch {
 					status.textContent = 'Copy failed. Please select the BibTeX manually.';
 				}
+			});
+		})();
+
+		(() => {
+			const button = document.querySelector('[data-read-aloud]');
+			const audio = document.querySelector('#rsb-abstract-narration');
+			const status = document.querySelector('[data-read-aloud-status]');
+			if (!button || !(audio instanceof HTMLAudioElement) || !status) return;
+
+			const resetState = () => {
+				button.classList.remove('is-playing');
+				button.setAttribute('aria-pressed', 'false');
+				button.setAttribute('aria-label', 'Read the title and abstract aloud');
+			};
+
+			button.addEventListener('click', async () => {
+				if (!audio.paused) {
+					audio.pause();
+					button.classList.remove('is-playing');
+					button.setAttribute('aria-pressed', 'false');
+					button.setAttribute('aria-label', 'Resume the title and abstract narration');
+					status.textContent = 'Narration paused.';
+					return;
+				}
+
+				if (!audio.src) {
+					const audioSource = audio.dataset.audioSrc;
+					if (!audioSource) return;
+					audio.src = audioSource;
+				}
+
+				try {
+					await audio.play();
+					button.classList.add('is-playing');
+					button.setAttribute('aria-pressed', 'true');
+					button.setAttribute('aria-label', 'Pause the title and abstract narration');
+					status.textContent = 'Reading the title and abstract.';
+				} catch {
+					resetState();
+					status.textContent = 'Unable to play the narration.';
+				}
+			});
+
+			audio.addEventListener('ended', () => {
+				resetState();
+				status.textContent = 'Narration finished.';
+			});
+			audio.addEventListener('error', () => {
+				resetState();
+				status.textContent = 'Unable to load the narration.';
 			});
 		})();
 
@@ -338,6 +473,58 @@ const figures = [
 						showFigure(activeIndex + 1);
 					}
 				});
+			});
+		})();
+
+		(() => {
+			const modal = document.querySelector('[data-figure-modal]');
+			const surface = modal?.querySelector('[data-figure-modal-surface]');
+			const closeButton = modal?.querySelector('[data-figure-modal-close]');
+			const modalImage = modal?.querySelector('[data-figure-modal-image]');
+			const modalLabel = modal?.querySelector('[data-figure-modal-label]');
+			const modalTitle = modal?.querySelector('[data-figure-modal-title]');
+			const openers = Array.from(document.querySelectorAll('[data-figure-open]'));
+			if (!modal || !surface || !closeButton || !modalImage || !modalLabel || !modalTitle || !openers.length) return;
+
+			let lastTrigger = null;
+			const closeModal = () => {
+				if (modal.open && typeof modal.close === 'function') modal.close();
+				else modal.removeAttribute('open');
+				modalImage.removeAttribute('src');
+				modalImage.alt = '';
+				modalLabel.textContent = '';
+				modalTitle.textContent = '';
+				if (lastTrigger && document.contains(lastTrigger)) lastTrigger.focus();
+				lastTrigger = null;
+			};
+
+			const openModal = (trigger) => {
+				const image = trigger.querySelector('img');
+				if (!image) return;
+				lastTrigger = trigger;
+				modalImage.src = trigger.dataset.figureSrc || image.currentSrc || image.src;
+				modalImage.alt = image.alt;
+				modalLabel.textContent = trigger.dataset.figureLabel || '';
+				modalTitle.textContent = trigger.dataset.figureTitle || '';
+				if (typeof modal.showModal === 'function') modal.showModal();
+				else modal.setAttribute('open', '');
+				closeButton.focus();
+			};
+
+			openers.forEach((trigger) => trigger.addEventListener('click', () => openModal(trigger)));
+			closeButton.addEventListener('click', closeModal);
+			modal.addEventListener('cancel', (event) => {
+				event.preventDefault();
+				closeModal();
+			});
+			modal.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') {
+					event.preventDefault();
+					closeModal();
+				}
+			});
+			modal.addEventListener('click', (event) => {
+				if (event.target === modal || event.target === surface) closeModal();
 			});
 		})();
 	</script>
