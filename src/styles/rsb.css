@@ -133,7 +133,7 @@
 .rsb-affiliation-note {
 	margin: 8px 0 0;
 	color: #6e6e73;
-	font-size: 24pt;
+	font-size: 0.9rem;
 }
 
 .rsb-nav {
@@ -807,7 +807,7 @@ a.rsb-nav-link:hover {
 	border-radius: 999px;
 	background: #ffffff;
 	color: #1d1d1f;
-	font-size: 24pt;
+	font-size: 0.85rem;
 	font-weight: 600;
 	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
