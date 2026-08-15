@@ -1,31 +1,17 @@
 {
   "avatar": "/profile/profile.png",
   "name": "Qing Yao",
-  "role": "PhD Student in Generative Modeling & Speech Enhancement",
-  "bio": "My research focuses on diffusion-based generative modeling and speech enhancement. I aim to develop faithful and efficient generative methods for realistic audio reconstruction.",
-  "links": [
-    {
-      "label": "Github",
-      "url": "https://github.com/Yorch233/",
-      "tooltip": "@Yorch233",
-      "icon": "https://github.githubassets.com/favicons/favicon.svg",
-      "type": "indigo",
-      "iconSize": {
-        "width": 16,
-        "height": 16
-      }
-    },
-    {
-      "label": "Hugging Face",
-      "url": "https://huggingface.co/Yorch233/",
-      "tooltip": "@Yorch233",
-      "icon": "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
-      "type": "orange",
-      "iconSize": {
-        "width": 16,
-        "height": 16
-      }
-    }
+  "monogram": "QY",
+  "role": "PhD Student in Speech & Audio Processing",
+  "location": "Zhenjiang, China",
+  "advisor": "Prof. Qirong Mao",
+  "bio": "I'm a PhD student at Jiangsu University working on diffusion-based generative models for speech enhancement, particularly Schrödinger bridges and masked diffusion models. Speech enhancement is inherently an ill-posed inverse problem, where a degraded observation may correspond to multiple plausible clean-speech signals. My research explores generative approaches to address this ill-posedness while balancing reconstruction fidelity, perceptual naturalness, and computational efficiency.",
+  "interests": [
+    "Speech Enhancement",
+    "Diffusion Generative Modeling",
+    "Schrödinger Bridges",
+    "Masked Diffusion Models",
+    "Audio Codecs"
   ],
   "contact": {
     "institution": "Jiangsu University",
@@ -42,15 +28,39 @@
       "description": "Research in diffusion-based generative modeling and speech enhancement."
     }
   ],
-  "research": {
-    "title": "Research Interests",
-    "focus": [
-      {
-        "label": "Speech Enhancement"
-      },
-      {
-        "label": "Diffusion-based Generative Modeling"
-      }
-    ]
-  }
+  "news": [
+    {
+      "date": "2026",
+      "html": "Our paper <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> is accepted to <a href=\"#publications\">IEEE/ACM TASLP</a>."
+    },
+    {
+      "date": "2025 · Nov",
+      "html": "The preprint <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> was released on <a href=\"https://arxiv.org/abs/2511.11686\" target=\"_blank\" rel=\"noopener\">arXiv</a>, with <a href=\"https://github.com/Yorch233/RSB\" target=\"_blank\" rel=\"noopener\">open-source code</a> and an <a href=\"/RSB/\">interactive audio demo</a>."
+    },
+    {
+      "date": "2023",
+      "html": "Began research on <span class=\"accent\">Speech Enhancement</span>: applying diffusion generative modeling to address the ill-posedness of the underlying audio inverse problem."
+    },
+    {
+      "date": "2021",
+      "html": "Began research on <span class=\"accent\">Dialogue-Based Relation Extraction</span>: entity modeling and relation mining in text knowledge extraction."
+    }
+  ],
+  "projects": [
+    {
+      "name": "RSB",
+      "icon": "i-github",
+      "description": "Regularized Schrödinger Bridge (RSB) — a generative speech enhancement approach that reconciles fidelity and realism while mitigating exposure bias, via Distortion-Perception Perturbation regularized training.",
+      "language": "Python",
+      "stars": 8,
+      "url": "https://github.com/Yorch233/RSB"
+    },
+    {
+      "name": "RSB Audio Demo",
+      "icon": "i-external",
+      "description": "Interactive listening demo: compare Measurement, Ground Truth, NCSN++M, StoRM, SB, and RSB on denoising (WSJ0+WHAM) and dereverberation (WSJ0+REVERB) samples, with waveforms.",
+      "meta": "yorch233.github.io/RSB",
+      "url": "/RSB/"
+    }
+  ]
 }
