@@ -1,128 +1,329 @@
 ---
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SiteNav from '../components/SiteNav.astro';
 import profile from '../data/profile.json';
 import { publications } from '../data/publications.js';
-import '../styles/reference-home.css';
+import '../styles/home.css';
 
-const socialLinks = [
-	{ label: 'GitHub', href: profile.contact.github, icon: 'simple-icons:github', external: true },
-	{ label: 'Hugging Face', href: profile.contact.huggingFace, icon: 'simple-icons:huggingface', external: true },
-	{ label: 'ORCID', href: 'https://orcid.org/0009-0001-2172-8004', icon: 'simple-icons:orcid', external: true }
-];
-
-return Astro.redirect('/RSB/');
+const rsb = publications.find((publication) => publication.slug === 'RSB') ?? publications[0];
+const year = new Date().getFullYear();
 ---
 
 <BaseLayout
-	title="Qing Yao — Jiangsu University"
-	description="Qing Yao is a PhD student at Jiangsu University researching diffusion-based generative modeling and speech enhancement."
-	bodyClass="reference-home-page"
+	title="Qing Yao — Speech Enhancement & Diffusion Generative Modeling"
+	description="Qing Yao (Jiangsu University). Research on speech enhancement with diffusion generative models: Schrödinger bridges, masked diffusion models, and audio codecs."
+	bodyClass="home-ref"
 >
-	<main class="reference-home-shell">
-		<article class="reference-home-panel">
-			<aside class="reference-identity" aria-label="Profile">
-				<div class="reference-home-avatar">
-					<img src={profile.avatar} width="204" height="204" alt="Qing Yao" />
+	<Fragment slot="head">
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"
+			rel="stylesheet"
+		/>
+	</Fragment>
+
+	<a class="skip-link" href="#about">Skip to content</a>
+
+	<!-- ---------- inline icon sprite (feather-style, MIT) ---------- -->
+	<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+		<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 6-10 7L2 6" /></symbol>
+		<symbol id="i-github" viewBox="0 0 16 16"><path class="icon-fill" stroke="none" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></symbol>
+		<symbol id="i-cap" viewBox="0 0 24 24"><path d="m2 10 10-5 10 5-10 5L2 10z" /><path d="M6 12.5V17c3.5 2.8 8.5 2.8 12 0v-4.5" /><path d="M22 10v6" /></symbol>
+		<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></symbol>
+		<symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></symbol>
+		<symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6" /><path d="M10 14 21 3" /></symbol>
+		<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></symbol>
+		<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></symbol>
+		<symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></symbol>
+		<symbol id="i-audio" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /></symbol>
+	</svg>
+
+	<!-- ---------- top bar ---------- -->
+	<header class="topbar">
+		<a class="brand" href="#about">
+			<span class="mono-badge">{profile.monogram}</span>{profile.name}
+		</a>
+		<nav class="topnav" aria-label="Primary">
+			<a href="#about">About</a>
+			<a href="#news">News</a>
+			<a href="#publications">Publications</a>
+			<a href="#projects">Projects</a>
+			<a href="#contact">Contact</a>
+			<a
+				class="cv-btn tip tip-below"
+				data-disabled
+				aria-disabled="true"
+				data-tip="CV is being prepared — please check back soon"
+				title="CV is being prepared — please check back soon"
+			>
+				<svg class="icon" aria-hidden="true"><use href="#i-download" /></svg>CV
+			</a>
+		</nav>
+	</header>
+
+	<div class="layout">
+
+		<!-- ================= sidebar ================= -->
+		<aside class="sidebar">
+			<div class="avatar">
+				<img src={profile.avatar} width="300" height="300" alt={"Portrait of " + profile.name} />
+			</div>
+
+			<div>
+				<h1 class="side-name">{profile.name}</h1>
+				<p class="side-role">{profile.role}</p>
+				<p class="side-affil">{profile.contact.institution}<br />{profile.location}</p>
+			</div>
+
+			<div class="side-divider" role="presentation"></div>
+
+			<div class="interests" aria-label="Research interests">
+				{
+					profile.interests.map((interest) => (
+						<span class="chip">{interest}</span>
+					))
+				}
+			</div>
+
+			<div class="side-links">
+				<a href={"mailto:" + profile.contact.email}>
+					<svg class="icon" aria-hidden="true"><use href="#i-mail" /></svg>Email
+				</a>
+				<a href={profile.contact.github} target="_blank" rel="noopener">
+					<svg class="icon" aria-hidden="true"><use href="#i-github" /></svg>GitHub
+				</a>
+				<a href={profile.contact.huggingFace} target="_blank" rel="noopener">
+					<Icon name="simple-icons:huggingface" class="icon-hf" aria-hidden="true" />Hugging Face
+				</a>
+			</div>
+		</aside>
+
+		<!-- ================= main ================= -->
+		<main>
+
+			<!-- about / hero -->
+			<section id="about" class="hero" aria-label="About">
+				<!-- keep each "word <span>…</span>" unit on one line: Astro's default
+					normalization drops whitespace that spans a newline next to a tag -->
+				<p class="lede reveal">
+					I'm a PhD student at <span class="accent">{profile.contact.institution}</span> working on <span class="accent">diffusion-based generative models</span> for <span class="accent">speech enhancement</span>, particularly <span class="accent">Schrödinger bridges</span> and <span class="accent">masked diffusion models</span>. Speech enhancement is inherently an ill-posed inverse problem, where a degraded observation may correspond to multiple plausible clean-speech signals. My research explores generative approaches to address this ill-posedness while balancing reconstruction fidelity, perceptual naturalness, and computational efficiency.
+				</p>
+				<div class="meta reveal">
+					<span><svg class="icon" aria-hidden="true"><use href="#i-pin" /></svg>{profile.location}</span>
+					<span><svg class="icon" aria-hidden="true"><use href="#i-cap" /></svg>Advisor: {profile.advisor}</span>
 				</div>
-				<h1>{profile.name}</h1>
-				<div class="reference-home-contact">
-					<p>
-						<Icon name="ph:graduation-cap" aria-hidden="true" />
-						<span>{profile.contact.institution}</span>
-					</p>
-					<a href={`mailto:${profile.contact.email}`}>
-						<Icon name="ph:envelope-simple" aria-hidden="true" />
-						<span>{profile.contact.email}</span>
+				<div class="cta-row reveal">
+					<a
+						class="btn btn-primary tip"
+						data-disabled
+						aria-disabled="true"
+						data-tip="CV is being prepared — please check back soon"
+						title="CV is being prepared — please check back soon"
+					>
+						<svg class="icon" aria-hidden="true"><use href="#i-download" /></svg>Download CV
+					</a>
+					<a class="btn btn-ghost" href={"mailto:" + profile.contact.email}>
+						<svg class="icon" aria-hidden="true"><use href="#i-mail" /></svg>Email me
+					</a>
+					<a class="btn btn-ghost" href={profile.contact.github} target="_blank" rel="noopener">
+						<svg class="icon" aria-hidden="true"><use href="#i-github" /></svg>GitHub
 					</a>
 				</div>
+			</section>
 
-				<nav class="reference-home-links" aria-label="Social profiles">
-					{socialLinks.map((link) => (
-						<a
-							href={link.href}
-							target={link.external ? '_blank' : undefined}
-							rel={link.external ? 'noreferrer' : undefined}
-							aria-label={link.label}
-							title={link.label}
-						>
-							<Icon name={link.icon} aria-hidden="true" />
+			<!-- news -->
+			<section id="news">
+				<div class="sec-head reveal">
+					<span class="mark" aria-hidden="true"></span>
+					<h2>News</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</div>
+				<ul class="news reveal">
+					{
+						profile.news.map((item) => (
+							<li>
+								<span class="date">{item.date}</span>
+								<p set:html={item.html} />
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<!-- publications -->
+			<section id="publications">
+				<div class="sec-head reveal">
+					<span class="mark" aria-hidden="true"></span>
+					<h2>Publications</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</div>
+
+				<article class="pub reveal">
+					<div class="pub-year">{rsb.year}</div>
+					<div>
+						<h3 class="pub-title">
+							<a href={rsb.paper} target="_blank" rel="noopener">{rsb.title}</a>
+							<span class="badge badge-hl">{rsb.badge}</span>
+						</h3>
+						<p class="pub-authors">
+							{
+								rsb.authors.map((author, index) => (
+									<Fragment>
+										{index > 0 ? ', ' : null}
+										{author.highlight ? <b>{author.name}</b> : author.name}
+									</Fragment>
+								))
+							}
+							— <span class="venue">{rsb.venueFull}</span>
+						</p>
+						<p class="pub-links">
+							<a class="link-pill" href={rsb.paper} target="_blank" rel="noopener">
+								<svg class="icon" aria-hidden="true"><use href="#i-file" /></svg>IEEE
+							</a>
+							<a class="link-pill" href={rsb.arxiv} target="_blank" rel="noopener">
+								<svg class="icon" aria-hidden="true"><use href="#i-external" /></svg>arXiv
+							</a>
+							<a class="link-pill" href={rsb.code} target="_blank" rel="noopener">
+								<svg class="icon" aria-hidden="true"><use href="#i-code" /></svg>Code
+							</a>
+							<a class="link-pill" href={rsb.demo}>
+								<svg class="icon" aria-hidden="true"><use href="#i-audio" /></svg>Audio Demo
+							</a>
+						</p>
+					</div>
+				</article>
+
+				<p class="pub-note reveal">More papers and preprints coming soon.</p>
+			</section>
+
+			<!-- projects -->
+			<section id="projects">
+				<div class="sec-head reveal">
+					<span class="mark" aria-hidden="true"></span>
+					<h2>Projects &amp; Open Source</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</div>
+				<div class="proj-grid">
+					{
+						profile.projects.map((project) => (
+							<a
+								class="proj reveal"
+								href={project.url}
+								target={project.url.startsWith('/') ? undefined : '_blank'}
+								rel={project.url.startsWith('/') ? undefined : 'noopener'}
+							>
+								<h3>
+									<svg class="icon" aria-hidden="true"><use href={"#" + project.icon} /></svg>{project.name}
+								</h3>
+								<p>{project.description}</p>
+								<div class="foot">
+									{project.language ? <span>{project.language}</span> : null}
+									{
+										project.stars ? (
+											<span class="star">
+												<svg class="icon" aria-hidden="true"><use href="#i-star" /></svg>{project.stars}
+											</span>
+										) : null
+									}
+									{project.meta ? <span>{project.meta}</span> : null}
+								</div>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- contact -->
+			<section id="contact">
+				<div class="sec-head reveal">
+					<span class="mark" aria-hidden="true"></span>
+					<h2>Contact</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</div>
+				<div class="contact-box reveal">
+					<h3>Get in touch</h3>
+					<p>
+						I'm always happy to discuss speech enhancement, Schrödinger bridges,
+						diffusion generative modeling, or audio codecs — or a potential collaboration.
+						Email is the best way to reach me; I usually reply within a few days.
+					</p>
+					<a class="contact-mail" href={"mailto:" + profile.contact.email}>{profile.contact.email}</a>
+					<div class="contact-social">
+						<a href={profile.contact.github} target="_blank" rel="noopener" aria-label="GitHub">
+							<svg class="icon" aria-hidden="true"><use href="#i-github" /></svg>
 						</a>
-					))}
-				</nav>
-
-				<section class="reference-identity-research" aria-labelledby="home-research-title">
-					<h2 id="home-research-title">{profile.research.title}</h2>
-					<div class="reference-research-grid">
-						{profile.research.focus.map((focus) => (
-							<div class="reference-research-item">
-								<strong>{focus.label}</strong>
-							</div>
-						))}
+						<a href={"mailto:" + profile.contact.email} aria-label="Email">
+							<svg class="icon" aria-hidden="true"><use href="#i-mail" /></svg>
+						</a>
+						<a href={profile.contact.huggingFace} target="_blank" rel="noopener" aria-label="Hugging Face">
+							<Icon name="simple-icons:huggingface" class="icon-hf" aria-hidden="true" />
+						</a>
 					</div>
-				</section>
-			</aside>
+				</div>
+			</section>
 
-			<div class="reference-home-content">
-				<section class="reference-home-section reference-introduction" aria-labelledby="home-about-title">
-					<p class="reference-section-kicker">About</p>
-					<h2 id="home-about-title"><span aria-hidden="true"></span>Personal Introduction</h2>
-					<p class="reference-home-bio">{profile.bio}</p>
-				</section>
+		</main>
+	</div>
 
-				<section class="reference-home-section" aria-labelledby="home-education-title">
-					<h2 id="home-education-title"><span aria-hidden="true"></span>Education</h2>
-					<div class="reference-education-list">
-						{profile.education.map((item) => (
-							<article class="reference-education-item">
-								<span class="reference-education-node" aria-hidden="true"></span>
-								<p class="reference-education-period">{item.period}</p>
-								<div>
-									<h3>{item.degree}</h3>
-									<p>{item.institution}</p>
-									<p class="reference-education-description">{item.description}</p>
-								</div>
-							</article>
-						))}
-					</div>
-				</section>
+	<footer>
+		<span class="foot-wave" aria-hidden="true">∿ ∿ ∿</span>
+		© <span id="year">{year}</span> {profile.name} · {profile.contact.institution} · Built with Astro
+	</footer>
 
-				<section class="reference-home-section reference-home-publications" aria-labelledby="home-publications-title">
-					<div class="reference-section-heading">
-						<h2 id="home-publications-title"><span aria-hidden="true"></span>Publications</h2>
-						<a href="/publications/">View all publications <Icon name="ph:arrow-right" aria-hidden="true" /></a>
-					</div>
+	<script>
+		(() => {
+			'use strict';
 
-					<div class="reference-publication-list">
-						{publications.map((publication) => (
-							<article class="reference-publication">
-								<div class="reference-publication-year">{publication.year}</div>
-								<div class="reference-publication-copy">
-									<p class="reference-publication-meta">
-										<span>{publication.venue}</span>
-										<span>{publication.tags[0]}</span>
-									</p>
-									<h3><a href={publication.demo}>{publication.title}</a></h3>
-								</div>
-								<div class="reference-publication-actions">
-									<span class="is-disabled" title="Paper coming soon" aria-label="Paper coming soon">
-										<Icon name="ph:file-text" aria-hidden="true" />
-									</span>
-									<a href={publication.code} target="_blank" rel="noreferrer" aria-label="View source code" title="Source code">
-										<Icon name="ph:code" aria-hidden="true" />
-									</a>
-									<a href={publication.demo} aria-label="Open interactive demo" title="Interactive demo">
-										<Icon name="ph:arrow-square-out" aria-hidden="true" />
-									</a>
-								</div>
-							</article>
-						))}
-					</div>
-				</section>
-			</div>
-		</article>
+			/* 1. Scrollspy for the top navigation. */
+			const navLinks = Array.from(document.querySelectorAll('.topnav a[href^="#"]'));
+			const sections = navLinks
+				.map((a) => a.getAttribute('href'))
+				.filter((href): href is string => typeof href === 'string' && href !== '')
+				.map((href) => document.querySelector(href))
+				.filter((s): s is Element => s !== null);
+			if (navLinks.length && 'IntersectionObserver' in window) {
+				const spy = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((e) => {
+							if (e.isIntersecting) {
+								navLinks.forEach((a) =>
+									a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)
+								);
+							}
+						});
+					},
+					{ rootMargin: '-35% 0px -55% 0px' }
+				);
+				sections.forEach((s) => spy.observe(s));
+			}
 
-		<SiteNav active="home" />
-	</main>
+			/* 2. Subtle scroll-reveal for sections. */
+			const reveals = document.querySelectorAll('.reveal');
+			if (
+				reveals.length &&
+				'IntersectionObserver' in window &&
+				!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+			) {
+				const io = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((e) => {
+							if (e.isIntersecting) {
+								e.target.classList.add('on');
+								io.unobserve(e.target);
+							}
+						});
+					},
+					{ threshold: 0.12 }
+				);
+				reveals.forEach((el) => io.observe(el));
+			} else {
+				reveals.forEach((el) => el.classList.add('on'));
+			}
+
+			/* 3. Footer year. */
+			const yearEl = document.getElementById('year');
+			if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+		})();
+	</script>
 </BaseLayout>

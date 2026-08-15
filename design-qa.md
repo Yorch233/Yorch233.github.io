@@ -1,3 +1,8 @@
+> Superseded: the homepage was rebuilt on `main` from the reference static
+> site in `/Users/yo/Workspace/paper/site/` (academic indigo theme) per the
+> user's goal; visual comparison was explicitly waived by the user.
+> The checks below describe the previous glassmorphism design.
+
 # Homepage Design QA
 
 - Source visual truth: `/var/folders/x5/2gczzs351wvgcbsx_0kqjs8m0000gn/T/codex-clipboard-fcdd96d0-10ee-43e5-b9a2-460a7c615ce9.png`
