@@ -10,8 +10,7 @@
     "Speech Enhancement",
     "Diffusion Generative Modeling",
     "Schrödinger Bridges",
-    "Masked Diffusion Models",
-    "Audio Codecs"
+    "Masked Diffusion Models"
   ],
   "contact": {
     "institution": "Jiangsu University",
@@ -36,6 +35,14 @@
     {
       "date": "2025 · Nov",
       "html": "The preprint <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> was released on <a href=\"https://arxiv.org/abs/2511.11686\" target=\"_blank\" rel=\"noopener\">arXiv</a>, with <a href=\"https://github.com/Yorch233/RSB\" target=\"_blank\" rel=\"noopener\">open-source code</a> and an <a href=\"/RSB/\">interactive audio demo</a>."
+    },
+    {
+      "date": "2025",
+      "html": "As team leader and primary contributor, I led the team to win the <span class=\"accent\">National First Prize</span> in the <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"2025年中国青年科技创新揭榜挂帅擂台赛（新一代信息技术领域）\">2025 China Youth Science and Technology Innovation “Challenge and Champion” Competition — Next-Generation Information Technology Track</span>.<span class=\"news-sub\">Topic: Industrial data acquisition and control.</span><span class=\"news-sub\">Key technologies: OpenHarmony, Internet of Things (IoT), foundation models for industrial data acquisition, agent platforms for industrial data acquisition, and industrial visual understanding.</span>"
+    },
+    {
+      "date": "2023",
+      "html": "As team leader and primary contributor, I led the team to win the <span class=\"accent\">National First Prize</span> in the <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"第十四届中国大学生服务外包创新创业大赛企业命题类（A类）（国家级A类赛事）\">Enterprise-Sponsored Challenge Category (Category A) of the 14th China College Students' Service Outsourcing Innovation and Entrepreneurship Competition</span>, a National Category-A Competition.<span class=\"news-sub\">Topic: Software cost analysis and software vulnerability detection.</span><span class=\"news-sub\">Key technologies: Natural language understanding and static code analysis.</span>"
     },
     {
       "date": "2023",
