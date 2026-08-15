@@ -12,8 +12,7 @@ Islands; do not introduce React compatibility mode.
 
 Active routes:
 
-- `/` — personal introduction.
-- `/publications/` — publication list.
+- `/` — personal introduction (includes the publications list).
 - `/RSB/` — RSB paper and interactive audio demo.
 
 Important files:
@@ -74,8 +73,7 @@ Use RTK for supported shell commands. A normal code change must pass
 After changes:
 
 1. Run `npm run build`.
-2. Confirm `dist/index.html`, `dist/publications/index.html`, and
-   `dist/RSB/index.html` exist.
+2. Confirm `dist/index.html` and `dist/RSB/index.html` exist.
 3. Confirm no SPA `404.html` fallback is required.
 4. Verify the RSB Island chunk is not loaded before the audio section is near
    the viewport.

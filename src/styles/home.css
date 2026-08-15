@@ -222,6 +222,12 @@ a[data-disabled]{cursor:not-allowed}
 .tip-below::after{bottom:auto;top:calc(100% + 10px);transform:translateX(-50%) translateY(-4px)}
 .tip-below:hover::after{transform:translateX(-50%) translateY(0)}
 .tip-below::before{bottom:auto;top:calc(100% + 4px);border-top-color:transparent;border-bottom-color:var(--ink)}
+/* long tips (e.g. competition names): wrap instead of one long line */
+.tip-wide::after{white-space:normal;width:max-content;max-width:min(480px,72vw);text-align:center;line-height:1.5}
+/* keyboard access for focusable tips */
+.tip:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.tip:focus-visible::after,.tip:focus-visible::before{opacity:1}
+.tip:focus-visible::after{transform:translateX(-50%) translateY(0)}
 
 /* news */
 .news{list-style:none;position:relative}
@@ -240,6 +246,7 @@ a[data-disabled]{cursor:not-allowed}
 }
 .news p{margin-top:3px;color:var(--ink);font-size:16.5px}
 .news p a{font-weight:600}
+.news-sub{display:block;margin-top:6px;font-family:var(--sans);font-size:13.5px;color:var(--muted);line-height:1.6}
 
 /* publications */
 .pub{
@@ -271,6 +278,8 @@ a[data-disabled]{cursor:not-allowed}
   transition:all .15s;
 }
 .link-pill:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-soft);text-decoration:none}
+.link-pill-copy{cursor:pointer;appearance:none;-webkit-appearance:none}
+.link-pill-copy.is-copied{border-color:var(--accent);color:#fff;background:var(--accent)}
 .badge{
   display:inline-block;font-family:var(--sans);font-size:10.5px;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;border-radius:4px;padding:2px 8px;

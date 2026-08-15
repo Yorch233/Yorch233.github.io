@@ -37,6 +37,7 @@ const year = new Date().getFullYear();
 		<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></symbol>
 		<symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></symbol>
 		<symbol id="i-audio" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" /></symbol>
+		<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></symbol>
 	</svg>
 
 	<!-- ---------- top bar ---------- -->
@@ -190,6 +191,9 @@ const year = new Date().getFullYear();
 							<a class="link-pill" href={rsb.demo}>
 								<svg class="icon" aria-hidden="true"><use href="#i-audio" /></svg>Audio Demo
 							</a>
+							<button class="link-pill link-pill-copy" type="button" data-copy-bib={rsb.slug} aria-label="Copy BibTeX to clipboard">
+								<svg class="icon" aria-hidden="true"><use href="#i-copy" /></svg><span class="link-pill-label">BibTeX</span>
+							</button>
 						</p>
 					</div>
 				</article>
@@ -244,9 +248,8 @@ const year = new Date().getFullYear();
 				<div class="contact-box reveal">
 					<h3>Get in touch</h3>
 					<p>
-						I'm always happy to discuss speech enhancement, Schrödinger bridges,
-						diffusion generative modeling, or audio codecs — or a potential collaboration.
-						Email is the best way to reach me; I usually reply within a few days.
+						I'm always happy to discuss. Email is the best way to reach me.
+						I usually reply within a few days.
 					</p>
 					<a class="contact-mail" href={"mailto:" + profile.contact.email}>{profile.contact.email}</a>
 					<div class="contact-social">
@@ -325,5 +328,43 @@ const year = new Date().getFullYear();
 			const yearEl = document.getElementById('year');
 			if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 		})();
+	</script>
+
+	<script>
+		import { publications } from '../data/publications.js';
+
+		const bibs = Object.fromEntries(
+			publications.filter((p) => p.bibtex).map((p) => [p.slug, p.bibtex])
+		);
+
+		document.querySelectorAll<HTMLButtonElement>('button[data-copy-bib]').forEach((button) => {
+			button.addEventListener('click', async () => {
+				const slug = button.dataset.copyBib;
+				const text = slug ? bibs[slug] : undefined;
+				if (!text) return;
+				try {
+					await navigator.clipboard.writeText(text);
+				} catch {
+					const area = document.createElement('textarea');
+					area.value = text;
+					area.style.position = 'fixed';
+					area.style.opacity = '0';
+					document.body.appendChild(area);
+					area.select();
+					// execCommand is deprecated, but this is the last-resort fallback
+					(document as unknown as { execCommand: (id: string) => boolean }).execCommand('copy');
+					area.remove();
+				}
+				const label = button.querySelector('.link-pill-label');
+				if (!label) return;
+				const original = label.textContent;
+				label.textContent = 'Copied!';
+				button.classList.add('is-copied');
+				setTimeout(() => {
+					label.textContent = original;
+					button.classList.remove('is-copied');
+				}, 1600);
+			});
+		});
 	</script>
 </BaseLayout>
