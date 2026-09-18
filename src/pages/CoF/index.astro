@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/cof.css';
+
+const title = 'Corrective Forcing: Unified Post-Training for Diffusions and Flows in Generative Speech Enhancement';
+---
+
+	<BaseLayout
+		title={`${title} — Qing Yao`}
+		description="Interactive demo for Corrective Forcing (CoF), unified post-training for diffusion and flow speech-enhancement models, with results on VoiceBank+DEMAND, WSJ0+WHAM, and WSJ0+REVERB."
+		bodyClass="cof-body"
+	>
+	<main class="cof-page">
+		<!--
+			AGENT RESOURCE NOTE (intentionally hidden from rendered page visitors):
+			This page currently ships as a ONE-SCREEN TEASER for the Corrective
+			Forcing (CoF) speech-enhancement paper: hero (title/authors/links),
+			the abstract rendered in full but masked by a white fade from its
+			third line down (carrying the submission/demo note), and the Index
+			Terms. The Overview,
+			Benchmark Comparison, Quality-vs-NFE, Citation, References sections,
+			and the footer are removed until the arXiv preprint is released; the
+			chart islands (CoFBenchmarkBars, CoFNfeCurves) and src/data/cof.js
+			were removed with them, so restoring the full demo means recovering
+			those from git history as well. The paper's
+			first-page footnote points readers of the CoF manuscript to this exact
+			URL (https://yorch233.github.io/CoF).
+			- Code repository: https://github.com/Yorch233/CoF/
+		-->
+		<article class="cof-article">
+			<img class="cof-watermark" src="/logo/icon.png" alt="" aria-hidden="true" />
+
+			<header class="cof-hero cof-fade cof-delay-1">
+				<p class="cof-kicker">Paper Demo</p>
+				<h1 class="cof-title">
+					<span class="cof-highlight cof-title-method">Corrective Forcing</span>: Unified
+					Post-Training for{' '}
+					<br />
+					Diffusions and Flows in{' '}
+					<span class="cof-highlight">Generative Speech Enhancement</span>
+				</h1>
+
+				<p class="cof-authors">
+					<span class="cof-author">
+						<span class="cof-author-name">Qing Yao</span>
+						<a class="cof-email" href="mailto:qyao@stmail.ujs.edu.cn">qyao@stmail.ujs.edu.cn</a>
+					</span>
+					<span class="cof-author">
+						<span class="cof-author-name">Lijian Gao</span>
+						<a class="cof-email" href="mailto:ljgao@ujs.edu.cn">ljgao@ujs.edu.cn</a>
+					</span>
+					<span class="cof-author">
+						<span class="cof-author-name">Qirong Mao <sup class="cof-tag">†</sup></span>
+						<a class="cof-email" href="mailto:mao_qr@ujs.edu.cn">mao_qr@ujs.edu.cn</a>
+					</span>
+				</p>
+
+				<ul class="cof-affiliations">
+					<li>Jiangsu University</li>
+				</ul>
+				<p class="cof-affiliation-note"><sup class="cof-tag">†</sup> Corresponding author</p>
+
+				<div class="cof-links">
+					<p class="cof-links-title">Links</p>
+					<nav class="cof-nav" aria-label="Paper resources">
+						<a
+							class="cof-nav-link"
+							href="https://github.com/Yorch233/CoF/"
+							target="_blank"
+							rel="noreferrer"
+							aria-label="View source code on GitHub"
+							title="GitHub"
+						>
+							<img class="cof-nav-icon" src="https://cdn.simpleicons.org/github" alt="" />
+							<span class="cof-nav-label">GitHub</span>
+						</a>
+						<span
+							class="cof-nav-link is-disabled"
+							data-disabled
+							aria-disabled="true"
+							title="arXiv preprint coming soon"
+						>
+							<img class="cof-nav-icon" src="https://cdn.simpleicons.org/arxiv" alt="" />
+							<span class="cof-nav-label">arXiv</span>
+						</span>
+					</nav>
+				</div>
+			</header>
+
+			<section class="cof-section cof-section-separated cof-fade cof-delay-2 cof-teaser-base" aria-labelledby="cof-abstract-heading">
+				<h2 id="cof-abstract-heading">
+					<span class="cof-wave" aria-hidden="true"><span></span></span>
+					Abstract
+				</h2>
+				<div class="cof-abstract-wrap">
+					<p class="cof-abstract">
+						<span class="cof-highlight">Diffusion and flow models</span> for speech enhancement face a{' '}
+						<span class="cof-issue">training–inference mismatch</span>: training uses analytical path states,
+						while inference operates on self-generated trajectories, where{' '}
+						<span class="cof-issue">prediction and discretization errors accumulate</span>.
+						We introduce <span class="cof-highlight">Corrective Forcing (CoF)</span>, a unified{' '}
+						<span class="cof-highlight">post-training framework</span> that adapts models to these rollout states.
+						CoF corrects clean-speech predictions toward the ground truth under varying sampling schedules
+						and regularizes local transitions against locally corrected counterfactual references.
+						A shared <span class="cof-highlight">clean-speech prediction parameterization</span> enables
+						the same objective for diffusion and flow models. Experiments with SB-VE and OT-CFM on three
+						benchmarks show gains in perceptual quality and reconstruction fidelity across sampling budgets.
+					</p>
+					<p class="cof-teaser-veil">
+						<span class="cof-coming-soon"
+							>This paper has been submitted to ICASSP 2027 and is under review. This
+							demo is coming soon.</span
+						>
+					</p>
+					<div class="cof-legend" aria-hidden="true">
+						<span class="cof-legend-item">
+							<span class="cof-legend-swatch cof-legend-swatch-highlight"></span>
+							Key Concepts
+						</span>
+						<span class="cof-legend-item">
+							<span class="cof-legend-swatch cof-legend-swatch-issue"></span>
+							Challenges
+						</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="cof-section cof-fade cof-delay-3" aria-labelledby="cof-keywords-heading">
+				<h2 id="cof-keywords-heading">
+					<span class="cof-wave" aria-hidden="true"><span></span></span>
+					Index Terms
+				</h2>
+				<div class="cof-meta">
+					<span class="cof-chip">Generative speech enhancement</span>
+					<span class="cof-chip">Schrödinger bridge</span>
+					<span class="cof-chip">Flow matching</span>
+					<span class="cof-chip">Post-training methods</span>
+					<span class="cof-chip">Exposure bias</span>
+				</div>
+			</section>
+
+		</article>
+
+	</main>
+</BaseLayout>

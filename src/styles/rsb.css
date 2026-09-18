@@ -62,6 +62,13 @@
 	line-height: 1.5;
 }
 
+/* The method name carries the accent colour in the hero title, mirroring the
+   CoF page's title treatment. Scoped to the title so it outranks the later
+   `.rsb-highlight` colour rule. */
+.rsb-title .rsb-title-method {
+	color: #0071e3;
+}
+
 .rsb-authors {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));

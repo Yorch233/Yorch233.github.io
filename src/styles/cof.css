@@ -1,0 +1,1432 @@
+.cof-body {
+	background: #f5f5f7;
+	color: #1d1d1f;
+}
+
+.cof-page {
+	/* Teaser lock: the page is exactly one viewport tall and clipped, so the
+	   document has no scrollable overflow at all (clip on body alone would be
+	   propagated to the viewport and degrade to hidden, which still allows
+	   programmatic scrolling). */
+	height: 100vh;
+	height: 100dvh;
+	overflow: hidden;
+	overflow: clip;
+	min-width: 1200px;
+	padding: 64px 20px 96px;
+	background:
+		radial-gradient(1100px 460px at 15% -5%, rgba(0, 113, 227, 0.07), transparent 65%),
+		radial-gradient(900px 420px at 95% 0%, rgba(88, 86, 214, 0.05), transparent 60%),
+		#f5f5f7;
+	color: #1d1d1f;
+	font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.cof-article {
+	box-sizing: content-box;
+	position: relative;
+	overflow: visible;
+	/* content-box: pins the card at its 1120px design measure. Without it the
+	   width:auto fill tracks the containing block below ~1310px viewports,
+	   which wraps the title onto three lines. (1200 here would mean a 1314px
+	   card and would widen the desktop layout.) */
+	min-width: 1120px;
+	max-width: 1120px;
+	margin: 0 auto;
+	padding: 48px 56px 56px;
+	border: 1px solid rgba(0, 0, 0, 0.04);
+	border-radius: 24px;
+	background: rgba(255, 255, 255, 0.92);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+	backdrop-filter: blur(18px);
+}
+
+.cof-watermark {
+	position: absolute;
+	top: 90px;
+	right: -80px;
+	z-index: 0;
+	width: 260px;
+	height: 260px;
+	opacity: 0.035;
+	filter: grayscale(100%);
+	pointer-events: none;
+}
+
+.cof-hero {
+	position: relative;
+	z-index: 1;
+	padding-bottom: 24px;
+}
+
+.cof-kicker {
+	margin: 0;
+	color: #0071e3;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.cof-title {
+	margin: 25px 0;
+	font-size: 2.6rem;
+	font-weight: 700;
+	line-height: 1.5;
+}
+
+/* The hero title is not hover-highlighted, so drop the abstract highlight
+   padding that would leave a gap before the colon. */
+.cof-title .cof-highlight {
+	padding: 0;
+}
+
+/* The method name carries the accent colour in the hero title. Scoped to the
+   title so it outranks the later `.cof-highlight` colour rule. */
+.cof-title .cof-title-method {
+	color: #0071e3;
+}
+
+.cof-authors {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin: 0 0 18px;
+}
+
+.cof-author {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 14px 16px;
+	border: 0;
+	border-radius: 16px;
+	background: #ffffff;
+	font-weight: 600;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cof-author:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.cof-author-name {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+.cof-email {
+	color: #0071e3;
+	font-size: 0.95rem;
+	font-weight: 600;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+
+.cof-email:hover {
+	text-decoration: underline;
+}
+
+.cof-tag {
+	color: #0071e3;
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.cof-affiliations {
+	display: grid;
+	gap: 6px;
+	margin: 0;
+	padding-left: 0;
+	color: #6e6e73;
+	font-size: 0.98rem;
+	line-height: 1.7;
+	list-style: none;
+}
+
+.cof-affiliation-note {
+	margin: 8px 0 0;
+	color: #6e6e73;
+	font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------------ links */
+
+.cof-links {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	margin-top: 22px;
+}
+
+.cof-links-title {
+	align-self: stretch;
+	margin: 0;
+	color: #6e6e73;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.cof-nav {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.cof-nav-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 8px;
+	box-sizing: border-box;
+	width: 136px;
+	height: 42px;
+	padding: 0 10px;
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 14px;
+	background: #ffffff;
+	color: #6e6e73;
+	font-size: 0.88rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.cof-nav-link:hover {
+	color: #0071e3;
+	border-color: rgba(0, 113, 227, 0.55);
+	transform: translateY(-2px);
+	box-shadow: 0 12px 24px rgba(0, 113, 227, 0.14);
+}
+
+.cof-nav-link:focus-visible {
+	outline: 2px solid #0071e3;
+	outline-offset: 3px;
+}
+
+.cof-nav-icon {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	flex: 0 0 18px;
+	object-fit: contain;
+	filter: grayscale(1);
+	opacity: 0.78;
+	transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+a.cof-nav-link:hover .cof-nav-icon {
+	filter: grayscale(0);
+	opacity: 1;
+}
+
+.cof-nav-label {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+.cof-nav-link.is-disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+/* ------------------------------------------------------------------ sections */
+
+.cof-section {
+	margin-top: 30px;
+	color: #1d1d1f;
+	font-size: 1.05rem;
+	line-height: 1.8;
+}
+
+.cof-section-separated {
+	position: relative;
+	margin-top: 42px;
+	padding-top: 40px;
+}
+
+.cof-section-separated::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(0, 113, 227, 0.12) 12%,
+		rgba(0, 113, 227, 0.34) 50%,
+		rgba(0, 113, 227, 0.12) 88%,
+		transparent 100%
+	);
+}
+
+.cof-section-separated::after {
+	content: '';
+	position: absolute;
+	top: -14px;
+	left: 50%;
+	width: 28px;
+	height: 28px;
+	border: 1px solid rgba(0, 113, 227, 0.2);
+	border-radius: 50%;
+	background: #ffffff url('/logo/speech.svg') center / 18px 18px no-repeat;
+	box-shadow: 0 4px 12px rgba(0, 113, 227, 0.14);
+	transform: translateX(-50%);
+}
+
+.cof-section h2 {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0 0 12px;
+	color: #1d1d1f;
+	font-size: 1.35rem;
+}
+
+.cof-wave {
+	display: inline-grid;
+	grid-auto-flow: column;
+	align-items: center;
+	gap: 4px;
+	width: 26px;
+	height: 18px;
+}
+
+.cof-wave::before,
+.cof-wave::after,
+.cof-wave span {
+	content: '';
+	display: block;
+	width: 6px;
+	border-radius: 4px;
+	background: #0071e3;
+}
+
+.cof-wave::before,
+.cof-wave::after {
+	height: 12px;
+}
+
+.cof-wave span {
+	height: 20px;
+}
+
+.cof-section-intro {
+	max-width: 940px;
+	margin: 0 0 18px;
+	color: #515154;
+	font-size: 0.92rem;
+	line-height: 1.75;
+}
+
+/* The benchmark section reads as short labelled lines rather than one block of
+   prose: benchmarks, baselines, how to read the chart, what NFE does. The label
+   column keeps wrapped lines aligned with the text, not under the label. */
+/* The benchmark section reads as three short prose paragraphs — benchmarks,
+   then methods and metrics, then the reading key — rather than one block. */
+.cof-intro-prose {
+	display: grid;
+	gap: 10px;
+}
+
+.cof-intro-prose p {
+	margin: 0;
+}
+
+/* Method names such as SB-VE must not break at their hyphen. */
+.cof-intro-prose strong {
+	white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ abstract */
+
+.cof-abstract-wrap {
+	position: relative;
+}
+
+.cof-abstract {
+	margin: 0;
+	padding: 16px 18px;
+	border-radius: 16px;
+	background: #f5f5f7;
+	text-align: justify;
+	transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.cof-abstract:hover {
+	background: #ffffff;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
+}
+
+.cof-legend {
+	position: absolute;
+	top: -45px;
+	right: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	max-height: 0;
+	margin-top: 0;
+	opacity: 0;
+	transform: translateY(-6px);
+	pointer-events: none;
+	transition: opacity 0.2s ease, transform 0.2s ease, max-height 0.2s ease;
+}
+
+.cof-abstract-wrap:hover .cof-legend {
+	max-height: 120px;
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto;
+}
+
+.cof-legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 12px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 999px;
+	background: #ffffff;
+	color: #1d1d1f;
+	font-size: 0.85rem;
+	font-weight: 600;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.cof-legend-swatch {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 4px;
+}
+
+.cof-legend-swatch-highlight {
+	background: rgba(0, 113, 227, 0.6);
+}
+
+.cof-legend-swatch-issue {
+	background: rgba(249, 115, 22, 0.7);
+}
+
+.cof-highlight,
+.cof-issue {
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: transparent;
+	color: inherit;
+	font-weight: 700;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+.cof-issue {
+	margin-right: 6px;
+}
+
+.cof-abstract-wrap:hover .cof-highlight {
+	background: rgba(0, 113, 227, 0.12);
+	color: #0b5ad7;
+}
+
+.cof-abstract-wrap:hover .cof-issue {
+	background: rgba(249, 115, 22, 0.16);
+	color: #c2410c;
+}
+
+/* -------------------------------------------------------------- teaser veil */
+
+/* Until the preprint is out, the page is a one-screen teaser: .cof-page locks
+   the document to a single viewport with no scrollable overflow, and the
+   abstract renders in full while a white fade masks everything from its third
+   line down (abstract tail and Index Terms) to the viewport bottom. The body
+   mirrors the lock so the backdrop stays one viewport tall. Unlock = restore
+   the sections + .cof-article overflow + this block. */
+.cof-body {
+	height: 100vh;
+	height: 100dvh;
+	overflow: hidden;
+	overflow: clip;
+}
+
+/* The veil must reach past the card's bottom edge, so the card's watermark
+   clip is lifted in teaser mode (the 3.5%-opacity bleed is imperceptible). */
+.cof-article {
+	overflow: visible;
+}
+
+/* Every .cof-fade section is a permanent stacking context (opacity animation
+   with fill-mode both), so later sections would paint over the veil inside
+   this one no matter its z-index. Raise the whole abstract section instead. */
+.cof-teaser-base {
+	position: relative;
+	z-index: 2;
+}
+
+/* Starts inside line two's lower third — transparent there — so the fade
+   visibly dissolves the line-2/3 boundary over ~68px; line four onward sits
+   under solid white. It also intercepts pointer events so the hidden lines
+   cannot be selected. */
+.cof-teaser-veil {
+	position: absolute;
+	top: calc(3.78rem - 12px);
+	/* Extends 100vw past BOTH sides of the wrap instead of centering a 100vw
+	   box: at viewports narrower than the page's min-width the wrap center
+	   and the viewport center diverge, and a centered veil would leave an
+	   unmasked strip at one edge. */
+	left: -100vw;
+	right: -100vw;
+	z-index: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	height: 120vh;
+	margin: 0;
+	padding-top: 70px;
+	background: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.5) 30px,
+		rgba(255, 255, 255, 0.92) 48px,
+		#ffffff 68px
+	);
+}
+
+/* A quiet status note on the white fade — normal case so the two sentences
+   stay readable (max-width keeps the centered wrap to a clean measure). */
+.cof-coming-soon {
+	max-width: 34em;
+	color: #515154;
+	font-size: 0.88rem;
+	font-weight: 500;
+	line-height: 1.7;
+	text-align: center;
+}
+
+
+/* ------------------------------------------------------------------ keywords */
+
+.cof-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.cof-chip {
+	padding: 7px 14px;
+	border: 1px solid rgba(0, 113, 227, 0.16);
+	border-radius: 999px;
+	background: rgba(0, 113, 227, 0.06);
+	color: #0b5ad7;
+	font-size: 0.88rem;
+	font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ chart cards */
+
+.cof-chart-card {
+	position: relative;
+	margin-bottom: 22px;
+	padding: 18px 18px 14px;
+	border: 1px solid rgba(0, 113, 227, 0.1);
+	border-radius: 20px;
+	background: rgba(255, 255, 255, 0.72);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+	backdrop-filter: blur(10px);
+}
+
+.cof-chart-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+/* NFE slider: a filled pill track with a white thumb and one dot per option.
+   The control box is taller than the track so the NFE ticks sit underneath.
+   Width matches SLIDER_WIDTH in CoFBenchmarkBars.jsx; the track, thumb and dot
+   sizes are kept in step with it. */
+.cof-nfe-slider {
+	position: relative;
+	width: 150px;
+	height: 36px;
+	touch-action: none;
+}
+
+.cof-nfe-track {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 24px;
+	border-radius: 999px;
+	background: #e6e6ea;
+	overflow: hidden;
+}
+
+.cof-nfe-fill {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-radius: 999px;
+	background: #0071e3;
+	transition: width 0.24s ease;
+}
+
+.cof-nfe-option {
+	position: absolute;
+	top: 0;
+	width: 38px;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	transform: translateX(-50%);
+	cursor: pointer;
+}
+
+.cof-nfe-dot {
+	position: absolute;
+	top: 12px;
+	left: 50%;
+	width: 4.5px;
+	height: 4.5px;
+	margin: -2.25px 0 0 -2.25px;
+	border-radius: 50%;
+	background: #b0b0b8;
+	transition: background 0.24s ease;
+}
+
+.cof-nfe-option.in-fill .cof-nfe-dot {
+	background: rgba(255, 255, 255, 0.6);
+}
+
+.cof-nfe-tick {
+	position: absolute;
+	top: 26px;
+	left: 50%;
+	color: #9aa1ab;
+	font-size: 0.56rem;
+	font-weight: 600;
+	transform: translateX(-50%);
+}
+
+.cof-nfe-option[aria-checked='true'] .cof-nfe-tick {
+	color: #0071e3;
+}
+
+.cof-nfe-thumb {
+	position: absolute;
+	top: 12px;
+	width: 28px;
+	height: 28px;
+	margin: -14px 0 0 -14px;
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.24);
+	pointer-events: none;
+	transition: left 0.24s ease;
+}
+
+/* legend chips (shared by both charts) */
+
+.cof-chart-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 14px;
+}
+
+.cof-legend-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 5px 11px 5px 7px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 999px;
+	background: #ffffff;
+	color: #1d1d1f;
+	font-size: 0.78rem;
+	font-weight: 600;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+	cursor: pointer;
+	transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.cof-legend-chip:hover {
+	transform: translateY(-1px);
+}
+
+/* Deselected entries are dimmed only — no strikethrough, which would clutter
+   the label with its `@NFE` suffix. */
+.cof-legend-chip.off {
+	opacity: 0.4;
+}
+
+/* A method with no evaluation at the selected sampling budget, e.g. OT-CFM at
+   NFE 16. Kept visible but muted so its absence reads as missing data. */
+.cof-legend-chip.is-unavailable {
+	opacity: 0.4;
+	border-style: dashed;
+	cursor: not-allowed;
+}
+
+.cof-legend-marker {
+	flex: none;
+}
+
+.cof-legend-sample {
+	flex: none;
+}
+
+/* `.cof-legend-sub` is the sampling-budget half of a label (`SGMSE+@100`), so it
+   sits flush against the method name; prose suffixes keep their own space. */
+.cof-legend-text {
+	white-space: nowrap;
+}
+
+.cof-legend-sub {
+	color: #86868b;
+	font-size: 0.68rem;
+	font-weight: 600;
+}
+
+.cof-legend-pareto {
+	border-color: rgba(0, 113, 227, 0.35);
+	background: rgba(0, 113, 227, 0.06);
+}
+
+/* Capsule triggers in the benchmark card header, each opening a small popover:
+   the dataset list, or the NFE slider. Keeps the header to two compact pills. */
+.cof-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.cof-pill-wrap {
+	position: relative;
+}
+
+.cof-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	padding: 7px 14px;
+	border: 1px solid rgba(0, 113, 227, 0.16);
+	border-radius: 999px;
+	background: #ffffff;
+	color: #1d1d1f;
+	font-size: 0.84rem;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cof-pill:hover {
+	border-color: rgba(0, 113, 227, 0.38);
+	box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+
+.cof-pill-label {
+	color: #86868b;
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.cof-pill-value {
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.cof-pill-caret {
+	color: #86868b;
+	font-size: 0.7rem;
+}
+
+.cof-popover {
+	position: absolute;
+	top: calc(100% + 6px);
+	left: 0;
+	z-index: 20;
+	display: grid;
+	gap: 2px;
+	min-width: 220px;
+	padding: 6px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 14px;
+	background: #ffffff;
+	box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16);
+}
+
+.cof-popover-nfe {
+	min-width: 0;
+	gap: 0;
+	padding: 10px 12px 8px;
+	left: auto;
+	right: 0;
+}
+
+.cof-popover-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1px;
+	padding: 8px 10px;
+	border: 0;
+	border-radius: 10px;
+	background: transparent;
+	color: #1d1d1f;
+	font-size: 0.86rem;
+	font-weight: 600;
+	text-align: left;
+	cursor: pointer;
+}
+
+.cof-popover-item:hover {
+	background: rgba(0, 113, 227, 0.07);
+}
+
+.cof-popover-item.active {
+	background: rgba(0, 113, 227, 0.1);
+	color: #0071e3;
+}
+
+.cof-popover-sub {
+	color: #86868b;
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.cof-popover-item.active .cof-popover-sub {
+	color: rgba(0, 113, 227, 0.75);
+}
+
+/* bar chart */
+
+.cof-bar-strip {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.cof-bar-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	padding: 12px 6px 8px;
+	border: 1px solid rgba(0, 0, 0, 0.04);
+	border-radius: 14px;
+	background: #f6f8fb;
+}
+
+.cof-bar-panel.empty {
+	justify-content: center;
+	min-height: 200px;
+	min-width: 180px;
+}
+
+.cof-bar-panel-empty {
+	color: #86868b;
+	font-size: 0.78rem;
+}
+
+.cof-bar-svg {
+	display: block;
+	overflow: visible;
+}
+
+.cof-bar-value {
+	font-size: 8.4px;
+	font-weight: 500;
+	fill: #1d1d1f;
+}
+
+/* Sampling-budget change: the bars fade out, the numbers are swapped while they
+   are invisible, then each bar rises from the baseline as it fades back in. */
+.cof-bar-rect {
+	transform-box: fill-box;
+	transform-origin: bottom;
+}
+
+.cof-bar-strip.is-out .cof-bar-group {
+	animation: cofBarFadeOut 170ms ease forwards;
+}
+
+.cof-bar-strip.is-in .cof-bar-group {
+	animation: cofBarFadeIn 340ms ease 120ms both;
+}
+
+.cof-bar-strip.is-in .cof-bar-rect {
+	animation: cofBarRise 620ms cubic-bezier(0.22, 0.9, 0.28, 1) both;
+}
+
+@keyframes cofBarFadeOut {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes cofBarFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes cofBarRise {
+	from {
+		transform: scaleY(0);
+	}
+	to {
+		transform: scaleY(1);
+	}
+}
+
+/* Method name that fades in above a bar while it is hovered. */
+.cof-bar-name {
+	font-size: 10px;
+	font-weight: 700;
+	fill: #1d1d1f;
+	animation: cofBarNameIn 0.22s ease both;
+}
+
+@keyframes cofBarNameIn {
+	from {
+		opacity: 0;
+		transform: translateY(3px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Only the best value in a panel is emphasised; every other label is plain black. */
+.cof-bar-value.best {
+	font-weight: 800;
+}
+
+/* Sampling-budget half of a method label: `SB-VE` + `@4`. */
+.cof-bar-name-nfe {
+	font-size: 8.5px;
+	font-weight: 500;
+	fill: #9aa1ab;
+}
+
+.cof-metric-pill {
+	padding: 3px 11px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	color: #3a3a3c;
+	font-size: 0.72rem;
+	font-weight: 700;
+}
+
+/* NFE curves */
+
+.cof-nfe {
+	position: relative;
+}
+
+/* Three levels of control, each with a different visual weight: the dataset
+   is the heaviest, the metric a secondary pill row, the method row lightest.
+   A caption column keeps the three rows aligned. */
+.cof-levels {
+	display: grid;
+	gap: 9px;
+	margin-bottom: 14px;
+}
+
+.cof-level {
+	display: grid;
+	grid-template-columns: 62px 1fr;
+	gap: 0 10px;
+	align-items: center;
+}
+
+.cof-level-label {
+	color: #9aa1ab;
+	font-size: 0.64rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.cof-level .cof-tabs,
+.cof-level .cof-metric-tabs,
+.cof-level .cof-chart-legend {
+	margin-bottom: 0;
+}
+
+/* Level 1 — dataset: the largest control, filled solid when active. */
+.cof-level-dataset .cof-tab {
+	padding: 10px 20px;
+	border-radius: 15px;
+	font-size: 0.96rem;
+}
+
+.cof-level-dataset .cof-tab.active {
+	border-color: #0071e3;
+	background: #0071e3;
+	color: #ffffff;
+}
+
+.cof-level-dataset .cof-tab.active .cof-tab-sub {
+	color: rgba(255, 255, 255, 0.82);
+}
+
+/* Level 2 — metric: a lighter pill row. */
+.cof-level-metric .cof-metric-tab {
+	padding: 5px 13px;
+	font-size: 0.78rem;
+}
+
+/* Level 3 — method: lightest, so the two rows above keep the eye. */
+.cof-level-method .cof-legend-chip {
+	padding: 4px 10px 4px 6px;
+	color: #6e6e73;
+	font-size: 0.74rem;
+	font-weight: 600;
+	border-color: rgba(0, 0, 0, 0.06);
+}
+
+.cof-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 14px;
+}
+
+.cof-tab {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2px;
+	padding: 9px 18px;
+	border: 1px solid rgba(0, 113, 227, 0.14);
+	border-radius: 14px;
+	background: #ffffff;
+	color: #1d1d1f;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.cof-tab-sub {
+	color: #86868b;
+	font-size: 0.68rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.cof-tab.active {
+	border-color: rgba(0, 113, 227, 0.4);
+	background: rgba(0, 113, 227, 0.07);
+	color: #0071e3;
+}
+
+.cof-tab.active .cof-tab-sub {
+	color: rgba(0, 113, 227, 0.75);
+}
+
+.cof-metric-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 14px;
+}
+
+.cof-metric-tab {
+	padding: 6px 14px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 999px;
+	background: #ffffff;
+	color: #515154;
+	font-size: 0.82rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.cof-metric-tab:hover {
+	border-color: rgba(0, 113, 227, 0.35);
+	color: #0071e3;
+}
+
+.cof-metric-tab.active {
+	border-color: rgba(0, 113, 227, 0.4);
+	background: rgba(0, 113, 227, 0.08);
+	color: #0071e3;
+}
+
+.cof-nfe-panel {
+	padding: 14px 12px 10px;
+	border: 1px solid rgba(0, 0, 0, 0.04);
+	border-radius: 14px;
+	background: #f6f8fb;
+}
+
+.cof-panel-head {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	margin: 0 0 4px 8px;
+}
+
+.cof-panel-title {
+	color: #1d1d1f;
+	font-size: 1.05rem;
+	font-weight: 700;
+}
+
+.cof-panel-sub {
+	margin: 0;
+	color: #86868b;
+	font-size: 0.8rem;
+}
+
+.cof-dir {
+	color: #0071e3;
+}
+
+/* Superscript citation markers in the prose. */
+.cof-cite {
+	color: #0071e3;
+	font-size: 0.62em;
+	font-weight: 700;
+	line-height: 0;
+	margin-left: 1px;
+	vertical-align: super;
+}
+
+.cof-tick {
+	fill: #8a919c;
+	font-size: 11.5px;
+}
+
+.cof-axis-name {
+	font-weight: 700;
+}
+
+.cof-ref-label {
+	font-size: 12.5px;
+	font-weight: 700;
+}
+
+/* hover motion: points scale up, the front line and reference lines thicken */
+
+.cof-pt {
+	transform-box: fill-box;
+	transform-origin: center;
+	transition: transform 0.16s ease, filter 0.16s ease;
+}
+
+.cof-pt.is-hover {
+	transform: scale(1.55);
+	filter: drop-shadow(0 0 6px rgba(29, 29, 31, 0.35));
+}
+
+/* `SERIES@NFE` caption beside each point, in the series colour. A white halo
+   keeps it legible where it crosses the Pareto front or a reference line, and
+   pointer transparency leaves the tooltip hit areas underneath reachable. */
+.cof-pt-label {
+	font-size: 9px;
+	font-weight: 600;
+	stroke: #ffffff;
+	stroke-width: 2.6px;
+	paint-order: stroke;
+	pointer-events: none;
+}
+
+.cof-ref-line {
+	transition: stroke-width 0.16s ease;
+}
+
+.cof-ref-label {
+	transition: font-size 0.16s ease;
+}
+
+.cof-ref.is-hover .cof-ref-label {
+	font-size: 14px;
+}
+
+.cof-pareto {
+	transition: filter 0.16s ease;
+	filter: drop-shadow(0 0 3px rgba(0, 113, 227, 0.5));
+}
+
+.cof-pareto.is-hover {
+	filter: drop-shadow(0 0 7px rgba(0, 113, 227, 0.65));
+}
+
+.cof-pareto-line {
+	transition: stroke-width 0.16s ease;
+}
+
+.cof-pf-d {
+	transform-box: fill-box;
+	transform-origin: center;
+	transition: transform 0.16s ease;
+}
+
+.cof-pareto.is-hover .cof-pf-d {
+	transform: scale(1.35);
+}
+
+.cof-hit {
+	cursor: crosshair;
+}
+
+/* tooltips (shared) */
+
+.cof-tooltip {
+	position: absolute;
+	z-index: 30;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 8px 11px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 11px;
+	background: rgba(255, 255, 255, 0.97);
+	box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
+	font-size: 0.75rem;
+	line-height: 1.35;
+	color: #515154;
+	pointer-events: none;
+	transform: translateY(-100%);
+	white-space: nowrap;
+}
+
+.cof-tooltip strong {
+	color: #1d1d1f;
+	font-size: 0.8rem;
+}
+
+.cof-tip-front {
+	color: #0071e3;
+	font-weight: 700;
+}
+
+.cof-chart-note {
+	max-width: 980px;
+	margin: 12px 2px 0;
+	color: #86868b;
+	font-size: 0.78rem;
+	line-height: 1.65;
+}
+
+/* ------------------------------------------------------------------ citation & references */
+
+.cof-citation {
+	padding: 14px 16px;
+	border: 1px solid rgba(0, 113, 227, 0.14);
+	border-radius: 14px;
+	background: #f6f8fb;
+}
+
+.cof-citation-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-bottom: 8px;
+}
+
+.cof-citation-label {
+	color: #6e6e73;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.cof-copy-button {
+	padding: 5px 14px;
+	border: 1px solid rgba(0, 113, 227, 0.3);
+	border-radius: 999px;
+	background: #ffffff;
+	color: #0071e3;
+	font-size: 0.78rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cof-copy-button:hover {
+	background: rgba(0, 113, 227, 0.08);
+}
+
+.cof-copy-button.is-copied {
+	background: rgba(0, 113, 227, 0.1);
+	border-color: rgba(0, 113, 227, 0.4);
+	color: #047857;
+}
+
+.cof-bibtex {
+	margin: 0;
+	padding: 12px 14px;
+	border-radius: 10px;
+	background: #ffffff;
+	color: #3a3a3c;
+	font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+	font-size: 0.78rem;
+	line-height: 1.6;
+	overflow-x: auto;
+	white-space: pre;
+}
+
+.cof-citation-note {
+	margin: 10px 2px 0;
+	color: #86868b;
+	font-size: 0.78rem;
+}
+
+.cof-ref-list {
+	display: grid;
+	gap: 5px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* The number column is fixed so every citation starts on the same axis. */
+.cof-ref-entry {
+	display: grid;
+	grid-template-columns: 2em 1fr;
+	color: #3a3a3c;
+	font-size: 0.85rem;
+	line-height: 1.55;
+}
+
+.cof-ref-no {
+	color: #0071e3;
+	font-size: 0.78rem;
+	font-weight: 700;
+}
+
+.cof-ref-tag {
+	margin-left: 6px;
+	color: #0071e3;
+	font-size: 0.78rem;
+	font-weight: 600;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.cof-ref-tag:hover {
+	text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.cof-footer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	margin-top: 32px;
+	color: #9ca3af;
+	font-size: 16px;
+	line-height: 1.4;
+	text-align: center;
+}
+
+.cof-footer-copy {
+	font-size: 16px;
+	letter-spacing: 0.01em;
+}
+
+.cof-fade {
+	opacity: 0;
+	animation: cofFadeInUp 0.8s ease both;
+}
+
+.cof-delay-1 {
+	animation-delay: 0.08s;
+}
+
+.cof-delay-2 {
+	animation-delay: 0.16s;
+}
+
+.cof-delay-3 {
+	animation-delay: 0.24s;
+}
+
+.cof-delay-4 {
+	animation-delay: 0.32s;
+}
+
+@keyframes cofFadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.cof-fade {
+		opacity: 1;
+		animation: none !important;
+	}
+
+	.cof-bar-name {
+		animation: none !important;
+	}
+
+	.cof-bar-strip.is-out .cof-bar-group,
+	.cof-bar-strip.is-in .cof-bar-group,
+	.cof-bar-strip.is-in .cof-bar-rect {
+		animation: none !important;
+	}
+
+	.cof-pt,
+	.cof-pf-d,
+	.cof-pareto,
+	.cof-ref-line {
+		transition: none !important;
+	}
+
+	.cof-author,
+	.cof-legend-chip {
+		transition: none !important;
+	}
+
+	.cof-nfe-fill,
+	.cof-nfe-thumb,
+	.cof-nfe-dot {
+		transition: none !important;
+	}
+}
