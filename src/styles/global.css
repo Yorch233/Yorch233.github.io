@@ -1103,3 +1103,23 @@ strong {
 		opacity: 1;
 	}
 }
+
+/* Coding-agent disclaimer, shared by the demo page footers. Deliberately much
+   smaller and lighter than body copy; it is a caveat, not content. A faint
+   tint sets it apart without drawing a border. */
+.agent-note {
+	max-width: 780px;
+	margin: 0;
+	padding: 7px 18px;
+	border: 0;
+	border-radius: 999px;
+	background: rgba(148, 163, 184, 0.08);
+	color: #9ca3af;
+	font-size: 0.68rem;
+	font-weight: 400;
+	line-height: 1.45;
+	letter-spacing: 0.01em;
+	text-align: center;
+	text-wrap: pretty;
+}
+
