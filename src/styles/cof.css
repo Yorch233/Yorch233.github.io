@@ -236,6 +236,11 @@ a.cof-nav-link:hover .cof-nav-icon {
 	text-align: center;
 }
 
+/* Wider pill for long labels ("Hugging Face") that would wrap at 136px. */
+.cof-nav-link-wide {
+	width: 152px;
+}
+
 .cof-nav-link.is-disabled {
 	cursor: not-allowed;
 	opacity: 0.55;
