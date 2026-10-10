@@ -1,0 +1,11 @@
+.demo-return { position: fixed; bottom: max(18px, env(safe-area-inset-bottom)); left: max(24px, env(safe-area-inset-left)); z-index: 34; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 160ms ease, transform 180ms ease, visibility 160ms; pointer-events: none; }
+.demo-return[data-visible=true] { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+.demo-return .floating-capsule { position: relative; isolation: isolate; display: grid; place-items: center; box-sizing: border-box; width: 48px; height: 48px; min-height: 48px; padding: 0; border-radius: 999px; color: var(--ink); font: 600 13px/1.4 var(--sans); text-decoration: none; background: transparent; backdrop-filter: none; }
+.demo-return .floating-capsule::before { content: ''; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; background: rgb(255 255 255 / .14); -webkit-backdrop-filter: saturate(1.2); backdrop-filter: var(--glass-refraction, saturate(1)) saturate(1.2); }
+.demo-return svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.demo-return-tip { position: absolute; left: calc(100% + 12px); top: 50%; transform: translateY(-50%); padding: 8px 12px; border: 1px solid var(--line-soft); border-radius: 12px; background: rgb(248 251 255 / .96); color: var(--ink); box-shadow: 0 6px 20px -10px rgb(28 54 88 / .24); white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 120ms ease, visibility 120ms; }
+.demo-return a:is(:hover, :focus-visible) .demo-return-tip { opacity: 1; visibility: visible; }
+.demo-return a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 959px), (max-height: 599px) { .demo-return { left: max(60px, calc(env(safe-area-inset-left) + 52px)); gap: 6px; bottom: max(16px, env(safe-area-inset-bottom)); } .demo-return .floating-capsule { width: 44px; height: 44px; min-height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .demo-return { transition: none; transform: none; } .demo-return-tip { transition: none; } }
+@media print { .demo-return { display: none; } }

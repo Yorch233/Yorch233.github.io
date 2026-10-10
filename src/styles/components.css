@@ -1,0 +1,23 @@
+/* Shared component styles: section heads, chips, copy buttons, press
+   feedback. Class names of all three pages are grouped here so a token or
+   base change lands everywhere at once. Page css keeps only deltas
+   (icons, wide variants, hover accents). */
+
+/* ---------- section heading typography (icons are per-page deltas) ---------- */
+.sec-head h2, .rsb-section h2, .cof-section h2{
+  font-family:var(--sans);font-size: var(--text-1);font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+}
+
+/* ---------- keyword chips ---------- */
+.chip, .rsb-chip, .cof-chip{
+  font-family:var(--sans);font-size: var(--text-1);font-weight:600;letter-spacing:.02em;
+  color:var(--accent-deep);background:var(--accent-soft);
+  border:1px solid var(--accent-line);border-radius:999px;
+}
+
+/* ---------- press feedback ---------- */
+.link-pill:active,.rsb-nav-link:active,.cof-nav-link:active,
+.rsb-chip:active,.cof-chip:active,.rsb-copy-button:active,.cof-copy-button:active{
+  transform:scale(.94);transition-duration:.09s;
+}

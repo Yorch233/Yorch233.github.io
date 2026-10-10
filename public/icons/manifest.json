@@ -1,0 +1,475 @@
+[
+  {
+    "id": "home",
+    "label": "Home",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/home-active-filled.svg",
+      "inactive": "/icons/home-inactive.svg"
+    }
+  },
+  {
+    "id": "user",
+    "label": "About Me",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/user-active-filled.svg",
+      "inactive": "/icons/user-inactive.svg"
+    }
+  },
+  {
+    "id": "file",
+    "label": "Publications",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/file-active-filled.svg",
+      "inactive": "/icons/file-inactive.svg"
+    }
+  },
+  {
+    "id": "news",
+    "label": "News",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/news-active-filled.svg",
+      "inactive": "/icons/news-inactive.svg"
+    }
+  },
+  {
+    "id": "trophy",
+    "label": "Awards",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/trophy-active-filled.svg",
+      "inactive": "/icons/trophy-inactive.svg"
+    }
+  },
+  {
+    "id": "mail",
+    "label": "Contact",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/mail-active-filled.svg",
+      "inactive": "/icons/mail-inactive.svg"
+    }
+  },
+  {
+    "id": "cv",
+    "label": "CV",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/cv-active-filled.svg",
+      "inactive": "/icons/cv-inactive.svg"
+    }
+  },
+  {
+    "id": "cap",
+    "label": "Education",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/cap-active-filled.svg",
+      "inactive": "/icons/cap-inactive.svg"
+    }
+  },
+  {
+    "id": "people",
+    "label": "Advisor / collaborators",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/people-active-filled.svg",
+      "inactive": "/icons/people-inactive.svg"
+    }
+  },
+  {
+    "id": "pin",
+    "label": "Location",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/pin-active-filled.svg",
+      "inactive": "/icons/pin-inactive.svg"
+    }
+  },
+  {
+    "id": "wave",
+    "label": "Speech enhancement",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/wave-active-filled.svg",
+      "inactive": "/icons/wave-inactive.svg"
+    }
+  },
+  {
+    "id": "cube",
+    "label": "Diffusion models",
+    "group": "Research",
+    "color": "#7363d9",
+    "secondary": "#e1dcff",
+    "variants": {
+      "active-filled": "/icons/cube-active-filled.svg",
+      "inactive": "/icons/cube-inactive.svg"
+    }
+  },
+  {
+    "id": "nodes",
+    "label": "Schrödinger bridges",
+    "group": "Research",
+    "color": "#219ca4",
+    "secondary": "#c6ece9",
+    "variants": {
+      "active-filled": "/icons/nodes-active-filled.svg",
+      "inactive": "/icons/nodes-inactive.svg"
+    }
+  },
+  {
+    "id": "layers",
+    "label": "Masked diffusion",
+    "group": "Research",
+    "color": "#c38247",
+    "secondary": "#f5dfc6",
+    "variants": {
+      "active-filled": "/icons/layers-active-filled.svg",
+      "inactive": "/icons/layers-inactive.svg"
+    }
+  },
+  {
+    "id": "external",
+    "label": "Open resource",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/external-active-filled.svg",
+      "inactive": "/icons/external-inactive.svg"
+    }
+  },
+  {
+    "id": "code",
+    "label": "Code",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/code-active-filled.svg",
+      "inactive": "/icons/code-inactive.svg"
+    }
+  },
+  {
+    "id": "copy",
+    "label": "Copy citation",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/copy-active-filled.svg",
+      "inactive": "/icons/copy-inactive.svg"
+    }
+  },
+  {
+    "id": "download",
+    "label": "Download",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/download-active-filled.svg",
+      "inactive": "/icons/download-inactive.svg"
+    }
+  },
+  {
+    "id": "check",
+    "label": "Success",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/check-active-filled.svg",
+      "inactive": "/icons/check-inactive.svg"
+    }
+  },
+  {
+    "id": "search",
+    "label": "Search",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/search-active-filled.svg",
+      "inactive": "/icons/search-inactive.svg"
+    }
+  },
+  {
+    "id": "settings",
+    "label": "Settings",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/settings-active-filled.svg",
+      "inactive": "/icons/settings-inactive.svg"
+    }
+  },
+  {
+    "id": "menu",
+    "label": "Menu",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/menu-active-filled.svg",
+      "inactive": "/icons/menu-inactive.svg"
+    }
+  },
+  {
+    "id": "close",
+    "label": "Close",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/close-active-filled.svg",
+      "inactive": "/icons/close-inactive.svg"
+    }
+  },
+  {
+    "id": "plus",
+    "label": "Expand",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/plus-active-filled.svg",
+      "inactive": "/icons/plus-inactive.svg"
+    }
+  },
+  {
+    "id": "minus",
+    "label": "Collapse",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/minus-active-filled.svg",
+      "inactive": "/icons/minus-inactive.svg"
+    }
+  },
+  {
+    "id": "play",
+    "label": "Play",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/play-active-filled.svg",
+      "inactive": "/icons/play-inactive.svg"
+    }
+  },
+  {
+    "id": "pause",
+    "label": "Pause",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/pause-active-filled.svg",
+      "inactive": "/icons/pause-inactive.svg"
+    }
+  },
+  {
+    "id": "replay",
+    "label": "Replay",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/replay-active-filled.svg",
+      "inactive": "/icons/replay-inactive.svg"
+    }
+  },
+  {
+    "id": "audio",
+    "label": "Volume",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/audio-active-filled.svg",
+      "inactive": "/icons/audio-inactive.svg"
+    }
+  },
+  {
+    "id": "volume-low",
+    "label": "Quiet volume",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/volume-low-active-filled.svg",
+      "inactive": "/icons/volume-low-inactive.svg"
+    }
+  },
+  {
+    "id": "volume-off",
+    "label": "Muted",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/volume-off-active-filled.svg",
+      "inactive": "/icons/volume-off-inactive.svg"
+    }
+  },
+  {
+    "id": "spectrogram",
+    "label": "Spectrogram",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/spectrogram-active-filled.svg",
+      "inactive": "/icons/spectrogram-inactive.svg"
+    }
+  },
+  {
+    "id": "bar-chart",
+    "label": "Bar chart",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/bar-chart-active-filled.svg",
+      "inactive": "/icons/bar-chart-inactive.svg"
+    }
+  },
+  {
+    "id": "line-chart",
+    "label": "NFE curves",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/line-chart-active-filled.svg",
+      "inactive": "/icons/line-chart-inactive.svg"
+    }
+  },
+  {
+    "id": "sun",
+    "label": "Light mode",
+    "group": "Appearance",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/sun-active-filled.svg",
+      "inactive": "/icons/sun-inactive.svg"
+    }
+  },
+  {
+    "id": "moon",
+    "label": "Dark mode",
+    "group": "Appearance",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/moon-active-filled.svg",
+      "inactive": "/icons/moon-inactive.svg"
+    }
+  },
+  {
+    "id": "cloud",
+    "label": "Cloud",
+    "group": "Appearance",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/cloud-active-filled.svg",
+      "inactive": "/icons/cloud-inactive.svg"
+    }
+  },
+  {
+    "id": "yo",
+    "label": "Yo · Qing's Bot",
+    "group": "Appearance",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/yo-active-filled.svg",
+      "inactive": "/icons/yo-inactive.svg"
+    }
+  },
+  {
+    "id": "sparkle",
+    "label": "Highlight",
+    "group": "Appearance",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/sparkle-active-filled.svg",
+      "inactive": "/icons/sparkle-inactive.svg"
+    }
+  },
+  {
+    "id": "arrow-left",
+    "label": "Back",
+    "group": "Directions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arrow-left-active-filled.svg",
+      "inactive": "/icons/arrow-left-inactive.svg"
+    }
+  },
+  {
+    "id": "arrow-right",
+    "label": "Continue",
+    "group": "Directions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arrow-right-active-filled.svg",
+      "inactive": "/icons/arrow-right-inactive.svg"
+    }
+  },
+  {
+    "id": "arrow-up",
+    "label": "Show less",
+    "group": "Directions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arrow-up-active-filled.svg",
+      "inactive": "/icons/arrow-up-inactive.svg"
+    }
+  },
+  {
+    "id": "arrow-down",
+    "label": "Show more",
+    "group": "Directions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arrow-down-active-filled.svg",
+      "inactive": "/icons/arrow-down-inactive.svg"
+    }
+  }
+]

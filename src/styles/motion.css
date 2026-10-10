@@ -1,0 +1,132 @@
+/* Shared page-motion system: loader, skeleton, entrance machinery.
+   Loaded by BaseLayout for every page. Pages opt into skeletons by adding
+   .sk / [data-sk] to their key blocks and may hook `page:ready` for their
+   own entrance effects. */
+
+/* ---------- page loader ---------- */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: none;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 420ms ease, visibility 0s linear 420ms;
+}
+html.js .page-loader { display: grid; }
+html.is-loading { scrollbar-width: none; }
+html.is-loading::-webkit-scrollbar { display: none; }
+html.is-ready .page-loader { opacity: 0; visibility: hidden; pointer-events: none; }
+html.is-revealed .page-loader { opacity: 0; visibility: hidden; }
+
+.page-loader-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 240ms ease, transform 320ms ease;
+}
+html.is-ready .page-loader-inner { opacity: 0; transform: translateY(-8px) scale(.96); }
+.page-loader-wordmark {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: .08em;
+  color: #6b7a90;
+}
+.page-loader-bar {
+  display: block;
+  width: 172px;
+  height: 4px;
+  margin-top: 16px;
+}
+.page-loader-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #d1d7df;
+}
+.page-loader-fill {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: #2f68c4;
+  animation: loader-bar 1.1s ease-in-out infinite;
+}
+html.is-ready .page-loader-fill { animation-play-state: paused; }
+@keyframes loader-bar { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+
+/* ---------- scroll-triggered fade-in: demo section blocks ---------- */
+/* PaperLayout assigns .is-revealed through an IntersectionObserver as each
+   block first enters the viewport; the observer pre-reveals slightly early
+   via its bottom rootMargin and force-reveals everything as a safety net. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .rsb-fade:not(.is-revealed),
+  html.js .cof-fade:not(.is-revealed) { opacity: 0; }
+  html.js .rsb-fade.is-revealed,
+  html.js .cof-fade.is-revealed {
+    opacity: 1;
+    transition: opacity 560ms ease;
+  }
+}
+
+/* Reveal in horizontal rows. Delays are assigned from each row's document y-position. */
+.page-reveal-row { opacity: 0; transform: translateY(14px); }
+html.is-revealing .page-reveal-row {
+  animation: page-row-rise-in 480ms cubic-bezier(.2,.72,.25,1) var(--page-reveal-delay, 0ms) both !important;
+}
+html.is-revealed .page-reveal-row {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+@keyframes page-row-rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- skeleton blobs: only while html.is-loading (js-gated) ---------- */
+html.is-loading :is(.sk,[data-sk]){position:relative}
+html.is-loading :is(.sk,[data-sk])::after{
+  content:"";position:absolute;inset:-3px -7px;border-radius:10px;
+  background:linear-gradient(100deg,
+    var(--motion-skim,rgba(44,82,130,.06)) 32%,
+    var(--motion-skim-strong,rgba(44,82,130,.14)) 50%,
+    var(--motion-skim,rgba(44,82,130,.06)) 68%);
+  background-size:220% 100%;
+  animation:sk-shimmer 1.1s linear infinite;
+  pointer-events:none;
+}
+html.is-loading .avatar.sk::after,html.is-loading [data-sk~="round"]::after{inset:0;border-radius:16px}
+html.is-loading .chip.sk::after,html.is-loading [data-sk~="pill"]::after{inset:-3px -2px;border-radius:999px}
+@keyframes sk-shimmer{from{background-position:220% 0}to{background-position:-220% 0}}
+
+/* ---------- shared jelly entrance ---------- */
+@keyframes jelly-in{
+  0%{opacity:0;transform:scale(.7)}
+  55%{opacity:1;transform:scale(1.06)}
+  78%{transform:scale(.98)}
+  100%{opacity:1;transform:scale(1)}
+}
+
+/* ---------- reduced motion: static loading bar, instant entrances ---------- */
+@media (prefers-reduced-motion: reduce){
+  html.js .page-loader, .page-loader-inner { transition: none; }
+  .page-loader-fill { animation: none; transform: translateX(75%); }
+  html.is-revealing .page-reveal-row { animation: none !important; opacity: 1 !important; transform: none !important; }
+  html.is-loading :is(.sk,[data-sk])::after{animation:none}
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important}
+}

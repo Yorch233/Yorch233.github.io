@@ -1,0 +1,147 @@
+---
+/* Static Yo artwork shares the latest homepage geometry and toy finish.
+   Inline SVG with unique paint IDs; no client JavaScript. */
+import { YO_BOX } from '../lib/yo-fluff.js';
+import { yoLogoArtwork } from '../lib/yo-logo.js';
+interface Props {
+	form?: 'blue' | 'fluffy';
+	/** Any CSS length for the rendered width; defaults to 100% of container. */
+	size?: string;
+	/** idle = Dots eyes; happy = smiling arcs. */
+	mood?: 'idle' | 'happy';
+	/** Freeze all idle motion (logo / favicon use). */
+	static?: boolean;
+	/** Hover/press jelly squish. No cursor change — nothing is clickable. */
+	interactive?: boolean;
+	/** Accessible label. Omit for purely decorative instances. */
+	label?: string;
+	class?: string;
+}
+
+const {
+	form = 'fluffy',
+	size,
+	mood = 'idle',
+	static: isStatic = false,
+	interactive = false,
+	label,
+	class: className
+} = Astro.props;
+
+/* Per-instance suffix for gradient/filter ids so several Yos can share a page. */
+const uid = 'yo-' + Math.random().toString(36).slice(2, 6);
+
+---
+
+<svg
+	class:list={['yo', isStatic && 'yo--static', interactive && 'yo--interactive', className]}
+	style={size ? `width:${size}` : undefined}
+	viewBox={YO_BOX.viewBox}
+	role={label ? 'img' : undefined}
+	aria-label={label}
+	aria-hidden={label ? undefined : 'true'}
+	focusable="false"
+	data-yo-brand-form={form}
+	set:html={yoLogoArtwork(uid, mood, form)}
+>
+</svg>
+
+<style>
+	.yo {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+
+	/* Idle jelly life, pivoting from the ground under the bow. */
+	.yo :global(.yo-body) {
+		transform-origin: 100px 174.4px;
+		animation: yo-breathe 4.6s ease-in-out infinite;
+	}
+	.yo :global(.yo-shadow) {
+		transform-origin: 100px 181px;
+		animation: yo-shadow 4.6s ease-in-out infinite;
+	}
+	.yo :global(.yo-eyes) {
+		transform-origin: 100px 114.9px;
+		animation: yo-blink 5.8s infinite;
+	}
+	.yo :global(.yo-pupils) {
+		animation: yo-glance 7.4s ease-in-out infinite;
+	}
+
+	@keyframes yo-breathe {
+		0%,
+		100% {
+			transform: scale(1, 1);
+		}
+		50% {
+			transform: scale(1.02, 0.975);
+		}
+	}
+	@keyframes yo-shadow {
+		0%,
+		100% {
+			transform: scaleX(1);
+			opacity: 0.24;
+		}
+		50% {
+			transform: scaleX(0.93);
+			opacity: 0.17;
+		}
+	}
+	@keyframes yo-blink {
+		0%,
+		91%,
+		96.5%,
+		100% {
+			transform: scaleY(1);
+		}
+		94% {
+			transform: scaleY(0.08);
+		}
+	}
+	/* Small eye movements keep the toy expression alive. */
+	@keyframes yo-glance {
+		0%,
+		100% {
+			transform: translate(0, 0);
+		}
+		38% {
+			transform: translate(1.6px, -1.2px);
+		}
+		64% {
+			transform: translate(-1.2px, 0.8px);
+		}
+	}
+
+	.yo--static :global(:is(.yo-body, .yo-shadow, .yo-eyes, .yo-pupils)) {
+		animation: none;
+	}
+
+	/* Pokeable jelly: springy squish on hover, stretch on press. Same bounce
+	   curve as the site's jelly-in entrance. */
+	.yo--interactive {
+		transform-origin: 50% 92%;
+		transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.yo--interactive:hover {
+		transform: scale(1.045, 0.955);
+	}
+	.yo--interactive:active {
+		transform: scale(0.955, 1.05);
+	}
+
+	/* Idle loops are already frozen by the global reduced-motion rule in
+	   motion.css; only the transition-driven squish needs a local opt-out. */
+	@media (prefers-reduced-motion: reduce) {
+		.yo--interactive {
+			transition: none;
+		}
+		.yo--interactive:hover,
+		.yo--interactive:active {
+			transform: none;
+		}
+	}
+</style>

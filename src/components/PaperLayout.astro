@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FloatingDemoHeader from './FloatingDemoHeader.astro';
+import DemoLinks from './DemoLinks.astro';
+import DemoSectionNav from './DemoSectionNav.astro';
+import DemoReturn from './DemoReturn.astro';
+import SiteFooter from './SiteFooter.astro';
+import { demoGuides } from '../data/demo-guide.js';
+import { YO_LOGO_URL } from '../lib/yo-logo.js';
+import { publications } from '../data/publications.js';
+import '../styles/paper.css';
+
+interface Props {
+  publication: typeof publications[number];
+  resources: Parameters<typeof DemoLinks>[0]['items'];
+  description: string;
+}
+const { publication, resources, description } = Astro.props;
+const paper = publication.slug as 'RSB' | 'CoF';
+const variant = paper.toLowerCase();
+const sections = demoGuides[paper];
+---
+<BaseLayout title={`${publication.title} — Qing Yao`} description={description} bodyClass={`${variant}-body`}>
+  <FloatingDemoHeader title={publication.title} publication={publication.venueFull} titleTarget={`${variant}-title`} resourcesTarget={`${variant}-resources`}>
+    <DemoLinks variant={variant as 'rsb' | 'cof'} items={resources} floating fullTextOnly ariaLabel="Read the full paper" />
+  </FloatingDemoHeader>
+  <DemoSectionNav sections={sections} />
+  <DemoReturn titleTarget={`${variant}-title`} />
+  <main class={`${variant}-page`}>
+    <article class={`${variant}-article`}>
+      <img class={`${variant}-watermark`} src={YO_LOGO_URL} data-yo-logo width="180" height="180" fetchpriority="high" alt="" aria-hidden="true" />
+      <slot />
+    </article>
+    <SiteFooter class="demo-footer" />
+  </main>
+  <slot name="scripts" />
+  <script is:inline>
+    (function () {
+      var targets = Array.prototype.slice.call(document.querySelectorAll('.rsb-fade, .cof-fade'));
+      if (!targets.length) return;
+      var reveal = function (element) { element.classList.add('is-revealed'); };
+      var pending = targets.filter(function (element) { return !element.classList.contains('is-revealed'); });
+      if (!('IntersectionObserver' in window)) {
+        pending.forEach(reveal);
+        return;
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px 12% 0px' });
+      pending.forEach(function (element) { observer.observe(element); });
+      // Safety net: content must never stay hidden if the observer misfires.
+      setTimeout(function () {
+        pending.forEach(function (element) { if (!element.classList.contains('is-revealed')) reveal(element); });
+        observer.disconnect();
+      }, 6000);
+    })();
+  </script>
+</BaseLayout>

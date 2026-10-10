@@ -1,0 +1,63 @@
+---
+import '../styles/floating-header.css';
+interface Props {
+	title: string;
+	publication: string;
+	titleTarget: string;
+	resourcesTarget: string;
+}
+const { title, publication, titleTarget, resourcesTarget } = Astro.props;
+---
+
+<header class="demo-floating-header" aria-label="Paper navigation">
+	<div class="floating-capsule demo-title-capsule" data-source={titleTarget} data-visible="false" inert>
+		<a class="demo-capsule-title" href={`#${titleTarget}`} title={title} aria-label={`Back to title: ${title}`}>
+			<span class="demo-capsule-paper-title">{title}</span>
+			<span class="demo-capsule-publication">{publication}</span>
+		</a>
+	</div>
+	<div class="floating-capsule demo-resources-capsule" data-source={resourcesTarget} data-visible="false" inert>
+		<slot />
+	</div>
+</header>
+
+<script>
+	import '../scripts/home-glass.js';
+	const disposers: Array<() => void> = [];
+	document.querySelectorAll<HTMLElement>('.demo-floating-header [data-source]').forEach((capsule) => {
+		const source = document.getElementById(capsule.dataset.source ?? '');
+		const header = capsule.parentElement;
+		if (!source || !header) return;
+		let observer: IntersectionObserver | undefined;
+		const observeSource = () => {
+			observer?.disconnect();
+			// Treat the fixed capsule's footprint as the top of the reading area.
+			// This also keeps links reachable on short papers in tall windows.
+			const topBoundary = capsule.offsetTop + capsule.offsetHeight + header.getBoundingClientRect().top + 8;
+			observer = new IntersectionObserver(([entry]) => {
+				// Sources below the viewport must not trigger a floating copy.
+				const visible = !entry.isIntersecting && entry.boundingClientRect.bottom < topBoundary;
+				if (!visible && capsule.contains(document.activeElement)) {
+					(source.querySelector<HTMLElement>('a') ?? source).focus({ preventScroll: true });
+				}
+				capsule.dataset.visible = String(visible);
+				capsule.inert = !visible;
+			}, {
+				threshold: 0,
+				// Keep anchor jumps observable even when they skip the viewport.
+				rootMargin: `-${topBoundary}px 0px ${document.documentElement.scrollHeight}px 0px`
+			});
+			observer.observe(source);
+		};
+		const sizeObserver = new ResizeObserver(observeSource);
+		sizeObserver.observe(header);
+		// Disconnect the latest observer, including replacements after reflow.
+		disposers.push(() => {
+			observer?.disconnect();
+			sizeObserver.disconnect();
+		});
+	});
+	const dispose = () => disposers.forEach(disposeObserver => disposeObserver());
+	document.addEventListener('astro:before-swap', dispose, { once: true });
+	window.addEventListener('pagehide', (event) => { if (!event.persisted) dispose(); }, { once: true });
+</script>

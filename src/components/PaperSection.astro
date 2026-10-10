@@ -1,0 +1,16 @@
+---
+import SectionHead from './SectionHead.astro';
+interface Props {
+  variant: 'rsb' | 'cof';
+  headingId: string;
+  label: string;
+  id?: string;
+  separated?: boolean;
+  class?: string;
+}
+const { variant, headingId, label, id, separated = true, class: className } = Astro.props;
+---
+<section id={id} class:list={[`${variant}-section`, { [`${variant}-section-separated`]: separated }, className]} aria-labelledby={headingId}>
+  <SectionHead variant={variant} id={headingId} label={label} />
+  <slot />
+</section>

@@ -1,0 +1,52 @@
+.home-ref .timeline-heading {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin-bottom: 28px;
+}
+.home-ref .timeline-heading h3 {
+  margin: 0; color: var(--ink); font: 800 var(--text-3)/1.3 var(--display);
+}
+.home-ref .timeline-heading > span {
+  color: var(--muted); font-size: var(--text-1);
+}
+.home-ref .timeline-list { margin: 0; padding: 0; list-style: none; }
+.home-ref .meet-card .timeline-item {
+  position: relative; display: grid; grid-template-columns: 104px 24px minmax(0, 1fr);
+  column-gap: 16px; margin: 0; padding: 0 0 36px; border: 0;
+}
+.home-ref .meet-card .timeline-item + .timeline-item { margin: 0; padding-top: 0; border: 0; }
+.home-ref .timeline-item::before {
+  content: ''; position: absolute; top: 12px; bottom: -12px; left: 131px; width: 2px;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.home-ref .timeline-item:last-child { padding-bottom: 0; }
+.home-ref .timeline-item:last-child::before { display: none; }
+.home-ref .timeline-date {
+  padding-top: 2px; color: var(--muted); font-size: var(--text-1);
+  font-weight: 600; line-height: 1.6; font-variant-numeric: tabular-nums;
+}
+.home-ref .timeline-marker {
+  z-index: 1; justify-self: center; width: 10px; height: 10px; margin-top: 7px;
+  border: 2px solid var(--accent); border-radius: 50%; background: var(--surface);
+}
+.home-ref .timeline-item.is-latest .timeline-marker {
+  background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.home-ref .timeline-item.is-latest .timeline-date { color: var(--accent); }
+.home-ref .timeline-content { min-width: 0; }
+.home-ref .timeline-content p { max-width: 62ch; }
+.home-ref .timeline-latest {
+  display: inline-block; margin: 0 0 8px; color: var(--accent);
+  font-size: var(--text-1); font-weight: 600; line-height: 1.6;
+}
+@media (max-width: 720px) {
+  .home-ref .timeline-heading { margin-bottom: 24px; }
+  .home-ref .timeline-heading h3 { font-size: 20px; }
+  .home-ref .timeline-heading > span { font-size: 12px; }
+  .home-ref .meet-card .timeline-item { grid-template-columns: 20px minmax(0, 1fr); column-gap: 14px; padding-bottom: 28px; }
+  .home-ref .timeline-item::before { left: 9px; }
+  .home-ref .timeline-marker { grid-column: 1; grid-row: 1 / 3; }
+  .home-ref .timeline-date { grid-column: 2; grid-row: 1; margin-bottom: 8px; font-size: 14px; }
+  .home-ref .timeline-content { grid-column: 2; grid-row: 2; }
+  .home-ref .timeline-latest { font-size: 13px; margin-bottom: 6px; }
+  .home-ref .timeline-item:last-child { padding-bottom: 0; }
+}

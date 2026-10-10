@@ -1,0 +1,39 @@
+/* Color and silhouette communicate state; SVG geometry is shared across routes. */
+:root {
+ --ui-icon-active: #3189f5;
+ --ui-icon-secondary: #bfdfff;
+ --ui-icon-inactive: #8591a3;
+}
+html[data-theme=dark] { --ui-icon-active: #80b8ff; --ui-icon-secondary: #44698e; --ui-icon-inactive: #9caec5; }
+svg.ui-icon {
+ vertical-align: middle; flex-shrink: 0;
+ width: 20px; height: 20px; fill: none; stroke: none;
+ transition: color 160ms ease;
+}
+svg.ui-icon.icon[data-icon] { color: var(--ui-icon-inactive); }
+.ui-icon > g { fill: currentColor; stroke: none; }
+.ui-icon[data-icon=cube] { --ui-icon-secondary: #e1dcff; }
+.ui-icon[data-icon=nodes] { --ui-icon-secondary: #c6ece9; }
+.ui-icon[data-icon=layers] { --ui-icon-secondary: #f5dfc6; }
+html[data-theme=dark] .ui-icon[data-icon=cube] { --ui-icon-secondary: #635c90; }
+html[data-theme=dark] .ui-icon[data-icon=nodes] { --ui-icon-secondary: #3d797c; }
+html[data-theme=dark] .ui-icon[data-icon=layers] { --ui-icon-secondary: #8d684c; }
+.ui-icon__filled { display: none; }
+svg.ui-icon.icon[data-state=active],
+:is(a, button):is([aria-current], [aria-pressed=true], [aria-expanded=true], .is-copied) .ui-icon[data-state=auto] {
+ color: var(--ui-icon-active);
+}
+.ui-icon[data-state=active] > .ui-icon__line,
+:is(a, button):is([aria-current], [aria-pressed=true], [aria-expanded=true], .is-copied) .ui-icon[data-state=auto] > .ui-icon__line { display: none; }
+.ui-icon[data-state=active] > .ui-icon__filled,
+:is(a, button):is([aria-current], [aria-pressed=true], [aria-expanded=true], .is-copied) .ui-icon[data-state=auto] > .ui-icon__filled { display: inline; }
+:is(a, button):focus-visible .ui-icon[data-state=auto] { color: var(--ui-icon-active); }
+@media (hover: hover) {
+ :is(a, button):hover .ui-icon[data-state=auto] { color: var(--ui-icon-active); }
+}
+/* Inverse icons remain legible on the homepage's solid blue primary action. */
+svg.ui-icon[data-tone=inverse] { color: inherit !important; }
+svg.ui-icon[data-tone=inverse] { --ui-icon-secondary: #c1e0ff; }
+/* Playback controls use a single gray fill in every playback state. */
+svg.ui-icon[data-tone=muted] { color: var(--ui-icon-inactive) !important; --ui-icon-secondary: currentColor; }
+@media (prefers-reduced-motion: reduce) { svg.ui-icon.icon[data-icon] { transition: none; } }

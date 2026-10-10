@@ -26,10 +26,15 @@ Requirements:
 npm install
 npm run dev
 npm run check
+npm run lint
+npm run test:unit
+npm run test:e2e
 npm run build
 npm run preview
-npm run verify:runtime
 ```
+
+The Playwright suite builds the site and checks the production preview;
+use `npm run test:e2e:dev` to iterate against the dev server instead.
 
 Regenerate Opus previews and static spectrograms after adding or replacing WAV
 files:

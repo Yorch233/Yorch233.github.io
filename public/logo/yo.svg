@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="23.56 37.35 152.89 152.89">
+<defs>
+	<filter id="yo-logo-goo" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+		<feGaussianBlur in="SourceGraphic" stdDeviation="4" result="joined" />
+		<feColorMatrix in="joined" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="cloud" />
+		<feGaussianBlur in="cloud" stdDeviation="7" result="height" />
+		<feDiffuseLighting in="height" surfaceScale="4" diffuseConstant="1" lighting-color="#e8f3ff" result="light">
+			<feDistantLight azimuth="225" elevation="48" />
+		</feDiffuseLighting>
+		<feComposite in="cloud" in2="light" operator="arithmetic" k1=".28" k2=".80" k3="0" k4="0" result="lit" />
+		<feComposite in="lit" in2="cloud" operator="in" />
+	</filter>
+	<radialGradient id="yo-logo-body" cx="34%" cy="24%" r="78%">
+		<stop offset="0" stop-color="#98d8ff" />
+		<stop offset=".30" stop-color="#69bcff" />
+		<stop offset=".62" stop-color="#4197f1" />
+		<stop offset=".84" stop-color="#337bdc" />
+		<stop offset="1" stop-color="#3062bc" />
+	</radialGradient>
+	<radialGradient id="yo-logo-dome" cx="32%" cy="22%" r="82%">
+		<stop offset="0" stop-color="#a1ddff" />
+		<stop offset=".34" stop-color="#73c4ff" />
+		<stop offset=".68" stop-color="#489ef5" />
+		<stop offset="1" stop-color="#357bd5" />
+	</radialGradient>
+	<radialGradient id="yo-logo-eye" cx="30%" cy="24%" r="75%">
+		<stop offset="0" stop-color="#303239" /><stop offset="1" stop-color="#1c1e24" />
+	</radialGradient>
+	<radialGradient id="yo-logo-shadow">
+		<stop offset="0" stop-color="#5275a7" /><stop offset="1" stop-color="#5275a7" stop-opacity="0" />
+	</radialGradient>
+	<linearGradient id="yo-logo-bow" x2="0" y2="1">
+		<stop offset="0" stop-color="#44464a" /><stop offset=".4" stop-color="#292b2e" /><stop offset="1" stop-color="#18191b" />
+	</linearGradient>
+</defs>
+<ellipse class="yo-shadow" cx="100" cy="181" rx="58" ry="9" fill="url(#yo-logo-shadow)" opacity=".24" />
+<g class="yo-body" filter="url(#yo-logo-goo)" fill="url(#yo-logo-body)">
+	<circle cx="100" cy="126" r="42" />
+	<circle cx="58" cy="96" r="24" fill="url(#yo-logo-dome)" />
+	<circle cx="96" cy="76" r="28" fill="url(#yo-logo-dome)" />
+	<circle cx="136" cy="92" r="25" fill="url(#yo-logo-dome)" />
+	<circle cx="44" cy="130" r="17" fill="url(#yo-logo-dome)" />
+	<circle cx="158" cy="126" r="17" fill="url(#yo-logo-dome)" />
+</g>
+<g transform="translate(0 -10)">
+	<path d="M95 124 Q100 119 105 124" fill="none" stroke="#222326" stroke-width="2.8" stroke-linecap="round" />
+	<circle cx="78" cy="124.9" r="17" fill="#fff" fill-opacity=".05" stroke="#222326" stroke-width="3.2" />
+	<circle cx="122" cy="124.9" r="17" fill="#fff" fill-opacity=".05" stroke="#222326" stroke-width="3.2" />
+	<path d="M61 124 L56 122 M139 124 L144 122" fill="none" stroke="#222326" stroke-width="2.8" stroke-linecap="round" />
+	<g class="yo-eyes">
+		<g class="yo-pupils"><ellipse cx="78" cy="124.9" rx="5.2" ry="8.2" fill="url(#yo-logo-eye)" /><ellipse cx="122" cy="124.9" rx="5.2" ry="8.2" fill="url(#yo-logo-eye)" /></g>
+	</g>
+</g>
+<g transform="translate(0 -24.9)" fill="url(#yo-logo-bow)">
+	<path d="M 96.5 177.9 Q 81.5 166.9 72.5 171.4 Q 70 177.9 72.5 184.4 Q 81.5 188.9 96.5 177.9 Z" /><path d="M 103.5 177.9 Q 118.5 166.9 127.5 171.4 Q 130 177.9 127.5 184.4 Q 118.5 188.9 103.5 177.9 Z" />
+	<rect x="93" y="171.4" width="14" height="13" rx="4" />
+</g>
+</svg>

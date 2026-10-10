@@ -1,0 +1,42 @@
+/* A first-visit hello, using the same living Fluffy as the floating companion. */
+html:has(body.home-ref) { scrollbar-gutter: stable; }
+.home-ref .meet[data-welcoming=true] .meet-yo { visibility: hidden; }
+.home-ref .yo-welcome {
+  width: min(460px, calc(100vw - 32px)); max-width: none;
+  max-height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  padding: 0; border: 0; border-radius: 36px; overflow: visible;
+  color: var(--ink); background: #fff;
+  box-shadow: 0 24px 80px -28px rgb(45 69 107 / .3);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.home-ref .yo-welcome::backdrop { background: rgb(43 65 96 / .18); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.home-ref .yo-welcome-scroll { max-height: inherit; padding: 20px 40px 26px; overflow-y: auto; overscroll-behavior: contain; border-radius: inherit; text-align: center; }
+.home-ref .yo-welcome-cloud { width: 216px; max-width: 100%; margin: -4px auto 0; }
+.home-ref .yo-welcome h2 { margin: 0 0 12px; font: 800 40px/1.1 var(--display); letter-spacing: -.035em; }
+.home-ref #yo-welcome-description { margin: 0; color: var(--muted); font: 400 15px/1.7 var(--sans); text-wrap: pretty; }
+.home-ref .yo-welcome-note { min-height: 18px; margin: 8px 0 16px; color: var(--muted); font: 500 12px/1.5 var(--sans); }
+.home-ref .yo-welcome-explore { width: 100%; min-height: 48px; justify-content: center; font-size: 15px; gap: 20px; }
+.home-ref .yo-welcome-skip { border: 0; background: transparent; color: var(--muted); font: 500 12px/1.5 var(--sans); min-height: 44px; padding: 10px 8px; border-radius: 12px; }
+.home-ref .yo-welcome-skip { margin-top: 4px; text-decoration: underline; text-underline-offset: 4px; }
+.home-ref .yo-welcome-skip:hover { color: var(--accent-deep); }
+.home-ref .yo-welcome-close { position: absolute; z-index: 1; top: 10px; right: 10px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font: 300 28px/1 var(--sans); }
+.home-ref .yo-welcome-close:hover { background: rgb(125 157 206 / .1); color: var(--ink); }
+html[data-theme=dark] .home-ref .yo-welcome { background: #1b293d; box-shadow: 0 24px 80px -28px rgb(0 0 0 / .55); }
+html[data-theme=dark] .home-ref .yo-welcome::backdrop { background: rgb(4 11 23 / .45); }
+@media (max-width: 480px) {
+  .home-ref .yo-welcome { border-radius: 28px; }
+  .home-ref .yo-welcome-scroll { padding: 18px 24px 14px; }
+  .home-ref .yo-welcome-cloud { width: 156px; }
+  .home-ref .yo-welcome h2 { font-size: 32px; }
+  .home-ref .yo-welcome-note { margin: 8px 0 16px; }
+  .home-ref #yo-welcome-description { font-size: 14px; }
+}
+@media (max-height: 480px) and (min-width: 540px) {
+  .home-ref .yo-welcome { width: min(640px, calc(100vw - 32px)); }
+  .home-ref .yo-welcome-scroll { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; align-items: center; padding: 28px; }
+  .home-ref .yo-welcome-cloud { width: 150px; }
+  .home-ref .yo-welcome h2 { font-size: 32px; }
+  .home-ref #yo-welcome-description { font-size: 13px; line-height: 1.6; }
+  .home-ref .yo-welcome-note { margin: 8px 0 12px; }
+}
+@media print { .home-ref .yo-welcome { display: none; } }

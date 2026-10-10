@@ -1,0 +1,17 @@
+.yo-cloud {
+	position: relative; display: block; padding: 0; border: 0; background: transparent; color: inherit;
+	width: 100%;
+	aspect-ratio: 1;
+	border-radius: 32%;
+	-webkit-tap-highlight-color: transparent;
+}
+.yo-cloud { cursor: grab; }
+.yo-cloud:active { cursor: grabbing; }
+.yo-cloud:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.yo-cloud-stage { display: block; width: 100%; height: 100%; overflow: visible; }
+.yo-cloud[data-peek=true] { cursor: pointer; border-radius: 28px 28px 0 0; }
+.yo-cloud[data-peek=true]:focus-visible { outline-offset: -2px; }
+.yo-cloud[data-peek=true] .yo-cloud-stage { overflow: hidden; }
+.yo-cloud[data-peek=true] .yo-cloud-paw,
+.yo-cloud[data-peek=true] .yo-cloud-stage > ellipse { display: none; }
+.yo-peek-hi { position: absolute; right: calc(100% - 56px); bottom: calc(100% - 16px); display: grid; place-items: center; min-width: 48px; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border-radius: 22px 22px 6px 22px; background: #fff; color: #5e7595; box-shadow: 0 8px 24px -10px rgb(38 74 118 / .22); font: 700 16px/1.4 var(--sans); }

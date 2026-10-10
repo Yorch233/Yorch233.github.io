@@ -1,0 +1,53 @@
+/* A single meniscus edge, separate from the refracted backdrop. The center
+   remains transparent; highlights and shade vary around the rounded rim. */
+:root {
+	--glass-rim-light: rgb(255 255 255 / .9);
+	--glass-rim-faint: rgb(255 255 255 / .25);
+	--glass-rim-shade: rgb(88 100 117 / .24);
+}
+html[data-theme=dark] .home-ref {
+	--glass-rim-light: rgb(229 241 255 / .48);
+	--glass-rim-faint: rgb(229 241 255 / .1);
+	--glass-rim-shade: rgb(6 13 24 / .38);
+}
+.home-ref .floating-capsule::after,
+.demo-floating-header > .floating-capsule::after,
+.demo-return > .floating-capsule::after,
+.demo-section-toggle.floating-capsule::after,
+.home-ref .home-nav-glass::after {
+	content: '';
+	display: block;
+	position: absolute;
+	/* The rim hugs the true border edge; see the capsule surface note. */
+	inset: -1px;
+	z-index: 1;
+	border-radius: inherit;
+	pointer-events: none;
+	opacity: var(--glass-rim-opacity, 1);
+	box-shadow: inset 0 0 0 1px var(--glass-rim-shade);
+}
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+	.home-ref .floating-capsule::after,
+	.demo-floating-header > .floating-capsule::after,
+	.demo-return > .floating-capsule::after,
+	.demo-section-toggle.floating-capsule::after,
+	.home-ref .home-nav-glass::after {
+		padding: 1px;
+		background: linear-gradient(150deg,
+			var(--glass-rim-light) 0%, var(--glass-rim-faint) 18%,
+			var(--glass-rim-shade) 34%, var(--glass-rim-light) 52%,
+			var(--glass-rim-shade) 72%, var(--glass-rim-light) 88%,
+			var(--glass-rim-faint) 100%);
+		-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		-webkit-mask-composite: xor;
+		mask-composite: exclude;
+		box-shadow: none;
+	}
+}
+/* The nav glass is inset in its own shell and has no reserved border ring. */
+.home-ref .home-nav-glass::after { inset: 0; }
+@media print {
+	.home-ref :is(.floating-capsule, .home-nav-glass)::after,
+	.demo-floating-header > .floating-capsule::after { display: none; }
+}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import UiIcon from './UiIcon.jsx';
 
 const audioResourceCache = new Map();
 const waveformDataCache = new Map();
@@ -155,11 +156,15 @@ const useWaveformWorker = () => {
 
 function SpectrogramImage({ src, alt, comparing = true, magnifierEnabled = false, magnifierPosition = null, magnification = 1.5, onMagnifierMove }) {
 	const frameRef = useRef(null);
+	const imageRef = useRef(null);
 	const [loaded, setLoaded] = useState(false);
 	const [frameSize, setFrameSize] = useState({ width: 0, height: 0 });
 
 	useEffect(() => {
-		setLoaded(false);
+		/* A local or cached image can fire load before this effect runs.
+		   Read the current image instead of resetting a completed load. */
+		const image = imageRef.current;
+		setLoaded(Boolean(image?.complete && image.naturalWidth > 0));
 	}, [src]);
 
 	useEffect(() => {
@@ -198,7 +203,7 @@ function SpectrogramImage({ src, alt, comparing = true, magnifierEnabled = false
 			onMouseLeave={() => onMagnifierMove?.(null)}
 		>
 			{comparing ? (
-				<img class="spectrogram-canvas" src={src} alt={alt} onLoad={() => setLoaded(true)} decoding="async" />
+				<img key={src} ref={imageRef} class="spectrogram-canvas" src={src} alt={alt} onLoad={() => setLoaded(true)} decoding="async" />
 			) : (
 				<span class="spectrogram-placeholder">Select a method</span>
 			)}
@@ -239,9 +244,9 @@ function AxisTicks({ duration, prefix }) {
 	);
 }
 
-function SpectrogramSide({ src, alt, duration, prefix, comparing = true, magnifierEnabled = false, magnifierPosition = null, magnification = 1.5, onMagnifierMove }) {
+function SpectrogramSide({ src, alt, label, duration, prefix, comparing = true, magnifierEnabled = false, magnifierPosition = null, magnification = 1.5, onMagnifierMove }) {
 	return (
-		<div class="spectrogram-side">
+		<div class="spectrogram-side" data-label={label}>
 			<SpectrogramImage
 				src={src}
 				alt={alt}
@@ -280,6 +285,7 @@ function SynchronizedSpectrogram({ measurementSrc, comparisonSrc, sampleName, se
 			<div class="spectrogram-row">
 				<SpectrogramSide
 					src={measurementSrc}
+					label="Measurement"
 					alt={`Measurement spectrogram for ${sampleName}`}
 					duration={duration}
 					prefix="left"
@@ -291,6 +297,7 @@ function SynchronizedSpectrogram({ measurementSrc, comparisonSrc, sampleName, se
 				<div class="spectrogram-gap" />
 				<SpectrogramSide
 					src={comparisonSrc}
+					label={comparing ? selectedLabel : 'Select a method'}
 					alt={`${selectedLabel} spectrogram for ${sampleName}`}
 					duration={duration}
 					prefix="right"
@@ -450,7 +457,9 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 	useEffect(() => {
 		const audio = audioRef.current;
 		const source = resources[selectedMethod]?.objectUrl;
-		if (!audio || !source) return;
+		// Loading another method or adjusting volume must not reset the
+		// selected source or consume its pending playback twice.
+		if (!audio || !source || audio.src === source) return;
 		audio.pause();
 		audio.src = source;
 		audio.load();
@@ -522,7 +531,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 		tooltipTimerRef.current = window.setTimeout(() => {
 			setTooltip({
 				text: methodTooltips[method] || methods.find((item) => item.key === method)?.description || '',
-				x: Math.min(window.innerWidth - 330, Math.max(12, rect.left)),
+				x: Math.min(window.innerWidth - Math.min(320, window.innerWidth - 24) - 12, Math.max(12, rect.left)),
 				y: rect.bottom + 8
 			});
 		}, 1000);
@@ -546,7 +555,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 		context.setTransform(dpr, 0, 0, dpr, 0, 0);
 		context.clearRect(0, 0, width, height);
 
-		const labelPad = 28;
+		const labelPad = 34;
 		const topPad = 10;
 		const bottomPad = 10;
 		const drawableWidth = width - labelPad;
@@ -616,7 +625,8 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 		drawPair(true);
 		context.restore();
 
-		context.font = '10px "Times New Roman", serif';
+		const canvasStyle = getComputedStyle(canvas);
+		context.font = `${canvasStyle.getPropertyValue('--text-1').trim() || '13px'} ${canvasStyle.fontFamily}`;
 		context.textAlign = 'right';
 		context.textBaseline = 'middle';
 		context.fillStyle = 'rgba(100, 116, 139, 0.9)';
@@ -631,7 +641,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 
 	useEffect(() => {
 		drawWaveform();
-	}, [drawWaveform]);
+	}, [drawWaveform, viewMode]);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
@@ -639,7 +649,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 		const observer = new ResizeObserver(drawWaveform);
 		observer.observe(canvas);
 		return () => observer.disconnect();
-	}, [drawWaveform]);
+	}, [drawWaveform, viewMode]);
 
 	const seek = (value) => {
 		const next = Number(value);
@@ -649,14 +659,17 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 	};
 
 	const handleProgressMove = (event) => {
-		const rect = event.currentTarget.getBoundingClientRect();
-		const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
-		setProgressHover({ left: ratio * rect.width, time: ratio * duration });
+		const track = event.currentTarget;
+		const rect = track.getBoundingClientRect();
+		const thumbRadius = (Number.parseFloat(getComputedStyle(track).getPropertyValue('--progress-thumb-size')) || 18) / 2;
+		const travel = Math.max(1, rect.width - thumbRadius * 2);
+		const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left - thumbRadius) / travel));
+		setProgressHover({ left: thumbRadius + ratio * travel, time: ratio * duration });
 	};
 
 	const handleLegendClick = (legend) => setPinnedLegend((current) => (current === legend ? null : legend));
-	const playIcon = hasEnded ? '/logo/reload.svg' : isPlaying ? '/logo/player-pause.svg' : '/logo/player-play.svg';
-	const volumeIcon = volume <= 0 ? '/logo/volume-off.svg' : volume < 100 ? '/logo/volume-2.svg' : '/logo/volume.svg';
+	const playIcon = hasEnded ? 'replay' : isPlaying ? 'pause' : 'play';
+	const volumeIcon = volume <= 0 ? 'volume-off' : volume < 100 ? 'volume-low' : 'audio';
 	const statusText = waveformStatus === 'error' ? waveformError || 'Load failed' : '';
 
 	return (
@@ -689,6 +702,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 									isPlaying && playingMethod === method.key ? ' playing' : ''
 								}`}
 								style={{ '--method-color': methodColors[method.key] }}
+								aria-pressed={selectedMethod === method.key}
 								onClick={() => handleMethodClick(method.key)}
 							>
 								<span class="chip-dot" aria-hidden="true" />
@@ -697,7 +711,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 									<span class="chip-spinner" aria-hidden="true" />
 								) : (
 									<span class="chip-action" aria-hidden="true">
-										<img class="icon-img" src={isPlaying && playingMethod === method.key ? '/logo/player-pause.svg' : '/logo/player-play.svg'} alt="" />
+										<UiIcon id={isPlaying && playingMethod === method.key ? 'pause' : 'play'} state="active" tone="muted" />
 									</span>
 								)}
 							</button>
@@ -715,6 +729,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 										isPlaying && playingMethod === method.key ? ' playing' : ''
 									}`}
 									style={{ '--method-color': methodColors[method.key] }}
+									aria-pressed={selectedMethod === method.key}
 									onClick={() => handleMethodClick(method.key)}
 								>
 									<span class="chip-dot" aria-hidden="true" />
@@ -723,7 +738,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 										<span class="chip-spinner" aria-hidden="true" />
 									) : (
 										<span class="chip-action" aria-hidden="true">
-											<img class="icon-img" src={isPlaying && playingMethod === method.key ? '/logo/player-pause.svg' : '/logo/player-play.svg'} alt="" />
+											<UiIcon id={isPlaying && playingMethod === method.key ? 'pause' : 'play'} state="active" tone="muted" />
 										</span>
 									)}
 								</button>
@@ -742,8 +757,9 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 			<div class="wave-panel">
 				<div class="wave-panel-header">
 					<div class="wave-panel-title">
-						<span
+						<button type="button"
 							class="legend-item"
+							aria-pressed={pinnedLegend === 'measurement'}
 							style={{ opacity: activeLegend === 'compare' ? 0.1 : 1 }}
 							onMouseEnter={() => setHoveredLegend('measurement')}
 							onMouseLeave={() => setHoveredLegend(null)}
@@ -751,10 +767,11 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 						>
 							<span class="legend-swatch" style={{ background: methodColors.Measurement }} />
 							Measurement
-						</span>
+						</button>
 						{comparing && (
-							<span
+							<button type="button"
 								class="legend-item"
+								aria-pressed={pinnedLegend === 'compare'}
 								style={{ opacity: activeLegend === 'measurement' ? 0.1 : 1 }}
 								onMouseEnter={() => setHoveredLegend('compare')}
 								onMouseLeave={() => setHoveredLegend(null)}
@@ -762,7 +779,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 							>
 								<span class="legend-swatch" style={{ background: methodColors[selectedMethod] || '#0a84ff' }} />
 								{selectedLabel}
-							</span>
+							</button>
 						)}
 					</div>
 					<div class="wave-panel-actions">
@@ -773,15 +790,15 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 							aria-label={`Download ${selectedLabel} WAV`}
 							title="Download WAV"
 						>
-							<img src="/logo/download.svg" alt="" aria-hidden="true" />
+							<UiIcon id="download" />
 							<span>{selectedLabel}</span>
 						</a>
-						<div class="view-toggle" role="group" aria-label="Visualization mode">
-							<button type="button" class={`view-toggle-btn${viewMode === 'waveform' ? ' active' : ''}`} onClick={() => setViewMode('waveform')}>
-								Waveform
+						<div class={`view-toggle${viewMode === 'spectrogram' ? ' view-toggle--spectrogram' : ''}`} role="group" aria-label="Visualization mode">
+							<button type="button" aria-pressed={viewMode === 'waveform'} class={`view-toggle-btn${viewMode === 'waveform' ? ' active' : ''}`} onClick={() => setViewMode('waveform')}>
+								<UiIcon id="wave" />Waveform
 							</button>
-							<button type="button" class={`view-toggle-btn${viewMode === 'spectrogram' ? ' active' : ''}`} onClick={() => setViewMode('spectrogram')}>
-								Spectrogram
+							<button type="button" aria-pressed={viewMode === 'spectrogram'} class={`view-toggle-btn${viewMode === 'spectrogram' ? ' active' : ''}`} onClick={() => setViewMode('spectrogram')}>
+								<UiIcon id="spectrogram" />Spectrogram
 							</button>
 						</div>
 						{statusText && <span class="wave-status wave-status-error">{statusText}</span>}
@@ -841,6 +858,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 											key={value}
 											type="button"
 											class={`spectrogram-magnification-option${spectrogramMagnification === value ? ' active' : ''}`}
+											aria-pressed={spectrogramMagnification === value}
 											onClick={() => setSpectrogramMagnification(value)}
 										>
 											{value}×
@@ -854,10 +872,10 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 
 				<div class="progress-row">
 					<button type="button" class="progress-play" onClick={togglePlayback} aria-label={hasEnded ? 'Replay' : isPlaying ? 'Pause' : 'Play'}>
-						<img class="icon-img" src={playIcon} alt="" />
+						<UiIcon id={playIcon} state="active" tone="muted" />
 					</button>
 					<span class="time-label">{formatTime(currentTime)}</span>
-					<div class={`progress-track${progressHover ? ' progress-track-hover' : ''}`} onMouseMove={handleProgressMove} onMouseLeave={() => setProgressHover(null)}>
+					<div class={`progress-track${progressHover ? ' progress-track-hover' : ''}`} style={{ '--playback-progress': `${progressPercent}%` }} onMouseMove={handleProgressMove} onMouseLeave={() => setProgressHover(null)}>
 						<input
 							class="progress-bar"
 							type="range"
@@ -865,9 +883,6 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 							max={duration || 0}
 							step="0.01"
 							value={currentTime}
-							style={{
-								background: `linear-gradient(90deg, #0a84ff 0%, #0a84ff ${progressPercent}%, #e2e8f0 ${progressPercent}%, #e2e8f0 100%)`
-							}}
 							onInput={(event) => seek(event.currentTarget.value)}
 							aria-label="Playback position"
 						/>
@@ -880,7 +895,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath }) {
 					<span class="time-label">-{formatTime(remainingTime)}</span>
 					<div class="volume-control">
 						<button type="button" class="volume-button" aria-label={volume <= 0 ? 'Mute' : 'Volume'}>
-							<img class="icon-img" src={volumeIcon} alt="" />
+							<UiIcon id={volumeIcon} />
 						</button>
 						<div class="volume-popover">
 							<div class="volume-label">{Math.round(volume)}</div>
@@ -1012,8 +1027,8 @@ function DatasetGroup({ id, index, name, task, description, tone, samples, metho
 					<button type="button" class="rsb-nav-btn" disabled={showAll} onClick={() => go(-1)}>
 						Previous
 					</button>
-					<button type="button" class="rsb-show-more" onClick={() => setShowAll((current) => !current)}>
-						{showAll ? 'Hidden' : 'Show More'}
+					<button type="button" class="rsb-show-more" data-glass-color="blue" aria-expanded={showAll} onClick={() => setShowAll((current) => !current)}>
+						{showAll ? 'Show one sample' : `Show all ${samples.length}`}
 					</button>
 					<button type="button" class="rsb-nav-btn" disabled={showAll} onClick={() => go(1)}>
 						Next

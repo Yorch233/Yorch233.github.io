@@ -1,0 +1,74 @@
+---
+/*
+ * Shared clipboard-copy button (homepage BibTeX pills, RSB citation header).
+ * The copy text is passed server-side, so no per-page slug lookup script is
+ * needed. On success the button flashes `flashLabel`, gains `.is-copied` for
+ * 2s, and dispatches `copy:done` (bubbles) for optional status lines. The
+ * bundled script below runs once per page no matter how many buttons render.
+ */
+interface Props {
+	text: string;
+	label: string;
+	class?: string;
+	ariaLabel: string;
+	labelClass?: string;
+	flashLabel?: string;
+}
+
+const { text, label, class: cls, ariaLabel, labelClass, flashLabel = 'Copied!' } = Astro.props;
+---
+
+<button type="button" class={cls} data-copy-text={text} data-flash={flashLabel} aria-label={ariaLabel}>
+	<slot />
+	{labelClass ? <span class={labelClass}>{label}</span> : <span>{label}</span>}
+</button>
+
+<script>
+	const fallbackCopy = (text: string) => {
+		const area = document.createElement('textarea');
+		area.value = text;
+		area.style.position = 'fixed';
+		area.style.opacity = '0';
+		document.body.appendChild(area);
+		area.select();
+		// execCommand is deprecated, but this is the last-resort fallback
+		let ok = false;
+		try {
+			ok = document.execCommand('copy');
+		} catch {
+			ok = false;
+		}
+		area.remove();
+		return ok;
+	};
+
+	const flash = (button: HTMLButtonElement) => {
+		const label = button.querySelector('span');
+		if (!label) return;
+		const original = label.textContent;
+		label.textContent = button.dataset.flash || 'Copied!';
+		button.classList.add('is-copied');
+		button.dispatchEvent(new CustomEvent('copy:done', { bubbles: true }));
+		window.setTimeout(() => {
+			label.textContent = original;
+			button.classList.remove('is-copied');
+		}, 2000);
+	};
+
+	document.addEventListener('click', (event) => {
+		const button = (event.target as Element | null)?.closest?.('button[data-copy-text]');
+		if (!(button instanceof HTMLButtonElement)) return;
+		const text = button.dataset.copyText ?? '';
+		if (!text) return;
+		if (navigator.clipboard?.writeText) {
+			navigator.clipboard
+				.writeText(text)
+				.then(() => flash(button))
+				.catch(() => {
+					if (fallbackCopy(text)) flash(button);
+				});
+		} else if (fallbackCopy(text)) {
+			flash(button);
+		}
+	});
+</script>

@@ -1,0 +1,42 @@
+---
+import UiIcon from './UiIcon.astro';
+import profile from '../data/profile.json';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class:list={['site-footer', className]} data-yo-say="Thanks for visiting Qing's homepage. I hope you find his work useful.">
+	<span>© {year} {profile.name}</span>
+	<span class="home-footer-note"><span class="home-footer-yo"><UiIcon id="yo" state="inactive" />Yo</span> has the final say.</span>
+</footer>
+
+<style>
+	.site-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 4px 16px;
+		min-height: 48px;
+		padding: 12px 0;
+		color: var(--muted);
+		font: 400 13px/1.6 var(--sans);
+		text-align: center;
+		opacity: .65;
+		--ui-icon-inactive: var(--muted);
+	}
+	.home-footer-yo { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; white-space: nowrap; }
+	.home-footer-yo :global(.ui-icon) { width: 1em; height: 1em; }
+	.site-footer.demo-footer { max-width: 1120px; margin: 32px auto 0; }
+	@media (max-width: 720px) {
+		.site-footer { min-height: 36px; padding-block: 8px; }
+	}
+	@media (max-height: 520px) and (min-width: 600px) {
+		.site-footer { min-height: 30px; padding-block: 6px; }
+	}
+</style>

@@ -1,0 +1,55 @@
+/* One reading card; email leads, research profiles follow. */
+.home-ref .card-contact {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 32px;
+}
+.home-ref .contact-primary { min-width: 0; }
+.home-ref .contact-intro > p { max-width: 42ch; color: var(--muted); }
+.home-ref .contact-address {
+  display: flex; align-items: flex-start; gap: 10px; margin-top: 24px;
+  color: var(--accent); font-size: var(--text-3); font-weight: 600; line-height: 1.5;
+}
+.home-ref .contact-address .icon { width: 22px; height: 22px; margin-top: 4px; }
+.home-ref .contact-mail {
+  display: inline-flex; justify-content: center; gap: 10px; margin-top: 24px;
+  min-height: 48px; padding: 10px 24px; border-radius: 14px;
+  font-size: var(--text-2); font-weight: 600;
+}
+.home-ref .contact-mail .icon { width: 20px; height: 20px; }
+.home-ref .contact-location {
+  display: flex; align-items: center; gap: 8px; margin-top: 24px;
+  color: var(--muted); font-size: var(--text-1); line-height: 1.6;
+}
+.home-ref .contact-location .icon { width: 18px; height: 18px; }
+.home-ref .contact-social {
+  display: block; min-width: 0; padding-left: 32px; border-left: 1px solid var(--line);
+}
+.home-ref .contact-social h3 { margin: 0; font: 800 var(--text-3)/1.3 var(--display); letter-spacing: -.015em; }
+.home-ref .contact-social .contact-profiles-intro { margin-top: 8px; color: var(--muted); line-height: 1.65; }
+.home-ref .contact-profile-list { margin-top: 20px; border-top: 1px solid var(--line); }
+.home-ref .contact-profile {
+  --glass-tint: var(--reading-surface, var(--surface));
+  display: grid; grid-template-columns: 28px minmax(0, 1fr) 18px; gap: 14px;
+  align-items: center; min-height: 84px; padding: 16px 14px;
+  border-bottom: 1px solid var(--line); border-radius: 14px; color: var(--ink); text-decoration: none;
+  transition: color 160ms, background 160ms;
+}
+.home-ref .contact-profile:last-child { border-bottom: 0; }
+.home-ref .contact-profile:hover { --glass-tint: var(--accent-soft); color: var(--accent); background: var(--accent-soft); }
+.home-ref .contact-profile > .icon:first-child { width: 28px; height: 28px; }
+.home-ref .contact-profile > .icon:last-child { width: 18px; height: 18px; }
+.home-ref .contact-profile-copy { display: grid; gap: 3px; min-width: 0; }
+.home-ref .contact-profile-copy strong { font-weight: 600; line-height: 1.5; }
+.home-ref .contact-profile-copy > span { color: var(--muted); font-size: var(--text-1); line-height: 1.6; overflow-wrap: anywhere; }
+
+@media (max-width: 720px) {
+  .home-ref .card-contact { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .home-ref .contact-social { padding: 28px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .home-ref .contact-address { font-size: 20px; }
+  .home-ref .contact-mail { width: 100%; }
+  .home-ref .contact-location, .home-ref .contact-profile-copy > span { font-size: 14px; }
+  .home-ref .contact-profile { gap: 12px; }
+}
+
+@media (max-width: 360px) {
+  .home-ref .contact-address { gap: 8px; }
+}
