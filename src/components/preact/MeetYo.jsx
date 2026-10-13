@@ -8,14 +8,13 @@ import { AboutCard, NewsCard, PapersCard, AwardsCard, ContactCard, Icon } from '
 import profile from '../../data/profile.json';
 
 const TOPICS = [
-	{ id: 'papers', label: 'Publications', title: 'Publications', icon: 'file', line: "Let’s look at Qing's papers, code and demos.", Card: PapersCard },
+	{ id: 'publications', label: 'Publications', title: 'Publications', icon: 'file', line: "Let’s look at Qing's papers, code and demos.", Card: PapersCard },
 	{ id: 'about', label: 'About Me', detail: 'Background & research interests', title: 'About Me', icon: 'user', line: "Come meet Qing and see what he's working on.", Card: AboutCard },
 	{ id: 'news', label: 'News', title: 'News', icon: 'news', line: "Want to see what Qing's been up to?", Card: NewsCard },
 	{ id: 'awards', label: 'Awards', title: 'Honors & Awards', icon: 'trophy', line: "A few highlights from Qing's journey.", Card: AwardsCard },
 	{ id: 'contact', label: 'Contact', actionLabel: 'Contact me', title: 'Get in touch', icon: 'mail', line: "Here's how to reach Qing.", Card: ContactCard }
 ];
 const topicFor = (id) => TOPICS.find((topic) => topic.id === id);
-const canonical = (id) => id === 'publications' ? 'papers' : id;
 const GREETING = "I'm Yo, Qing's Bot. Let's meet Qing!";
 const MOOD_LINES = {
 	waiting: 'Take your time. I’m here when you need me.',
@@ -33,7 +32,7 @@ const MOOD_LINES = {
 };
 
 function TopicButton({ topic, compact = false }) {
-	const primary = !compact && topic.id === 'papers';
+	const primary = !compact && topic.id === 'publications';
 	return <a href={'#' + topic.id} class={'topic-pill' + (compact ? ' topic-pill--compact' : '') + (primary ? ' topic-pill--primary' : '')}
 		data-topic={topic.id} data-yo-say={topic.line}>
 		{!compact && <span class="topic-icon"><Icon id={topic.icon} state={primary ? 'active' : 'auto'} tone={primary ? 'inverse' : undefined} /></span>}
@@ -62,7 +61,7 @@ export default function MeetYo() {
 	const noteTimer = useRef(0);
 	const heading = useRef(null);
 	const focusNext = useRef(false);
-	const returnTopic = useRef('papers');
+	const returnTopic = useRef('publications');
 	const focusFrame = useRef(0);
 	const hintPointer = useRef(null);
 	useEffect(() => {
@@ -98,7 +97,7 @@ export default function MeetYo() {
 		noteTimer.current = setTimeout(() => setNote(null), duration);
 	}, []);
 	const open = useCallback((id, writeHistory = true, focus = true) => {
-		const destination = topicFor(canonical(id))?.id ?? null;
+		const destination = topicFor(id)?.id ?? null;
 		const next = destination === 'about' ? null : destination;
 		clearFeedback();
 		focusNext.current = focus;
@@ -127,8 +126,7 @@ export default function MeetYo() {
 		const adopt = (focus = true) => {
 			const hash = location.hash.slice(1);
 			if (hash === 'main-content') return;
-			const id = canonical(hash);
-			if (hash === 'publications') history.replaceState(history.state, '', location.pathname + location.search + '#papers');
+			const id = hash;
 			open(id, false, focus);
 		};
 		const onHistory = () => adopt();
@@ -137,7 +135,7 @@ export default function MeetYo() {
 			const link = event.target.closest?.('a');
 			if (!link || link.target || link.hasAttribute('download')) return;
 			const href = link.getAttribute('href');
-			const id = href?.startsWith('#') ? canonical(href.slice(1)) : null;
+			const id = href?.startsWith('#') ? href.slice(1) : null;
 			if (!link.matches('.brand') && !topicFor(id)) return;
 			event.preventDefault();
 			open(link.matches('.brand') ? null : id);

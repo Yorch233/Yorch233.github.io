@@ -9,7 +9,7 @@
 .demo-section-list a:is(:hover, :focus-visible) .demo-section-label { opacity: 1; visibility: visible; transform: none; }
 .demo-section-list a:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-radius: 8px; }
 .demo-section-toggle { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; border: 0; border-radius: 50%; color: #171717; background: #fffffff2; box-shadow: 0 4px 18px #25364d18; cursor: pointer; }
-.demo-section-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.demo-section-toggle svg { width: 20px; height: 20px; }
 .demo-section-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .demo-section-target, .cof-body #cof-results-heading.demo-section-target { scroll-margin-top: var(--demo-section-offset, 110px); }
 @media (max-width: 959px), (max-height: 599px) {

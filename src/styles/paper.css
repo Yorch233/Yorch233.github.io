@@ -1,6 +1,7 @@
 /* Shared RSB/CoF reading layout. Variant classes preserve existing anchors and runtime hooks. */
 :is(.rsb-body, .cof-body) {
-  --bg: #f7faff; --surface: #fff; --reading-surface: #f7faff; --card-head: #fafcff;
+  --bg: #f7faff; --surface: #fff; --reading-surface: #fff; --card-head: #f8fafc;
+  --panel-surface: #f6f8fb;
   --ink: #25364d; --muted: #5e6e84; --line: #dce6f2; --line-soft: #edf2f8;
   --accent: #2f68c4; --accent-deep: #24549e; --accent-soft: #edf4ff; --accent-line: #b9cfee;
   --display: var(--sans);
@@ -10,9 +11,48 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-7: 32px;
   --glass-shadow: rgb(47 78 123 / .13);
   --control-shadow: 0 2px 8px rgb(32 60 110 / .08);
+  --card-control-shadow: inset 0 1px 0 rgb(255 255 255 / .9), 0 2px 5px rgb(57 68 82 / .12);
   --shadow-soft: 0 1px 2px rgb(32 60 110 / .04), 0 12px 32px -14px rgb(32 60 110 / .16);
   background: radial-gradient(ellipse 55% 480px at 90% 0%, rgb(110 165 248 / .2), transparent 76%), linear-gradient(115deg, #fcfdff, var(--bg));
   color: var(--ink); color-scheme: light;
+}
+
+/* Shared RSB method-pill controls. */
+.method-chip {
+  border: 1px solid transparent; background: var(--bg); min-height: 44px; padding: 8px 12px; border-radius: 999px; font: 600 var(--text-1)/1.4 var(--sans); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; transition: background 160ms ease, box-shadow 160ms ease;
+}
+.method-chip-secondary { background: var(--bg); }
+.method-chip:hover, .method-chip.active, .method-chip.playing {
+  border-color: #dfe3e9; background: #fff; box-shadow: var(--control-shadow);
+}
+.rsb-body .wave-compare .method-chip {
+  border-color: #dfe3e9 !important; background: #fff !important; box-shadow: var(--control-shadow) !important; color: var(--ink) !important;
+}
+.rsb-body .wave-compare .method-chip:hover:not(.active, .playing) { color: var(--accent-deep) !important; }
+.rsb-body .wave-compare .method-chip:is(.active, .playing) {
+  border-color: var(--accent) !important; background: var(--accent) !important; box-shadow: 0 5px 13px color-mix(in srgb, var(--accent) 24%, transparent) !important; color: #fff !important;
+}
+.cof-body .cof-results .cof-results-dataset-options .method-chip {
+  border-radius: 999px !important; padding: 8px 12px !important; font: 600 var(--text-1)/1.4 var(--sans) !important;
+}
+.cof-body .cof-results .cof-results-dataset-options .method-chip::before,
+.cof-body .cof-results .cof-results-dataset-options .method-chip::after { content: none !important; display: none !important; }
+
+/* White controls on the demos' white reading cards share one 1px hairline edge;
+   this shadow only adds lighting, never a second ring. */
+body:is(.rsb-body, .cof-body) :is(.rsb-abstract-wrap, .cof-abstract-wrap, .wave-compare, .cof-results-workspace, .rsb-citation, .cof-citation, .rsb-figure-carousel, .rsb-simple-table-wrap) :is(button, a[download]):not(.method-chip, .legend-item, .view-toggle-btn, .rsb-show-more, .cof-results-metric-label, .rsb-figure-open, .rsb-figure-dot) {
+  box-shadow: var(--card-control-shadow) !important;
+}
+
+/* The figure open button frames its image; keep that hairline frame explicitly. */
+.rsb-figure-open { box-shadow: 0 0 0 1px rgb(74 92 118 / .14); }
+
+/* Controls that previously had no border of their own join the shared hairline. */
+body:is(.rsb-body, .cof-body) :is(.rsb-read-aloud, .rsb-copy-button, .cof-copy-button, .rsb-figure-nav) {
+  border: 1px solid #dfe3e9;
+}
+body:is(.rsb-body, .cof-body) .wave-compare a[download].wave-download {
+  border: 1px solid #dfe3e9;
 }
 
 :is(.rsb-page, .cof-page) {
@@ -22,6 +62,10 @@ min-height: 100dvh; overflow-x: clip; padding: 48px max(40px, env(safe-area-inse
 :is(.rsb-article, .cof-article) {
 position: relative; min-width: 0; max-width: 1120px; margin: 0 auto; padding: 0;
 }
+
+/* Reserve the classic-scrollbar gutter like the homepage does, so the reveal
+   sequence or lazy Demo content never shifts the centered column sideways. */
+html:has(:is(.rsb-body, .cof-body)) { scrollbar-gutter: stable; }
 
 :is(.rsb-watermark, .cof-watermark) {
 position: absolute; top: 80px; right: 0; z-index: -1; width: 180px; height: 180px; opacity: .035; pointer-events: none; user-select: none;
@@ -287,6 +331,17 @@ padding: 8px 14px; border: 0; border-radius: 999px; background: var(--accent-sof
 background: var(--accent-soft); color: var(--accent-deep);
 }
 
+/* Keyword chips on both demo pages are static tags: flat translucent blue
+   with a plain border and no glass lighting, which stays reserved for
+   interactive controls. */
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip) {
+  --glass-tint: #2f68c4; --glass-opacity: 10%; --glass-lower-opacity: 5%;
+  border: 1px solid transparent; border-color: rgb(47 104 196 / .4) !important;
+  background: rgb(47 104 196 / .08) !important; box-shadow: none !important;
+}
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip)::before,
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip)::after { display: none; }
+
 :is(.rsb-muted, .cof-muted) {
 	color: var(--muted);
 }
@@ -301,11 +356,11 @@ background: var(--accent-soft); color: var(--accent-deep);
 }
 
 :is(.rsb-citation, .cof-citation) {
-overflow: hidden; border: 0; border-radius: var(--panel-radius); background: var(--reading-surface); box-shadow: var(--shadow-soft);
+overflow: hidden; border: 1px solid var(--line-soft); border-radius: var(--panel-radius); background: var(--reading-surface); box-shadow: var(--shadow-soft);
 }
 
 :is(.rsb-citation-header, .cof-citation-header) {
-display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--line-soft); background: var(--card-head);
+display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--line-soft); background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
 
 :is(.rsb-citation-label, .cof-citation-label) {
@@ -508,6 +563,21 @@ html.is-loading :is(.rsb-article, .cof-article)::after {
 
 @media print {
 :is(.rsb-page, .cof-page) { padding: 0; }
+}
+
+/* Ultra-wide adaptation (>= 2000px): widen the reading column for the data
+   surfaces while keeping prose and abstract at a comfortable measure. */
+@media (min-width: 2000px) {
+:is(.rsb-article, .cof-article) { max-width: 1520px; }
+/* Spread the hero title and the abstract card across the widened column. */
+:is(.rsb-title, .cof-title) { max-width: 100%; }
+:is(.rsb-abstract-wrap, .cof-abstract-wrap) { max-width: 100%; }
+/* Figure captions span the widened column like the figures they describe. */
+.rsb-figure-carousel .rsb-figure-caption p { max-width: 100%; }
+/* Section prose keeps its reading measure, except the results intro which
+   spans the widened column like the charts it introduces. */
+:is(.rsb-section, .cof-section) > p { max-width: 880px; }
+.cof-section > p.cof-results-intro { max-width: 100%; }
 }
 
 @media print { .cof-abstract-wrap, .cof-citation { box-shadow: none; } .cof-links, .cof-home-link { display: none; } }

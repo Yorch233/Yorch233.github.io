@@ -270,20 +270,6 @@ display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 4px; max
 	align-items: center;
 }
 
-.method-chip {
-border: 1px solid transparent; background: var(--bg); min-height: 44px; padding: 8px 12px; border-radius: 999px; font: 600 var(--text-1)/1.4 var(--sans); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; transition: background 160ms ease, box-shadow 160ms ease;
-}
-
-.method-chip-secondary {
-background: var(--bg);
-}
-
-.method-chip:hover,
-.method-chip.active,
-.method-chip.playing {
-border-color: transparent; background: color-mix(in srgb, var(--method-color, var(--accent)) 10%, white); box-shadow: inset 0 1px 3px rgb(32 60 110 / .08);
-}
-
 .method-chip:focus-visible,
 .view-toggle-btn:focus-visible,
 .progress-play:focus-visible,
@@ -345,7 +331,7 @@ border-color: transparent; background: color-mix(in srgb, var(--method-color, va
 }
 
 .wave-panel {
-background: var(--bg); border-radius: var(--nested-radius); padding: 20px; border: 0; display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 100%;
+background: var(--panel-surface); border-radius: var(--nested-radius); padding: 20px; border: 0; display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 100%;
 }
 
 .wave-panel:hover {
@@ -1074,28 +1060,6 @@ position: absolute; bottom: 52px; right: 0; background: var(--surface); border-r
 .wave-compare .view-toggle-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
 .wave-compare .view-toggle-btn .ui-icon { width: 17px; height: 17px; }
 
-/* Keep the RSB reading cards close to white and distinguish their white controls
-   with a restrained neutral shadow. These overrides stay local to this demo. */
-body.rsb-body {
-	--reading-surface: #fbfdff;
-	--rsb-card-control-shadow: 0 2px 5px rgb(57 68 82 / .12);
-}
-
-.rsb-body :is(.rsb-abstract-wrap, .wave-compare, .rsb-citation, .rsb-figure-carousel, .rsb-simple-table-wrap) :is(button, a[download]):not(.method-chip):not(.legend-item):not(.view-toggle-btn):not(.rsb-show-more) {
-	box-shadow: var(--rsb-card-control-shadow) !important;
-}
-
-/* Method pills use a flat tinted fill without the tier-two highlight or reflection. */
-.rsb-body .wave-compare .method-chip {
-	background: color-mix(in srgb, var(--method-color, var(--accent)) 8%, white) !important;
-	border-color: color-mix(in srgb, var(--method-color, var(--accent)) 20%, white) !important;
-	box-shadow: none !important;
-}
-
-.rsb-body .wave-compare .method-chip:is(:hover, .active, .playing) {
-	background: color-mix(in srgb, var(--method-color, var(--accent)) 14%, white) !important;
-}
-
 .rsb-body .wave-compare .method-chip::before,
 .rsb-body .wave-compare .method-chip::after,
 .rsb-body .wave-panel .legend-item::before,
@@ -1103,6 +1067,11 @@ body.rsb-body {
 	content: none !important;
 	display: none !important;
 }
+
+.rsb-body .wave-compare .method-chip:is(.active, .playing) .chip-dot { background: #fff; }
+.rsb-body .wave-compare .method-chip:is(.active, .playing) .chip-spinner { border-color: rgb(255 255 255 / .38); border-top-color: #fff; }
+.rsb-body .wave-compare .method-chip:is(.active, .playing) .chip-action .ui-icon,
+.rsb-body .wave-panel .view-toggle-btn[aria-pressed=true] .ui-icon { color: #fff; }
 
 .rsb-body .wave-panel .legend-item {
 	background: transparent !important;
@@ -1112,42 +1081,32 @@ body.rsb-body {
 /* One white thumb moves across a neutral track; labels remain on the track. */
 .rsb-body .view-toggle {
 	position: relative;
-	isolation: isolate;
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	min-width: 220px;
-	padding: 4px;
-	gap: 0;
-	background: #e9edf3;
+	padding: 0;
+	gap: 8px;
+	background: transparent;
 }
 
-.rsb-body .view-toggle::before {
-	content: '';
-	position: absolute;
-	top: 4px;
-	bottom: 4px;
-	left: 4px;
-	width: calc((100% - 8px) / 2);
-	border-radius: 999px;
-	background: #fff;
-	box-shadow: 0 1px 3px rgb(50 62 78 / .16);
-	transform: translateX(0);
-	transition: transform 200ms cubic-bezier(.2, .75, .25, 1);
-	z-index: 0;
-	pointer-events: none;
-}
-
-.rsb-body .view-toggle--spectrogram::before {
-	transform: translateX(100%);
-}
+.rsb-body .view-toggle::before { content: none; display: none; }
 
 .rsb-body .wave-panel .view-toggle-btn,
 .rsb-body .wave-panel .view-toggle-btn.active {
-	position: relative;
-	z-index: 1;
 	min-width: 0;
-	background: transparent !important;
-	box-shadow: none !important;
+	border: 1px solid #dfe3e9 !important;
+	background: #fff !important;
+	box-shadow: var(--control-shadow) !important;
+	color: var(--ink) !important;
+}
+
+.rsb-body .wave-panel .view-toggle-btn:hover:not(.active) { border-color: #cbd2dd !important; color: var(--accent-deep) !important; }
+
+.rsb-body .wave-panel .view-toggle-btn:is(.active, [aria-pressed=true]) {
+	border-color: var(--accent) !important;
+	background: var(--accent) !important;
+	box-shadow: 0 5px 13px color-mix(in srgb, var(--accent) 24%, transparent) !important;
+	color: #fff !important;
 }
 
 .rsb-body .wave-panel .view-toggle-btn::before,
@@ -1159,3 +1118,6 @@ body.rsb-body {
 @media (max-width: 720px) {
 	.rsb-body .view-toggle { min-width: 0; }
 }
+
+.rsb-dataset-task { display: inline-flex; align-items: center; gap: 6px; }
+.rsb-dataset-task .ui-icon { width: 18px; height: 18px; }

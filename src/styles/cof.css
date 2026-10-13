@@ -1,14 +1,10 @@
 /* CoF-specific presentation; the reading layout is shared with RSB in paper.css. */
 .cof-body .cof-abstract-wrap { max-width: none; margin-inline: 0; }
-body.cof-body .cof-meta .cof-chip {
-  --glass-tint: #2f68c4; --glass-opacity: 10%; --glass-lower-opacity: 5%;
-  border: 1px solid transparent; border-color: rgb(47 104 196 / .4) !important;
-  background: rgb(47 104 196 / .08) !important; box-shadow: none !important;
-}
-body.cof-body .cof-meta .cof-chip::before, body.cof-body .cof-meta .cof-chip::after { display: none; }
-.cof-news { display: flex; align-items: baseline; gap: 12px; margin-top: 28px; padding: 16px 20px; border-radius: 20px; background: var(--accent-soft); }
+.cof-news { display: flex; align-items: center; gap: 12px; margin-top: 28px; padding: 16px 20px; border-radius: 20px; background: var(--accent-soft); }
+.cof-news .cof-news-icon { width: 30px; height: 30px; }
+.cof-news-content { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
 .cof-news-tag { flex-shrink: 0; color: var(--accent-deep); font-size: 13px; font-weight: 700; }
 .cof-news-text { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
 .cof-news a { color: var(--accent-deep); text-underline-offset: 3px; }
-.cof-results-intro { max-width: 78ch; margin: 0 0 28px; color: var(--muted); font-size: 16px; line-height: 1.75; }
-@media (max-width: 720px) { .cof-news { flex-direction: column; gap: 4px; padding: 16px; } }
+.cof-results-intro { margin: 0 0 28px; color: var(--muted); font-size: 16px; line-height: 1.75; }
+@media (max-width: 720px) { .cof-news { align-items: flex-start; padding: 16px; } .cof-news-content { flex-direction: column; gap: 4px; } }

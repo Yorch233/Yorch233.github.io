@@ -1,3 +1,5 @@
+import { uiBrandArtwork } from './ui-brand-artwork.js';
+
 // Original 24px SVG drawings; the Yo glyph simplifies the fixed Fluffy mascot.
 // Active uses meaningful blue/pale-blue planes; inactive uses restrained gray outlines.
 const secondary = 'fill="var(--ui-icon-secondary)" data-icon-tone="secondary"';
@@ -15,6 +17,8 @@ const speaker = 'M3.5 9H7l6-5v16l-6-5H3.5Z';
 const speakerFilled = p('M3.5 9H7l5.2-4.4a.8.8 0 0 1 1.3.6v13.6a.8.8 0 0 1-1.3.6L7 15H3.5A1.5 1.5 0 0 1 2 13.5v-3A1.5 1.5 0 0 1 3.5 9Z');
 const arrowLine = 'M3.5 12h17M13.5 5l7 7-7 7';
 const arrowFill = rect(3, 10.4, 14, 3.2, 1.6) + s('M12.8 4.8a1.4 1.4 0 0 1 2 0l6.2 6.2a1.4 1.4 0 0 1 0 2l-6.2 6.2a1.4 1.4 0 1 1-2-2L18 12l-5.2-5.2a1.4 1.4 0 0 1 0-2Z');
+// Preserve brand paths while matching the optical margin of the 24px family.
+const brandInset = body => `<g transform="translate(2 2) scale(.833333)">${body}</g>`;
 const rotate = (body, angle) => `<g transform="rotate(${angle} 12 12)">${body}</g>`;
 // Keep the small mascot mark legible without filters, textures or SVG IDs.
 const yoSilhouette = 'M5.4 18.3c-2 0-3.7-1.4-3.7-3.5 0-1.8 1.2-3.4 3-3.8C4.6 8.7 6.3 7 8.3 7c.5-2.5 2.1-4 4.2-4 2.9 0 4.6 2.4 4.7 4.9 2.4-.2 4.2 1.6 4.3 3.7 1.3.7 1.8 1.9 1.8 3.2 0 2-1.6 3.5-3.6 3.5Z';
@@ -23,6 +27,34 @@ const yoEyes = '<g fill="currentColor" stroke="none"><ellipse cx="8.5" cy="12.7"
 const yoBow = 'M11.3 19.2 8.5 18v3.5l2.8-1.2m1.4-1.1 2.8-1.2v3.5l-2.8-1.2';
 
 export const uiIconArtwork = {
+ 'speech-enhancement': pair(path('M2 7h2l1.5-3L8 10l2-6 2.5 6 2-5 2 4L18 7h4M2 17h4l2-3 3 7 3-10 3 6h5'),
+  stroke('M2 7h2l1.5-3L8 10l2-6 2.5 6 2-5 2 4L18 7h4', 'var(--ui-icon-secondary)', 1.5) + stroke('M2 17h4l2-3 3 7 3-10 3 6h5', 'currentColor', 2)),
+ 'diffusion-models': pair([circle(2.5, 7, .7, ''), circle(3.5, 12, .7, ''), circle(2.5, 17, .7, ''), circle(6.5, 5, .7, ''), circle(6.5, 19, .7, ''), circle(8, 9, 1.3, ''), circle(8, 15, 1.3, ''), circle(11, 12, 1.8, ''), circle(19, 12, 4, '')].join(''),
+  [circle(2.5, 7, .9, secondary), circle(3.5, 12, .9, secondary), circle(2.5, 17, .9, secondary), circle(6.5, 5, .9, secondary), circle(6.5, 19, .9, secondary), circle(8, 9, 1.3, secondary), circle(8, 15, 1.3, secondary)].join('') + circle(11, 12, 1.8) + circle(19, 12, 4)),
+ 'masked-diffusion': pair([3, 9, 15].flatMap(y => [2, 8, 14].filter(x => y !== 3 || x !== 14).map(x => rect(x, y, 4.5, 4.5, 1, ''))).join('') + '<g transform="rotate(12 19.5 4.5)"><rect x="17" y="2" width="5" height="5" rx="1"/></g>',
+  [3, 9, 15].flatMap(y => [2, 8, 14].filter(x => y !== 3 || x !== 14).map(x => rect(x, y, 4.5, 4.5, 1, secondary))).join('') + '<g transform="rotate(12 19.5 4.5)">' + rect(17, 2, 5, 5, 1) + '</g>'),
+ denoising: pair([circle(3, 8, 1, ''), circle(6, 5, 1, ''), circle(3, 16, 1, ''), circle(6, 19, 1, ''), circle(6.5, 12, 1.2, '')].join('') + path('M10 9v6M14 3v18M18 6v12M22 10v4'),
+  [circle(3, 8, 1, secondary), circle(6, 5, 1, secondary), circle(3, 16, 1, secondary), circle(6, 19, 1, secondary), circle(6.5, 12, 1.2, secondary)].join('') + rect(8.8, 8, 2.4, 8, 1.2) + rect(12.8, 2, 2.4, 20, 1.2) + rect(16.8, 5, 2.4, 14, 1.2) + rect(20.8, 9, 2.4, 6, 1.2)),
+ dereverberation: pair(path('M2.5 10v4M6.5 6v12M10.5 2v20M14.5 8v8M18.5 6v12M22 9v6'),
+  rect(1.3, 9, 2.4, 6, 1.2) + rect(5.3, 5, 2.4, 14, 1.2) + rect(9.3, 1, 2.4, 22, 1.2) + rect(13.3, 7, 2.4, 10, 1.2) + rect(17.5, 5, 2, 14, 1, secondary) + rect(21, 8, 2, 8, 1, secondary)),
+ pdf: pair(path('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6') + stroke('M7 18c3-2 6-8 5-9-2-2-2 4 2 6 5 3 5-2 0-1-5 1-8 5-7 4Z', 'currentColor', 1.15),
+  p('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z') + s('M14 3v4a2 2 0 0 0 2 2h4Z') + stroke('M7 18c3-2 6-8 5-9-2-2-2 4 2 6 5 3 5-2 0-1-5 1-8 5-7 4Z', 'var(--ui-icon-secondary)', 1.3)),
+ arxiv: pair(path('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 11l8 7m0-7-8 7'),
+  p('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z') + s('M14 3v4a2 2 0 0 0 2 2h4Z') + stroke('M8 11l8 7m0-7-8 7', 'var(--ui-icon-secondary)', 2.1)),
+ // Keep the familiar standard brand silhouette in both interaction states.
+ github: { line: brandInset(uiBrandArtwork.github), filled: brandInset(circle(12, 12.15, 11.8, secondary) + uiBrandArtwork.github) },
+ orcid: { line: brandInset(uiBrandArtwork.orcid), filled: brandInset(circle(12, 12, 11.8, secondary) + uiBrandArtwork.orcid) },
+ huggingface: { line: brandInset(uiBrandArtwork.huggingface), filled: brandInset(circle(12.025, 11.508, 10.3, secondary) + uiBrandArtwork.huggingface) },
+ modelscope: pair(path('m12 2 6 3.5v7L12 16l-6-3.5v-7Zm-6 3.5L12 9l6-3.5M12 9v7M6 9l-5 3v7l6 3.5 5-3m-11-7 6 3.5 5-3M7 16v6.5m11-13.5 5 3v7l-6 3.5-5-3m11-7L17 16l-5-3.5M17 16v6.5'),
+  p('m6 9-5 3v7l6 3.5 5-3v-7Z') + s('m6 9 6 3.5-5 3.5-6-4Z') + p('m12 2 6 3.5v7L12 16l-6-3.5v-7Z') + s('m12 2 6 3.5L12 9 6 5.5Z') + p('m18 9 5 3v7l-6 3.5-5-3v-7Z') + s('m18 9 5 3-6 4-5-3.5Z') + s('m17 16 6-4v7l-6 3.5Z')),
+ dataset: pair('<ellipse cx="12" cy="5" rx="8" ry="3"/>' + path('M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 10c0 1.7 3.6 3 8 3s8-1.3 8-3M4 15c0 1.7 3.6 3 8 3s8-1.3 8-3'),
+  p('M4 5h16v14c0 1.7-3.6 3-8 3s-8-1.3-8-3Z') + '<ellipse cx="12" cy="5" rx="8" ry="3" '+secondary+'/>' + stroke('M4 10c0 1.7 3.6 3 8 3s8-1.3 8-3M4 15c0 1.7 3.6 3 8 3s8-1.3 8-3', 'var(--ui-icon-secondary)', 1.2)),
+ 'sampling-budget': pair(path('M3 12h6m6 0h6') + circle(12, 12, 3, '') + path('M3 9.5v5M21 9.5v5'),
+  rect(2, 11, 20, 2, 1, secondary) + rect(2, 9, 2, 6, 1, secondary) + rect(20, 9, 2, 6, 1, secondary) + circle(12, 12, 3.5)),
+ refresh: pair(path('M20 9a8.5 8.5 0 0 0-15-3L3 9m0-5v5h5M4 15a8.5 8.5 0 0 0 15 3l2-3m0 5v-5h-5'),
+  stroke('M20 9a8.5 8.5 0 0 0-15-3L3 9', 'currentColor', 3) + p('M2 3.8v6h6Z') + stroke('M4 15a8.5 8.5 0 0 0 15 3l2-3', 'var(--ui-icon-secondary)', 3) + s('M22 20.2v-6h-6Z')),
+ loading: pair(path('M21 12a9 9 0 1 1-9-9'),
+  '<path '+secondary+' fill-rule="evenodd" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 3a7 7 0 1 1-7 7 7 7 0 0 1 7-7Z"/>' + p('M12 2a10 10 0 0 1 10 10h-3a7 7 0 0 0-7-7Z')),
  yo: pair('<g stroke-width="1.35">' + path(yoSilhouette) + '</g>' + yoGlasses + yoEyes + '<g stroke-width="1.2">' + path(yoBow) + '<rect x="11.2" y="19" width="1.6" height="1.6" rx=".4"/></g>',
   s(yoSilhouette) + yoGlasses + yoEyes + stroke(yoBow, 'currentColor', 1.6) + rect(11.1, 18.9, 1.8, 1.8, .5)),
  home: pair(path('M3 10.2 12 3l9 7.2M5 9v11h5v-6h4v6h5V9'),
@@ -33,6 +65,12 @@ export const uiIconArtwork = {
   p('M14 2.5H6a2.5 2.5 0 0 0-2.5 2.5v14A2.5 2.5 0 0 0 6 21.5h12a2.5 2.5 0 0 0 2.5-2.5V9Z') + s('M14 2.5V7a2 2 0 0 0 2 2h4.5Z') + stroke('M8 12h8M8 16h6', 'var(--ui-icon-secondary)')),
  news: pair(path('M6 5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8h3Zm0 3v11M10 9h7M14 13h3M14 17h3M9 13h2v4H9Z'),
   rect(6, 4, 15, 17, 2) + s('M3 8h2v11a1 1 0 0 1-2 0Z') + rect(9, 8, 9, 1.8, .8, secondary) + rect(9, 12, 3.7, 6, .8, secondary) + rect(14, 12.2, 4, 1.6, .8, secondary) + rect(14, 16, 4, 1.6, .8, secondary)),
+ announcement: pair(path('M4 12c3-1.2 5.5-4 7-7M4 16c3-1 6.6-.4 10 1M4 12a2.1 2.1 0 0 0 0 4M6.5 16l2 5h1l-1.4-5.3M17 6l3-3M18 10h4M18 14l4 1.5M17 18l2 3') + '<ellipse cx="12.5" cy="11" rx="2.5" ry="6.3" transform="rotate(-18 12.5 11)"/>',
+  p('M6.1 15.1 8 21.3q.3.8 1 .5l.7-.4-1.4-6.5Z') +
+  '<path fill="currentColor" opacity=".72" d="M3.8 11.9C6.6 10.8 9 8 10.5 5.4c.6-1.1 1.4-1.2 2.3-.3 2.2 2.2 3.8 7.6 2.6 10.8-.4 1.2-1.1 1.6-2.3 1.1-3.2-1.4-6.2-1.9-8.8-1.3C2 16.3 1.4 12.9 3.8 11.9Z"/>' +
+  '<ellipse cx="12.5" cy="11" rx="2" ry="5.8" transform="rotate(-18 12.5 11)" fill="currentColor"/>' +
+  '<path fill="currentColor" opacity=".48" d="m11.1 9.7 2.3.4.9 2-2 2.1Z"/>' +
+  s('m16.1 6.5 4-4.1.9 2.4-4.1 3.1Zm1.2 2.9 5.7-.4-.2 1.9-5.4-.4Zm.5 3.3 5.2 1.1-.5 2.5-5.3-2.4Zm-1.5 3.8 3.7 3.6-1.7 1.6-3-4.2Z')),
  trophy: pair(path('M6 3h12v5a6 6 0 0 1-12 0ZM6 5H3v2a4 4 0 0 0 4 4m11-6h3v2a4 4 0 0 1-4 4M12 14v4M8 21v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1Z'),
   stroke('M6 5H3v2a4 4 0 0 0 4 4m11-6h3v2a4 4 0 0 1-4 4', 'var(--ui-icon-secondary)', 2.4) + p('M6 2.8h12V8a6 6 0 0 1-12 0Z') + rect(10.7, 13, 2.6, 5, .7) + p('M8 18h8l1 3H7Z')),
  mail: pair('<rect x="3" y="5" width="18" height="14" rx="2"/>' + path('m3.8 6.5 7 5.6a2 2 0 0 0 2.4 0l7-5.6'),
@@ -59,8 +97,8 @@ export const uiIconArtwork = {
   stroke('m8 5-6 7 6 7', 'currentColor', 2.8) + stroke('m16 5 6 7-6 7', 'var(--ui-icon-secondary)', 2.8)),
  copy: pair(path('M9 6V4a2 2 0 0 1 2-2h7l3 3v11a2 2 0 0 1-2 2h-1M14 7H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V11Zm0 0v4h4M7 14h7M7 18h5'),
   s('M9 6V4a2 2 0 0 1 2-2h7l3 3v11a2 2 0 0 1-2 2H9Z') + p('M14 7H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V11Z') + s('M14 7v4h4Z') + stroke('M7 14h7M7 18h5', 'var(--ui-icon-secondary)', 1.6)),
- download: pair(path('M12 2v12m-5-5 5 5 5-5M6 16a3.5 3.5 0 0 0 0 7h12a3.5 3.5 0 0 0 0-7h-1l-5 3-5-3Z'),
-  s('M5.5 16a3.5 3.5 0 0 0 0 7h13a3.5 3.5 0 0 0 0-7H17l-5 3-5-3Z') + p('M10.5 2.5a1.5 1.5 0 0 1 3 0V10H17l-5 5.5L7 10h3.5Z')),
+ download: pair(path('M12 2v12m-5-5 5 5 5-5M6 16a2.5 2.5 0 0 0 0 5h12a2.5 2.5 0 0 0 0-5h-1l-5 2.5L7 16Z'),
+  s('M6 16a2.5 2.5 0 0 0 0 5h12a2.5 2.5 0 0 0 0-5h-1l-5 2.5L7 16Z') + p('M10.5 2.5a1.5 1.5 0 0 1 3 0V10H17l-5 5.5L7 10h3.5Z')),
  check: pair(circle(12, 12, 9, '') + path('m7.5 12 3 3 6-6'),
   circle(12, 12, 9.5) + stroke('m7.5 12 3 3 6-6', 'var(--ui-icon-secondary)', 2.6)),
  search: pair(circle(10, 10, 6.8, '') + path('m15 15 6 6'),
@@ -91,8 +129,8 @@ export const uiIconArtwork = {
   rect(3, 3, 18, 18, 2) + [6, 10.5, 15].flatMap((y, i) => [6, 10.5, 15].map((x, j) => rect(x, y, 3, 3, .7, (i + j) % 2 === 0 ? secondary : 'fill="white"'))).join('')),
  'bar-chart': pair(path('M2.5 21.5h19') + '<rect x="4" y="13" width="3" height="6" rx=".6"/><rect x="10.5" y="8" width="3" height="11" rx=".6"/><rect x="17" y="3" width="3" height="16" rx=".6"/>',
   rect(3.5, 13, 4, 7, 1, secondary) + rect(10, 8, 4, 12, 1, secondary) + rect(16.5, 3, 4, 17, 1) + rect(2, 21, 20, 1.5, .75)),
- 'line-chart': pair(path('M4 17v4h16V5M4 17l8-7 8-6') + circle(4, 17, 1.7, '') + circle(12, 10, 1.7, '') + circle(20, 4, 1.7, ''),
-  s('M4 17 12 10l8-6v17H4Z') + stroke('M4 17 12 10l8-6', 'currentColor', 1.8) + circle(4, 17, 2.2) + circle(12, 10, 2.2) + circle(20, 4, 2.2)),
+ 'line-chart': pair(path('M4 17v4h16V5M4 17C8 17 8 11 12 10S18 8 20 4') + circle(4, 17, 1.7, '') + circle(12, 10, 1.7, '') + circle(20, 4, 1.7, ''),
+  s('M4 17C8 17 8 11 12 10S18 8 20 4v17H4Z') + stroke('M4 17C8 17 8 11 12 10S18 8 20 4', 'currentColor', 1.8) + circle(4, 17, 2.2) + circle(12, 10, 2.2) + circle(20, 4, 2.2)),
  sun: pair(circle(12, 12, 4.3, '') + path('M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'),
   circle(12, 12, 5) + stroke('M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4', 'var(--ui-icon-secondary)', 2.3)),
  moon: pair(path('M20.5 15a9 9 0 1 1-11-12.1 9.7 9.7 0 0 0 11 12.1Z'),
@@ -106,3 +144,8 @@ export const uiIconArtwork = {
  'arrow-up': pair(rotate(path(arrowLine), -90), rotate(arrowFill, -90)),
  'arrow-down': pair(rotate(path(arrowLine), 90), rotate(arrowFill, 90)),
 };
+
+// Small particle rings and tile gaps need a lighter outline at the native grid.
+for (const id of ['speech-enhancement', 'diffusion-models', 'masked-diffusion']) {
+ uiIconArtwork[id].line = uiIconArtwork[id].line.replace('stroke-width="1.7"', 'stroke-width="1.2"');
+}

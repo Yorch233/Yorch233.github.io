@@ -7,7 +7,7 @@ const citationCount = publications.length;
 test.describe('Homepage welcome dialog & citations', () => {
 	test('direct reading links bypass the welcome dialog', async ({ page }) => {
 		await page.goto('/#publications');
-		await waitForExpr(page, "location.hash === '#papers' && document.querySelector('.meet-card-head h2')?.textContent === 'Publications' && !document.documentElement.classList.contains('is-loading')",
+		await waitForExpr(page, "location.hash === '#publications' && document.querySelector('.meet-card-head h2')?.textContent === 'Publications' && !document.documentElement.classList.contains('is-loading')",
 			'The #publications alias did not land on the Publications card.');
 		await check(page, "!document.querySelector('.yo-welcome').open && localStorage.getItem('yo-welcome.v1') === null", 'A direct reading link is blocked by the welcome dialog.');
 	});
@@ -92,8 +92,8 @@ test.describe('Homepage welcome dialog & citations', () => {
 		await page.evaluate("document.querySelector('.meet-yo .yo-dialogue-close').click(); true");
 		await waitForExpr(page, "document.querySelector('.meet-yo').dataset.peeking === 'true' && document.activeElement === document.querySelector('.meet-avatar .yo-cloud')", 'Closing his dialogue did not return Yo to the edge.');
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
-		await page.evaluate("document.querySelector('.toplink[href=\"#papers\"]').click(); true");
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card')", 'The papers section never opened.');
+		await page.evaluate("document.querySelector('.toplink[href=\"#publications\"]').click(); true");
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card')", 'The publications section never opened.');
 		const readingPose = await page.evaluate("document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform') + '|' + [...document.querySelectorAll('.meet-avatar [data-fluffy-surface]')].map(puff => puff.getAttribute('transform')).join('|')");
 		await page.waitForTimeout(250);
 		expect(readingPose).toBe(await page.evaluate("document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform') + '|' + [...document.querySelectorAll('.meet-avatar [data-fluffy-surface]')].map(puff => puff.getAttribute('transform')).join('|')"));
@@ -105,8 +105,8 @@ test.describe('Homepage welcome dialog & citations', () => {
 		test.setTimeout(300_000);
 		await seenWelcome(page);
 		await page.setViewportSize({ width: 1280, height: 800 });
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card')", 'The publications card never opened.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card')", 'The publications card never opened.');
 		for (let index = 0; index < publications.length; index++) {
 			await page.evaluate(`document.querySelectorAll('.link-pill-copy')[${index}].click(); true`);
 			await waitForExpr(page, "document.querySelector('.citation-dialog')?.open", `Citation dialog did not open for paper ${index}.`);

@@ -3,6 +3,7 @@ import PaperLayout from '../../components/PaperLayout.astro';
 import PaperHero from '../../components/PaperHero.astro';
 import PaperSection from '../../components/PaperSection.astro';
 import PaperCitation from '../../components/PaperCitation.astro';
+import UiIcon from '../../components/UiIcon.astro';
 import CoFResults from '../../components/preact/CoFResults.jsx';
 import { publications } from '../../data/publications.js';
 import { getFullTextLinks } from '../../lib/publication-links.js';
@@ -14,13 +15,15 @@ const resources = [
 	...getFullTextLinks(publication),
 	{ href: 'https://github.com/Yorch233/CoF/', icon: 'github', label: 'GitHub', ariaLabel: 'View source code on GitHub', title: 'GitHub' },
 	{ href: 'https://huggingface.co/Yorch233/CoF', icon: 'huggingface', label: 'Hugging Face', ariaLabel: 'View models on Hugging Face', title: 'Hugging Face', wide: true },
-	{ href: 'https://www.modelscope.cn/models/Yorch233/CoF', icon: 'cube', label: 'ModelScope', ariaLabel: 'View models on ModelScope', title: 'ModelScope' }
+	{ href: 'https://www.modelscope.cn/models/Yorch233/CoF', icon: 'modelscope', label: 'ModelScope', ariaLabel: 'View models on ModelScope', title: 'ModelScope' }
 ];
 ---
 
 <PaperLayout publication={publication} resources={resources} description="Demo for Corrective Forcing (CoF), with interactive benchmark results, NFE curves and model resources for diffusion and flow speech enhancement.">
-  <PaperHero publication={publication} resources={resources} method="Corrective Forcing" kicker="Demo" corresponding={['Qirong Mao']} linksTitle="Quick links">
+  <PaperHero publication={publication} resources={resources} method="Corrective Forcing" kicker="Paper Demo" corresponding={['Qirong Mao']} linksTitle="Quick links">
 		<aside class="cof-news">
+			<UiIcon id="announcement" state="active" class="cof-news-icon" />
+			<div class="cof-news-content">
 			<span class="cof-news-tag">News</span>
 			<p class="cof-news-text">
 				Inference code and checkpoints are now open-sourced on{' '}
@@ -28,6 +31,7 @@ const resources = [
 				<a href="https://huggingface.co/Yorch233/CoF" target="_blank" rel="noreferrer">Hugging Face</a>, and{' '}
 				<a href="https://www.modelscope.cn/models/Yorch233/CoF" target="_blank" rel="noreferrer">ModelScope</a>.
 			</p>
+			</div>
 		</aside>
 	</PaperHero>
 
@@ -70,7 +74,7 @@ const resources = [
 	</PaperSection>
 
 	<PaperSection variant="cof" headingId="cof-results-heading" label="Results" class="cof-fade">
-		<p class="cof-results-intro">Compare pretrained and CoF post-trained models. Choose a dataset and sampling budget, then explore the benchmarks or NFE curves.</p>
+		<p class="cof-results-intro">Compare pretrained and CoF post-trained models across the two datasets. Chart view benchmarks all five metrics at one sampling budget, and Curves view traces each metric over NFE (number of function evaluations) steps.</p>
 		<CoFResults client:visible />
 	</PaperSection>
   <PaperCitation variant="cof" headingId="cof-citation-heading" bibtex={publication.bibtex} />

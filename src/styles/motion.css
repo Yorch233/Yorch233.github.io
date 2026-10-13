@@ -19,8 +19,9 @@
   transition: opacity 420ms ease, visibility 0s linear 420ms;
 }
 html.js .page-loader { display: grid; }
-html.is-loading { scrollbar-width: none; }
-html.is-loading::-webkit-scrollbar { display: none; }
+/* No scrollbar suppression here: hiding the scrollbar during load or the
+   splash fade changes the layout viewport mid-reveal and shoves the centered
+   column sideways. Demo pages reserve the gutter instead (paper.css). */
 html.is-ready .page-loader { opacity: 0; visibility: hidden; pointer-events: none; }
 html.is-revealed .page-loader { opacity: 0; visibility: hidden; }
 
@@ -31,10 +32,9 @@ html.is-revealed .page-loader { opacity: 0; visibility: hidden; }
   flex-direction: column;
   align-items: center;
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 240ms ease, transform 320ms ease;
+  transition: opacity 240ms ease;
 }
-html.is-ready .page-loader-inner { opacity: 0; transform: translateY(-8px) scale(.96); }
+html.is-ready .page-loader-inner { opacity: 0; }
 .page-loader-wordmark {
   display: block;
   font-size: 13px;

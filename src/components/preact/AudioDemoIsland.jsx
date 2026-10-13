@@ -995,7 +995,7 @@ function DatasetGroup({ id, index, name, task, description, tone, samples, metho
 							<h3 id={`${id}-heading`} class="rsb-subtitle">
 								{name}
 							</h3>
-							<span class="rsb-dataset-task">{task}</span>
+							<span class="rsb-dataset-task"><UiIcon id={task === 'Denoising' ? 'denoising' : 'dereverberation'} state="active" />{task}</span>
 							<span class="rsb-dataset-count">{samples.length} samples</span>
 						</div>
 						<p class="rsb-dataset-description">{description}</p>

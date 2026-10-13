@@ -11,8 +11,8 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		const requests = trackRequests(page);
 		await seenWelcome(page);
 		await page.setViewportSize({ width: 1280, height: 800 });
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		expect(requests.some(url => url.endsWith('/backgrounds/cloud-sky-v1.webp')) && !requests.some(url => url.endsWith('/cloud-sky-reference.png')), 'Homepage cloud asset is missing or loads the unoptimized reference.').toBe(true);
 		await check(page, "document.querySelector('.home-clouds').getAttribute('aria-hidden') === 'true' && getComputedStyle(document.querySelector('.home-clouds')).pointerEvents === 'none' && getComputedStyle(document.querySelector('.home-clouds')).position === 'fixed'", 'Decorative clouds block content or scroll with the page.');
 		const cloudsBefore = await page.evaluate("[...document.querySelectorAll('.home-clouds span')].map(n => getComputedStyle(n).transform).join('|')");
@@ -24,7 +24,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await page.evaluate("window.__nativeThemeAnimate = Element.prototype.animate; window.__themeCircleAnimated = false; Element.prototype.animate = function(frames, options) { if (options?.pseudoElement === '::view-transition-new(root)' && Array.isArray(frames?.clipPath) && String(frames.clipPath[0]).startsWith('circle(0px at ')) window.__themeCircleAnimated = true; return window.__nativeThemeAnimate.call(this, frames, options); }; true");
 		await page.evaluate("document.querySelector('.theme-toggle').click(); true");
 		await waitForExpr(page, "document.documentElement.dataset.theme === 'dark'", 'Theme never switched to dark.');
-		await check(page, "location.hash === '#papers' && document.querySelector('.theme-toggle').getAttribute('aria-pressed') === 'true' && localStorage.getItem('home-theme.v1') === 'dark'", 'Theme switching changed the section or failed to save its choice.');
+		await check(page, "location.hash === '#publications' && document.querySelector('.theme-toggle').getAttribute('aria-pressed') === 'true' && localStorage.getItem('home-theme.v1') === 'dark'", 'Theme switching changed the section or failed to save its choice.');
 		if (await page.evaluate<boolean>('!!document.startViewTransition')) {
 			await waitForExpr(page, 'window.__themeCircleAnimated', 'Dark mode did not run its circular reveal.');
 		}
@@ -45,8 +45,8 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 	test('reading layout holds on every screen', async ({ page }) => {
 		test.setTimeout(300_000);
 		await seenWelcome(page);
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		for (const [width, height] of homeViewports) {
 			await page.setViewportSize({ width, height });
 			await page.waitForTimeout(550);
@@ -109,8 +109,8 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 	test('glass tiers, lenses and navigation geometry', async ({ page }) => {
 		test.setTimeout(240_000);
 		await seenWelcome(page);
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		await page.evaluate('window.scrollTo(0, 0); true');
 		/* The compact-lens assertion mirrors the harness: it runs while the
 		   viewport loop has just ended on the compact 844x390 screen. */
@@ -213,6 +213,9 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await waitForExpr(page, "[...document.querySelectorAll('.meet-avatar .yo-cloud-paw')].every(hand => Number(hand.getAttribute('opacity')) < .01)", 'Idle hands stayed visible.');
 		const flowingPuff = await page.evaluate("document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform')");
 		await waitForExpr(page, `document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform') !== ${JSON.stringify(flowingPuff)}`, 'Yo has no idle motion.');
+		// Activation already plays happy. Its five-second cooldown begins when
+		// that reaction settles; a second pet should be checked after it expires.
+		await page.waitForTimeout(5100);
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
 		await waitForExpr(page, "[...document.querySelectorAll('.meet-avatar .yo-cloud-paw')].every(hand => Number(hand.getAttribute('opacity')) > .9)", 'Petting did not reveal his hands.');
 		await waitForExpr(page, "[...document.querySelectorAll('.meet-avatar .yo-cloud-paw')].every(hand => Number(hand.getAttribute('opacity')) < .01)", 'Petting hands never settled again.');
@@ -274,7 +277,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await waitForExpr(page, "location.hash === '#contact' && document.activeElement?.tagName === 'H2'", 'Back did not restore the contact section.');
 		await page.evaluate('history.forward(); true');
 		await waitForExpr(page, "location.hash === '' && document.activeElement?.getAttribute('data-topic') === 'contact'", 'Forward did not restore the greeting state.');
-		await page.evaluate("document.querySelector('[data-topic=papers]').click(); true");
+		await page.evaluate("document.querySelector('[data-topic=publications]').click(); true");
 		await waitForExpr(page, "!!document.querySelector('.card-body .pub')", 'Publications content never appeared.', 3000);
 		await check(page, "!document.querySelector('.card-skel') && [...document.querySelectorAll('.pub-links .link-pill--primary')].every(a => a.textContent.trim() === 'Demo')", 'Local content is delayed or the CoF destination is misleading.');
 		await page.evaluate("document.querySelector('.brand').click(); true");

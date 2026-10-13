@@ -33,7 +33,12 @@ const { title, publication, titleTarget, resourcesTarget } = Astro.props;
 			observer?.disconnect();
 			// Treat the fixed capsule's footprint as the top of the reading area.
 			// This also keeps links reachable on short papers in tall windows.
-			const topBoundary = capsule.offsetTop + capsule.offsetHeight + header.getBoundingClientRect().top + 8;
+			// Treat the floating title row's footprint as the top of the reading
+			// area. On compact screens the resources capsule floats from the
+			// bottom-right corner, so its own box no longer marks where the
+			// reading area begins.
+			const anchor = header.querySelector<HTMLElement>('.demo-title-capsule') ?? capsule;
+			const topBoundary = anchor.offsetTop + anchor.offsetHeight + header.getBoundingClientRect().top + 8;
 			observer = new IntersectionObserver(([entry]) => {
 				// Sources below the viewport must not trigger a floating copy.
 				const visible = !entry.isIntersecting && entry.boundingClientRect.bottom < topBoundary;

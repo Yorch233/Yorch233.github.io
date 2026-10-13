@@ -44,6 +44,17 @@
     }
   },
   {
+    "id": "announcement",
+    "label": "Announcement",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/announcement-active-filled.svg",
+      "inactive": "/icons/announcement-inactive.svg"
+    }
+  },
+  {
     "id": "trophy",
     "label": "Awards",
     "group": "Navigation",
@@ -111,8 +122,8 @@
   },
   {
     "id": "wave",
-    "label": "Speech enhancement",
-    "group": "Research",
+    "label": "Waveform",
+    "group": "Audio",
     "color": "#3189f5",
     "secondary": "#bfdfff",
     "variants": {
@@ -122,8 +133,8 @@
   },
   {
     "id": "cube",
-    "label": "Diffusion models",
-    "group": "Research",
+    "label": "Cube",
+    "group": "Actions",
     "color": "#7363d9",
     "secondary": "#e1dcff",
     "variants": {
@@ -144,8 +155,8 @@
   },
   {
     "id": "layers",
-    "label": "Masked diffusion",
-    "group": "Research",
+    "label": "Layers",
+    "group": "Actions",
     "color": "#c38247",
     "secondary": "#f5dfc6",
     "variants": {
@@ -470,6 +481,171 @@
     "variants": {
       "active-filled": "/icons/arrow-down-active-filled.svg",
       "inactive": "/icons/arrow-down-inactive.svg"
+    }
+  },
+  {
+    "id": "pdf",
+    "label": "PDF",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/pdf-active-filled.svg",
+      "inactive": "/icons/pdf-inactive.svg"
+    }
+  },
+  {
+    "id": "arxiv",
+    "label": "arXiv",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arxiv-active-filled.svg",
+      "inactive": "/icons/arxiv-inactive.svg"
+    }
+  },
+  {
+    "id": "github",
+    "label": "GitHub",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/github-active-filled.svg",
+      "inactive": "/icons/github-inactive.svg"
+    }
+  },
+  {
+    "id": "huggingface",
+    "label": "Hugging Face",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/huggingface-active-filled.svg",
+      "inactive": "/icons/huggingface-inactive.svg"
+    }
+  },
+  {
+    "id": "modelscope",
+    "label": "ModelScope",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/modelscope-active-filled.svg",
+      "inactive": "/icons/modelscope-inactive.svg"
+    }
+  },
+  {
+    "id": "dataset",
+    "label": "Dataset",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/dataset-active-filled.svg",
+      "inactive": "/icons/dataset-inactive.svg"
+    }
+  },
+  {
+    "id": "sampling-budget",
+    "label": "Sampling budget",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/sampling-budget-active-filled.svg",
+      "inactive": "/icons/sampling-budget-inactive.svg"
+    }
+  },
+  {
+    "id": "refresh",
+    "label": "Refresh",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/refresh-active-filled.svg",
+      "inactive": "/icons/refresh-inactive.svg"
+    }
+  },
+  {
+    "id": "loading",
+    "label": "Loading",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/loading-active-filled.svg",
+      "inactive": "/icons/loading-inactive.svg"
+    }
+  },
+  {
+    "id": "denoising",
+    "label": "Denoising",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/denoising-active-filled.svg",
+      "inactive": "/icons/denoising-inactive.svg"
+    }
+  },
+  {
+    "id": "dereverberation",
+    "label": "Dereverberation",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/dereverberation-active-filled.svg",
+      "inactive": "/icons/dereverberation-inactive.svg"
+    }
+  },
+  {
+    "id": "orcid",
+    "label": "ORCID",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/orcid-active-filled.svg",
+      "inactive": "/icons/orcid-inactive.svg"
+    }
+  },
+  {
+    "id": "speech-enhancement",
+    "label": "Speech Enhancement",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/speech-enhancement-active-filled.svg",
+      "inactive": "/icons/speech-enhancement-inactive.svg"
+    }
+  },
+  {
+    "id": "diffusion-models",
+    "label": "Diffusion Models",
+    "group": "Research",
+    "color": "#7363d9",
+    "secondary": "#e1dcff",
+    "variants": {
+      "active-filled": "/icons/diffusion-models-active-filled.svg",
+      "inactive": "/icons/diffusion-models-inactive.svg"
+    }
+  },
+  {
+    "id": "masked-diffusion",
+    "label": "Masked Diffusion",
+    "group": "Research",
+    "color": "#c38247",
+    "secondary": "#f5dfc6",
+    "variants": {
+      "active-filled": "/icons/masked-diffusion-active-filled.svg",
+      "inactive": "/icons/masked-diffusion-inactive.svg"
     }
   }
 ]

@@ -30,6 +30,19 @@ test.describe('RSB demo', () => {
 		// The Worker request only happens after the default methods' Opus data
 		// arrives and decodes, so it gates the request-count assertions below.
 		await waitForRequest(requests, url => url.includes('waveform.worker'), 'Default waveform view did not load the waveform Worker.');
+		await check(page, `(() => {
+			const comparison = document.querySelector('.wave-compare');
+			const activeMethod = comparison.querySelector('.method-chip[aria-pressed=true]');
+			const inactiveMethod = comparison.querySelector('.method-chip[aria-pressed=false]');
+			const activeView = comparison.querySelector('.view-toggle-btn[aria-pressed=true]');
+			const inactiveView = comparison.querySelector('.view-toggle-btn[aria-pressed=false]');
+			const active = getComputedStyle(activeMethod), inactive = getComputedStyle(inactiveMethod);
+			const selectedView = getComputedStyle(activeView), unselectedView = getComputedStyle(inactiveView);
+			return active.backgroundColor !== 'rgb(255, 255, 255)' && active.color === 'rgb(255, 255, 255)' && active.boxShadow !== 'none' && active.borderRadius === '999px' &&
+				inactive.backgroundColor === 'rgb(255, 255, 255)' && inactive.borderColor === 'rgb(223, 227, 233)' && inactive.boxShadow !== 'none' && inactive.borderRadius === '999px' &&
+				selectedView.backgroundColor !== 'rgb(255, 255, 255)' && selectedView.color === 'rgb(255, 255, 255)' && selectedView.boxShadow !== 'none' &&
+				unselectedView.backgroundColor === 'rgb(255, 255, 255)' && unselectedView.borderColor === 'rgb(223, 227, 233)' && unselectedView.boxShadow !== 'none';
+		})()`, 'RSB selections should use the blue active pill and bordered, shadowed white inactive pill.');
 		const initialOpus = [...new Set(requests.filter(url => url.endsWith('.opus')))];
 		expect(initialOpus.length, 'Initial Opus request count').toBe(4);
 		expect(initialOpus.every(url => /\/(Measurement|Ground_Truth)\//.test(url)), 'An unselected method loaded during initial hydration.').toBe(true);
@@ -174,6 +187,9 @@ test.describe('RSB demo', () => {
 		test.setTimeout(600_000);
 		const requests = trackRequests(page);
 		await page.goto('/RSB/');
+		// The loader splash swallows pointer events until is-ready; wait it out
+		// so the seek gestures below reach the progress bar.
+		await waitForExpr(page, "!document.documentElement.classList.contains('is-loading')", 'RSB never finished loading.');
 		await page.evaluate("document.querySelector('.rsb-audio-section')?.scrollIntoView({ block: 'center' }); true");
 		await waitForRequest(requests, url => url.includes('AudioDemoIsland'), 'Preact Island did not hydrate after scrolling.');
 		await waitForRequest(requests, url => url.includes('waveform.worker'), 'Default waveform view did not load the waveform Worker.');

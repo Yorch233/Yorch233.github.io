@@ -112,8 +112,8 @@ test.describe('Yo mascot life, narration & actions', () => {
 		await check(page, "window.__firstYoForm === 'fluffy' && window.__firstYoIcon.includes('/yo-cutout-v1.svg')", 'Reload painted the wrong initial logo/loader form.');
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
 		await waitForExpr(page, "document.querySelector('.meet-yo').dataset.peeking === 'false'", 'Yo never came fully into view after reload.');
-		await page.evaluate("document.querySelector('[data-topic=papers]').click(); true");
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.yo-cloud-mood-studying')", 'Reading never made Yo study.');
+		await page.evaluate("document.querySelector('[data-topic=publications]').click(); true");
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.yo-cloud-mood-studying')", 'Reading never made Yo study.');
 		const quietFluffy = await page.evaluate("document.querySelector('.yo-cloud-body').getAttribute('transform')");
 		await page.waitForTimeout(250);
 		expect(quietFluffy === await page.evaluate("document.querySelector('.yo-cloud-body').getAttribute('transform')") && await page.evaluate<boolean>("document.querySelector('.yo-cloud-stage').dataset.motion === 'static'"), 'Fluffy moves while reading.').toBe(true);
@@ -147,7 +147,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		};
 		const hoverCases: Array<[string, Array<[string, string]>]> = [
 			['about', [['.profile-portrait', "That's Qing"], ['.profile-education', 'Jiangsu University'], ['.home-about .meta > span:last-child', 'advisor'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-orcid', 'ORCID'], ['.cv-btn', "isn't online"], ['.theme-toggle', 'comfy']]],
-			['papers', [['.pub-title a', 'Select the title'], ['.pub-authors b', 'helped write'], ['.pub-summary', publications[0]!.slug === 'RSB' ? 'RSB aims' : 'gives diffusion'], ['.pub-links .link-pill--primary', publications[0]!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub:last-of-type .link-pill--primary', publications.at(-1)!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub-links a[href*=arxiv]', 'preprint'], ['.link-pill-copy', 'BibTeX citation']]],
+			['publications', [['.pub-title a', 'Select the title'], ['.pub-authors b', 'helped write'], ['.pub-summary', publications[0]!.slug === 'RSB' ? 'RSB aims' : 'gives diffusion'], ['.pub-links .link-pill--primary', publications[0]!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub:last-of-type .link-pill--primary', publications.at(-1)!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub-links a[href*=arxiv]', 'preprint'], ['.link-pill-copy', 'BibTeX citation']]],
 			['news', [['.timeline .is-latest .date', 'CoF is on arXiv'], ['.timeline .is-latest a[href*=arxiv]', 'research preprint'], ['.timeline .is-latest a[href="/CoF/"]', 'CoF Demo'], ['.news-toggle', 'earlier updates']]],
 			['awards', [['.award-title', 'National First Prize'], ['.tip', 'competition is called'], ['.award-more', 'team worked on']]],
 			['contact', [['.contact-intro p', 'Email'], ['.contact-mail .icon', 'mail app'], ['.contact-social a[href*=github]', 'open-source work'], ['.contact-social a[href*=huggingface]', 'Hugging Face'], ['.contact-social a[href*=orcid]', 'research record']]]
@@ -156,7 +156,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			await page.evaluate(`document.querySelector('.toplink[href="#${section}"]').click(); true`);
 			await waitForExpr(page, section === 'about' ? "!!document.querySelector('.meet-greet')" : `location.hash === '#${section}' && !!document.querySelector('.meet-card')`, `The ${section} section never opened.`);
 			for (const [selector, expected] of cases) await hoverYo(selector, expected);
-			if (section === 'papers') {
+			if (section === 'publications') {
 				await page.evaluate("document.querySelector('.link-pill-copy').click(); true");
 				await waitForExpr(page, "document.querySelector('.citation-dialog')?.open", 'The citation dialog never opened during narration.');
 				await page.evaluate("document.querySelector('.citation-copy').click(); true");
@@ -200,13 +200,13 @@ test.describe('Yo mascot life, narration & actions', () => {
 		test.setTimeout(240_000);
 		await seenWelcome(page);
 		await page.setViewportSize({ width: 1280, height: 800 });
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
 		await waitForExpr(page, "document.querySelector('.meet-yo').dataset.peeking === 'false'", 'Yo never came fully into view.');
 		await page.setViewportSize({ width: 320, height: 568 });
 		let sharedCardFrame: string | undefined;
-		for (const topic of ['news', 'awards', 'contact', 'papers']) {
+		for (const topic of ['news', 'awards', 'contact', 'publications']) {
 			await page.evaluate(`document.querySelector('.home-nav-links a[href="#${topic}"]').click(); true`);
 			await waitForExpr(page, `location.hash === '#${topic}' && document.activeElement?.tagName === 'H2'`, `The ${topic} destination never opened on the phone.`);
 			await check(page, "[...document.querySelectorAll('.toplink')].every(link => link.getBoundingClientRect().height >= 44 && getComputedStyle(link).display !== 'none')", 'Mobile destinations are hidden or have small touch targets.');
@@ -221,7 +221,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			})()`);
 			sharedCardFrame ??= frame;
 			expect(frame, `Card ${topic} diverges from the shared reading frame on a narrow phone. Shared: ${sharedCardFrame}`).toBe(sharedCardFrame);
-			if (topic !== 'papers') {
+			if (topic !== 'publications') {
 				await page.evaluate("document.querySelector('.meet-close').click(); true");
 				const focusTarget = `.topic-chips [data-topic=${topic}]`;
 				await waitForExpr(page, `location.hash === '' && document.activeElement === document.querySelector('${focusTarget}')`, `Closing ${topic} did not restore focus to its chip.`);
@@ -249,7 +249,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		// The narrow-screen navigation stays at the bottom with all five destinations.
 		await page.setViewportSize({ width: 375, height: 667 });
 		await page.evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve(true))))');
-		await check(page, "document.querySelectorAll('.topbar .floating-capsule').length === 4 && document.querySelector('.home-utilities').contains(document.querySelector('.cv-btn')) && document.querySelector('.home-utilities').contains(document.querySelector('.theme-toggle')) && document.querySelector('.cv-btn').classList.contains('floating-capsule') && document.querySelector('.theme-toggle').classList.contains('floating-capsule') && document.querySelector('.theme-toggle').getBoundingClientRect().left - document.querySelector('.cv-btn').getBoundingClientRect().right >= 6 && !document.querySelector('.home-utilities').classList.contains('floating-capsule') && !document.querySelector('.actions-pill .cv-btn, .actions-pill .theme-toggle') && [...document.querySelectorAll('.topic-chips .topic-pill')].map(a => a.dataset.topic).join(',') === 'papers,news,awards,contact' && [...document.querySelectorAll('.home-nav-links .toplink')].map(a => a.hash).join(',') === '#about,#news,#papers,#awards,#contact' && !document.querySelector('.topic-chips [data-topic=about]')", 'Homepage utility capsules or content navigation are inconsistent.');
+		await check(page, "document.querySelectorAll('.topbar .floating-capsule').length === 4 && document.querySelector('.home-utilities').contains(document.querySelector('.cv-btn')) && document.querySelector('.home-utilities').contains(document.querySelector('.theme-toggle')) && document.querySelector('.cv-btn').classList.contains('floating-capsule') && document.querySelector('.theme-toggle').classList.contains('floating-capsule') && document.querySelector('.theme-toggle').getBoundingClientRect().left - document.querySelector('.cv-btn').getBoundingClientRect().right >= 6 && !document.querySelector('.home-utilities').classList.contains('floating-capsule') && !document.querySelector('.actions-pill .cv-btn, .actions-pill .theme-toggle') && [...document.querySelectorAll('.topic-chips .topic-pill')].map(a => a.dataset.topic).join(',') === 'publications,news,awards,contact' && [...document.querySelectorAll('.home-nav-links .toplink')].map(a => a.hash).join(',') === '#about,#news,#publications,#awards,#contact' && !document.querySelector('.topic-chips [data-topic=about]')", 'Homepage utility capsules or content navigation are inconsistent.');
 		await check(page, `(() => {
 			const nav = document.querySelector('.actions-pill'), box = nav.getBoundingClientRect();
 			const pill = document.querySelector('.home-nav-indicator'), pillBox = pill.getBoundingClientRect();
@@ -265,16 +265,16 @@ test.describe('Yo mascot life, narration & actions', () => {
 		})()`, 'Bottom navigation overflows, shows Yo by default or loses its smaller icon-above-label arrangement.');
 		await page.evaluate("document.querySelector('.cv-btn').click(); true");
 		await waitForExpr(page, "location.hash === '#contact'", 'The CV button did not reach contact from the phone.');
-		await page.evaluate("document.querySelector('.home-nav-links a[href=\"#papers\"]').click(); true");
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card')", 'Papers never opened from the phone navigation.');
+		await page.evaluate("document.querySelector('.home-nav-links a[href=\"#publications\"]').click(); true");
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card')", 'Papers never opened from the phone navigation.');
 	});
 
 	test('action menu, prop rigs, hide and revive', async ({ page }) => {
 		test.setTimeout(240_000);
 		await seenWelcome(page);
 		await page.setViewportSize({ width: 1280, height: 800 });
-		await page.goto('/#papers');
-		await waitForExpr(page, "location.hash === '#papers' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
+		await page.goto('/#publications');
+		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		// Approved life states use the real controls, with one mutually exclusive rig.
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').focus(); document.querySelector('.meet-avatar .yo-cloud').dispatchEvent(new KeyboardEvent('keydown', { key: 'F10', shiftKey: true, bubbles: true, cancelable: true })); true");
 		await waitForExpr(page, "!document.querySelector('.yo-actions-panel').hidden", 'Shift+F10 never opened the action menu.');

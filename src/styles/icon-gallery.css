@@ -25,7 +25,7 @@
 .icon-group-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .icon-group-heading h2 { margin: 0; }
 .icon-group-heading > span { display: flex; gap: 16px; flex-wrap: wrap; }
-.icon-group-heading a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: #62728a; font-size: 12px; text-decoration: none; }
+.icon-group-heading a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: #62728a; font-size: 13px; text-decoration: none; }
 .icon-group-heading .ui-icon { width: 14px; height: 14px; }
 .icon-group-heading a:hover { color: #2479de; }
 .icon-gallery-group { margin-top: 26px; }
@@ -35,10 +35,18 @@
 .icon-gallery-variants a { display: grid; place-items: center; min-height: 48px; border-radius: 14px; transition: background 160ms ease; }
 .icon-gallery-variants a:hover { background: #eaf2fd; }
 .icon-gallery h3 { font-size: 16px; line-height: 1.5; margin: 0 0 4px; }
-.icon-gallery code { color: #74839a; font-size: 12px; }
+.icon-gallery code { overflow-wrap: anywhere; color: #74839a; font-size: 12px; }
 .icon-gallery-footer { padding-top: 36px; color: #62728a; font-size: 13px; line-height: 1.7; }
 .icon-gallery-footer a { color: #2879d6; }
 .icon-gallery :is(a, button):focus-visible { outline: 2px solid #3189f5; outline-offset: 3px; }
 @media (max-width: 760px) { .icon-gallery-main { width: calc(100% - 32px); padding-top: 20px; } .icon-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .icon-gallery-demo { padding: 18px; } .icon-preview-nav { border-radius: 20px; } .icon-preview-nav button { padding-inline: 12px; } .icon-gallery h2 { font-size: 20px; } }
 @media (max-width: 360px) { .icon-gallery-card { padding: 12px; } .icon-gallery-variants { gap: 0; } .icon-gallery h3 { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) { .icon-gallery-variants a { transition: none; } }
+
+.icon-gallery-search, .icon-preview-picker { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-block: 20px; font-size: 16px; }
+.icon-gallery-search label, .icon-preview-picker { font-weight: 600; }
+.icon-gallery-search input, .icon-preview-picker select { box-sizing: border-box; max-width: 100%; min-height: 44px; padding: 10px 14px; border: 1px solid var(--line, #dce6f3); border-radius: 12px; background: white; color: #25364d; font: 400 16px/1.5 -apple-system, system-ui, sans-serif; }
+.icon-gallery-search input { flex: 1 1 220px; min-width: 0; }
+.icon-gallery-search input:focus-visible, .icon-preview-picker select:focus-visible { outline: 2px solid #3189f5; outline-offset: 3px; }
+.icon-gallery-search [role=status] { color: #5e6e84; font-size: 14px; }
+.icon-gallery-card[hidden], .icon-gallery-group[hidden] { display: none; }

@@ -37,3 +37,8 @@ svg.ui-icon[data-tone=inverse] { --ui-icon-secondary: #c1e0ff; }
 /* Playback controls use a single gray fill in every playback state. */
 svg.ui-icon[data-tone=muted] { color: var(--ui-icon-inactive) !important; --ui-icon-secondary: currentColor; }
 @media (prefers-reduced-motion: reduce) { svg.ui-icon.icon[data-icon] { transition: none; } }
+
+.ui-icon[data-icon=diffusion-models] { --ui-icon-active: #7363d9; --ui-icon-secondary: #e1dcff; }
+.ui-icon[data-icon=masked-diffusion] { --ui-icon-active: #c38247; --ui-icon-secondary: #f5dfc6; }
+html[data-theme=dark] .ui-icon[data-icon=diffusion-models] { --ui-icon-active: #b7aaff; --ui-icon-secondary: #635c90; }
+html[data-theme=dark] .ui-icon[data-icon=masked-diffusion] { --ui-icon-active: #edb985; --ui-icon-secondary: #8d684c; }

@@ -8,6 +8,12 @@ test.describe('Icon gallery', () => {
 		await page.goto('/icons/');
 		await waitForExpr(page, "!!document.querySelector('.icon-preview') && !document.querySelector('.icon-preview').closest('astro-island').hasAttribute('ssr')", 'The icon gallery island never hydrated.');
 		await check(page, `document.querySelectorAll('.icon-gallery-card').length === ${uiIconCatalog.length} && document.querySelectorAll('.icon-gallery-variants a[download]').length === ${uiIconCatalog.length * 2}`, 'Icon gallery is missing glyphs or state exports.');
+		await page.getByRole('combobox', { name: 'Choose an icon' }).selectOption('huggingface');
+		await check(page, "[...document.querySelectorAll('.icon-size-samples .ui-icon')].every(icon => icon.dataset.icon === 'huggingface')", 'The picker should preview any shared icon at every sample size.');
+		await page.getByRole('searchbox', { name: 'Find an icon' }).fill('denois');
+		await check(page, "document.querySelectorAll('.icon-gallery-card:not([hidden])').length === 1 && document.querySelector('.icon-gallery-card:not([hidden]) code').textContent === 'denoising' && document.querySelector('#icon-search-count').textContent === '1 icon'", 'Search should find the task icon by partial name.');
+		await page.getByRole('searchbox', { name: 'Find an icon' }).fill('');
+		await check(page, `document.querySelectorAll('.icon-gallery-card:not([hidden])').length === ${uiIconCatalog.length}`, 'Clearing search should restore the complete catalog.');
 		let galleryIconsChecked = false;
 		for (const [width, height] of [[1280, 900], [390, 844], [320, 568], [667, 375]]) {
 			await page.setViewportSize({ width, height });

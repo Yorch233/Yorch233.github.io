@@ -94,18 +94,31 @@
 .demo-resource-link:hover { color: var(--accent); background: var(--accent-soft); }
 .demo-floating-header :is(a, button):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 [data-demo-title], [data-demo-resources] { scroll-margin-top: 88px; }
-@media (max-width: 720px) {
+/* Phones and short landscape: the title capsule owns a full top row and the
+   paper resources float as an icon control in the bottom-right corner. */
+@media (max-width: 959px), (max-height: 599px) {
 	.demo-floating-header { display: grid; grid-template-columns: minmax(0, 1fr); left: 12px; right: 12px; gap: 8px; top: max(12px, env(safe-area-inset-top)); }
 	.demo-floating-header > .floating-capsule { min-height: 46px; }
 	.demo-title-capsule { max-width: none; border-radius: 24px; }
 	.demo-capsule-title { width: 100%; min-height: 44px; padding: 10px 16px; gap: 4px; }
 	.demo-capsule-paper-title { font-size: 13px; }
-	.demo-resources-capsule { justify-self: end; padding: 3px; }
-	.demo-resource-link { padding: 8px 12px; font-size: 12px; }
+	.demo-floating-header > .demo-resources-capsule {
+		position: fixed;
+		top: auto;
+		right: max(12px, env(safe-area-inset-right));
+		bottom: max(16px, env(safe-area-inset-bottom));
+		padding: 4px;
+		transform-origin: bottom right;
+	}
+	.demo-floating-header > .demo-resources-capsule:not([data-visible="true"]) { transform: translateY(16px) scale(.95); }
+	.demo-resource-link { width: 44px; min-height: 44px; padding: 0; }
+	.demo-resource-icon { width: 20px; height: 20px; }
+	.demo-resource-label { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
 	.demo-floating-header > .floating-capsule { transform: none; transition: none; }
 	.demo-floating-header > .floating-capsule::before { transform: none; }
+	.demo-floating-header > .demo-resources-capsule:not([data-visible="true"]) { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
 	.demo-floating-header > .floating-capsule::before { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }

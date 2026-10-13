@@ -1,15 +1,16 @@
 ---
+import UiIcon from './UiIcon.astro';
 import '../styles/demo-return.css';
 interface Props { titleTarget: string }
 const { titleTarget } = Astro.props;
 ---
 <nav class="demo-return" aria-label="Return navigation" data-visible="false" inert>
   <a class="floating-capsule" href="#" aria-label="Scroll to top" data-focus-target={titleTarget} data-scroll-top>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" /></svg>
+    <UiIcon id="arrow-up" />
     <span class="demo-return-tip" aria-hidden="true">Scroll to top</span>
   </a>
   <a class="floating-capsule" href="/" aria-label="Return to home">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 11 8-7 8 7M6 10v10h5v-6h2v6h5V10" /></svg>
+    <UiIcon id="home" />
     <span class="demo-return-tip" aria-hidden="true">Return to home</span>
   </a>
 </nav>

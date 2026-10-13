@@ -62,6 +62,14 @@ const {
 					'.rsb-section', '.cof-section', '.icon-gallery-main', '.icon-gallery-header',
 					'.icon-gallery-demo', '.icon-gallery-group', '.icon-gallery-grid'
 				];
+				var fixedUi = '.meet-yo, .topbar .actions-pill';
+				var containsFixedUi = function (element) {
+					var found = element.querySelectorAll(fixedUi);
+					for (var i = 0; i < found.length; i += 1) {
+						if (getComputedStyle(found[i]).position === 'fixed') return true;
+					}
+					return false;
+				};
 				var prepareRows = function () {
 					if (reduce) return 0;
 					var elements = new Set();
@@ -74,6 +82,13 @@ const {
 						if ((element.classList.contains('rsb-fade') || element.classList.contains('cof-fade')) && !element.classList.contains('is-revealed')) return;
 								var style = getComputedStyle(element);
 								if (style.display === 'none' || style.visibility === 'hidden' || style.position === 'absolute' || style.position === 'fixed') return;
+								/* A reveal transform turns its element into the containing block
+								   for fixed descendants, floating the homepage companion and the
+								   compact bottom nav mid-screen until is-revealed snaps them back.
+								   Skip ancestors of fixed UI; their children still reveal. Keep
+								   fixedUi in sync with fixed-position elements inside these
+								   containers. */
+								if (containsFixedUi(element)) return;
 								var rect = element.getBoundingClientRect();
 								if (rect.width && rect.height) elements.add(element);
 							});

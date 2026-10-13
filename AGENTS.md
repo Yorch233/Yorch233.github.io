@@ -1,5 +1,17 @@
 # Repository guide
 
+## Git workflow
+
+- `gitea` (`https://gitea-yorch233.iepose.cn/yorch233/Yorch233.github.io.git`) is
+  the private development repository. Local `main` tracks `gitea/main`, and
+  the default push remote is `gitea`.
+- When the user asks to save or submit development code, commit locally and
+  push to `gitea`.
+- `origin` (`https://github.com/Yorch233/Yorch233.github.io.git`) is the GitHub
+  Pages deployment repository; its workflow deploys the site automatically.
+- Push to `origin` only when the user explicitly requests deployment. Routine
+  development saves must not push to GitHub.
+
 ## 协作与独立判断
 
 1. 先检查是否存在错误前提、逻辑跳跃或信息缺失。
@@ -13,7 +25,8 @@
 Astro static site with native Preact islands; keep the existing stack.
 Routes: `/` is Qing Yao’s personal homepage; `/RSB/` is the interactive
 Demo; `/CoF/` is the CoF Demo with interactive results and model resources.
-Use “Demo” consistently for both pages in News, page labels and resource entry points.
+Use “Demo” consistently for both pages in News and resource entry points;
+both page kickers read “Paper Demo”.
 Do not describe CoF as an unpublished teaser or promise audio it does not host.
 
 - `src/data/profile.json`: identity, biography, news, awards and contact.
@@ -94,7 +107,8 @@ line in reading passages; avoid justified prose on narrow screens. Verify at
 320px width, short landscape and 200% zoom; buttons retain at least 44px touch
 targets regardless of label size.
 
-Preserve the five section hashes and the `#publications` alias. About Me is
+The five section hashes are `#about`, `#news`, `#publications`, `#awards` and
+`#contact`; do not reintroduce the removed `#papers` alias. About Me is
 the welcome page: `#about` returns there. Do not duplicate it as a reading
 card or a welcome-page button. Order navigation About Me, News,
 Publications, Awards, Contact. On narrow screens, keep all five destinations visible
@@ -143,17 +157,27 @@ its current default waveform view loads Measurement and Ground Truth for
 the displayed samples. Other methods load on selection. Waveform analysis
 uses `waveform.worker.js`; spectrograms are pre-generated AVIF resources.
 Do not add eager processing of all samples or browser-side spectrogram FFT.
+CoF results default to the 4 NFE sampling budget, zoom curve y-axes to the
+model curves, and arrange the five Chart-view plots one to four per row by
+view width with underfilled rows centered. The Curves view ignores the
+sampling budget: no selection line, no budget-linked labels or legend values.
+On ultra-wide viewports (>= 2000px)
+the RSB and CoF paper columns widen to 1520px while prose keeps an 880px
+reading measure.
 
 Demo floating title and resource capsules observe their sources separately,
 share resource data through `DemoLinks.astro`, and remain inert when hidden.
+Section jumps re-align the target to its landing spot when late layout
+changes (lazy islands, charts) shift it; user scrolling, other navigation
+or a few seconds end the correction.
 RSB and CoF have no mascot companion. Keep the demos free of Yo so the
 paper content stays the focus; the companion belongs to the homepage only.
 
 ## Work and verification
 
 Prefix shell commands with `rtk`; use `rtk proxy` for unsupported commands.
-Preserve existing user changes. Commit locally when requested; never push
-without an explicit request.
+Preserve existing user changes. Follow the Git workflow above for commits
+and pushes: development saves go to Gitea; GitHub requires explicit deployment.
 
 - Code changes: `npm run build` (includes `astro check`), `npm run lint`,
   `npm run test:unit`, then `git diff --check`.

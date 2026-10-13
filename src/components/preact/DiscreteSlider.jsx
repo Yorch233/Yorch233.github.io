@@ -7,6 +7,7 @@ export default function DiscreteSlider({
 	value,
 	onChange,
 	label,
+	ariaLabel,
 	formatValue = value => String(value),
 	thumbContent = null,
 	id,
@@ -25,10 +26,10 @@ export default function DiscreteSlider({
 	const railPosition = step => `${ratio(step) * 100}%`;
 	const controlPosition = step => `calc(var(--slider-thumb-half) + (100% - var(--slider-thumb-size)) * ${ratio(step)})`;
 	return <div class={`discrete-slider ${className}`} data-disabled={isDisabled || undefined}>
-		<div class="discrete-slider-heading">
+		{label ? <div class="discrete-slider-heading">
 			<label for={inputId}>{label}</label>
 			<output for={inputId} aria-hidden="true">{formatValue(options[index].value)}</output>
-		</div>
+		</div> : null}
 		<div class="discrete-slider-control">
 			<div class="discrete-slider-track" aria-hidden="true">
 				<span class="discrete-slider-fill" style={{ width: railPosition(index) }} />
@@ -43,6 +44,7 @@ export default function DiscreteSlider({
 				max={options.length - 1}
 				step="1"
 				value={index}
+				aria-label={ariaLabel}
 				aria-valuetext={formatValue(options[index].value)}
 				disabled={isDisabled}
 				onInput={event => onChange(options[Number(event.currentTarget.value)].value)}

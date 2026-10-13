@@ -36,6 +36,15 @@ export const uiIcons = {
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8h3Zm0 3v11M10 9h7M14 13h3M14 17h3M9 13h2v4H9Z\"/></g>",
     "filled": "<rect x=\"6\" y=\"4\" width=\"15\" height=\"17\" rx=\"2\" fill=\"currentColor\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M3 8h2v11a1 1 0 0 1-2 0Z\"/><rect x=\"9\" y=\"8\" width=\"9\" height=\"1.8\" rx=\"0.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"9\" y=\"12\" width=\"3.7\" height=\"6\" rx=\"0.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"14\" y=\"12.2\" width=\"4\" height=\"1.6\" rx=\"0.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"14\" y=\"16\" width=\"4\" height=\"1.6\" rx=\"0.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/>"
   },
+  "announcement": {
+    "id": "announcement",
+    "label": "Announcement",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12c3-1.2 5.5-4 7-7M4 16c3-1 6.6-.4 10 1M4 12a2.1 2.1 0 0 0 0 4M6.5 16l2 5h1l-1.4-5.3M17 6l3-3M18 10h4M18 14l4 1.5M17 18l2 3\"/><ellipse cx=\"12.5\" cy=\"11\" rx=\"2.5\" ry=\"6.3\" transform=\"rotate(-18 12.5 11)\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"M6.1 15.1 8 21.3q.3.8 1 .5l.7-.4-1.4-6.5Z\"/><path fill=\"currentColor\" opacity=\".72\" d=\"M3.8 11.9C6.6 10.8 9 8 10.5 5.4c.6-1.1 1.4-1.2 2.3-.3 2.2 2.2 3.8 7.6 2.6 10.8-.4 1.2-1.1 1.6-2.3 1.1-3.2-1.4-6.2-1.9-8.8-1.3C2 16.3 1.4 12.9 3.8 11.9Z\"/><ellipse cx=\"12.5\" cy=\"11\" rx=\"2\" ry=\"5.8\" transform=\"rotate(-18 12.5 11)\" fill=\"currentColor\"/><path fill=\"currentColor\" opacity=\".48\" d=\"m11.1 9.7 2.3.4.9 2-2 2.1Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"m16.1 6.5 4-4.1.9 2.4-4.1 3.1Zm1.2 2.9 5.7-.4-.2 1.9-5.4-.4Zm.5 3.3 5.2 1.1-.5 2.5-5.3-2.4Zm-1.5 3.8 3.7 3.6-1.7 1.6-3-4.2Z\"/>"
+  },
   "trophy": {
     "id": "trophy",
     "label": "Awards",
@@ -92,8 +101,8 @@ export const uiIcons = {
   },
   "wave": {
     "id": "wave",
-    "label": "Speech enhancement",
-    "group": "Research",
+    "label": "Waveform",
+    "group": "Audio",
     "color": "#3189f5",
     "secondary": "#bfdfff",
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10v4M7.5 7v10M12 4v16M16.5 7v10M21 10v4\"/></g>",
@@ -101,8 +110,8 @@ export const uiIcons = {
   },
   "cube": {
     "id": "cube",
-    "label": "Diffusion models",
-    "group": "Research",
+    "label": "Cube",
+    "group": "Actions",
     "color": "#7363d9",
     "secondary": "#e1dcff",
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 2.8 9 5.1v8.2l-9 5.1-9-5.1V7.9Zm-9 5.1 9 5.2 9-5.2M12 13.1v8.1\"/></g>",
@@ -119,8 +128,8 @@ export const uiIcons = {
   },
   "layers": {
     "id": "layers",
-    "label": "Masked diffusion",
-    "group": "Research",
+    "label": "Layers",
+    "group": "Actions",
     "color": "#c38247",
     "secondary": "#f5dfc6",
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 3 10 5-10 5L2 8Zm-8.5 9 8.5 4.3 8.5-4.3M3.5 16l8.5 4.3 8.5-4.3\"/></g>",
@@ -159,8 +168,8 @@ export const uiIcons = {
     "group": "Actions",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2v12m-5-5 5 5 5-5M6 16a3.5 3.5 0 0 0 0 7h12a3.5 3.5 0 0 0 0-7h-1l-5 3-5-3Z\"/></g>",
-    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M5.5 16a3.5 3.5 0 0 0 0 7h13a3.5 3.5 0 0 0 0-7H17l-5 3-5-3Z\"/><path fill=\"currentColor\" d=\"M10.5 2.5a1.5 1.5 0 0 1 3 0V10H17l-5 5.5L7 10h3.5Z\"/>"
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2v12m-5-5 5 5 5-5M6 16a2.5 2.5 0 0 0 0 5h12a2.5 2.5 0 0 0 0-5h-1l-5 2.5L7 16Z\"/></g>",
+    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M6 16a2.5 2.5 0 0 0 0 5h12a2.5 2.5 0 0 0 0-5h-1l-5 2.5L7 16Z\"/><path fill=\"currentColor\" d=\"M10.5 2.5a1.5 1.5 0 0 1 3 0V10H17l-5 5.5L7 10h3.5Z\"/>"
   },
   "check": {
     "id": "check",
@@ -303,8 +312,8 @@ export const uiIcons = {
     "group": "Charts",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 17v4h16V5M4 17l8-7 8-6\"/><circle cx=\"4\" cy=\"17\" r=\"1.7\" /><circle cx=\"12\" cy=\"10\" r=\"1.7\" /><circle cx=\"20\" cy=\"4\" r=\"1.7\" /></g>",
-    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M4 17 12 10l8-6v17H4Z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4 17 12 10l8-6\"/><circle cx=\"4\" cy=\"17\" r=\"2.2\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"10\" r=\"2.2\" fill=\"currentColor\"/><circle cx=\"20\" cy=\"4\" r=\"2.2\" fill=\"currentColor\"/>"
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 17v4h16V5M4 17C8 17 8 11 12 10S18 8 20 4\"/><circle cx=\"4\" cy=\"17\" r=\"1.7\" /><circle cx=\"12\" cy=\"10\" r=\"1.7\" /><circle cx=\"20\" cy=\"4\" r=\"1.7\" /></g>",
+    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M4 17C8 17 8 11 12 10S18 8 20 4v17H4Z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M4 17C8 17 8 11 12 10S18 8 20 4\"/><circle cx=\"4\" cy=\"17\" r=\"2.2\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"10\" r=\"2.2\" fill=\"currentColor\"/><circle cx=\"20\" cy=\"4\" r=\"2.2\" fill=\"currentColor\"/>"
   },
   "sun": {
     "id": "sun",
@@ -387,28 +396,139 @@ export const uiIcons = {
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><g transform=\"rotate(90 12 12)\"><path d=\"M3.5 12h17M13.5 5l7 7-7 7\"/></g></g>",
     "filled": "<g transform=\"rotate(90 12 12)\"><rect x=\"3\" y=\"10.4\" width=\"14\" height=\"3.2\" rx=\"1.6\" fill=\"currentColor\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M12.8 4.8a1.4 1.4 0 0 1 2 0l6.2 6.2a1.4 1.4 0 0 1 0 2l-6.2 6.2a1.4 1.4 0 1 1-2-2L18 12l-5.2-5.2a1.4 1.4 0 0 1 0-2Z\"/></g>"
   },
+  "pdf": {
+    "id": "pdf",
+    "label": "PDF",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.15\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M7 18c3-2 6-8 5-9-2-2-2 4 2 6 5 3 5-2 0-1-5 1-8 5-7 4Z\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M14 3v4a2 2 0 0 0 2 2h4Z\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"1.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M7 18c3-2 6-8 5-9-2-2-2 4 2 6 5 3 5-2 0-1-5 1-8 5-7 4Z\"/>"
+  },
+  "arxiv": {
+    "id": "arxiv",
+    "label": "arXiv",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 11l8 7m0-7-8 7\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M14 3v4a2 2 0 0 0 2 2h4Z\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"2.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M8 11l8 7m0-7-8 7\"/>"
+  },
   "github": {
     "id": "github",
     "label": "GitHub",
+    "group": "Actions",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<path fill=\"currentColor\" d=\"M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12\"/>",
-    "filled": "<path fill=\"currentColor\" d=\"M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12\"/>"
-  },
-  "orcid": {
-    "id": "orcid",
-    "label": "ORCID",
-    "color": "#3189f5",
-    "secondary": "#bfdfff",
-    "line": "<path fill=\"currentColor\" d=\"M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12s12-5.372 12-12S18.628 0 12 0M7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947m-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025c0 2.578-2.016 5.025-5.325 5.025h-3.919zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722c0-2.016-1.284-3.722-4.097-3.722z\"/>",
-    "filled": "<path fill=\"currentColor\" d=\"M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12s12-5.372 12-12S18.628 0 12 0M7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947m-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025c0 2.578-2.016 5.025-5.325 5.025h-3.919zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722c0-2.016-1.284-3.722-4.097-3.722z\"/>"
+    "line": "<g transform=\"translate(2 2) scale(.833333)\"><path fill=\"currentColor\" d=\"M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12\"/></g>",
+    "filled": "<g transform=\"translate(2 2) scale(.833333)\"><circle cx=\"12\" cy=\"12.15\" r=\"11.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><path fill=\"currentColor\" d=\"M12 .297c-6.63 0-12 5.373-12 12c0 5.303 3.438 9.8 8.205 11.385c.6.113.82-.258.82-.577c0-.285-.01-1.04-.015-2.04c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729c1.205.084 1.838 1.236 1.838 1.236c1.07 1.835 2.809 1.305 3.495.998c.108-.776.417-1.305.76-1.605c-2.665-.3-5.466-1.332-5.466-5.93c0-1.31.465-2.38 1.235-3.22c-.135-.303-.54-1.523.105-3.176c0 0 1.005-.322 3.3 1.23c.96-.267 1.98-.399 3-.405c1.02.006 2.04.138 3 .405c2.28-1.552 3.285-1.23 3.285-1.23c.645 1.653.24 2.873.12 3.176c.765.84 1.23 1.91 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92c.42.36.81 1.096.81 2.22c0 1.606-.015 2.896-.015 3.286c0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12\"/></g>"
   },
   "huggingface": {
     "id": "huggingface",
     "label": "Hugging Face",
+    "group": "Actions",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<path fill=\"currentColor\" d=\"M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378c0 1.112.178 2.181.503 3.185c.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284c.278.173.48.408.71.694c.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542c.01.026.653 1.552 1.657 2.54c.616.605 1.01 1.223 1.082 1.912c.055.537-.096 1.059-.38 1.572c.637.121 1.294.187 1.967.187c.657 0 1.298-.063 1.921-.178c-.287-.517-.44-1.041-.384-1.581c.07-.69.465-1.307 1.081-1.913c1.004-.987 1.647-2.513 1.657-2.539c.021-.074.083-.285.233-.542c.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952c.23-.286.432-.52.71-.694c.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174a1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094c-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71c-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013a1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921a.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92a.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164c1.607-.007 2.984-1.155 3.572-1.164c.196-.003.305.12.305.454c0 .886-.424 2.328-1.563 3.202c-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026l-.01.008l-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116a1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243a1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444c-.034-.016-.104-.008-.2.022q-.094.03-.216.087q-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096a3 3 0 0 0-.26.219a2 2 0 0 0-.12.121a2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203c0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194c-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858s-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64c-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647s2.822 2.813 2.562 3.244s-1.176-.506-1.176-.506s-2.866-2.567-3.49-1.898s.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405c-.238.839-2.71-1.587-3.216-.642c-.506.946 3.49 2.056 3.522 2.064c1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194c1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858s.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64c.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647s-2.822 2.813-2.562 3.244s1.176-.506 1.176-.506s2.866-2.567 3.49-1.898s-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405c.238.839 2.71-1.587 3.216-.642c.506.946-3.49 2.056-3.522 2.064c-1.29.33-4.568 1.028-5.713-.624\"/>",
-    "filled": "<path fill=\"currentColor\" d=\"M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378c0 1.112.178 2.181.503 3.185c.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284c.278.173.48.408.71.694c.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542c.01.026.653 1.552 1.657 2.54c.616.605 1.01 1.223 1.082 1.912c.055.537-.096 1.059-.38 1.572c.637.121 1.294.187 1.967.187c.657 0 1.298-.063 1.921-.178c-.287-.517-.44-1.041-.384-1.581c.07-.69.465-1.307 1.081-1.913c1.004-.987 1.647-2.513 1.657-2.539c.021-.074.083-.285.233-.542c.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952c.23-.286.432-.52.71-.694c.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174a1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094c-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71c-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013a1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921a.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92a.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164c1.607-.007 2.984-1.155 3.572-1.164c.196-.003.305.12.305.454c0 .886-.424 2.328-1.563 3.202c-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026l-.01.008l-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116a1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243a1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444c-.034-.016-.104-.008-.2.022q-.094.03-.216.087q-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096a3 3 0 0 0-.26.219a2 2 0 0 0-.12.121a2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203c0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194c-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858s-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64c-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647s2.822 2.813 2.562 3.244s-1.176-.506-1.176-.506s-2.866-2.567-3.49-1.898s.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405c-.238.839-2.71-1.587-3.216-.642c-.506.946 3.49 2.056 3.522 2.064c1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194c1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858s.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64c.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647s-2.822 2.813-2.562 3.244s1.176-.506 1.176-.506s2.866-2.567 3.49-1.898s-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405c.238.839 2.71-1.587 3.216-.642c.506.946-3.49 2.056-3.522 2.064c-1.29.33-4.568 1.028-5.713-.624\"/>"
+    "line": "<g transform=\"translate(2 2) scale(.833333)\"><path fill=\"currentColor\" d=\"M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378c0 1.112.178 2.181.503 3.185c.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284c.278.173.48.408.71.694c.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542c.01.026.653 1.552 1.657 2.54c.616.605 1.01 1.223 1.082 1.912c.055.537-.096 1.059-.38 1.572c.637.121 1.294.187 1.967.187c.657 0 1.298-.063 1.921-.178c-.287-.517-.44-1.041-.384-1.581c.07-.69.465-1.307 1.081-1.913c1.004-.987 1.647-2.513 1.657-2.539c.021-.074.083-.285.233-.542c.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952c.23-.286.432-.52.71-.694c.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174a1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094c-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71c-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013a1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921a.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92a.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164c1.607-.007 2.984-1.155 3.572-1.164c.196-.003.305.12.305.454c0 .886-.424 2.328-1.563 3.202c-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026l-.01.008l-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116a1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243a1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444c-.034-.016-.104-.008-.2.022q-.094.03-.216.087q-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096a3 3 0 0 0-.26.219a2 2 0 0 0-.12.121a2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203c0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194c-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858s-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64c-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647s2.822 2.813 2.562 3.244s-1.176-.506-1.176-.506s-2.866-2.567-3.49-1.898s.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405c-.238.839-2.71-1.587-3.216-.642c-.506.946 3.49 2.056 3.522 2.064c1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194c1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858s.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64c.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647s-2.822 2.813-2.562 3.244s1.176-.506 1.176-.506s2.866-2.567 3.49-1.898s-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405c.238.839 2.71-1.587 3.216-.642c.506.946-3.49 2.056-3.522 2.064c-1.29.33-4.568 1.028-5.713-.624\"/></g>",
+    "filled": "<g transform=\"translate(2 2) scale(.833333)\"><circle cx=\"12.025\" cy=\"11.508\" r=\"10.3\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><path fill=\"currentColor\" d=\"M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378c0 1.112.178 2.181.503 3.185c.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284c.278.173.48.408.71.694c.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542c.01.026.653 1.552 1.657 2.54c.616.605 1.01 1.223 1.082 1.912c.055.537-.096 1.059-.38 1.572c.637.121 1.294.187 1.967.187c.657 0 1.298-.063 1.921-.178c-.287-.517-.44-1.041-.384-1.581c.07-.69.465-1.307 1.081-1.913c1.004-.987 1.647-2.513 1.657-2.539c.021-.074.083-.285.233-.542c.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952c.23-.286.432-.52.71-.694c.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174a1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094c-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71c-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013a1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921a.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92a.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164c1.607-.007 2.984-1.155 3.572-1.164c.196-.003.305.12.305.454c0 .886-.424 2.328-1.563 3.202c-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026l-.01.008l-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116a1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243a1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444c-.034-.016-.104-.008-.2.022q-.094.03-.216.087q-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096a3 3 0 0 0-.26.219a2 2 0 0 0-.12.121a2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203c0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194c-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858s-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64c-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647s2.822 2.813 2.562 3.244s-1.176-.506-1.176-.506s-2.866-2.567-3.49-1.898s.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405c-.238.839-2.71-1.587-3.216-.642c-.506.946 3.49 2.056 3.522 2.064c1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194c1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858s.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64c.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647s-2.822 2.813-2.562 3.244s1.176-.506 1.176-.506s2.866-2.567 3.49-1.898s-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405c.238.839 2.71-1.587 3.216-.642c.506.946-3.49 2.056-3.522 2.064c-1.29.33-4.568 1.028-5.713-.624\"/></g>"
+  },
+  "modelscope": {
+    "id": "modelscope",
+    "label": "ModelScope",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 2 6 3.5v7L12 16l-6-3.5v-7Zm-6 3.5L12 9l6-3.5M12 9v7M6 9l-5 3v7l6 3.5 5-3m-11-7 6 3.5 5-3M7 16v6.5m11-13.5 5 3v7l-6 3.5-5-3m11-7L17 16l-5-3.5M17 16v6.5\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"m6 9-5 3v7l6 3.5 5-3v-7Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"m6 9 6 3.5-5 3.5-6-4Z\"/><path fill=\"currentColor\" d=\"m12 2 6 3.5v7L12 16l-6-3.5v-7Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"m12 2 6 3.5L12 9 6 5.5Z\"/><path fill=\"currentColor\" d=\"m18 9 5 3v7l-6 3.5-5-3v-7Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"m18 9 5 3-6 4-5-3.5Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"m17 16 6-4v7l-6 3.5Z\"/>"
+  },
+  "dataset": {
+    "id": "dataset",
+    "label": "Dataset",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\"/><path d=\"M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 10c0 1.7 3.6 3 8 3s8-1.3 8-3M4 15c0 1.7 3.6 3 8 3s8-1.3 8-3\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"M4 5h16v14c0 1.7-3.6 3-8 3s-8-1.3-8-3Z\"/><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M4 10c0 1.7 3.6 3 8 3s8-1.3 8-3M4 15c0 1.7 3.6 3 8 3s8-1.3 8-3\"/>"
+  },
+  "sampling-budget": {
+    "id": "sampling-budget",
+    "label": "Sampling budget",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12h6m6 0h6\"/><circle cx=\"12\" cy=\"12\" r=\"3\" /><path d=\"M3 9.5v5M21 9.5v5\"/></g>",
+    "filled": "<rect x=\"2\" y=\"11\" width=\"20\" height=\"2\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"2\" y=\"9\" width=\"2\" height=\"6\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"20\" y=\"9\" width=\"2\" height=\"6\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"12\" cy=\"12\" r=\"3.5\" fill=\"currentColor\"/>"
+  },
+  "refresh": {
+    "id": "refresh",
+    "label": "Refresh",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 9a8.5 8.5 0 0 0-15-3L3 9m0-5v5h5M4 15a8.5 8.5 0 0 0 15 3l2-3m0 5v-5h-5\"/></g>",
+    "filled": "<path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M20 9a8.5 8.5 0 0 0-15-3L3 9\"/><path fill=\"currentColor\" d=\"M2 3.8v6h6Z\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M4 15a8.5 8.5 0 0 0 15 3l2-3\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M22 20.2v-6h-6Z\"/>"
+  },
+  "loading": {
+    "id": "loading",
+    "label": "Loading",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 12a9 9 0 1 1-9-9\"/></g>",
+    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" fill-rule=\"evenodd\" d=\"M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 3a7 7 0 1 1-7 7 7 7 0 0 1 7-7Z\"/><path fill=\"currentColor\" d=\"M12 2a10 10 0 0 1 10 10h-3a7 7 0 0 0-7-7Z\"/>"
+  },
+  "denoising": {
+    "id": "denoising",
+    "label": "Denoising",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"3\" cy=\"8\" r=\"1\" /><circle cx=\"6\" cy=\"5\" r=\"1\" /><circle cx=\"3\" cy=\"16\" r=\"1\" /><circle cx=\"6\" cy=\"19\" r=\"1\" /><circle cx=\"6.5\" cy=\"12\" r=\"1.2\" /><path d=\"M10 9v6M14 3v18M18 6v12M22 10v4\"/></g>",
+    "filled": "<circle cx=\"3\" cy=\"8\" r=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"6\" cy=\"5\" r=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"3\" cy=\"16\" r=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"6\" cy=\"19\" r=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"6.5\" cy=\"12\" r=\"1.2\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"8.8\" y=\"8\" width=\"2.4\" height=\"8\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"12.8\" y=\"2\" width=\"2.4\" height=\"20\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"16.8\" y=\"5\" width=\"2.4\" height=\"14\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"20.8\" y=\"9\" width=\"2.4\" height=\"6\" rx=\"1.2\" fill=\"currentColor\"/>"
+  },
+  "dereverberation": {
+    "id": "dereverberation",
+    "label": "Dereverberation",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 10v4M6.5 6v12M10.5 2v20M14.5 8v8M18.5 6v12M22 9v6\"/></g>",
+    "filled": "<rect x=\"1.3\" y=\"9\" width=\"2.4\" height=\"6\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"5.3\" y=\"5\" width=\"2.4\" height=\"14\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"9.3\" y=\"1\" width=\"2.4\" height=\"22\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"13.3\" y=\"7\" width=\"2.4\" height=\"10\" rx=\"1.2\" fill=\"currentColor\"/><rect x=\"17.5\" y=\"5\" width=\"2\" height=\"14\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"21\" y=\"8\" width=\"2\" height=\"8\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/>"
+  },
+  "orcid": {
+    "id": "orcid",
+    "label": "ORCID",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g transform=\"translate(2 2) scale(.833333)\"><path fill=\"currentColor\" d=\"M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12s12-5.372 12-12S18.628 0 12 0M7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947m-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025c0 2.578-2.016 5.025-5.325 5.025h-3.919zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722c0-2.016-1.284-3.722-4.097-3.722z\"/></g>",
+    "filled": "<g transform=\"translate(2 2) scale(.833333)\"><circle cx=\"12\" cy=\"12\" r=\"11.8\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><path fill=\"currentColor\" d=\"M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12s12-5.372 12-12S18.628 0 12 0M7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947m-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025c0 2.578-2.016 5.025-5.325 5.025h-3.919zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722c0-2.016-1.284-3.722-4.097-3.722z\"/></g>"
+  },
+  "speech-enhancement": {
+    "id": "speech-enhancement",
+    "label": "Speech Enhancement",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 7h2l1.5-3L8 10l2-6 2.5 6 2-5 2 4L18 7h4M2 17h4l2-3 3 7 3-10 3 6h5\"/></g>",
+    "filled": "<path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M2 7h2l1.5-3L8 10l2-6 2.5 6 2-5 2 4L18 7h4\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M2 17h4l2-3 3 7 3-10 3 6h5\"/>"
+  },
+  "diffusion-models": {
+    "id": "diffusion-models",
+    "label": "Diffusion Models",
+    "group": "Research",
+    "color": "#7363d9",
+    "secondary": "#e1dcff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"2.5\" cy=\"7\" r=\"0.7\" /><circle cx=\"3.5\" cy=\"12\" r=\"0.7\" /><circle cx=\"2.5\" cy=\"17\" r=\"0.7\" /><circle cx=\"6.5\" cy=\"5\" r=\"0.7\" /><circle cx=\"6.5\" cy=\"19\" r=\"0.7\" /><circle cx=\"8\" cy=\"9\" r=\"1.3\" /><circle cx=\"8\" cy=\"15\" r=\"1.3\" /><circle cx=\"11\" cy=\"12\" r=\"1.8\" /><circle cx=\"19\" cy=\"12\" r=\"4\" /></g>",
+    "filled": "<circle cx=\"2.5\" cy=\"7\" r=\"0.9\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"3.5\" cy=\"12\" r=\"0.9\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"2.5\" cy=\"17\" r=\"0.9\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"6.5\" cy=\"5\" r=\"0.9\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"6.5\" cy=\"19\" r=\"0.9\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"8\" cy=\"9\" r=\"1.3\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"8\" cy=\"15\" r=\"1.3\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><circle cx=\"11\" cy=\"12\" r=\"1.8\" fill=\"currentColor\"/><circle cx=\"19\" cy=\"12\" r=\"4\" fill=\"currentColor\"/>"
+  },
+  "masked-diffusion": {
+    "id": "masked-diffusion",
+    "label": "Masked Diffusion",
+    "group": "Research",
+    "color": "#c38247",
+    "secondary": "#f5dfc6",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2\" y=\"3\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"8\" y=\"3\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"2\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"8\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"14\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"2\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"8\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><rect x=\"14\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" /><g transform=\"rotate(12 19.5 4.5)\"><rect x=\"17\" y=\"2\" width=\"5\" height=\"5\" rx=\"1\"/></g></g>",
+    "filled": "<rect x=\"2\" y=\"3\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"8\" y=\"3\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"2\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"8\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"14\" y=\"9\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"2\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"8\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"14\" y=\"15\" width=\"4.5\" height=\"4.5\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><g transform=\"rotate(12 19.5 4.5)\"><rect x=\"17\" y=\"2\" width=\"5\" height=\"5\" rx=\"1\" fill=\"currentColor\"/></g>"
   }
 };

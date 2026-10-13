@@ -1,4 +1,4 @@
-// Semantic tokens for the original imagegen-directed Qing UI icon family.
+// Semantic tokens for the original Qing UI icon family.
 export const uiIconCatalog = [
   {
     "id": "home",
@@ -24,6 +24,13 @@ export const uiIconCatalog = [
   {
     "id": "news",
     "label": "News",
+    "group": "Navigation",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "announcement",
+    "label": "Announcement",
     "group": "Navigation",
     "color": "#3189f5",
     "secondary": "#bfdfff"
@@ -72,15 +79,15 @@ export const uiIconCatalog = [
   },
   {
     "id": "wave",
-    "label": "Speech enhancement",
-    "group": "Research",
+    "label": "Waveform",
+    "group": "Audio",
     "color": "#3189f5",
     "secondary": "#bfdfff"
   },
   {
     "id": "cube",
-    "label": "Diffusion models",
-    "group": "Research",
+    "label": "Cube",
+    "group": "Actions",
     "color": "#7363d9",
     "secondary": "#e1dcff"
   },
@@ -93,8 +100,8 @@ export const uiIconCatalog = [
   },
   {
     "id": "layers",
-    "label": "Masked diffusion",
-    "group": "Research",
+    "label": "Layers",
+    "group": "Actions",
     "color": "#c38247",
     "secondary": "#f5dfc6"
   },
@@ -300,5 +307,110 @@ export const uiIconCatalog = [
     "group": "Directions",
     "color": "#3189f5",
     "secondary": "#bfdfff"
+  },
+  {
+    "id": "pdf",
+    "label": "PDF",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "arxiv",
+    "label": "arXiv",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "github",
+    "label": "GitHub",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "huggingface",
+    "label": "Hugging Face",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "modelscope",
+    "label": "ModelScope",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "dataset",
+    "label": "Dataset",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "sampling-budget",
+    "label": "Sampling budget",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "refresh",
+    "label": "Refresh",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "loading",
+    "label": "Loading",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "denoising",
+    "label": "Denoising",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "dereverberation",
+    "label": "Dereverberation",
+    "group": "Charts",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "orcid",
+    "label": "ORCID",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "speech-enhancement",
+    "label": "Speech Enhancement",
+    "group": "Research",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "diffusion-models",
+    "label": "Diffusion Models",
+    "group": "Research",
+    "color": "#7363d9",
+    "secondary": "#e1dcff"
+  },
+  {
+    "id": "masked-diffusion",
+    "label": "Masked Diffusion",
+    "group": "Research",
+    "color": "#c38247",
+    "secondary": "#f5dfc6"
   }
 ];

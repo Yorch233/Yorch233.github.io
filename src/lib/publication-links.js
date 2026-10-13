@@ -11,7 +11,7 @@ export function getFullTextLinks(publication, { arxivPdf = true } = {}) {
 		}] : []),
 		...(publication.arxiv ? [{
 			href: arxivPdf ? publication.arxiv.replace('/abs/', '/pdf/') : publication.arxiv,
-			icon: arxivPdf ? 'download' : 'file',
+			icon: arxivPdf ? 'pdf' : 'arxiv',
 			label: arxivPdf ? 'arXiv PDF' : 'arXiv',
 			ariaLabel: arxivPdf ? 'Read the full paper as an arXiv PDF' : 'View the paper on arXiv',
 			title: arxivPdf ? 'Read the arXiv PDF' : 'View the paper on arXiv',

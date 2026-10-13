@@ -41,6 +41,65 @@ imagegen prompt are recorded in `design/home-clouds-v1/`. Glass
 capsules use the optical treatment described below. Avoid decorative badges
 and repeated heavy shadows.
 
+## Icon system
+
+The homepage header, RSB demo and CoF demo share one native SVG icon system.
+Icons use a 24px viewBox and a compact rounded geometric silhouette. They are
+code-native artwork rather than raster images, emoji or external icon fonts, so
+the same geometry stays crisp at every control size and remains available to
+all routes.
+
+Icons have a quiet line state and an active filled state; standard brand
+silhouettes retain their filled geometry in both states. The quiet state uses
+the muted gray token. Selected controls switch to a two-tone fill: the primary plane uses `--ui-icon-active`
+(`#3189f5` in light mode) and the secondary plane uses
+`--ui-icon-secondary` (`#bfdfff`). Dark mode keeps the same relationship with
+the dark-mode icon tokens. Use the secondary plane for a meaningful surface,
+fold, highlight or data layer rather than as a decorative gradient. Keep
+outlines and joins rounded, with a visual stroke around 1.7px when an outline
+is needed.
+
+The icon state follows the control state. Links with `aria-current`, buttons
+with `aria-pressed="true"` or `aria-expanded="true"`, copied feedback and
+explicitly active icons show the filled treatment. Focus-visible and hover may
+preview the active color, while inactive controls remain restrained gray. Do
+not change the silhouette between states, and do not use color alone to convey
+meaning when a text label or control state is available.
+
+Resource icons use the same system: PDF is a folded document, arXiv is an
+academic document with an abstract crossed mark, GitHub and Hugging Face retain their standard Simple Icons brand silhouettes
+with pale secondary detail planes, and
+ModelScope is an isometric cube. Appearance controls use a sun and crescent
+moon. Results controls use a stacked Dataset symbol, a bar Chart, a Curves
+line with data nodes and a Sampling budget slider with clear end stops and
+a central thumb. The outline track stops at the thumb rather than crossing it. Copy
+uses two offset document sheets. These forms should remain recognizable at
+17–20px in desktop capsules and 22px in the compact mobile navigation.
+GitHub, Hugging Face and ORCID keep a 2px optical inset on the 24px grid.
+Dense internal details, such as the PDF mark, use a lighter stroke so their
+negative spaces stay open at 16px.
+
+Keep icon labels outside the SVG where possible. Use the shared `UiIcon`
+component and catalog so new artwork is globally available to Astro and
+Preact consumers. The source artwork lives in `src/lib/ui-icon-artwork.js`,
+the catalog in `src/lib/ui-icon-catalog.js`, and state styling in
+`src/styles/ui-icons.css`.
+
+The shared resource IDs are `pdf`, `arxiv`, `github`, `huggingface` and
+`modelscope`. Results use `dataset`, `bar-chart`, `line-chart` and
+`sampling-budget`; dataset choices use `denoising` for WSJ0+WHAM and
+`dereverberation` for WSJ0+REVERB. Appearance uses `sun` and `moon`. General controls reuse
+`copy`, `arrow-up`, `arrow-down`, `arrow-left`, `menu`, `home`, `refresh`
+and `loading`. Loading uses an open outline arc when quiet and a static
+two-plane ring when active, available to actual pending operations; the page splash keeps its existing linear indicator. All new icons
+include paired SVG downloads in `/icons/` and work in Astro and Preact.
+
+Research uses the concept-specific `speech-enhancement`, `diffusion-models`
+and `masked-diffusion` icons: a clear wave with receding noise, particles
+merging into a coherent form, and a tile grid with its returning tile. Their
+blue, violet and warm orange two-tone planes follow the research colors.
+Generic `wave`, `cube` and `layers` remain available as utility icons.
+
 ## Greeting and reading
 
 On a first desktop visit to the welcome page, a dismissible native dialog introduces
@@ -153,7 +212,7 @@ section, URL, scroll and mascot form. Theme styling stays on the homepage.
 `profile.json` and `publications.js` own facts and links. Card prose uses
 Qing’s first-person voice; Yo’s short narration uses third person. Do not
 invent response-time promises or publication claims. The first Publications
-resource button is labeled “Demo” for both RSB and CoF, preserving their URLs. News links and both page kickers also use “Demo”; CoF is not labeled a paper overview.
+resource button is labeled “Demo” for both RSB and CoF, preserving their URLs. News links also use “Demo”; both page kickers read “Paper Demo”. CoF is not labeled a paper overview.
 News must describe those destinations
 accurately. Show citation success and failure accessibly and independently
 per paper. Awards and news retain their disclosure controls. Award project
@@ -436,52 +495,86 @@ Keep all Yo speech conversational, including homepage hints. Use natural short
 sentences with no semicolon breaks. Preserve the scientific meaning of any
 summary without reading publication metadata or abstracts verbatim.
 
-CoF results pair a five-metric vertical bar overview with Metric vs NFE curves.
-Use one white rounded workspace based on `design/cof-results-v1/reference.png`.
-Stack the controls in one hairline tray below the result heading: Dataset
-pills first, then the View toggle, then the sampling budget. Dataset and chart mode use gray tracks with white sliding thumbs; the selected
-thumb carries its icon and label while the other option remains quiet in the rail.
-Sampling stays directly visible as a six-stop `DiscreteSlider`: a slim ice-blue
-rail with progress dots between stop-to-stop ends and a floating white readout
-chip carrying the current NFE value. Keyword tags use a flat
-translucent blue fill and blue border without lighting or reflections.
-Separate the method legend into model variants at the selected NFE and reference
-methods at their reported budgets. Put metric selector capsules below each x-axis;
-hover or keyboard focus reveals a short accessible explanation. Put values above
-bars and numeric grid lines. On wide screens,
-use three plots in the first row and two in the second; stack them on phones.
-Keep the results workspace focused on the charts without a numerical table or source/download footer.
-Use blue for both CoF variants and pale blue for pretrained SB-VE and OT-CFM.
-Other methods use low-saturation grays. Replace auxiliary method abbreviations
-with matching color/shape markers on the bar axis and the fully labeled legend:
-circles for SB-VE, triangles for OT-CFM, squares/diamonds/crosses for references.
-Each bar reveals its method, budget and value on hover, keyboard focus or tap.
-The WER overview also includes the dataset’s clean reference value.
-Order bars and legend: Unprocessed, SGMSE+, StoRM, SB-VE, CoF (SB-VE),
-OT-CFM and CoF (OT-CFM).
+CoF results pair a five-metric vertical bar overview (Chart view) with a
+single-metric Metric vs NFE curve explorer (Curves view) inside one white
+rounded workspace. One control row follows the Results heading: Dataset
+pills, the View toggle, and the Chart-only sampling budget trigger; the
+trigger appears in Chart view and hides in Curves, while the Curves key
+legend still names the selected NFE. Controls wrap as a group on narrow
+screens. The sampling budget opens a popover
+with the shared `DiscreteSlider`: six equally spaced stops (1, 2, 4, 8, 16,
+24) on a slim ice-blue rail with a floating white readout thumb. The native
+range input announces the real budget and supports pointer, touch and
+keyboard input; Chart axes use actual NFE spacing. Keep the slider component
+independent of CoF. The workspace opens in Chart view at 4 NFE. Keyword tags
+use a flat translucent blue fill and blue border without lighting or
+reflections.
+In Chart view the legend is one row of method chips with `@budget` suffixes at
+the selected budget; it lists Unprocessed first, WER's ring-chipped Clean
+reference second without a suffix, then the four model variants. Hovering or
+keyboard-focusing a legend entry highlights that method's bar across all five
+charts and dims the rest; charts that lack the method stay unchanged. Put
+values outside above the bars in ink, with the method chip inside
+the bar's top edge; bars too short to hold the chip stack it under the value
+just above the bar. Bars render a lighter tint of the method theme colour.
+Metric hint labels with a dotted-underline affordance sit below each x-axis;
+hover or keyboard focus reveals a short accessible explanation. The five
+chart-view plots share one size and flow into one to four columns as the view
+width allows: four per row on ultra-wide screens once the paper column widens
+past 2000px, three per row on wide screens, two on medium screens and one on
+phones; a row that does not fill its maximum stays centered.
+Keep the results workspace focused on the charts without a numerical table or
+source/download footer.
+Every method owns a theme colour, shown saturated on its shaped monogram
+chip: circle chips for Unprocessed, SGMSE+, StoRM and the WER plot's Clean
+reference, a triangle chip for SB-VE and a square chip for OT-CFM. Bars render
+a lighter tint of the same theme colour. CoF variants keep the base shape and
+switch the letters to "Co", and take the branch's shared orange — `#f97316`
+marks on `#fb9d5c` bars, matching `statusColors.cof`/`barTints.cof` from the
+2026-09-17 design. Each bar reveals
+its method, budget and value on hover, keyboard focus or tap.
+The top legend explains the WER plot's ring-marked clean reference bar, so
+every chart group shares one structure and the five x-axes align horizontally.
+Order bars: Unprocessed, SGMSE+, StoRM, SB-VE, CoF (SB-VE),
+OT-CFM and CoF (OT-CFM); the legend follows that order with Clean reference
+second.
 Positive-only bar charts use metric-specific y-ranges with a visible axis break
 and exact values above the bars; metrics whose values cross zero retain the zero
-baseline, including negative SI-SDR values. Explain the scale treatment beside
-the plots so the truncated bars remain clear.
+baseline, including negative SI-SDR values. The WER plot renders the clean
+reference as a dashed-outline reference bar so it reads as a level, not a
+competing method.
 Show either the bar overview or NFE curves, selected by one sliding switch
 between the two mode labels; default to bars. Its checked state means NFE curves.
 Keep dataset, metric and NFE selections when switching.
-The NFE control uses the shared `DiscreteSlider` Preact component: a gray pill
-track, six labeled stops and a white rounded thumb with the current value and a
-sampling icon inside it. The evaluated budgets
-1, 2, 4, 8, 16 and 24 are equally spaced choices, with visible numeric labels;
-the native range input announces the real budget and supports pointer, touch
-and keyboard input. Chart axes continue to use actual NFE spacing. Keep this
-component independent of CoF so other discrete choices can reuse it.
-Only the selected view is mounted. Dataset and budget controls update that view
-immediately; metric capsules and the curve's selector update the selected metric.
-Preserve raw evaluation values in the data; display SI-SDR with one decimal and every other
-metric (including WER percentages) with two. Keep method colors consistent in
-both views. Light-blue/solid curves are pretrained; blue/dashed curves are
-CoF; circles identify SB-VE and triangles OT-CFM.
-NFE uses real linear spacing; UTMOS curves use a labeled logarithmic y-axis.
-Baselines keep their published budgets (SGMSE+ 100; StoRM 100+1). Out-of-range
-references stay visible below the plot rather than stretching the curve axes.
+In Curves view the metric selector capsules live in the controls below the
+budget row. Curve y-axes zoom to the model curves so the CoF
+and pretrained differences stay readable; references that fall outside the
+zoomed range clamp to the plot edge with a direction arrow in their label, and
+the Unprocessed reference carries no budget suffix. Curves are independent
+of the sampling budget: no selection line and no permanent point labels;
+every point stays hover and keyboard inspectable through tooltips and its
+accessible label. The Curves panel opens with the same chip legend as Chart
+view: references first (Unprocessed, SGMSE+@100, StoRM@100+1 with muted
+suffixes), then the four variants. Hovering or keyboard-focusing a legend
+entry, or any curve point, focuses that curve or reference line and dims the
+rest. Baselines
+keep their published budgets (SGMSE+ 100; StoRM 100+1); their
+exact values stay reachable through the reference line tooltips and the Chart
+view.
+The sampling budget opens at 4 NFE.
+Only the selected view is mounted. Dataset and budget controls update the
+charts by fading them out fully, swapping the content, and fading back in
+while the card height eases to the new content height (instant under reduced
+motion); on view switches the Chart-only budget row fades out before the
+Curves metric row fades in, and the metric capsules update the selected
+metric through the same fade.
+Preserve raw evaluation values in the data; display SI-SDR with one decimal and
+every other metric (including WER percentages) with two. Keep method colors
+consistent in both views. Pretrained curves are solid in each method's own
+tint (blue for SB-VE, purple for OT-CFM); CoF curves are orange dashed. Every
+data point renders as its method's legend chip — the shaped monogram badge —
+so the chart maps to the legend without a separate marker vocabulary.
+NFE uses real linear spacing.
 The CSV export endpoint remains available independently. Charts resize their coordinate
 systems for readable phone labels and stack on small screens.
 
