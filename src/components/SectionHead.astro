@@ -1,0 +1,34 @@
+---
+/*
+ * Shared section heading for all three pages.
+ *   variant="home" — sidebar-rule row with the rotated-square mark (homepage)
+ *   variant="rsb" | "cof" — the demo pages' wave-icon h2
+ * Renders exactly the markup the page CSS expects, so extracting this
+ * component changes nothing visually.
+ */
+interface Props {
+	label: string;
+	variant?: 'home' | 'rsb' | 'cof';
+	id?: string;
+	sk?: boolean;
+}
+
+const { label, variant = 'home', id, sk = false } = Astro.props;
+---
+
+{
+	variant === 'home' ? (
+		<div class="sec-head reveal" class:list={[{ sk }]}>
+			<span class="mark" aria-hidden="true" />
+			<h2>{label}</h2>
+			<span class="rule" aria-hidden="true" />
+		</div>
+	) : (
+		<h2 id={id}>
+			<span class={`${variant}-wave`} aria-hidden="true">
+				<span />
+			</span>
+			{label}
+		</h2>
+	)
+}

@@ -1,0 +1,16 @@
+---
+import { uiIcons } from '../lib/ui-icons.js';
+interface Props {
+ id: string;
+ state?: 'auto' | 'active' | 'inactive';
+ tone?: 'inverse';
+ class?: string;
+}
+const { id, state = 'auto', tone, class: className = '' } = Astro.props;
+const icon = uiIcons[id as keyof typeof uiIcons];
+if (!icon) throw new Error(`Unknown UI icon: ${id}`);
+---
+<svg class={`ui-icon icon ${className}`} viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-icon={id} data-state={state} data-tone={tone}>
+ <g class="ui-icon__line" set:html={icon.line} />
+ <g class="ui-icon__filled" set:html={icon.filled} />
+</svg>

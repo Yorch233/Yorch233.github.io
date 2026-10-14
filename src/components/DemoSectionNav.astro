@@ -1,0 +1,163 @@
+---
+import UiIcon from './UiIcon.astro';
+import '../styles/demo-section-nav.css';
+
+interface Props {
+	sections: Array<{ id: string; label: string }>;
+}
+const { sections } = Astro.props;
+---
+
+<nav class="demo-section-nav" aria-label="Page sections" data-section-nav data-open="false">
+	<button class="demo-section-toggle floating-capsule" type="button" aria-label="Page sections" aria-expanded="false" aria-controls="demo-section-list" data-section-toggle hidden>
+		<UiIcon id="menu" />
+	</button>
+	<ol id="demo-section-list" class="demo-section-list">
+		{sections.map(({ id, label }, index) => <li>
+			<a href={`#${id}`} aria-label={label} aria-current={index === 0 ? 'location' : undefined}>
+				<span class="demo-section-tick" aria-hidden="true" />
+				<span class="demo-section-label">{label}</span>
+			</a>
+		</li>)}
+	</ol>
+</nav>
+
+<script>
+	const nav = document.querySelector<HTMLElement>('[data-section-nav]');
+	const toggle = nav?.querySelector<HTMLButtonElement>('[data-section-toggle]');
+	if (nav && toggle) {
+		const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+		const targets = links.map(link => document.getElementById(link.hash.slice(1)));
+		const compact = matchMedia('(max-width: 959px), (max-height: 599px)');
+		const header = document.querySelector<HTMLElement>('.demo-floating-header');
+		const article = document.querySelector('main article');
+		let frame = 0;
+		let disposed = false;
+		let offset = 100;
+		// A section jump can land just before late layout changes (lazy islands,
+		// charts) grow the page and push the target away. Keep re-aligning the
+		// target to its landing spot until the user takes over or the window ends.
+		// The landing spot is captured on the first update, once the browser's
+		// own anchor scroll has settled.
+		let realign: { target: HTMLElement; top: number | null; height: number; deadline: number } | null = null;
+		toggle.hidden = false;
+		targets.forEach(target => target?.classList.add('demo-section-target'));
+
+		const close = (restoreFocus = false) => {
+			nav.dataset.open = 'false';
+			toggle.setAttribute('aria-expanded', 'false');
+			if (restoreFocus) toggle.focus({ preventScroll: true });
+		};
+		const update = () => {
+			frame = 0;
+			if (disposed) return;
+			if (header) {
+				offset = Math.ceil(parseFloat(getComputedStyle(header).top) + header.offsetHeight + 20);
+				document.documentElement.style.setProperty('--demo-section-offset', `${offset}px`);
+			}
+			if (realign) {
+				if (performance.now() > realign.deadline) realign = null;
+				else if (realign.top === null) {
+					realign.top = realign.target.getBoundingClientRect().top;
+					realign.height = document.documentElement.scrollHeight;
+				} else {
+					const height = document.documentElement.scrollHeight;
+					const top = realign.target.getBoundingClientRect().top;
+					if (height !== realign.height || Math.abs(top - realign.top) > 1) {
+						window.scrollTo(0, Math.max(0, scrollY + top - realign.top));
+						realign.height = height;
+					}
+				}
+			}
+			let active = 0;
+			targets.forEach((target, index) => {
+				if (target && target.getBoundingClientRect().top <= offset + 40) active = index;
+			});
+			if (scrollY > 0 && scrollY + innerHeight >= document.documentElement.scrollHeight - 4) active = links.length - 1;
+			links.forEach((link, index) => {
+				if (index === active) link.setAttribute('aria-current', 'location');
+				else link.removeAttribute('aria-current');
+			});
+		};
+		const schedule = () => { if (!frame && !disposed) frame = requestAnimationFrame(update); };
+		const onToggle = () => {
+			const open = nav.dataset.open !== 'true';
+			nav.dataset.open = String(open);
+			toggle.setAttribute('aria-expanded', String(open));
+		};
+		const onLink = (event: Event) => {
+			const link = (event.target as Element).closest<HTMLAnchorElement>('a');
+			if (!link || !nav.contains(link)) return;
+			const target = document.getElementById(link.hash.slice(1));
+			if (target) {
+				if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+				target.focus({ preventScroll: true });
+				realign = { target, top: null, height: document.documentElement.scrollHeight, deadline: performance.now() + 5000 };
+			}
+			close();
+			schedule();
+		};
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key === 'Escape' && nav.dataset.open === 'true') { event.preventDefault(); close(true); }
+		};
+		const onOutside = (event: PointerEvent) => {
+			if (!nav.contains(event.target as Node)) close();
+		};
+		const onCompact = () => {
+			if (compact.matches && nav.contains(document.activeElement) && document.activeElement !== toggle) close(true);
+			else {
+				if (!compact.matches && document.activeElement === toggle) nav.querySelector<HTMLAnchorElement>('a[aria-current]')?.focus({ preventScroll: true });
+				close();
+			}
+			schedule();
+		};
+		const onFocusOut = (event: FocusEvent) => {
+			if (!nav.contains(event.relatedTarget as Node | null)) close();
+		};
+		const onHashChange = () => {
+			if (realign && realign.target.id !== location.hash.slice(1)) realign = null;
+			schedule();
+		};
+		const onUserTakesOver = () => { realign = null; };
+		const sizeObserver = new ResizeObserver(schedule);
+		if (header) sizeObserver.observe(header);
+		if (article) sizeObserver.observe(article);
+		toggle.addEventListener('click', onToggle);
+		nav.addEventListener('click', onLink);
+		nav.addEventListener('focusout', onFocusOut);
+		document.addEventListener('keydown', onKey);
+		document.addEventListener('pointerdown', onOutside);
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule);
+		window.addEventListener('hashchange', onHashChange);
+		// History restoration can scroll before hashchange is dispatched.
+		// Cancel the previous anchor correction before that restoration starts.
+		window.addEventListener('popstate', onUserTakesOver);
+		window.addEventListener('wheel', onUserTakesOver, { passive: true });
+		window.addEventListener('touchstart', onUserTakesOver, { passive: true });
+		window.addEventListener('keydown', onUserTakesOver);
+		compact.addEventListener('change', onCompact);
+		schedule();
+
+		const dispose = () => {
+			disposed = true;
+			cancelAnimationFrame(frame);
+			sizeObserver.disconnect();
+			toggle.removeEventListener('click', onToggle);
+			nav.removeEventListener('click', onLink);
+			nav.removeEventListener('focusout', onFocusOut);
+			document.removeEventListener('keydown', onKey);
+			document.removeEventListener('pointerdown', onOutside);
+			window.removeEventListener('scroll', schedule);
+			window.removeEventListener('resize', schedule);
+			window.removeEventListener('hashchange', onHashChange);
+			window.removeEventListener('popstate', onUserTakesOver);
+			window.removeEventListener('wheel', onUserTakesOver);
+			window.removeEventListener('touchstart', onUserTakesOver);
+			window.removeEventListener('keydown', onUserTakesOver);
+			compact.removeEventListener('change', onCompact);
+		};
+		document.addEventListener('astro:before-swap', dispose, { once: true });
+		window.addEventListener('pagehide', event => { if (!event.persisted) dispose(); }, { once: true });
+	}
+</script>

@@ -1,15 +1,19 @@
 {
-  "avatar": "/profile/profile.png",
+  "avatar": "/profile/profile-refined.webp",
   "name": "Qing Yao",
+  "summary": "I research speech enhancement with diffusion models, turning noisy recordings into clear, natural sound.",
   "monogram": "QY",
   "role": "PhD Student in Speech & Audio Processing",
   "location": "Zhenjiang, China",
   "advisor": "Prof. Qirong Mao",
-  "bio": "I'm a PhD student at Jiangsu University working on diffusion-based generative models for speech enhancement, particularly Schrödinger bridges and masked diffusion models. Speech enhancement is inherently an ill-posed inverse problem, where a degraded observation may correspond to multiple plausible clean-speech signals. My research explores generative approaches to address this ill-posedness while balancing reconstruction fidelity, perceptual naturalness, and computational efficiency.",
+  "bio": [
+    "Hi, I'm Qing Yao, a Ph.D. student at Jiangsu University. My research focuses on **generative speech enhancement**, aiming to achieve high-fidelity speech reconstruction through efficient generative modeling.",
+    "I explore two complementary directions: **continuous diffusion models**, particularly Schrödinger bridges, operating in the complex-valued time–frequency domain, and **discrete masked diffusion models** operating on acoustic tokens extracted from neural audio codecs.",
+    "Motivated by the ill-posed nature of speech enhancement, I seek to develop generative approaches that balance reconstruction fidelity, perceptual naturalness, and computational efficiency, while improving generalization across diverse acoustic conditions."
+  ],
   "interests": [
     "Speech Enhancement",
     "Diffusion Generative Modeling",
-    "Schrödinger Bridges",
     "Masked Diffusion Models"
   ],
   "contact": {
@@ -17,6 +21,7 @@
     "location": "Jiangsu University, China",
     "email": "qyao@stmail.ujs.edu.cn",
     "github": "https://github.com/Yorch233/",
+    "orcid": "0009-0001-2172-8004",
     "huggingFace": "https://huggingface.co/Yorch233/"
   },
   "education": [
@@ -29,45 +34,51 @@
   ],
   "news": [
     {
+      "date": "2026 · Sep",
+      "yoHint": "CoF is on arXiv now! You can take a look at the paper, code and Demo.",
+      "html": "The preprint <em>“Corrective Forcing: Unified Post-Training for Diffusions and Flows in Generative Speech Enhancement”</em> is now available on <a href=\"https://arxiv.org/abs/2609.24651\" target=\"_blank\" rel=\"noopener\">arXiv</a>, with <a href=\"https://github.com/Yorch233/CoF/\" target=\"_blank\" rel=\"noopener\">open-source code</a> and a <a href=\"/CoF/\">Demo</a>."
+    },
+    {
       "date": "2026",
-      "html": "Our paper <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> is accepted to <a href=\"#publications\">IEEE/ACM TASLP</a>."
+      "yoHint": "RSB was accepted to IEEE TASLP! That’s a lovely milestone for Qing.",
+      "html": "Our paper <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> is accepted to <a href=\"#publications\">IEEE TASLP</a>."
     },
     {
       "date": "2025 · Nov",
-      "html": "The preprint <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> was released on <a href=\"https://arxiv.org/abs/2511.11686\" target=\"_blank\" rel=\"noopener\">arXiv</a>, with <a href=\"https://github.com/Yorch233/RSB\" target=\"_blank\" rel=\"noopener\">open-source code</a> and an <a href=\"/RSB/\">interactive audio demo</a>."
+      "yoHint": "The RSB preprint arrived with code and a Demo. Have a listen!",
+      "html": "The preprint <em>“Regularized Schrödinger Bridge via Distortion-Perception Perturbation for High-Fidelity Speech Enhancement”</em> was released on <a href=\"https://arxiv.org/abs/2511.11686\" target=\"_blank\" rel=\"noopener\">arXiv</a>, with <a href=\"https://github.com/Yorch233/RSB\" target=\"_blank\" rel=\"noopener\">open-source code</a> and a <a href=\"/RSB/\">Demo</a>."
     },
     {
       "date": "2025",
-      "html": "As team leader and primary contributor, I led the team to win the <span class=\"accent\">National First Prize</span> in the <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"2025年中国青年科技创新揭榜挂帅擂台赛（新一代信息技术领域）\">2025 China Youth Science and Technology Innovation “Challenge and Champion” Competition — Next-Generation Information Technology Track</span>.<span class=\"news-sub\">Topic: Industrial data acquisition and control.</span><span class=\"news-sub\">Key technologies: OpenHarmony, Internet of Things (IoT), foundation models for industrial data acquisition, agent platforms for industrial data acquisition, and industrial visual understanding.</span>"
+      "awardId": "industrial-2025"
     },
     {
       "date": "2023",
-      "html": "As team leader and primary contributor, I led the team to win the <span class=\"accent\">National First Prize</span> in the <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"第十四届中国大学生服务外包创新创业大赛企业命题类（A类）（国家级A类赛事）\">Enterprise-Sponsored Challenge Category (Category A) of the 14th China College Students' Service Outsourcing Innovation and Entrepreneurship Competition</span>, a National Category-A Competition.<span class=\"news-sub\">Topic: Software cost analysis and software vulnerability detection.</span><span class=\"news-sub\">Key technologies: Natural language understanding and static code analysis.</span>"
-    },
-    {
-      "date": "2023",
+      "yoHint": "This is when Qing started working on speech enhancement. He’s been looking for clearer sound ever since.",
       "html": "Began research on <span class=\"accent\">Speech Enhancement</span>: applying diffusion generative modeling to address the ill-posedness of the underlying audio inverse problem."
     },
     {
+      "date": "2023",
+      "awardId": "software-2023"
+    },
+    {
       "date": "2021",
+      "yoHint": "Before speech, Qing worked on finding relationships and extracting knowledge from text and conversations.",
       "html": "Began research on <span class=\"accent\">Dialogue-Based Relation Extraction</span>: entity modeling and relation mining in text knowledge extraction."
     }
   ],
-  "projects": [
+  "awards": [
     {
-      "name": "RSB",
-      "icon": "i-github",
-      "description": "Regularized Schrödinger Bridge (RSB) — a generative speech enhancement approach that reconciles fidelity and realism while mitigating exposure bias, via Distortion-Perception Perturbation regularized training.",
-      "language": "Python",
-      "stars": 8,
-      "url": "https://github.com/Yorch233/RSB"
+      "id": "industrial-2025",
+      "date": "2025",
+      "yoHint": "A National First Prize! Qing led the team working on industrial data acquisition and control.",
+      "html": "<span class=\"accent\">National First Prize</span>, <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"2025年中国青年科技创新揭榜挂帅擂台赛（新一代信息技术领域）\">2025 China Youth Science and Technology Innovation “Challenge and Champion” Competition — Next-Generation Information Technology Track</span>, as team leader and primary contributor.<span class=\"news-sub\">Topic: Industrial data acquisition and control.</span><span class=\"news-sub\">Key technologies: OpenHarmony, Internet of Things (IoT), foundation models for industrial data acquisition, agent platforms for industrial data acquisition, and industrial visual understanding.</span>"
     },
     {
-      "name": "RSB Audio Demo",
-      "icon": "i-external",
-      "description": "Interactive listening demo: compare Measurement, Ground Truth, NCSN++M, StoRM, SB, and RSB on denoising (WSJ0+WHAM) and dereverberation (WSJ0+REVERB) samples, with waveforms.",
-      "meta": "yorch233.github.io/RSB",
-      "url": "/RSB/"
+      "id": "software-2023",
+      "date": "2023",
+      "yoHint": "Another National First Prize! Qing led a project on software cost analysis and finding vulnerabilities.",
+      "html": "<span class=\"accent\">National First Prize</span>, <span class=\"tip tip-wide\" tabindex=\"0\" data-tip=\"第十四届中国大学生服务外包创新创业大赛企业命题类（A类）（国家级A类赛事）\">Enterprise-Sponsored Challenge Category (Category A) of the 14th China College Students' Service Outsourcing Innovation and Entrepreneurship Competition</span> (a National Category-A Competition), as team leader and primary contributor.<span class=\"news-sub\">Topic: Software cost analysis and software vulnerability detection.</span><span class=\"news-sub\">Key technologies: Natural language understanding and static code analysis.</span>"
     }
   ]
 }

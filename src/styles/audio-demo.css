@@ -1,120 +1,71 @@
 .audio-demo-island {
-	display: grid;
-	gap: 30px;
-	margin-top: 24px;
-	min-width: 0;
+display: grid; gap: 48px; margin-top: 32px; min-width: 0;
 }
 
-.rsb-audio-group {
-	--dataset-accent: #0071e3;
-	--dataset-accent-rgb: 0, 113, 227;
-	position: relative;
-	margin-top: 0;
-	padding: 22px;
-	overflow: hidden;
-	border: 1px solid rgba(0, 0, 0, 0.08);
-	border-radius: 20px;
-	background: #ffffff;
-	box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
-	min-width: 0;
+/* In-card controls: the sampling-budget, Visualization and View switches are
+   SegmentedToggle fields. */
+.audio-group-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+.audio-group {
+--dataset-accent: var(--accent); --dataset-accent-rgb: 47, 104, 196; position: relative; margin: 0; padding: 0; min-width: 0;
 }
 
-.rsb-audio-group::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 22px;
-	right: 22px;
-	height: 2px;
-	border-radius: 0 0 999px 999px;
-	background: linear-gradient(90deg, transparent, rgba(var(--dataset-accent-rgb), 0.55), transparent);
+.audio-group::before {
+content: none;
 }
 
-.rsb-audio-header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 24px;
-	padding: 4px 2px 18px;
+.audio-group-header {
+display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 0 20px;
 }
 
-.rsb-dataset-heading {
+.dataset-heading {
 	display: flex;
 	align-items: center;
 	gap: 14px;
 	min-width: 0;
 }
 
-.rsb-dataset-index {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	flex: 0 0 42px;
-	width: 42px;
-	height: 42px;
-	border: 1px solid rgba(var(--dataset-accent-rgb), 0.16);
-	border-radius: 13px;
-	background: #f5f8fc;
-	color: var(--dataset-accent);
-	font-size: 0.78rem;
-	font-weight: 800;
-	letter-spacing: 0.08em;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+.dataset-index {
+display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; height: 44px; border-radius: var(--radius-s); background: var(--accent-soft); color: var(--accent); font: 800 var(--text-1)/1 var(--display);
 }
 
-.rsb-dataset-heading-copy {
+.dataset-heading-copy {
 	min-width: 0;
 }
 
-.rsb-dataset-title-row {
+.dataset-title-row {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
 	gap: 8px;
 }
 
-.rsb-subtitle {
-	margin: 0;
-	color: #0f172a;
-	font-size: 1.18rem;
-	line-height: 1.3;
+.dataset-title {
+margin: 0; color: var(--ink); font: 800 var(--text-3)/1.3 var(--display); letter-spacing: -.02em;
 }
 
-.rsb-dataset-task,
-.rsb-dataset-count {
-	display: inline-flex;
-	align-items: center;
-	min-height: 24px;
-	padding: 3px 9px;
-	border-radius: 999px;
-	font-size: 0.7rem;
-	font-weight: 750;
-	line-height: 1;
-	white-space: nowrap;
+.dataset-task,
+.dataset-count {
+display: inline-flex; align-items: center; min-height: 24px; padding: 3px 9px; border-radius: 999px; font-size: var(--text-1); line-height: 1.4; white-space: nowrap;
 }
 
-.rsb-dataset-task {
-	border: 1px solid rgba(var(--dataset-accent-rgb), 0.16);
-	background: rgba(var(--dataset-accent-rgb), 0.07);
-	color: var(--dataset-accent);
-	letter-spacing: 0.04em;
-	text-transform: uppercase;
+.dataset-task {
+background: var(--accent-soft); color: var(--accent-deep); font-weight: 500;
 }
 
-.rsb-dataset-count {
-	border: 1px solid rgba(100, 116, 139, 0.16);
-	background: rgba(255, 255, 255, 0.72);
-	color: #64748b;
+.dataset-count {
+background: transparent; color: var(--muted); font-weight: 400;
 }
 
-.rsb-dataset-description {
+.dataset-description {
 	margin: 4px 0 0;
-	color: #64748b;
-	font-size: 0.82rem;
+	color: var(--muted);
+	font-size: var(--text-1);
 	line-height: 1.45;
 }
 
-.rsb-audio-list {
+.audio-list {
+	position: relative;
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 24px;
@@ -125,11 +76,94 @@
 	max-width: 100%;
 }
 
-.rsb-audio-list-simple {
+.audio-list-simple {
 	gap: 0;
 }
 
-.rsb-audio-actions {
+/* Phone-only sample navigator (SampleJumpList). Desktop keeps the pager and
+   the Show All stack; the visualization-off table already lists every
+   sample, so the navigator hides there too. */
+.sample-jump {
+	display: none;
+	grid-template-columns: 1fr;
+	gap: 6px;
+	min-width: 0;
+}
+
+.audio-list-simple .sample-jump {
+	display: none;
+}
+
+.sample-jump-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-height: 44px;
+	padding: 8px 12px;
+	border: 0;
+	border-radius: var(--nested-radius, 14px);
+	color: var(--ink);
+	font: 500 12px/1.45 var(--display);
+	text-align: left;
+	cursor: pointer;
+}
+
+.sample-jump-row:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.sample-jump-row .sample-jump-index {
+	flex: 0 0 auto;
+	font-weight: 700;
+	color: var(--muted);
+	font-variant-numeric: tabular-nums;
+}
+
+.sample-jump-row .sample-jump-name {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+	font-size: 12px;
+}
+
+.sample-jump-row .sample-jump-meta {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+	color: var(--muted);
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.sample-jump-row .sample-jump-metric {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+/* The glass tier owns button fills and shadows (!important), so selection
+   is expressed the site-wide way: a deeper blue glass tint, plus ink. */
+.sample-jump-row.active {
+	--glass-tint: var(--accent);
+	--glass-opacity: 24%;
+	--glass-lower-opacity: 12%;
+	color: var(--accent-deep);
+}
+
+.sample-jump-row.active .sample-jump-index,
+.sample-jump-row.active .sample-jump-meta {
+	color: var(--accent-deep);
+}
+
+.audio-actions {
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr;
 	gap: 12px;
@@ -137,118 +171,103 @@
 	margin-top: 14px;
 }
 
-.rsb-nav-btn,
-.rsb-show-more {
-	width: 100%;
-	padding: 12px 18px;
-	border-radius: 999px;
-	font-size: 0.9rem;
-	font-weight: 700;
-	letter-spacing: 0.04em;
-	cursor: pointer;
-	transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+.audio-nav-btn,
+.audio-show-more {
+width: 100%; min-height: 48px; padding: 12px 16px; border: 0; border-radius: 999px; font: 700 var(--text-1)/1.4 var(--display); cursor: pointer; transition: background 160ms ease, transform 160ms ease;
 }
 
-.rsb-nav-btn {
-	border: 1px solid rgba(15, 23, 42, 0.15);
-	background: #ffffff;
-	color: #0f172a;
+.audio-nav-btn {
+background: var(--surface); color: var(--accent-deep); box-shadow: var(--control-shadow);
+display: inline-flex; align-items: center; justify-content: center; padding-inline: 0;
 }
 
-.rsb-show-more {
-	border: none;
-	background: #0f172a;
-	color: #ffffff;
+.audio-nav-btn .ui-icon { width: 18px; height: 18px; }
+
+.audio-show-more {
+background: var(--accent); color: white; box-shadow: 0 3px 0 var(--accent-deep);
 }
 
-.rsb-nav-btn:hover,
-.rsb-show-more:hover {
-	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
-	transform: translateY(-1px);
+.audio-nav-btn:hover,
+.audio-show-more:hover {
+transform: translateY(-1px);
 }
 
-.rsb-nav-btn:disabled {
+.audio-nav-btn:disabled {
 	opacity: 0.45;
 	cursor: not-allowed;
 	box-shadow: none;
 	transform: none;
 }
 
-.rsb-visual-toggle {
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 0.85rem;
-	font-weight: 600;
-	color: #1d1d1f;
-	user-select: none;
-	position: relative;
-	cursor: pointer;
+/* Segmented field: an icon + label before a flat segmented capsule. The tinted
+   track carries a solid white thumb that slides between the options. */
+.segmented-field {
+display: inline-flex; align-items: center; flex-wrap: wrap; gap: 10px; min-height: 38px; flex-shrink: 0;
 }
 
-.rsb-visual-toggle input {
-	position: absolute;
-	opacity: 0;
-	width: 1px;
-	height: 1px;
+.segmented-field-label {
+display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-1); font-weight: 500; color: var(--muted);
 }
 
-.rsb-toggle-label {
-	color: #6e6e73;
+.segmented-field-label .ui-icon { width: 17px; height: 17px; }
+
+.segmented-toggle {
+position: relative; display: inline-flex; align-items: stretch; padding: 3px; border-radius: 999px; background: var(--accent-soft); isolation: isolate;
 }
 
-.rsb-toggle-slider {
-	width: 44px;
-	height: 24px;
-	border-radius: 999px;
-	background: rgba(15, 23, 42, 0.2);
-	position: relative;
-	transition: background 0.2s ease;
+.segmented-thumb {
+position: absolute; top: 3px; bottom: 3px; left: 0; z-index: 0; border-radius: 999px; background: #fff;
+box-shadow: var(--control-shadow);
+transition: transform 0.28s cubic-bezier(0.3, 0.7, 0.25, 1), width 0.28s cubic-bezier(0.3, 0.7, 0.25, 1);
 }
 
-.rsb-toggle-slider::after {
-	content: '';
-	position: absolute;
-	top: 3px;
-	left: 3px;
-	width: 18px;
-	height: 18px;
-	border-radius: 50%;
-	background: #ffffff;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-	transition: transform 0.2s ease;
+.segmented-option {
+position: relative; z-index: 1; border: 0; min-height: 32px; background: transparent; color: var(--muted);
+font: 600 var(--text-1)/1.4 var(--sans); padding: 5px 14px; border-radius: 999px; cursor: pointer;
+display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
+transition: color 160ms ease;
 }
 
-.rsb-visual-toggle input:focus-visible + .rsb-toggle-slider {
-	outline: 2px solid #0a84ff;
-	outline-offset: 3px;
-}
+.segmented-option:hover:not(.active) { color: var(--accent-deep); }
 
-.rsb-visual-toggle input:checked + .rsb-toggle-slider {
-	background: rgba(0, 113, 227, 0.55);
-}
+.segmented-option.active { color: var(--accent-deep); }
 
-.rsb-visual-toggle input:checked + .rsb-toggle-slider::after {
-	transform: translateX(20px);
+.segmented-option .ui-icon { width: 17px; height: 17px; }
+
+@media (max-width: 720px) {
+  .segmented-option { min-height: 44px; }
 }
 
 .wave-compare {
-	background: #ffffff;
-	border-radius: 20px;
-	padding: 22px 24px 24px;
-	box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
-	border: 1px solid rgba(148, 163, 184, 0.25);
-	display: flex;
-	flex-direction: column;
-	gap: 18px;
-	box-sizing: border-box;
-	min-width: 0;
-	max-width: 100%;
-	transition: box-shadow 0.25s ease, transform 0.25s ease;
+background: var(--reading-surface); border-radius: var(--panel-radius); padding: 24px; box-shadow: var(--shadow-soft); border: 0; display: flex; flex-direction: column; gap: 20px; min-width: 0; max-width: 100%;
 }
 
 .wave-compare:hover {
-	box-shadow: 0 22px 56px rgba(15, 23, 42, 0.12);
+box-shadow: var(--shadow-soft);
+}
+
+/* Budget switches cross-fade: the active plot fades out while the new
+   budget's data loads, then back in. */
+.wave-compare :is(.wave-canvas-wrap, .spectrogram-view) {
+	transition: opacity 0.24s ease;
+}
+
+/* View switches (Waveform <-> Spectrogram) follow the Results cards: the
+   current plot fades, the card animates to the new height, the new plot
+   fades in. */
+.wave-view {
+	position: relative;
+	transition: height 0.32s cubic-bezier(0.3, 0.7, 0.25, 1), opacity 0.2s ease;
+	overflow: hidden;
+}
+
+.wave-view.is-fading {
+	opacity: 0;
+}
+
+
+.wave-compare.is-fading :is(.wave-canvas-wrap, .spectrogram-view) {
+	opacity: 0;
 }
 
 .wave-header {
@@ -257,24 +276,17 @@
 	gap: 18px;
 	align-items: center;
 	flex-wrap: wrap;
+	/* 44px option + 8px segmented-track padding: cards on single-budget RSB
+	   match the header height the budget switch gives CoF. */
+	min-height: 52px;
 }
 
 .wave-description {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	flex-wrap: wrap;
-	font-size: 0.95rem;
-	color: #1f2937;
-	font-weight: 600;
-	min-width: 0;
+display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; font-size: var(--text-1); color: var(--ink); font-weight: 500; min-width: 0;
 }
 
 .wave-desc-item {
-	display: inline-flex;
-	align-items: baseline;
-	gap: 8px;
-	min-width: 0;
+display: flex; flex-direction: column; align-items: start; gap: 4px; min-width: 0;
 }
 
 .wave-desc-tooltip {
@@ -286,9 +298,9 @@
 	position: absolute;
 	top: calc(100% + 8px);
 	left: 0;
-	background: #0f172a;
+	background: var(--ink);
 	color: #ffffff;
-	font-size: 0.72rem;
+	font-size: var(--text-1);
 	line-height: 1.4;
 	padding: 8px 10px;
 	border-radius: 8px;
@@ -308,25 +320,18 @@
 	transform: translateY(0);
 }
 
+.wave-desc-value { overflow-wrap: anywhere; }
+
 .wave-desc-label {
-	font-size: 0.72rem;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: #94a3b8;
-	font-weight: 700;
+font-size: var(--text-1); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500;
 }
 
 .wave-desc-index {
-	font-size: 2rem;
-	font-weight: 800;
-	color: #111111;
-	letter-spacing: 0.04em;
+font: 800 var(--text-4)/1.2 var(--display); color: var(--accent); letter-spacing: -.02em;
 }
 
 .wave-desc-value {
-	color: #0f172a;
-	font-weight: 700;
-	overflow-wrap: anywhere;
+color: var(--ink); font-weight: 500; overflow-wrap: anywhere;
 }
 
 .wave-desc-divider {
@@ -336,41 +341,23 @@
 }
 
 .method-list {
-	display: flex;
-	align-items: center;
-	gap: 16px;
-	padding: 10px 4px 2px;
-	overflow: visible;
-	min-width: 0;
-	max-width: 100%;
+display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 0; min-width: 0; max-width: 100%;
 }
 
 .method-group {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	overflow: visible;
+display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0;
 }
 
 .method-group-primary {
-	flex-wrap: nowrap;
+flex-wrap: wrap;
 }
 
 .method-group-secondary {
-	flex: 1 1 auto;
-	min-width: 0;
+flex: 1 1 400px; min-width: 0;
 }
 
 .method-group-scroll {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	overflow-x: auto;
-	overflow-y: visible;
-	padding: 6px 2px 10px;
-	max-width: 100%;
-	scrollbar-width: none;
-	min-width: 0;
+display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 4px; max-width: 100%; min-width: 0; overflow: visible;
 }
 
 .method-group-scroll::-webkit-scrollbar {
@@ -378,10 +365,10 @@
 }
 
 .method-group-label {
-	font-size: 0.75rem;
+	font-size: var(--text-1);
 	font-weight: 700;
 	letter-spacing: 0.08em;
-	color: #9aa1ae;
+	color: var(--muted);
 	text-transform: uppercase;
 	margin-right: 2px;
 }
@@ -392,65 +379,56 @@
 	align-items: center;
 }
 
-.method-chip {
-	border: 1px solid rgba(148, 163, 184, 0.35);
-	background: rgba(248, 250, 252, 0.92);
-	padding: 8px 12px;
-	border-radius: 999px;
-	font-size: 0.88rem;
-	font-weight: 600;
-	color: #0f172a;
-	cursor: pointer;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	white-space: nowrap;
-	transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+/* The card's method pills: white at rest; selecting one dyes the whole pill
+   with the method's own colour via a circular sweep from the left edge — the
+   fill then stays across playing and finished states, with a white label and
+   the badge inverted to white. */
+.audio-demo-island .wave-compare .method-chip {
+	border-color: #dfe3e9 !important; background: #fff !important; box-shadow: var(--control-shadow) !important; color: var(--ink) !important;
+	transition: box-shadow 0.45s cubic-bezier(0.3, 0.7, 0.25, 1), color 0.45s cubic-bezier(0.3, 0.7, 0.25, 1);
 }
-
-.method-chip-secondary {
-	border-color: rgba(148, 163, 184, 0.5);
-	background: rgba(248, 250, 252, 0.75);
+.audio-demo-island .wave-compare .method-chip:hover:not(.active, .playing) { color: var(--accent-deep) !important; }
+.audio-demo-island .wave-compare .method-chip:is(.active, .playing) {
+	box-shadow: 0 5px 13px color-mix(in srgb, var(--method-color, var(--accent)) 30%, transparent) !important; color: #fff !important;
 }
+.audio-demo-island .wave-compare .method-chip:is(.active, .playing) .chip-action { background: #fff; box-shadow: none; }
+.audio-demo-island .wave-compare .method-chip:is(.active, .playing) .chip-action .ui-icon { color: var(--method-color, var(--accent)) !important; }
 
-.method-chip:hover,
-.method-chip.active,
-.method-chip.playing {
-	border-color: var(--method-color, #0a84ff);
+/* The dye layer: a circle clipped to the pill that grows from the left edge. */
+.audio-demo-island .wave-compare .method-chip::before {
+	content: '';
+	position: absolute;
+	inset: -1px;
+	z-index: -1;
+	border-radius: inherit;
+	background: var(--method-color, var(--accent)) !important;
+	box-shadow: none !important;
+	clip-path: circle(0% at 0% 50%);
+	transition: clip-path 0.45s cubic-bezier(0.3, 0.7, 0.25, 1);
+	pointer-events: none;
+}
+.audio-demo-island .wave-compare .method-chip:is(.active, .playing)::before {
+	clip-path: circle(142% at 0% 50%);
 }
 
 .method-chip:focus-visible,
-.view-toggle-btn:focus-visible,
+.segmented-option:focus-visible,
 .progress-play:focus-visible,
 .volume-button:focus-visible,
-.spectrogram-magnification-option:focus-visible,
-.rsb-nav-btn:focus-visible,
-.rsb-show-more:focus-visible {
-	outline: 2px solid #0a84ff;
+.audio-nav-btn:focus-visible,
+.audio-show-more:focus-visible {
+	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
 
-.chip-dot {
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: var(--method-color, #2563eb);
-}
-
 .chip-action {
-	width: 16px;
-	height: 16px;
+	width: 24px;
+	height: 24px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	flex: 0 0 16px;
-}
-
-.icon-img {
-	width: 16px;
-	height: 16px;
-	object-fit: contain;
-	display: inline-block;
+	flex: 0 0 24px;
+	border-radius: 50%;
 }
 
 .chip-spinner {
@@ -458,7 +436,7 @@
 	height: 16px;
 	border-radius: 50%;
 	border: 2px solid rgba(148, 163, 184, 0.4);
-	border-top-color: var(--method-color, #0a84ff);
+	border-top-color: var(--method-color, var(--accent));
 	animation: chip-spin 0.9s linear infinite;
 	box-sizing: border-box;
 	display: inline-flex;
@@ -467,9 +445,9 @@
 
 .method-tip-global {
 	position: fixed;
-	background: #0f172a;
+	background: var(--ink);
 	color: #ffffff;
-	font-size: 0.72rem;
+	font-size: var(--text-1);
 	line-height: 1.4;
 	padding: 8px 10px;
 	border-radius: 8px;
@@ -487,52 +465,32 @@
 }
 
 .wave-panel {
-	background: #f7f8fa;
-	border-radius: 16px;
-	padding: 14px 16px 16px;
-	border: 1px solid rgba(148, 163, 184, 0.2);
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-	transition: border-color 0.2s ease, box-shadow 0.2s ease;
-	min-width: 0;
-	max-width: 100%;
+background: var(--panel-surface); border-radius: var(--nested-radius); padding: 20px; border: 0; display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 100%;
 }
 
 .wave-panel:hover {
-	border-color: rgba(10, 132, 255, 0.3);
-	box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+box-shadow: none;
 }
 
 .wave-panel-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 12px;
+display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
 }
 
 .wave-panel-actions {
-	display: inline-flex;
-	align-items: center;
-	gap: 12px;
-	flex-wrap: wrap;
+display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0;
 }
 
 .wave-panel-title {
-	font-size: 0.9rem;
+	font-size: var(--text-1);
 	font-weight: 700;
-	color: #0f172a;
+	color: var(--ink);
 	display: flex;
 	flex-wrap: wrap;
 	gap: 14px;
 }
 
 .legend-item {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	cursor: pointer;
-	transition: opacity 0.2s ease;
+display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); font: 600 var(--text-1)/1.4 var(--sans); cursor: pointer; transition: opacity 160ms ease;
 }
 
 .legend-swatch {
@@ -541,76 +499,57 @@
 	border-radius: 4px;
 }
 
+/* The WAV download lives beside the volume key and mirrors its pill. */
 .wave-download {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 7px;
-	min-height: 28px;
-	padding: 5px 11px;
-	border: 1px solid rgba(148, 163, 184, 0.28);
-	border-radius: 999px;
-	background: #ffffff;
-	color: #64748b;
-	font-size: 0.72rem;
-	font-weight: 700;
-	line-height: 1;
-	text-decoration: none;
-	white-space: nowrap;
-	box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
-	transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+	display: inline-flex; align-items: center; justify-content: center; width: 44px; min-height: 44px; padding: 0;
+	border: 0 !important; border-radius: 999px; background: var(--surface) !important; color: var(--accent);
+	text-decoration: none; box-shadow: var(--control-shadow) !important;
+	transition: opacity 160ms ease;
+}
+
+.wave-download:hover { opacity: 0.7; }
+
+.audio-demo-island .wave-download::before,
+.audio-demo-island .wave-download::after {
+	content: none !important;
+	display: none !important;
+}
+
+/* Outranks the demos' white-card control shadow rule ((0,4,2) with :not()
+   counted) so the pill keeps the volume button's own shadow. */
+:is(.rsb-body, .cof-body) .audio-demo-island .wave-compare a[download].wave-download {
+	background: var(--surface) !important;
+	border: 0 !important;
+	box-shadow: var(--control-shadow) !important;
+}
+
+/* Every control in this row matches the download pill's 44px height; the
+   segmented track stretches and its options follow. */
+.wave-panel-actions .segmented-field,
+.wave-panel-actions .segmented-toggle {
+min-height: 44px;
 }
 
 .wave-download:hover {
-	color: #0a84ff;
-	border-color: rgba(10, 132, 255, 0.4);
-	transform: translateY(-1px);
-	box-shadow: 0 6px 12px rgba(10, 132, 255, 0.12);
+color: var(--accent); transform: translateY(-1px);
 }
 
 .wave-download:focus-visible {
-	outline: 2px solid #0a84ff;
+	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
 
-.wave-download img {
-	width: 14px;
-	height: 14px;
-}
-
-.view-toggle {
-	display: inline-flex;
-	align-items: center;
-	background: #eef2ff;
-	border-radius: 999px;
-	padding: 2px;
-	gap: 2px;
-}
-
-.view-toggle-btn {
-	border: none;
-	background: transparent;
-	color: #64748b;
-	font-size: 0.72rem;
-	font-weight: 700;
-	padding: 4px 10px;
-	border-radius: 999px;
-	cursor: pointer;
-}
-
-.view-toggle-btn.active {
-	background: #ffffff;
-	color: #0f172a;
-	box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
-}
-
-.wave-status {
-	font-size: 0.8rem;
-	color: #64748b;
-}
-
-.wave-status-error {
+/* Load failures render centered over the active canvas view. */
+.wave-error {
 	color: #e11d48;
+	background: rgba(255, 255, 255, 0.85);
+	z-index: 3;
+	pointer-events: none;
+}
+
+.spectrogram-view {
+	position: relative;
+	display: grid;
 }
 
 .wave-canvas-wrap {
@@ -635,7 +574,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 0.85rem;
+	font-size: var(--text-1);
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -643,7 +582,7 @@
 }
 
 .wave-loading {
-	color: #0f172a;
+	color: var(--ink);
 	background: rgba(255, 255, 255, 0.7);
 }
 
@@ -688,8 +627,8 @@
 	left: 0;
 	top: 8px;
 	transform: translateX(-50%);
-	font-size: 0.7rem;
-	color: #64748b;
+	font-size: var(--text-1);
+	color: var(--muted);
 	font-variant-numeric: tabular-nums;
 }
 
@@ -703,9 +642,9 @@
 }
 
 .time-axis-caret-label {
-	font-size: 0.7rem;
+	font-size: var(--text-1);
 	font-weight: 700;
-	color: #0f172a;
+	color: var(--ink);
 	background: #ffffff;
 	border: 1px solid rgba(148, 163, 184, 0.35);
 	border-radius: 6px;
@@ -714,10 +653,20 @@
 }
 
 .spectrogram-block {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-rows: auto minmax(0, 1fr);
 	gap: 8px;
 	position: relative;
+}
+
+.spectrogram-block .spectrogram-labels { grid-column: 1; grid-row: 1; }
+.spectrogram-block .spectrogram-row { grid-column: 1; grid-row: 2; }
+
+.spectrogram-block .spectrogram-colorbar-wrap {
+	grid-column: 2;
+	grid-row: 1 / span 2;
+	padding-top: 28px;
 }
 
 .spectrogram-labels,
@@ -734,9 +683,9 @@
 }
 
 .spectrogram-label {
-	font-size: 0.75rem;
+	font-size: var(--text-1);
 	font-weight: 700;
-	color: #0f172a;
+	color: var(--ink);
 	justify-self: center;
 }
 
@@ -793,7 +742,7 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	color: #ffffff;
-	font-size: 0.75rem;
+	font-size: var(--text-1);
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
@@ -803,8 +752,8 @@
 .spectrogram-axis {
 	position: absolute;
 	pointer-events: none;
-	font-size: 0.7rem;
-	color: #64748b;
+	font-size: var(--text-1);
+	color: var(--muted);
 }
 
 .spectrogram-axis-y {
@@ -869,9 +818,9 @@
 	top: 50%;
 	transform: translate(-50%, -50%) rotate(-90deg);
 	transform-origin: center;
-	font-size: 0.7rem;
+	font-size: var(--text-1);
 	font-weight: 600;
-	color: #64748b;
+	color: var(--muted);
 	white-space: nowrap;
 }
 
@@ -891,96 +840,59 @@
 .spectrogram-controls {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	gap: 16px;
 	padding-left: 40px;
 	margin-top: 10px;
 }
 
 .spectrogram-colorbar-wrap {
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	gap: 8px;
+	justify-content: space-between;
+	gap: 6px;
+	align-self: stretch;
 }
 
 .spectrogram-colorbar-label {
-	font-size: 0.7rem;
-	color: #64748b;
+	font-size: var(--text-1);
+	color: var(--muted);
 	font-variant-numeric: tabular-nums;
 	white-space: nowrap;
 }
 
 .spectrogram-colorbar {
+	/* Kept in a variable so the phone layout can re-orient the scale to a
+	   horizontal strip under the spectrograms without repeating the stops. */
+	--spectrogram-fill: linear-gradient(
+		180deg,
+		rgb(252, 181, 20),
+		rgb(246, 136, 22),
+		rgb(225, 101, 40),
+		rgb(198, 72, 70),
+		rgb(170, 54, 99),
+		rgb(142, 41, 122),
+		rgb(113, 31, 126),
+		rgb(84, 21, 117),
+		rgb(53, 11, 99),
+		rgb(25, 6, 64),
+		rgb(0, 0, 4)
+	);
 	flex: 1 1 auto;
-	height: 10px;
+	width: 10px;
 	border-radius: 999px;
-	background: linear-gradient(90deg, rgb(0, 0, 4), rgb(25, 6, 64), rgb(53, 11, 99), rgb(84, 21, 117), rgb(113, 31, 126), rgb(142, 41, 122), rgb(170, 54, 99), rgb(198, 72, 70), rgb(225, 101, 40), rgb(246, 136, 22), rgb(252, 181, 20));
-}
-
-.spectrogram-magnification {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	min-width: 330px;
-}
-
-.spectrogram-magnification-label {
-	font-size: 0.72rem;
-	font-weight: 700;
-	color: #64748b;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-}
-
-.spectrogram-magnification-options {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	padding: 4px;
-	border-radius: 999px;
-	background: #eef2ff;
-}
-
-.spectrogram-magnification-option {
-	border: none;
-	background: transparent;
-	color: #64748b;
-	font-size: 0.72rem;
-	font-weight: 700;
-	min-width: 48px;
-	height: 28px;
-	padding: 0 8px;
-	border-radius: 999px;
-	cursor: pointer;
-}
-
-.spectrogram-magnification-option.active {
-	background: #ffffff;
-	color: #0f172a;
-	box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+	background: var(--spectrogram-fill);
 }
 
 .progress-row {
-	display: grid;
-	grid-template-columns: auto auto 1fr auto auto;
-	align-items: center;
-	gap: 10px;
-	padding: 4px 4px 0;
+display: grid; grid-template-columns: 44px auto minmax(0, 1fr) auto 44px 44px; align-items: center; gap: 8px; padding: 0;
 }
 
 .progress-play,
 .volume-button {
-	width: 28px;
-	height: 28px;
-	border: none;
-	background: transparent;
-	cursor: pointer;
-	padding: 0;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+width: 44px; height: 44px; border: 0; background: var(--surface); color: var(--accent); cursor: pointer; padding: 0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--control-shadow);
 }
 
 .progress-play {
@@ -993,8 +905,8 @@
 }
 
 .time-label {
-	font-size: 0.78rem;
-	color: #64748b;
+	font-size: var(--text-1);
+	color: var(--muted);
 	font-variant-numeric: tabular-nums;
 }
 
@@ -1024,7 +936,7 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: #0f172a;
+	background: var(--ink);
 	box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
 	cursor: pointer;
 }
@@ -1033,19 +945,18 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: #0f172a;
+	background: var(--ink);
 	border: none;
 	box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
 	cursor: pointer;
 }
 
 .progress-tooltip {
-	position: absolute;
-	top: -28px;
-	transform: translateX(-50%);
-	background: #0f172a;
+	position: fixed;
+	transform: translate(-50%, calc(-100% - 10px));
+	background: var(--ink);
 	color: #ffffff;
-	font-size: 0.7rem;
+	font-size: var(--text-1);
 	padding: 2px 6px;
 	border-radius: 6px;
 	white-space: nowrap;
@@ -1059,49 +970,54 @@
 }
 
 .volume-button {
-	border-radius: 10px;
+border-radius: 50%;
 }
 
 .volume-popover {
-	position: absolute;
-	bottom: 40px;
-	right: -6px;
-	background: #ffffff;
-	border-radius: 14px;
-	border: 1px solid rgba(148, 163, 184, 0.25);
-	box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
-	padding: 10px 10px 12px;
-	width: 70px;
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(6px);
-	transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-	z-index: 5;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
+position: absolute; bottom: 52px; right: 0; background: var(--surface); border-radius: var(--radius-m); box-shadow: var(--shadow-soft); padding: 12px; width: 76px; opacity: 0; visibility: hidden; transform: translateY(10px) scale(0.9); transform-origin: bottom right; transition: opacity 0.2s ease, transform 0.44s cubic-bezier(0.3, 1.35, 0.5, 1), visibility 0.2s ease; z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
 
+/* Damped spring: the popover rises with a slight overshoot and settles. */
 .volume-control:hover .volume-popover,
 .volume-control:focus-within .volume-popover {
 	opacity: 1;
 	visibility: visible;
-	transform: translateY(0);
+	transform: translateY(0) scale(1);
 }
 
+
 .volume-label {
-	font-size: 0.72rem;
+	font-size: var(--text-1);
 	font-weight: 700;
-	color: #64748b;
+	color: var(--muted);
 }
 
 .volume-slider-wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	gap: 5px;
 	height: 110px;
-	width: 36px;
+}
+
+.volume-ticks {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-between;
+	height: 98px;
+}
+
+.volume-tick {
+	width: 5px;
+	height: 1.5px;
+	border-radius: 1px;
+	background: var(--line, #d7dde6);
+}
+
+.volume-tick.major {
+	width: 8px;
+	background: var(--muted);
 }
 
 .volume-slider {
@@ -1112,6 +1028,9 @@
 	background: #e2e8f0;
 	outline: none;
 	transform: rotate(-90deg);
+	/* Collapse the rotated input's layout box to its visual 6px column so the
+	   tick rail sits beside the track instead of being pushed out. */
+	margin-inline: -52px;
 }
 
 .volume-slider::-webkit-slider-thumb {
@@ -1119,7 +1038,7 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: #0f172a;
+	background: var(--ink);
 	box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
 	cursor: pointer;
 }
@@ -1128,14 +1047,14 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: #0f172a;
+	background: var(--ink);
 	border: none;
 	cursor: pointer;
 }
 
 .volume-scale {
-	font-size: 0.68rem;
-	color: #94a3b8;
+	font-size: var(--text-1);
+	color: var(--muted);
 }
 
 .wave-audio {
@@ -1145,47 +1064,51 @@
 	position: absolute;
 }
 
-.rsb-simple-table-wrap {
+.simple-table-wrap {
 	width: 100%;
 	overflow-x: auto;
 }
 
-.rsb-simple-table {
+.simple-table {
 	width: 100%;
+	table-layout: fixed;
 	border-collapse: collapse;
-	min-width: 920px;
+	min-width: 960px;
 	background: transparent;
 }
 
-.rsb-simple-table th,
-.rsb-simple-table td {
+.simple-table th,
+.simple-table td {
 	padding: 10px 12px;
 	border-bottom: 1px solid rgba(15, 23, 42, 0.08);
 	text-align: left;
 	vertical-align: middle;
 }
 
-.rsb-simple-table th {
-	font-size: 0.85rem;
-	color: #4b5563;
+.simple-table th {
+	font-size: var(--text-1);
+	color: var(--muted);
 	font-weight: 700;
 }
 
-.rsb-cell-sample {
-	font-weight: 600;
-	color: #111827;
+.cell-sample {
+	font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--ink);
+	color: var(--ink);
 }
 
-.rsb-cell-metric {
-	color: #374151;
+.cell-metric {
+	color: var(--ink);
 	white-space: nowrap;
 }
 
-.rsb-cell-audio {
+.cell-audio {
 	min-width: 150px;
 }
 
-.rsb-simple-audio {
+.simple-audio {
 	width: 140px;
 	height: 28px;
 	vertical-align: middle;
@@ -1199,4 +1122,303 @@
 	.chip-spinner {
 		animation: none;
 	}
+
+	.audio-demo-island .wave-compare .method-chip::before {
+		transition: none;
+	}
 }
+
+/* Responsive presentation only: keep playback, lazy methods and plot resources intact. */
+.audio-demo-island :is(.time-label, .wave-desc-value, .volume-label) { font-variant-numeric: tabular-nums; }
+.audio-demo-island .progress-track { --progress-thumb-size: 18px; }
+.audio-demo-island .progress-bar {
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+/* Match the rail endpoints to the native thumb's center, not the hit area's edges. */
+.audio-demo-island .progress-track::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  inset-inline: calc(var(--progress-thumb-size) / 2);
+  transform: translateY(-50%);
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) var(--playback-progress, 0%), var(--line) var(--playback-progress, 0%));
+  transition: box-shadow 0.2s ease;
+  pointer-events: none;
+}
+.audio-demo-island .progress-track-hover .progress-bar { box-shadow: none; }
+.audio-demo-island .progress-track-hover::before { box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1); }
+.audio-demo-island .progress-bar::-webkit-slider-runnable-track { height: 6px; border: 0; background: transparent; }
+.audio-demo-island .progress-bar::-webkit-slider-thumb {
+  width: var(--progress-thumb-size);
+  height: var(--progress-thumb-size);
+  margin-top: calc((6px - var(--progress-thumb-size)) / 2);
+  border: 0;
+  background: var(--accent);
+}
+.audio-demo-island .progress-bar::-moz-range-track { height: 6px; border: 0; background: transparent; }
+.audio-demo-island .progress-bar::-moz-range-progress { background: transparent; }
+.audio-demo-island .progress-bar::-moz-range-thumb { background: var(--accent); width: var(--progress-thumb-size); height: var(--progress-thumb-size); }
+.audio-demo-island .progress-bar:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.audio-demo-island .progress-tooltip { z-index: 80; }
+.audio-demo-island .audio-show-more:hover { background: var(--accent-deep); }
+.audio-demo-island .audio-nav-btn:active { transform: translateY(1px); }
+.audio-demo-island .method-tip-global { z-index: 60; min-width: 0; max-width: min(320px, calc(100vw - 24px)); }
+.audio-demo-island .simple-table-wrap { border-radius: var(--radius-m); background: var(--reading-surface); box-shadow: var(--shadow-soft); }
+
+/* Visualization-off list: a compact spreadsheet. The sample column stays
+   pinned and whole (no character wrapping); method columns hold one audio
+   player each; odd rows get a whisper of tint. */
+.audio-demo-island .simple-table th {
+	background: var(--card-head);
+	padding: 12px 14px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--muted);
+	white-space: nowrap;
+}
+
+.audio-demo-island .simple-table td { padding: 10px 14px; }
+
+.audio-demo-island .simple-table th:first-child,
+.audio-demo-island .simple-table td:first-child {
+	position: sticky;
+	left: 0;
+	z-index: 1;
+	white-space: nowrap;
+	box-shadow: 1px 0 0 var(--line-soft, #e8edf4);
+}
+
+.audio-demo-island .simple-table th:first-child { background: var(--card-head); }
+.audio-demo-island .simple-table th:last-child { padding-right: 6px; white-space: normal; }
+.audio-demo-island .simple-table td:first-child { background: var(--reading-surface); }
+
+.audio-demo-island .simple-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--accent) 3%, var(--reading-surface)); }
+.audio-demo-island .simple-table tbody tr:nth-child(even) td:first-child { background: color-mix(in srgb, var(--accent) 3%, var(--reading-surface)); }
+.audio-demo-island .simple-table tbody tr:hover td { background: color-mix(in srgb, var(--accent) 6%, var(--reading-surface)); }
+
+.audio-demo-island .simple-table td.cell-audio { padding-inline: 8px; }
+.audio-demo-island .simple-table td.cell-sample { padding-right: 18px; }
+.audio-demo-island .simple-table td.cell-metric { padding-left: 8px; }
+.audio-demo-island .simple-audio { width: 100%; max-width: 140px; height: 40px; border-radius: 10px; }
+@media (max-width: 960px) {
+  .method-group-secondary { flex-basis: 100%; }
+  .method-group-primary, .method-group-scroll { display: grid; grid-template-columns: repeat(auto-fit, minmax(146px, 1fr)); gap: 8px; }
+  .method-chip-wrap { display: flex; width: 100%; min-width: 0; }
+  .method-chip { flex: 1; }
+  .method-chip .chip-action { margin-left: auto; }
+}
+@media (max-width: 720px) {
+  .audio-demo-island { gap: 32px; margin-top: 24px; }
+  .audio-group-header { flex-wrap: wrap; gap: 12px; }
+  .dataset-description, .wave-desc-value { font-size: 13px; } .segmented-field-label { font-size: 12px; }
+  .dataset-heading { gap: 12px; }
+  .dataset-title-row { gap: 6px; }
+  .dataset-task, .dataset-count { font-size: 13px; padding-inline: 6px; }
+  .audio-group-controls { margin-left: 56px; flex: 1; }
+  /* Label and toggle share one line on phones; the toggle stretches to the
+     row end so wider phone/tablet widths leave no dead space after it. */
+  .visual-toggle { flex: 1; flex-wrap: nowrap; }
+  .visual-toggle .segmented-field-label { flex-basis: auto; white-space: nowrap; }
+  .visual-toggle .segmented-toggle { flex: 1; min-width: 0; }
+  /* Options stretch too, or the stretched track leaves dead space after
+     the active pill (same treatment as .budget-toggle below). */
+  .visual-toggle .segmented-option { flex: 1; }
+  .wave-compare { padding: 16px; gap: 14px; }
+  /* The list's scroll-into-view jump lands the card top at the viewport
+     top, right under the ~116px floating title capsule; the margin keeps
+     the single-line sample header visible after the jump. */
+  .wave-compare { scroll-margin-top: 124px; }
+  /* Single-line card header: #N, filename, then the metric right-aligned.
+     The uppercase labels are dropped on phones -- the values are
+     self-explanatory and the sample list above shows the same fields. */
+  .wave-description { display: flex; align-items: baseline; flex-wrap: nowrap; gap: 10px; width: 100%; min-width: 0; }
+  .wave-desc-item { flex-direction: row; align-items: baseline; gap: 6px; }
+  .wave-desc-item:nth-child(2) { flex: 1 1 auto; }
+  .wave-desc-tooltip { margin-left: auto; flex: 0 0 auto; }
+  .wave-desc-label { display: none; }
+  .wave-desc-index { grid-row: auto; align-self: auto; font-size: var(--text-3); }
+  .wave-desc-value { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; }
+  .wave-desc-divider { display: none; }
+  .budget-toggle { flex-basis: 100%; flex-wrap: nowrap; }
+  .budget-toggle .segmented-field-label { flex-basis: auto; white-space: nowrap; }
+  .budget-toggle .segmented-toggle { flex: 1; min-width: 0; }
+  .budget-toggle .segmented-option { flex: 1; }
+  .method-list { gap: 8px; }
+  .method-group-label { flex-basis: 100%; padding-left: 4px; font-size: var(--text-1); }
+  .method-group-primary, .method-group-scroll { gap: 6px; }
+  .method-chip { min-height: 44px; padding: 8px 10px; gap: 6px; font-size: 12px; }
+  .method-chip .chip-action { margin-left: auto; }
+  .audio-list { gap: 14px; }
+  .wave-panel { padding: 10px; }
+  .wave-panel-title { gap: 8px; }
+  .wave-panel-actions { width: 100%; }
+  .view-toggle { display: flex; flex-wrap: wrap; width: 100%; order: -1; }
+  .view-toggle .segmented-field-label { flex-basis: 100%; }
+  .view-toggle .segmented-toggle { flex: 1 1 100%; min-width: 0; }
+  .view-toggle-btn { flex: 1; min-width: 0; font-size: 12px; padding-inline: 8px; }
+  .view-toggle-btn .ui-icon { display: none; }
+  .progress-row { gap: 4px; grid-template-columns: 44px minmax(0, 1fr) 44px 44px; }
+  .progress-row > .time-label { grid-row: 2; font-size: var(--text-1); }
+  .progress-row > .time-label:first-of-type { grid-column: 1; }
+  .progress-row > .time-label:last-of-type { grid-column: 4; text-align: right; }
+  .progress-track { grid-column: 2; grid-row: 1; }
+  .volume-control { grid-column: 3; grid-row: 1; }
+  .progress-row > .wave-download { grid-column: 4; grid-row: 1; }
+  .wave-canvas-wrap { padding-inline: 14px; }
+  .wave-time-axis { width: calc(100% - 28px); margin-left: 14px; }
+  .spectrogram-labels { display: none; }
+  .spectrogram-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .spectrogram-gap { display: none; }
+  .spectrogram-side::before { content: attr(data-label); display: block; height: 20px; margin-bottom: 12px; font-size: var(--text-1); font-weight: 600; color: var(--ink); }
+  .spectrogram-side .spectrogram-axis-y { top: 32px; }
+  /* The energy scale re-orients to a horizontal strip under the
+     spectrograms: a vertical bar beside a 288px-wide card would squeeze
+     both plots below a usable width. The 40px y-axis gutter stays
+     untouched -- its rotated unit label and tick labels assume it. */
+  .spectrogram-block { display: flex; flex-direction: column; gap: 10px; }
+  .spectrogram-block .spectrogram-colorbar-wrap {
+	flex-direction: row;
+	align-items: center;
+	padding-top: 0;
+  }
+  .spectrogram-colorbar {
+	--spectrogram-fill: linear-gradient(
+		90deg,
+		rgb(252, 181, 20),
+		rgb(246, 136, 22),
+		rgb(225, 101, 40),
+		rgb(198, 72, 70),
+		rgb(170, 54, 99),
+		rgb(142, 41, 122),
+		rgb(113, 31, 126),
+		rgb(84, 21, 117),
+		rgb(53, 11, 99),
+		rgb(25, 6, 64),
+		rgb(0, 0, 4)
+	);
+	width: auto;
+	height: 8px;
+  }
+  .spectrogram-image-frame { height: clamp(180px, 50vw, 300px); }
+  /* One reading card for the whole sample list: rows breathe inside it
+     instead of five separate glass pills stacking up. */
+  .sample-jump {
+	display: grid;
+	/* minmax(0, 1fr): a plain 1fr track adopts the row's min-content and
+	   nowrap filenames would push the metric column off-screen at 320px. */
+	grid-template-columns: minmax(0, 1fr);
+	gap: 2px;
+	padding: 6px;
+	background: var(--reading-surface);
+	border-radius: var(--panel-radius);
+	box-shadow: var(--shadow-soft);
+  }
+  .sample-jump-row { border-radius: 10px; }
+  .audio-list-simple .sample-jump { display: none; }
+  /* The sample list owns the group overview on phones; the Show All stack
+     would duplicate it. Prev/next stay for consecutive listening. */
+  .audio-show-more { display: none; }
+  .audio-actions { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .audio-nav-btn { min-height: 44px; padding: 10px 6px; font-size: 12px; letter-spacing: 0; }
+  .wave-desc-tip { display: none; }
+  .simple-table td, .simple-table th { padding: 12px; }
+}
+
+@media (max-width: 480px) {
+  .view-toggle-btn { padding-inline: 6px; gap: 0; }
+}
+/* At 320px the indented group header (200px) only fits the On/Off toggle
+   if the Visualization label collapses to its icon; the toggle keeps
+   aria-label="Visualization". Down to 330px the full label still fits. */
+@media (max-width: 330px) {
+  .visual-toggle .segmented-field-label { font-size: 0; gap: 0; }
+  .visual-toggle .segmented-field-label .ui-icon { width: 18px; height: 18px; }
+}
+
+/* Native SVG controls stay crisp at phone and desktop sizes. */
+.wave-compare :is(.chip-action, .progress-play, .volume-button, .wave-download) .ui-icon { width: 16px; height: 16px; }
+
+.audio-demo-island .wave-compare .method-chip::after,
+.audio-demo-island .wave-panel .legend-item::before,
+.audio-demo-island .wave-panel .legend-item::after {
+	content: none !important;
+	display: none !important;
+}
+
+.audio-demo-island .wave-compare .method-chip:is(.active, .playing) .chip-spinner { border-color: rgb(255 255 255 / .38); border-top-color: #fff; }
+
+/* Play/pause badges: a white glyph on the method's own colour, in every
+   chip state; the main playback button carries the accent blue. */
+.audio-demo-island .wave-compare .method-chip .chip-action {
+	background: var(--method-color, var(--accent));
+	box-shadow: 0 2px 6px color-mix(in srgb, var(--method-color, var(--accent)) 30%, transparent);
+}
+
+.audio-demo-island .wave-compare .method-chip .chip-action .ui-icon {
+	color: #fff !important;
+}
+
+.audio-demo-island .wave-panel .progress-play {
+	background: var(--accent) !important;
+	box-shadow: 0 5px 13px color-mix(in srgb, var(--accent) 24%, transparent) !important;
+	color: #fff;
+}
+
+.audio-demo-island .wave-panel .progress-play::before,
+.audio-demo-island .wave-panel .progress-play::after {
+	content: none !important;
+	display: none !important;
+}
+
+.audio-demo-island .wave-panel .progress-play .ui-icon {
+	color: #fff !important;
+}
+
+.audio-demo-island .wave-panel .progress-play:hover:not(:disabled) {
+	opacity: 0.88;
+}
+
+.audio-demo-island .wave-panel .legend-item {
+	background: transparent !important;
+	box-shadow: none !important;
+}
+
+/* Segmented options are opaque controls, not glass pills: a neutral track
+   with a solid white thumb for the selected option. */
+/* (0,5,0): outranks paper.css's white-card control shadow, which lands at
+   (0,4,2) once :is(button, a[download]) and :not(...) are counted. Segments
+   stay perfectly flat. */
+:is(.rsb-body, .cof-body) .audio-demo-island :is(.wave-compare, .audio-group-controls) .segmented-toggle .segmented-option {
+	background: transparent !important;
+	border-color: transparent !important;
+	box-shadow: none !important;
+}
+
+:is(.rsb-body, .cof-body) .audio-demo-island :is(.wave-compare, .audio-group-controls) .segmented-toggle .segmented-option::before,
+:is(.rsb-body, .cof-body) .audio-demo-island :is(.wave-compare, .audio-group-controls) .segmented-toggle .segmented-option::after {
+	content: none !important;
+	display: none !important;
+}
+
+/* The thumb (a span) is untouched by the button glass tier, so the white
+   capsule stays solid; reduced motion skips the slide. */
+@media (prefers-reduced-motion: reduce) {
+	.segmented-thumb { transition: none; }
+}
+
+.dataset-task { display: inline-flex; align-items: center; gap: 6px; }
+.dataset-task .ui-icon { width: 18px; height: 18px; }

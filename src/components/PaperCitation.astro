@@ -1,0 +1,30 @@
+---
+import PaperSection from './PaperSection.astro';
+import CopyButton from './CopyButton.astro';
+import UiIcon from './UiIcon.astro';
+interface Props { variant: 'rsb' | 'cof'; headingId: string; bibtex: string; }
+const { variant, headingId, bibtex } = Astro.props;
+---
+<PaperSection variant={variant} headingId={headingId} label="Citation" class={`${variant}-citation-section ${variant}-fade`}>
+  <div class={`${variant}-citation`} data-paper-citation>
+    <div class={`${variant}-citation-header`}>
+      <span class={`${variant}-citation-label`}>BibTeX</span>
+      <CopyButton class={`${variant}-copy-button`} text={bibtex} label="Copy" ariaLabel="Copy BibTeX citation" flashLabel="Copied"><UiIcon id="copy" /></CopyButton>
+    </div>
+    <pre class={`${variant}-bibtex`}><code data-bibtex>{bibtex}</code></pre>
+    <p class={`${variant}-copy-status`} data-copy-status aria-live="polite"></p>
+  </div>
+</PaperSection>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-paper-citation]').forEach(citation => {
+    const status = citation.querySelector<HTMLElement>('[data-copy-status]');
+    let timer: ReturnType<typeof setTimeout>;
+    citation.addEventListener('copy:done', () => {
+      if (!status) return;
+      clearTimeout(timer);
+      status.textContent = 'BibTeX copied to clipboard.';
+      timer = setTimeout(() => { status.textContent = ''; }, 2000);
+    });
+    window.addEventListener('pagehide', () => clearTimeout(timer), { once: true });
+  });
+</script>

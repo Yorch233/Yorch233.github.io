@@ -1,0 +1,46 @@
+---
+import DemoLinks from './DemoLinks.astro';
+import { paperAuthors } from '../data/paper-authors.js';
+import { publications } from '../data/publications.js';
+interface Props {
+  publication: typeof publications[number];
+  resources: Parameters<typeof DemoLinks>[0]['items'];
+  method: string;
+  kicker: string;
+  corresponding: string[];
+  linksTitle?: string;
+}
+const { publication, resources, method, kicker, corresponding, linksTitle } = Astro.props;
+const variant = publication.slug.toLowerCase() as 'rsb' | 'cof';
+const authors = publication.authors.map(author => ({ ...author, ...paperAuthors[author.name as keyof typeof paperAuthors] }));
+const affiliations = [...new Set(authors.map(author => author.affiliation))];
+---
+<header class={`${variant}-hero ${variant}-fade`}>
+  <a class={`${variant}-home-link`} href="/">← Home</a>
+  <p class={`${variant}-kicker`}>{kicker}</p>
+  <h1 class={`${variant}-title`} id={`${variant}-title`} data-demo-title tabindex="-1"><span class={`${variant}-title-method`}>{method}</span>{publication.title.slice(method.length)}</h1>
+  <p class={`${variant}-publication`}>{publication.venueFull}</p>
+  <p class={`${variant}-authors`} style={`--author-columns: ${authors.length}`}>
+    {authors.map(author => (
+      <span class={`${variant}-author`}>
+        <span class={`${variant}-author-name`}>
+          {author.name}
+          {affiliations.length > 1 && <sup>{affiliations.indexOf(author.affiliation) + 1}</sup>}
+          {corresponding.includes(author.name) && <sup class={`${variant}-tag`}>†</sup>}
+        </span>
+        <a class={`${variant}-email`} href={`mailto:${author.email}`}>{author.email}</a>
+      </span>
+    ))}
+  </p>
+  <ol class={`${variant}-affiliations`}>
+    {affiliations.map((affiliation, index) => <li>{affiliations.length > 1 && <sup>{index + 1}</sup>}{affiliation}</li>)}
+  </ol>
+  <p class={`${variant}-affiliation-note`}><sup class={`${variant}-tag`}>†</sup> Corresponding author</p>
+  <div class:list={['paper-resource-group', { 'has-resource-heading': !!linksTitle }]} role={linksTitle ? 'group' : undefined} aria-labelledby={linksTitle ? `${variant}-quick-links-heading` : undefined}>
+    {linksTitle && <h2 class="paper-resources-heading" id={`${variant}-quick-links-heading`}>{linksTitle}</h2>}
+    <div class={`${variant}-links`}>
+      <DemoLinks variant={variant} id={`${variant}-resources`} items={resources} />
+    </div>
+  </div>
+  <slot />
+</header>

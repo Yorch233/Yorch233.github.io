@@ -5,11 +5,18 @@
 	"type": "module",
 	"scripts": {
 		"dev": "astro dev",
+		"prebuild": "npm run logo:build && npm run icons:build",
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"check": "astro check",
+		"lint": "eslint .",
+		"test:unit": "vitest run",
+		"test:e2e": "playwright test",
+		"test:e2e:dev": "E2E_SERVER=dev playwright test",
+		"test": "npm run check && npm run lint && npm run test:unit && npm run test:e2e",
 		"audio:build": "./scripts/encode-audio.sh",
-		"verify:runtime": "node scripts/verify-runtime.mjs"
+		"logo:build": "node scripts/build-yo-logo.mjs",
+		"icons:build": "node scripts/build-ui-icons.mjs"
 	},
 	"dependencies": {
 		"@astrojs/preact": "^6.0.1",
@@ -21,6 +28,14 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.4",
-		"typescript": "^5.9.3"
+		"@eslint/js": "^9.39.5",
+		"@playwright/test": "^1.64.0",
+		"eslint": "^9.39.4",
+		"eslint-plugin-astro": "^1.7.0",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"globals": "^17.13.0",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.71.1",
+		"vitest": "^3.2.7"
 	}
 }

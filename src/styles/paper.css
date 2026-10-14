@@ -1,0 +1,583 @@
+/* Shared RSB/CoF reading layout. Variant classes preserve existing anchors and runtime hooks. */
+:is(.rsb-body, .cof-body) {
+  --bg: #f7faff; --surface: #fff; --reading-surface: #fff; --card-head: #f8fafc;
+  --panel-surface: #f6f8fb;
+  --ink: #25364d; --muted: #5e6e84; --line: #dce6f2; --line-soft: #edf2f8;
+  --accent: #2f68c4; --accent-deep: #24549e; --accent-soft: #edf4ff; --accent-line: #b9cfee;
+  --display: var(--sans);
+  --text-1: 13px; --text-2: 16px; --text-3: 20px; --text-4: 28px; --text-5: 36px; --text-6: 52px;
+  --radius-s: 12px; --radius-m: 20px; --radius-l: 32px;
+  --panel-radius: 32px; --panel-inset: 20px; --nested-radius: calc(var(--panel-radius) - var(--panel-inset));
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-7: 32px;
+  --glass-shadow: rgb(47 78 123 / .13);
+  --control-shadow: 0 2px 8px rgb(32 60 110 / .08);
+  --card-control-shadow: inset 0 1px 0 rgb(255 255 255 / .9), 0 2px 5px rgb(57 68 82 / .12);
+  --shadow-soft: 0 1px 2px rgb(32 60 110 / .04), 0 12px 32px -14px rgb(32 60 110 / .16);
+  background: radial-gradient(ellipse 55% 480px at 90% 0%, rgb(110 165 248 / .2), transparent 76%), linear-gradient(115deg, #fcfdff, var(--bg));
+  color: var(--ink); color-scheme: light;
+}
+
+/* Shared RSB method-pill controls. */
+.method-chip {
+  border: 1px solid transparent; background: var(--bg); min-height: 44px; padding: 8px 12px; border-radius: 999px; font: 600 var(--text-1)/1.4 var(--sans); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; transition: background 160ms ease, box-shadow 160ms ease;
+}
+.method-chip-secondary { background: var(--bg); }
+.method-chip:hover, .method-chip.active, .method-chip.playing {
+  border-color: #dfe3e9; background: #fff; box-shadow: var(--control-shadow);
+}
+/* The audio card's method pills are styled in audio-demo.css under
+   .audio-demo-island, so every demo body renders them identically. */
+.cof-body .cof-results .cof-results-dataset-options .method-chip {
+  border-radius: 999px !important; padding: 8px 12px !important; font: 600 var(--text-1)/1.4 var(--sans) !important;
+}
+.cof-body .cof-results .cof-results-dataset-options .method-chip::before,
+.cof-body .cof-results .cof-results-dataset-options .method-chip::after { content: none !important; display: none !important; }
+
+/* White controls on the demos' white reading cards share one 1px hairline edge;
+   this shadow only adds lighting, never a second ring. */
+body:is(.rsb-body, .cof-body) :is(.rsb-abstract-wrap, .cof-abstract-wrap, .wave-compare, .cof-results-workspace, .rsb-citation, .cof-citation, .rsb-figure-carousel, .simple-table-wrap) :is(button, a[download]):not(.method-chip, .legend-item, .view-toggle-btn, .audio-show-more, .cof-results-metric-label, .rsb-figure-open, .rsb-figure-dot) {
+  box-shadow: var(--card-control-shadow) !important;
+}
+
+/* The figure open button frames its image; keep that hairline frame explicitly. */
+.rsb-figure-open { box-shadow: 0 0 0 1px rgb(74 92 118 / .14); }
+
+/* Controls that previously had no border of their own join the shared hairline. */
+body:is(.rsb-body, .cof-body) :is(.rsb-read-aloud, .rsb-copy-button, .cof-copy-button, .rsb-figure-nav) {
+  border: 1px solid #dfe3e9;
+}
+body:is(.rsb-body, .cof-body) .wave-compare a[download].wave-download {
+  border: 1px solid #dfe3e9;
+}
+
+:is(.rsb-page, .cof-page) {
+min-height: 100dvh; overflow-x: clip; padding: 48px max(40px, env(safe-area-inset-right, 0px)) 64px max(40px, env(safe-area-inset-left, 0px)); color: var(--ink); font-family: var(--sans);
+}
+
+:is(.rsb-article, .cof-article) {
+position: relative; min-width: 0; max-width: 1120px; margin: 0 auto; padding: 0;
+}
+
+/* Reserve the classic-scrollbar gutter like the homepage does, so the reveal
+   sequence or lazy Demo content never shifts the centered column sideways. */
+html:has(:is(.rsb-body, .cof-body)) { scrollbar-gutter: stable; }
+
+:is(.rsb-watermark, .cof-watermark) {
+position: absolute; top: 80px; right: 0; z-index: -1; width: 180px; height: 180px; opacity: .035; pointer-events: none; user-select: none;
+}
+
+:is(.rsb-hero, .cof-hero) {
+position: relative; z-index: 1; padding-bottom: 0;
+}
+
+:is(.rsb-kicker, .cof-kicker) {
+	margin: 0;
+	color: var(--accent);
+	font-size: var(--text-1);
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+:is(.rsb-title, .cof-title) {
+max-width: 1040px; margin: 20px 0; font-family: var(--display); font-size: clamp(32px, 4vw, var(--text-6)); font-weight: 800; line-height: 1.16; letter-spacing: -.035em; text-wrap: balance;
+}
+
+:is(.rsb-title, .cof-title) :is(.rsb-title-method, .cof-title-method) {
+	color: var(--accent);
+}
+
+:is(.rsb-title, .cof-title) :is(.rsb-highlight, .cof-highlight) { font-weight: inherit; }
+
+:is(.rsb-authors, .cof-authors) {
+display: grid; grid-template-columns: repeat(var(--author-columns, 4), minmax(0, 1fr)); gap: 16px; margin: 32px 0 20px;
+}
+
+:is(.rsb-author, .cof-author) {
+display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 12px 0; font-weight: 600;
+}
+
+:is(.rsb-author, .cof-author):hover {
+color: var(--ink);
+}
+
+:is(.rsb-author-name, .cof-author-name) {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+:is(.rsb-email, .cof-email) {
+color: var(--muted); font-size: var(--text-1); font-weight: 400; text-decoration: none; overflow-wrap: anywhere; line-height: 1.6;
+}
+
+:is(.rsb-email, .cof-email):hover {
+	text-decoration: underline;
+}
+
+:is(.rsb-tag, .cof-tag) {
+	color: var(--accent);
+	font-size: var(--text-1);
+	font-weight: 700;
+}
+
+:is(.rsb-affiliations, .cof-affiliations) {
+display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; padding: 0; color: var(--muted); font-size: var(--text-1); line-height: 1.7; list-style: none;
+}
+
+:is(.rsb-affiliations, .cof-affiliations) sup {
+	margin-right: 6px;
+	color: var(--accent);
+	font-weight: 700;
+}
+
+:is(.rsb-affiliation-note, .cof-affiliation-note) {
+	margin: 8px 0 0;
+	color: var(--muted);
+	font-size: var(--text-1);
+}
+
+:is(.rsb-nav, .cof-nav) {
+display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0;
+}
+
+:is(.rsb-links, .cof-links) {
+display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 32px;
+}
+
+/* One quiet resource line; narrow screens scroll this row instead of wrapping. */
+.paper-resource-group.has-resource-heading {
+  display: flex; align-items: center; justify-content: safe center; gap: 16px;
+  margin-top: 24px; padding: 6px 4px; max-width: 100%; overflow-x: auto;
+  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+}
+.paper-resources-heading {
+  flex: 0 0 auto; margin: 0; color: var(--muted);
+  font: 500 var(--text-1)/1.5 var(--sans); white-space: nowrap;
+}
+.has-resource-heading :is(.rsb-links, .cof-links) { flex: 0 0 auto; flex-wrap: nowrap; margin-top: 0; }
+.has-resource-heading :is(.rsb-nav, .cof-nav) { flex-wrap: nowrap; gap: 10px; }
+body:is(.rsb-body, .cof-body) .paper-resource-group :is(.rsb-nav-link, .cof-nav-link) {
+  --glass-opacity: 72%; --glass-lower-opacity: 48%;
+  min-height: 44px; padding: 8px 16px; gap: 8px; border: 1px solid transparent;
+  border-radius: 999px; color: var(--muted); font-weight: 500;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -3px 7px -5px rgb(255 255 255 / .5), 0 3px 8px -5px rgb(35 65 99 / .18), 0 8px 14px -10px rgb(35 65 99 / .12) !important;
+}
+body:is(.rsb-body, .cof-body) .paper-resource-group :is(.rsb-nav-link, .cof-nav-link)::after { opacity: .75; }
+body:is(.rsb-body, .cof-body) .paper-resource-group :is(.rsb-nav-link, .cof-nav-link):hover {
+  --glass-opacity: 88%; --glass-lower-opacity: 64%; color: var(--accent-deep); transform: none;
+}
+.paper-resource-group svg.ui-icon.paper-resource-icon:is(.rsb-nav-icon, .cof-nav-icon) {
+  width: 18px; height: 18px; flex-basis: 18px;
+}
+
+:is(.rsb-links-title, .cof-links-title) {
+display: none;
+}
+
+:is(.rsb-nav-link, .cof-nav-link) {
+position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink); font: 600 var(--text-1)/1.4 var(--sans); white-space: nowrap; text-decoration: none; box-shadow: var(--control-shadow); transition: color 160ms ease, transform 160ms ease;
+}
+
+a:is(.rsb-nav-link, .cof-nav-link):hover {
+color: var(--accent-deep); transform: translateY(-1px);
+}
+
+:is(.rsb-nav-link, .cof-nav-link):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
+}
+
+:is(.rsb-nav-icon, .cof-nav-icon) {
+display: block; width: 24px; height: 24px; flex: 0 0 24px;
+}
+
+/* Resource glyphs share the homepage navigation's automatic state and palette. */
+svg.ui-icon.paper-resource-icon:is(.rsb-nav-icon, .cof-nav-icon) { width: 24px; height: 24px; }
+svg.ui-icon.paper-resource-icon.demo-resource-icon { width: 16px; height: 16px; }
+
+:is(.rsb-nav-label, .cof-nav-label) {
+text-align: center;
+}
+
+:is(.rsb-nav-link, .cof-nav-link):hover :is(.rsb-nav-icon, .cof-nav-icon) {
+	filter: grayscale(0);
+	opacity: 1;
+}
+
+:is(.rsb-section, .cof-section) {
+margin-top: 48px; color: var(--ink); font-size: var(--text-2); line-height: 1.8;
+}
+
+:is(.rsb-section-separated, .cof-section-separated) {
+position: relative; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--line);
+}
+
+:is(.rsb-section-separated, .cof-section-separated)::before {
+content: none;
+}
+
+:is(.rsb-section-separated, .cof-section-separated)::after {
+content: none;
+}
+
+:is(.rsb-section, .cof-section) h2 {
+position: relative; display: flex; align-items: center; gap: 12px; margin: 0 0 24px; padding: 0; font: 800 var(--text-4)/1.25 var(--display); letter-spacing: -.025em; text-transform: none;
+}
+
+:is(.rsb-wave, .cof-wave) {
+	display: inline-grid;
+	grid-auto-flow: column;
+	align-items: center;
+	gap: 4px;
+	width: 26px;
+	height: 18px;
+}
+
+:is(.rsb-wave, .cof-wave)::before,
+:is(.rsb-wave, .cof-wave)::after,
+:is(.rsb-wave, .cof-wave) span {
+	content: '';
+	display: block;
+	width: 6px;
+	border-radius: 4px;
+	background: var(--accent);
+}
+
+:is(.rsb-wave, .cof-wave)::before,
+:is(.rsb-wave, .cof-wave)::after {
+	height: 12px;
+}
+
+:is(.rsb-wave, .cof-wave) span {
+	height: 20px;
+}
+
+:is(.rsb-abstract-wrap, .cof-abstract-wrap) {
+position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; max-width: 880px; margin-inline: auto; padding: var(--panel-inset) 28px 28px; border-radius: var(--panel-radius); background: var(--reading-surface); box-shadow: var(--shadow-soft);
+}
+
+:is(.rsb-abstract, .cof-abstract) {
+grid-column: 1 / -1; grid-row: 2; margin: 0; padding: 0; text-align: left; text-wrap: pretty; line-height: 1.8;
+}
+
+:is(.rsb-abstract, .cof-abstract):hover {
+background: transparent; box-shadow: none;
+}
+
+:is(.rsb-legend, .cof-legend) {
+grid-column: 1; grid-row: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0; opacity: 1; transform: none; pointer-events: none;
+}
+
+:is(.rsb-abstract-wrap, .cof-abstract-wrap):hover :is(.rsb-legend, .cof-legend) {
+opacity: 1; transform: none;
+}
+
+:is(.rsb-legend-item, .cof-legend-item) {
+display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: var(--text-1); font-weight: 500;
+}
+
+:is(.rsb-legend-swatch, .cof-legend-swatch) {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 4px;
+}
+
+:is(.rsb-legend-swatch-highlight, .cof-legend-swatch-highlight) {
+	background: rgba(44, 82, 130, 0.6);
+}
+
+:is(.rsb-legend-swatch-issue, .cof-legend-swatch-issue) {
+	background: rgba(249, 115, 22, 0.7);
+}
+
+:is(.rsb-highlight, .cof-highlight),
+:is(.rsb-issue, .cof-issue) {
+margin-right: 0;
+}
+
+:is(.rsb-issue, .cof-issue) {
+	margin-right: 6px;
+}
+
+:is(.rsb-abstract-wrap, .cof-abstract-wrap):hover :is(.rsb-highlight, .cof-highlight) {
+	background: rgba(44, 82, 130, 0.12);
+	color: var(--accent);
+}
+
+:is(.rsb-abstract-wrap, .cof-abstract-wrap):hover :is(.rsb-issue, .cof-issue) {
+	background: rgba(249, 115, 22, 0.16);
+	color: #c2410c;
+}
+
+:is(.rsb-meta, .cof-meta) {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+:is(.rsb-chip, .cof-chip) {
+padding: 8px 14px; border: 0; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: var(--text-1); font-weight: 500;
+}
+
+:is(.rsb-chip, .cof-chip):hover {
+background: var(--accent-soft); color: var(--accent-deep);
+}
+
+/* Keyword chips on both demo pages are static tags: flat translucent blue
+   with a plain border and no glass lighting, which stays reserved for
+   interactive controls. */
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip) {
+  --glass-tint: #2f68c4; --glass-opacity: 10%; --glass-lower-opacity: 5%;
+  border: 1px solid transparent; border-color: rgb(47 104 196 / .4) !important;
+  background: rgb(47 104 196 / .08) !important; box-shadow: none !important;
+}
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip)::before,
+body:is(.rsb-body, .cof-body) :is(.rsb-meta, .cof-meta) :is(.rsb-chip, .cof-chip)::after { display: none; }
+
+:is(.rsb-muted, .cof-muted) {
+	color: var(--muted);
+}
+
+:is(.rsb-accent, .cof-accent) {
+	color: var(--accent);
+	font-weight: 700;
+}
+
+:is(.rsb-citation-section, .cof-citation-section) {
+	margin-top: 42px;
+}
+
+:is(.rsb-citation, .cof-citation) {
+overflow: hidden; border: 1px solid var(--line-soft); border-radius: var(--panel-radius); background: var(--reading-surface); box-shadow: var(--shadow-soft);
+}
+
+:is(.rsb-citation-header, .cof-citation-header) {
+display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--line-soft); background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+:is(.rsb-citation-label, .cof-citation-label) {
+	color: var(--muted);
+	font-size: var(--text-1);
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+:is(.rsb-copy-button, .cof-copy-button) {
+display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 82px; min-height: 44px; padding: 8px 14px; border: 0; border-radius: 999px; background: var(--surface); color: var(--accent-deep); font: 600 var(--text-1)/1.4 var(--sans); cursor: pointer; box-shadow: var(--control-shadow); transition: color 160ms ease, transform 160ms ease;
+}
+
+:is(.rsb-copy-button, .cof-copy-button) img {
+	width: 15px;
+	height: 15px;
+}
+
+:is(.rsb-copy-button, .cof-copy-button):hover {
+	transform: translateY(-1px);
+	border-color: rgba(44, 82, 130, 0.4);
+	color: var(--accent);
+}
+
+:is(.rsb-copy-button, .cof-copy-button).is-copied {
+	border-color: rgba(22, 163, 74, 0.28);
+	background: rgba(22, 163, 74, 0.1);
+	color: #15803d;
+}
+
+:is(.rsb-copy-button, .cof-copy-button):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+:is(.rsb-bibtex, .cof-bibtex) {
+	margin: 0;
+	padding: 18px 20px 20px;
+	overflow-x: auto;
+	background: transparent;
+	color: var(--ink);
+	font-family: var(--mono);
+	font-size: var(--text-1);
+	line-height: 1.65;
+	text-align: left;
+	user-select: text;
+	white-space: pre;
+	tab-size: 2;
+}
+
+:is(.rsb-copy-status, .cof-copy-status) {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	border: 0;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+:is(.rsb-fade, .cof-fade) {
+	opacity: 0;
+	animation: rsbFadeInUp 0.8s ease both;
+}
+
+:is(.rsb-delay-1, .cof-delay-1) {
+	animation-delay: 0.08s;
+}
+
+:is(.rsb-delay-2, .cof-delay-2) {
+	animation-delay: 0.16s;
+}
+
+:is(.rsb-delay-3, .cof-delay-3) {
+	animation-delay: 0.24s;
+}
+
+:is(.rsb-delay-4, .cof-delay-4) {
+	animation-delay: 0.32s;
+}
+
+:is(.rsb-delay-5, .cof-delay-5) {
+	animation-delay: 0.4s;
+}
+
+@keyframes rsbFadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 960px) {
+:is(.rsb-page, .cof-page) { padding-inline: 28px; }
+
+:is(.rsb-authors, .cof-authors) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+/* Phone scale sits one compact step down: 15px body, 16px component
+   headings, 20px section titles. Essential labels keep >= 13px; captions
+   bottom out at the 12px floor. */
+:is(.rsb-body, .cof-body) { --text-1: 12px; --text-2: 15px; --text-3: 16px; --text-4: 20px; --text-5: 26px; --text-6: 30px; --radius-m: 18px; --panel-radius: 28px; --panel-inset: 16px; }
+
+:is(.rsb-page, .cof-page) { padding: 28px max(18px, env(safe-area-inset-right, 0px)) 48px max(18px, env(safe-area-inset-left, 0px)); }
+
+/* Long paper titles read far too heavy at the 30px page-title step on
+   phones (five lines at 320px); 22px keeps them compact. */
+:is(.rsb-title, .cof-title) { font-size: 22px; line-height: 1.24; }
+
+:is(.rsb-authors, .cof-authors) { gap: 8px 16px; margin-top: 24px; }
+
+:is(.rsb-author, .cof-author) { gap: 4px; padding-block: 8px; }
+
+:is(.rsb-email, .cof-email), :is(.rsb-nav-link, .cof-nav-link) { font-size: 12px; }
+
+:is(.rsb-body, .cof-body) .demo-capsule-paper-title, :is(.rsb-body, .cof-body) .demo-resource-link { font-size: 12px; }
+
+:is(.rsb-body, .cof-body) .demo-capsule-publication { font-size: 12px; }
+
+:is(.rsb-links, .cof-links) { gap: 12px; margin-top: 24px; }
+
+:is(.rsb-nav, .cof-nav) { gap: 8px; }
+
+:is(.rsb-nav-link, .cof-nav-link) { min-height: 44px; padding-inline: 12px; }
+
+:is(.rsb-section, .cof-section) { margin-top: 32px; }
+
+:is(.rsb-section-separated, .cof-section-separated) { margin-top: 40px; padding-top: 24px; }
+
+:is(.rsb-section, .cof-section) h2 { margin-bottom: 20px; }
+
+:is(.rsb-abstract-wrap, .cof-abstract-wrap) { padding: 16px; gap: 12px; }
+
+:is(.rsb-legend, .cof-legend) { gap: 8px; }
+
+:is(.rsb-legend-item, .cof-legend-item) { font-size: var(--text-1); }
+
+:is(.rsb-citation-header, .cof-citation-header) { padding: 12px 16px; }
+
+:is(.rsb-bibtex, .cof-bibtex) { padding: 16px; }
+}
+
+@media (max-width: 400px) {
+  :is(.rsb-authors, .cof-authors) { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 360px) {
+:is(.rsb-page, .cof-page) { padding-inline: 14px; }
+
+:is(.rsb-author-name, .cof-author-name) { gap: 2px; font-size: 14px; }
+}
+
+html.js.is-loading :is(.rsb-fade, .cof-fade) {animation-play-state:paused}
+
+html.is-loading :is(.rsb-article, .cof-article)::after {
+	content:"";position:absolute;inset:0;z-index:5;
+	border-radius:24px;
+	background:linear-gradient(100deg,
+		rgba(0,113,227,.05) 32%,
+		rgba(0,113,227,.13) 50%,
+		rgba(0,113,227,.05) 68%);
+	background-size:220% 100%;
+	animation:sk-shimmer 1.1s linear infinite;
+	pointer-events:none;
+}
+
+:is(.rsb-nav-link, .cof-nav-link):active,:is(.rsb-chip, .cof-chip):active,:is(.rsb-copy-button, .cof-copy-button):active {transform:scale(.94);transition-duration:.09s}
+
+@media (prefers-reduced-motion: reduce) {
+:is(.rsb-fade, .cof-fade) {
+		opacity: 1;
+		animation: none !important;
+	}
+}
+
+:is(.rsb-home-link, .cof-home-link) { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 16px; color: var(--muted); font-size: var(--text-1); text-decoration: none; }
+
+:is(.rsb-home-link, .cof-home-link):hover { color: var(--accent); }
+
+:is(.rsb-publication, .cof-publication) { max-width: 80ch; margin: 0 0 24px; color: var(--muted); font-size: var(--text-1); line-height: 1.7; }
+
+:is(.rsb-nav-link, .cof-nav-link):hover { background: var(--accent-soft); }
+
+:is(.rsb-body, .cof-body) :is(a, button, input, [tabindex]):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+:is(.rsb-body, .cof-body) :is(.rsb-chip, .cof-chip):active { transform: none; }
+
+@media (hover: none) {
+:is(.rsb-abstract, .cof-abstract) :is(.rsb-highlight, .cof-highlight) { background: var(--accent-soft); color: var(--accent-deep); }
+
+:is(.rsb-abstract, .cof-abstract) :is(.rsb-issue, .cof-issue) { background: #fff3e8; color: #9a4816; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+:is(.rsb-body, .cof-body) *, :is(.rsb-body, .cof-body) *::before, :is(.rsb-body, .cof-body) *::after { transition: none !important; animation: none !important; }
+}
+
+@media print {
+:is(.rsb-page, .cof-page) { padding: 0; }
+}
+
+/* Ultra-wide adaptation (>= 2000px): widen the reading column for the data
+   surfaces while keeping prose and abstract at a comfortable measure. */
+@media (min-width: 2000px) {
+:is(.rsb-article, .cof-article) { max-width: 1520px; }
+/* Spread the hero title and the abstract card across the widened column. */
+:is(.rsb-title, .cof-title) { max-width: 100%; }
+:is(.rsb-abstract-wrap, .cof-abstract-wrap) { max-width: 100%; }
+/* Figure captions span the widened column like the figures they describe. */
+.rsb-figure-carousel .rsb-figure-caption p { max-width: 100%; }
+/* Section prose keeps its reading measure, except the results intro which
+   spans the widened column like the charts it introduces. */
+:is(.rsb-section, .cof-section) > p { max-width: 880px; }
+.cof-section > p.cof-results-intro { max-width: 100%; }
+}
+
+@media print { .cof-abstract-wrap, .cof-citation { box-shadow: none; } .cof-links, .cof-home-link { display: none; } }

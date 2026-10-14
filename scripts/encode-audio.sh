@@ -3,7 +3,8 @@
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-audio_root="${project_root}/public/audio/RSB"
+audio_key="${1:-RSB}"
+audio_root="${project_root}/public/audio/${audio_key}"
 
 if ! command -v ffmpeg >/dev/null 2>&1; then
 	echo "ffmpeg is required to generate Opus preview files." >&2

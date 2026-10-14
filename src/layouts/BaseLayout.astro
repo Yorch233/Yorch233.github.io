@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
-
+import '../styles/motion.css';
+import '../styles/components.css';
+import '../styles/ui-icons.css';
+import '../styles/glass-tiers.css';
+import { SITE_FAVICON_URL, SITE_TOUCH_ICON_URL } from '../lib/site-logo.js';
 interface Props {
 	title: string;
 	description?: string;
@@ -15,18 +19,121 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-yo-appearance="fluffy">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content={description} />
-		<meta name="theme-color" content="#edf4ff" />
-		<link rel="icon" href="/logo/icon.png" type="image/png" />
+		<meta name="theme-color" content={bodyClass === 'home-ref' ? '#f7faff' : '#fcfbf8'} />
+		{bodyClass === 'home-ref' && <script is:inline>
+			(function () {
+				var theme;
+				try { theme = localStorage.getItem('home-theme.v1'); } catch {}
+				if (theme !== 'light' && theme !== 'dark') theme = 'light';
+				document.documentElement.dataset.theme = theme;
+				document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#111b2b' : '#f7faff');
+			})();
+		</script>}
+		<link rel="icon" href={SITE_FAVICON_URL} type="image/svg+xml" />
+		<link rel="apple-touch-icon" href={SITE_TOUCH_ICON_URL} sizes="180x180" />
+		{bodyClass === 'home-ref' && <link rel="preload" href="/backgrounds/cloud-sky-v1.webp" as="image" fetchpriority="high" />}
 		<link rel="preconnect" href="https://cdn.simpleicons.org" />
 		<title>{title}</title>
 		<slot name="head" />
+		<script is:inline>document.documentElement.classList.add("js","is-loading");</script>
 	</head>
 	<body class={bodyClass}>
+		<div class="page-loader" aria-hidden="true">
+			<div class="page-loader-inner">
+				<span class="page-loader-wordmark">Loading</span>
+				<span class="page-loader-bar"><span class="page-loader-track"><span class="page-loader-fill"></span></span></span>
+			</div>
+		</div>
 		<slot />
+		<script is:inline>
+			(function () {
+				var de = document.documentElement;
+				var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				var fired = false;
+				var revealContainers = [
+					'.layout', '#main-content', '.meet', '.meet-main', '.meet-greet', '.home-about', '.home-explore',
+					'.meet-card', '.meet-card-head', '.card-body', '.meet-more',
+					'.rsb-page', '.cof-page', '.rsb-article', '.cof-article', '.rsb-hero', '.cof-hero',
+					'.rsb-section', '.cof-section', '.icon-gallery-main', '.icon-gallery-header',
+					'.icon-gallery-demo', '.icon-gallery-group', '.icon-gallery-grid'
+				];
+				var fixedUi = '.meet-yo, .topbar .actions-pill';
+				var containsFixedUi = function (element) {
+					var found = element.querySelectorAll(fixedUi);
+					for (var i = 0; i < found.length; i += 1) {
+						if (getComputedStyle(found[i]).position === 'fixed') return true;
+					}
+					return false;
+				};
+				var prepareRows = function () {
+					if (reduce) return 0;
+					var elements = new Set();
+					revealContainers.forEach(function (selector) {
+						document.querySelectorAll(selector).forEach(function (container) {
+					Array.prototype.forEach.call(container.children, function (element) {
+						if (/^(SCRIPT|STYLE|TEMPLATE)$/.test(element.tagName)) return;
+						/* Demo blocks own their scroll-triggered fade; the row reveal
+						   would force them visible with !important. */
+						if ((element.classList.contains('rsb-fade') || element.classList.contains('cof-fade')) && !element.classList.contains('is-revealed')) return;
+								var style = getComputedStyle(element);
+								if (style.display === 'none' || style.visibility === 'hidden' || style.position === 'absolute' || style.position === 'fixed') return;
+								/* A reveal transform turns its element into the containing block
+								   for fixed descendants, floating the homepage companion and the
+								   compact bottom nav mid-screen until is-revealed snaps them back.
+								   Skip ancestors of fixed UI; their children still reveal. Keep
+								   fixedUi in sync with fixed-position elements inside these
+								   containers. */
+								if (containsFixedUi(element)) return;
+								var rect = element.getBoundingClientRect();
+								if (rect.width && rect.height) elements.add(element);
+							});
+						});
+					});
+					var ordered = Array.from(elements).map(function (element) {
+						return { element: element, top: element.getBoundingClientRect().top + window.scrollY };
+					}).sort(function (a, b) { return a.top - b.top; });
+					var rows = [];
+					ordered.forEach(function (entry) {
+						var row = rows[rows.length - 1];
+						if (!row || entry.top - row.top > 12) rows.push(row = { top: entry.top, elements: [] });
+						row.elements.push(entry.element);
+					});
+					rows.forEach(function (row, index) {
+						row.elements.forEach(function (element) {
+							element.classList.add('page-reveal-row');
+							element.style.setProperty('--page-reveal-delay', Math.min(index * 42, 1260) + 'ms');
+						});
+					});
+					return Math.min(Math.max(rows.length - 1, 0) * 42, 1260) + 420;
+				};
+				var ready = function () {
+					if (fired) return;
+					fired = true;
+					var revealDuration = prepareRows();
+					/* Phase 2: fade the white splash, then reveal horizontal rows from top to bottom. */
+					de.classList.add('is-ready', 'is-revealing');
+					de.classList.remove('is-loading');
+					setTimeout(function () {
+						de.classList.remove('is-revealing');
+						de.classList.add('is-revealed');
+						window.dispatchEvent(new CustomEvent('page:ready'));
+					}, reduce ? 0 : revealDuration);
+				};
+				var fonts = document.fonts ? document.fonts.ready.catch(function () {}) : Promise.resolve();
+				var fontDeadline = Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1500); })]);
+				// Start the minimum after a paint opportunity, including reduced motion.
+				var minimumVisible = new Promise(function (resolve) {
+					requestAnimationFrame(function () {
+						requestAnimationFrame(function () { setTimeout(resolve, 777); });
+					});
+				});
+				Promise.all([fontDeadline, minimumVisible]).then(ready);
+			})();
+		</script>
 	</body>
 </html>

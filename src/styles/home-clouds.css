@@ -1,0 +1,78 @@
+/* Soft cloud contours, light foreground mist and a still veil behind the prose. */
+.home-ref .home-clouds {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  background: #bbd4ef;
+  --cloud-texture: url('/backgrounds/cloud-sky-v1.webp');
+  --cloud-photo-opacity: .74;
+  --cloud-grade: saturate(.85);
+  --cloud-white: rgb(255 255 255 / .88);
+  --cloud-veil: rgb(248 251 255 / .42);
+}
+.home-ref .home-clouds span { position: absolute; inset: -24%; background-repeat: no-repeat; animation: sky-flow 32s linear infinite; }
+.home-ref .home-clouds span:nth-child(-n+2) {
+  background: var(--cloud-texture) center / cover no-repeat;
+  opacity: var(--cloud-photo-opacity); filter: var(--cloud-grade);
+}
+.home-ref .home-clouds span:nth-child(2) { animation-delay: -16s; }
+.home-ref .home-clouds span:nth-child(3) {
+  background: var(--cloud-texture) 62% 74% / 135% auto no-repeat;
+  filter: var(--cloud-grade); opacity: .28;
+  mask-image: linear-gradient(transparent 10%, #000 48%, #000 68%, transparent 95%);
+  animation-name: cloud-bank-flow; animation-duration: 42s; animation-delay: -21s;
+}
+.home-ref .home-clouds span:nth-child(4) {
+  background:
+    radial-gradient(ellipse 28% 17% at 10% 75%, var(--cloud-white) 16%, transparent 76%),
+    radial-gradient(ellipse 34% 22% at 30% 90%, var(--cloud-white) 20%, transparent 78%),
+    radial-gradient(ellipse 34% 18% at 75% 88%, var(--cloud-white) 18%, transparent 78%),
+    radial-gradient(ellipse 23% 16% at 96% 60%, var(--cloud-white) 12%, transparent 78%);
+  filter: none; opacity: .5;
+  animation-name: cloud-mist-flow; animation-duration: 26s; animation-delay: -9s;
+}
+.home-ref .home-clouds::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 75% 90% at 60% 48%, var(--cloud-veil) 25%, transparent 100%),
+    linear-gradient(180deg, rgb(248 251 255 / .06), rgb(248 251 255 / .16));
+}
+/* Half-cycle stagger keeps one photo visible while its partner resets offscreen.
+   Every layer travels with the wind; none stops or reverses at the loop edge. */
+@keyframes sky-flow {
+  0% { transform: translate3d(18%, 2%, 0) scale(1.08); opacity: 0; }
+  20%, 80% { opacity: var(--cloud-photo-opacity); }
+  100% { transform: translate3d(-18%, -2%, 0) scale(1.08); opacity: 0; }
+}
+@keyframes cloud-bank-flow {
+  0% { transform: translate3d(20%, 3%, 0); opacity: 0; }
+  25%, 75% { opacity: .34; }
+  100% { transform: translate3d(-20%, -3%, 0); opacity: 0; }
+}
+@keyframes cloud-mist-flow {
+  0% { transform: translate3d(18%, 2%, 0); opacity: 0; }
+  25%, 75% { opacity: .48; }
+  100% { transform: translate3d(-18%, -2%, 0); opacity: 0; }
+}
+html[data-theme=dark] .home-ref .home-clouds {
+  background: #111b2b; --cloud-photo-opacity: .95;
+  --cloud-texture: url('/backgrounds/cloud-dusk-v1.webp');
+  --cloud-grade: brightness(.85) saturate(.78);
+  --cloud-white: rgb(21 31 47 / .46); --cloud-veil: rgb(11 19 32 / .28);
+}
+html[data-theme=dark] .home-ref .home-clouds::after {
+  background: radial-gradient(ellipse 75% 90% at 60% 48%, var(--cloud-veil) 25%, transparent 100%),
+    linear-gradient(180deg, rgb(11 19 32 / .1), rgb(11 19 32 / .22));
+}
+@media (max-width: 720px) {
+  .home-ref .home-clouds { --cloud-grade: saturate(.85); --cloud-veil: rgb(248 251 255 / .44); }
+  .home-ref .home-clouds span:nth-child(-n+2) { background-position: 42% center; }
+  .home-ref .home-clouds span:nth-child(3) { background-size: auto 120%; background-position: 65% center; opacity: .2; }
+  html[data-theme=dark] .home-ref .home-clouds { --cloud-grade: brightness(.8) saturate(.78); --cloud-veil: rgb(11 19 32 / .38); }
+}
+html[data-clouds-paused=true] .home-ref .home-clouds span { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .home-ref .home-clouds span { animation: none; transform: none; }
+  .home-ref .home-clouds span:nth-child(2) { opacity: 0; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .home-ref .home-clouds { display: none; }
+}
+@media print, (forced-colors: active) { .home-ref .home-clouds { display: none; } }

@@ -1,0 +1,52 @@
+---
+import UiIcon from './UiIcon.astro';
+/*
+ * Shared "Links" pill row for the paper demo pages (RSB / CoF).
+ * Variant picks the page's class family (`rsb-*` / `cof-*`); markup matches
+ * what the page CSS already styles, including the wider Hugging Face pill.
+ */
+interface Item {
+	href: string;
+	icon: string;
+	label: string;
+	ariaLabel: string;
+	title: string;
+	wide?: boolean;
+	fullText?: boolean;
+}
+
+interface Props {
+	variant: 'rsb' | 'cof';
+	items: Item[];
+	navClass?: string;
+	ariaLabel?: string;
+	id?: string;
+	floating?: boolean;
+	fullTextOnly?: boolean;
+}
+
+const { variant, items, navClass, id, floating = false, fullTextOnly = false, ariaLabel = 'Paper resources' } = Astro.props;
+const visibleItems = fullTextOnly ? items.filter(item => item.fullText) : items;
+const link = floating ? 'demo-resource-link' : `${variant}-nav-link`;
+const icon = floating ? 'demo-resource-icon' : `${variant}-nav-icon`;
+const label = floating ? 'demo-resource-label' : `${variant}-nav-label`;
+---
+
+<nav id={id} class:list={[floating ? 'demo-resource-links' : `${variant}-nav`, navClass]} aria-label={ariaLabel} data-demo-resources={!floating || undefined} tabindex={floating ? undefined : -1}>
+	{
+		visibleItems.map((item) => (
+			<a
+				class:list={[link, { [`${link}-wide`]: item.wide }]}
+				href={item.href}
+				target="_blank"
+				rel="noreferrer"
+				aria-label={item.ariaLabel}
+				title={item.title}
+				data-full-text={item.fullText || undefined}
+			>
+				<UiIcon id={item.icon} class={`paper-resource-icon ${icon}`} />
+				<span class={label}>{item.label}</span>
+			</a>
+		))
+	}
+</nav>
