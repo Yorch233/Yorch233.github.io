@@ -6,7 +6,7 @@ export const YO_STATES = {
 	coding: 6000, teaching: 7000, speaking: 3000, embarrassed: 3500,
 	daydreaming: 7000, appearing: 750, disappearing: 650
 };
-export const YO_GROUPS = [
+const YO_GROUPS = [
 	{ id: 'gentle', weight: 60, cooldown: 0, chains: [[50, []], [30, ['daydreaming']], [20, ['thinking']]] },
 	{ id: 'work', weight: 25, cooldown: 90000, chains: [[50, ['studying', 'thinking', 'writing-paper']], [50, ['studying', 'thinking', 'coding']]] },
 	{ id: 'emotion', weight: 10, cooldown: 0, chains: [[70, ['boring', 'daydreaming']], [30, ['happy']]] },
@@ -14,7 +14,7 @@ export const YO_GROUPS = [
 ];
 const cooldown = { boring: 120000, 'eat-burger': 360000, 'drink-coffee': 180000, happy: 5000, embarrassed: 20000 };
 const aliases = { spacey: 'daydreaming', sleepy: 'waiting', surprised: 'happy', listening: 'waiting' };
-export const normalizeYoMood = mood => aliases[mood] || mood;
+const normalizeYoMood = mood => aliases[mood] || mood;
 export const initialYoState = (now = 0) => ({
 	lastActivity: now, reaction: null, until: 0, priority: 0,
 	chain: [], group: null, lastGroup: null, cooldowns: {}, starts: [],

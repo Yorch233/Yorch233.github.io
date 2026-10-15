@@ -1,9 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { yoLogoSvg } from '../src/lib/yo-logo.js';
 
-await writeFile(new URL('../public/logo/yo.svg', import.meta.url), yoLogoSvg());
 // Self-contained native SVG surface shared with the animated character.
-await writeFile(new URL('../public/logo/yo-fluffy.svg', import.meta.url), yoLogoSvg('fluffy'));
+await writeFile(new URL('../public/logo/yo-fluffy.svg', import.meta.url), yoLogoSvg());
 
 // Embed the transparent PNG unchanged: no tile, background or corner mask.
 // Keeping the PNG inline makes the favicon self-contained in browser tabs.

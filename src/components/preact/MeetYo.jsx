@@ -44,7 +44,6 @@ function TopicButton({ topic, compact = false }) {
 }
 
 export default function MeetYo() {
-	const form = 'fluffy';
 	const [topic, setTopic] = useState(null);
 	const [pointerHint, setPointerHint] = useState(null);
 	const [focusHint, setFocusHint] = useState(null);
@@ -292,7 +291,7 @@ export default function MeetYo() {
 			onFocusIn={() => setCompanionFocused(true)} onFocusOut={event => { if (!event.currentTarget.contains(event.relatedTarget)) setCompanionFocused(false); }}>
 			<div class="meet-bubble" id="home-yo-dialogue" aria-live="off" aria-hidden={!dialogueActive}><YoDialogue text={line} active={dialogueActive} /><button type="button" class="yo-dialogue-close" onClick={tuck} aria-label="Close Yo’s explanation">×</button></div>
 			<div class="meet-avatar" data-yo-say="That's me, Yo! Give this little cloud a gentle pat.">
-				<YoCloud key={form} form={form} peek={peeking} label={peeking ? "Yo, Qing's Bot. Hi! Click to say hello." : "Yo, Qing Yao's mascot. Pet the little cloud."} mood={peeking ? 'idle' : mood} focus={Boolean(topic)} quiet={peeking || Boolean(topic) || modalOpen || waitingQuiet || compactScreen} onPet={pet} onVisibilityChange={onVisibilityChange} ariaExpanded={dialogueActive} ariaControls="home-yo-dialogue">
+				<YoCloud peek={peeking} label={peeking ? "Yo, Qing's Bot. Hi! Click to say hello." : "Yo, Qing Yao's mascot. Pet the little cloud."} mood={peeking ? 'idle' : mood} focus={Boolean(topic)} quiet={peeking || Boolean(topic) || modalOpen || waitingQuiet || compactScreen} onPet={pet} onVisibilityChange={onVisibilityChange} ariaExpanded={dialogueActive} ariaControls="home-yo-dialogue">
 					{peeking && <span class="yo-peek-hi meet-yo-hi" aria-hidden="true">Hi</span>}
 				</YoCloud>
 			</div>

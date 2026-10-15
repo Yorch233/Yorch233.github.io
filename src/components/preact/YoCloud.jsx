@@ -1,8 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef } from 'preact/hooks';
-import { REF_FACE, BOW, FLUFFY_BOW, YO_BOX, DOT_EYE, YO_CLOUD as shape } from '../../lib/yo-fluff.js';
+import { REF_FACE, BOW, FLUFFY_BOW, YO_BOX, YO_CLOUD as shape } from '../../lib/yo-fluff.js';
 import '../../styles/yo-cloud.css';
-import { blueMaterialDefs } from '../../lib/yo-material.js';
-import { bluePuffMotion } from '../../lib/yo-flow.js';
 import { yoPose, YO_PROPS } from '../../lib/yo-pose.js';
 import YoProps from './YoProps.jsx';
 import { fluffySurface } from '../../lib/yo-fluffy-svg.js';
@@ -17,7 +15,6 @@ const ease = (x) => { const value = Math.max(0, Math.min(1, x)); return value * 
    body group; continuous gaze lives in refs instead of Preact state.
    Paint IDs remain unique alongside the page's other mascot artwork. */
 export default function YoCloud({
-	form = 'fluffy',
 	label = 'Pet Yo, the little cloud',
 	mood = 'idle',
 	gaze = null,
@@ -32,9 +29,8 @@ export default function YoCloud({
 	ariaControls,
 	ariaDescribedBy
 }) {
-	const fluffy = form === 'fluffy';
-	const eyeCenters = fluffy ? [82, 118] : [REF_FACE.left, REF_FACE.right];
-	const lensRadius = fluffy ? 16 : 17;
+	const eyeCenters = [82, 118];
+	const lensRadius = 16;
 	const id = 'yo-' + useId().replace(/:/g, '');
 	const bodyArtwork = useMemo(() => fluffySurface(id), [id]);
 	const paint = (name) => 'url(#' + id + '-' + name + ')';
@@ -46,7 +42,6 @@ export default function YoCloud({
 	const shadow = useRef(null);
 	const paw = useRef(null);
 	const leftPaw = useRef(null);
-	const puffs = useRef([]);
 	const heart = useRef(null);
 	const props = useRef({});
 	const mouth = useRef(null);
@@ -70,7 +65,6 @@ export default function YoCloud({
 		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 		const startedAt = performance.now();
 		let motionTime = 0;
-		let freedom = 0;
 		let nextBlink = startedAt + 1200;
 		let blinkAt = -10000;
 		let blinkCount = 0;
@@ -142,16 +136,6 @@ export default function YoCloud({
 			// Presence scales the whole cloud and all accessories together.
 			if (['appearing','disappearing','hidden'].includes(current.mood)) body.current?.setAttribute('transform', `translate(100 130) scale(${pose.scale}) translate(-100 -130)`);
 			body.current?.setAttribute('opacity', String(pose.opacity));
-			// Only the little right tail drifts away; the body keeps flowing.
-			// Keep the face anchored; attention eases the tail back into place.
-			const flowTarget = !still && ['idle', 'spacey'].includes(current.mood) ? 1 : 0;
-			freedom += (flowTarget - freedom) * (still ? 1 : 1 - Math.exp(-elapsed / 450));
-			shape.lobes.forEach(([cx, cy], i) => {
-				const room = current.rect?.width < 160 ? .45 : 1;
-				const motion = bluePuffMotion(t, i, still ? 0 : (.4 + .6 * freedom) * calm, freedom * room);
-				const { x, y, scale: swell, stretch } = motion;
-				puffs.current[i]?.setAttribute('transform', 'translate(' + (cx + x) + ' ' + (cy + y) + ') scale(' + (swell + stretch) + ' ' + (swell - stretch) + ') translate(' + (-cx) + ' ' + (-cy) + ')');
-			});
 			face.current?.setAttribute('transform', 'translate(' + (current.x * .4) + ' ' + (current.faceDy + current.y * .3) + ')');
 			pupils.current.forEach((pupil) => pupil?.setAttribute('transform', 'translate(' + current.x + ' ' + current.y + ')'));
 			if (!still && !CLOSED.has(current.mood) && time >= nextBlink) {
@@ -273,21 +257,18 @@ export default function YoCloud({
 		live.current.petAt = performance.now();
 		onPet?.();
 	};
-	return <button type="button" class={'yo-cloud yo-cloud--' + form + ' yo-cloud-mood-' + mood + ' ' + className} data-form={form} data-mood={mood} data-peek={peek ? 'true' : 'false'} data-quiet={quiet ? 'true' : 'false'}
+	return <button type="button" class={'yo-cloud yo-cloud--fluffy yo-cloud-mood-' + mood + ' ' + className} data-form="fluffy" data-mood={mood} data-peek={peek ? 'true' : 'false'} data-quiet={quiet ? 'true' : 'false'}
 		inert={['hidden','disappearing'].includes(mood)} aria-hidden={mood === 'hidden' ? 'true' : undefined} aria-label={label} aria-keyshortcuts="Shift+F10 ContextMenu" aria-expanded={ariaExpanded} aria-controls={ariaControls} aria-describedby={ariaDescribedBy} onClick={pet}>
 		<svg ref={svg} class="yo-cloud-stage" viewBox={YO_BOX.viewBox} aria-hidden="true" focusable="false">
 			<defs>
 				<linearGradient id={id + '-prop-blue'} x2="0" y2="1"><stop stop-color="#b7d8ff" /><stop offset="1" stop-color="#6d9ddc" /></linearGradient>
 				<linearGradient id={id + '-prop-silver'} x2="0" y2="1"><stop stop-color="#f3f8ff" /><stop offset="1" stop-color="#b6cce6" /></linearGradient>
-				{!fluffy && <g dangerouslySetInnerHTML={{ __html: blueMaterialDefs(id) }} />}
-				{fluffy && <>
-					<radialGradient id={id + '-fluff'} cx="35%" cy="24%" r="80%">
-						<stop offset="0" stop-color="#fff" /><stop offset=".6" stop-color="#f7f7ff" /><stop offset="1" stop-color="#c1caf7" />
-					</radialGradient>
-					<radialGradient id={id + '-blush'}>
-						<stop offset="0" stop-color="#ffabbc" stop-opacity=".65" /><stop offset="1" stop-color="#ffabbc" stop-opacity="0" />
-					</radialGradient>
-				</>}
+				<radialGradient id={id + '-fluff'} cx="35%" cy="24%" r="80%">
+					<stop offset="0" stop-color="#fff" /><stop offset=".6" stop-color="#f7f7ff" /><stop offset="1" stop-color="#c1caf7" />
+				</radialGradient>
+				<radialGradient id={id + '-blush'}>
+					<stop offset="0" stop-color="#ffabbc" stop-opacity=".65" /><stop offset="1" stop-color="#ffabbc" stop-opacity="0" />
+				</radialGradient>
 				<radialGradient id={id + '-eye'} cx="30%" cy="24%" r="75%">
 					<stop offset="0" stop-color="#303239" /><stop offset="1" stop-color="#1c1e24" />
 				</radialGradient>
@@ -295,21 +276,14 @@ export default function YoCloud({
 					<stop offset="0" stop-color="#5275a7" /><stop offset="1" stop-color="#5275a7" stop-opacity="0" />
 				</radialGradient>
 				<linearGradient id={id + '-bow'} x2="0" y2="1">
-					<stop offset="0" stop-color={fluffy ? FLUFFY_BOW.colors[0] : "#44464a"} /><stop offset=".4" stop-color={fluffy ? FLUFFY_BOW.colors[1] : "#292b2e"} /><stop offset="1" stop-color={fluffy ? FLUFFY_BOW.colors[2] : "#18191b"} />
+					<stop offset="0" stop-color={FLUFFY_BOW.colors[0]} /><stop offset=".4" stop-color={FLUFFY_BOW.colors[1]} /><stop offset="1" stop-color={FLUFFY_BOW.colors[2]} />
 				</linearGradient>
 			</defs>
 			<ellipse ref={shadow} cx="100" cy="181" rx={shape.shadowRx} ry="9" fill={paint('shadow')} opacity=".24" />
 			<g transform={peek ? 'translate(80 0) rotate(-14 100 130)' : undefined}>
 			<g class="yo-cloud-body" ref={body} transform="translate(100 130) rotate(0) scale(1 1) translate(-100 -130)">
-				<g filter={fluffy ? undefined : paint('goo')} fill={paint(fluffy ? 'fluff' : 'body')}>
-					{/* Hands grow within the same cloud surface; the body covers
-					    their roots, leaving just a small, soft gesture at the edge. */}
-					{fluffy ? <g class="yo-cloud-fluff" dangerouslySetInnerHTML={{ __html: bodyArtwork }} /> : <>
-					<circle cx={shape.core[0]} cy={shape.core[1]} r={shape.core[2]} />
-					{shape.lobes.map(([cx, cy, r], i) => <g class="yo-cloud-puff" key={i} ref={(element) => { puffs.current[i] = element; }}>
-						<circle cx={cx} cy={cy} r={r} fill={paint('dome')} />
-					</g>)}
-					</>}
+				<g fill={paint('fluff')}>
+					<g class="yo-cloud-fluff" dangerouslySetInnerHTML={{ __html: bodyArtwork }} />
 				</g>
 				<g class="yo-cloud-face" ref={face} transform={'translate(0 ' + shape.faceDy + ')'}>
 					<g ref={blush} opacity="0">{[eyeCenters[0] - 10, eyeCenters[1] + 10].map((cx) => <ellipse key={cx} cx={cx} cy="133" rx="12" ry="8" fill={paint('blush')} />)}</g>
@@ -320,7 +294,7 @@ export default function YoCloud({
 						{eyeStyle === 'arcs' ? <path d={eyeCenters.map((cx) => `M${cx - 8} 126 Q${cx} 115 ${cx + 8} 126`).join(' ')} fill="none" stroke={INK} stroke-width="3" stroke-linecap="round" />
 							: eyeStyle === 'lids' ? <path d={eyeCenters.map((cx) => `M${cx - 8} 125 Q${cx} 131 ${cx + 8} 125`).join(' ')} fill="none" stroke={INK} stroke-width="3" stroke-linecap="round" />
 							: eyeCenters.map((cx, i) => <g key={cx} data-yo-eye="dots" ref={(element) => { pupils.current[i] = element; }}>
-								<ellipse cx={cx} cy={REF_FACE.cy} rx={fluffy ? 4.5 : DOT_EYE.rx} ry={mood === 'boring' ? 3.5 : fluffy ? 6.5 : DOT_EYE.ry} fill={paint('eye')} />
+								<ellipse cx={cx} cy={REF_FACE.cy} rx="4.5" ry={mood === 'boring' ? 3.5 : 6.5} fill={paint('eye')} />
 							</g>)}
 					</g>
 					<ellipse ref={mouth} cx="100" cy="144" rx="2.6" ry="2" fill={INK} opacity="0" />
@@ -328,10 +302,10 @@ export default function YoCloud({
 				{shape.hands.map(([cx, cy], i) => <g class="yo-cloud-paw" key={i} opacity={initialHands.current} ref={i === 1 ? paw : leftPaw} fill={paint('fluff')}>
 					<ellipse cx={cx} cy={cy} rx={i ? 8 : 7} ry={i ? 10 : 8} />
 				</g>)}
-				<g class="yo-cloud-bow" transform={fluffy ? FLUFFY_BOW.transform : 'translate(0 ' + shape.bowDy + ')'} fill={paint('bow')}>
+				<g class="yo-cloud-bow" transform={FLUFFY_BOW.transform} fill={paint('bow')}>
 					<path d={BOW.left} /><path d={BOW.right} />
 					<rect x={BOW.knot.x} y={BOW.knot.y} width={BOW.knot.w} height={BOW.knot.h} rx="4" />
-					{fluffy && <g fill="none" stroke="#c9dfff" stroke-width="1.2" stroke-linecap="round" opacity=".65"><path d={BOW.foldL} /><path d={BOW.foldR} /><path d={BOW.knotHl} /></g>}
+					<g fill="none" stroke="#c9dfff" stroke-width="1.2" stroke-linecap="round" opacity=".65"><path d={BOW.foldL} /><path d={BOW.foldR} /><path d={BOW.knotHl} /></g>
 				</g>
 				{/* Foreground props include their gripping hands and occlude the wardrobe. */}
 				<YoProps id={id} paint={paint} register={(name, element) => { props.current[name] = element; }} />

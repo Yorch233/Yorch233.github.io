@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import sharp from 'sharp';
 import { yoLogoSvg } from '../src/lib/yo-logo.js';
 
-const artwork = yoLogoSvg('fluffy');
+const artwork = yoLogoSvg();
 assert(!/<image\b|data:image|fluffy-body\.webp/.test(artwork), 'Yo must be entirely SVG.');
 const reference = process.argv[2];
 if (!reference) throw new Error('Usage: node scripts/verify-yo-artwork.mjs /path/to/reference.png');

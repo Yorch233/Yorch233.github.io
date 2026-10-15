@@ -4,7 +4,6 @@
 import { YO_BOX } from '../lib/yo-fluff.js';
 import { yoLogoArtwork } from '../lib/yo-logo.js';
 interface Props {
-	form?: 'blue' | 'fluffy';
 	/** Any CSS length for the rendered width; defaults to 100% of container. */
 	size?: string;
 	/** idle = Dots eyes; happy = smiling arcs. */
@@ -19,7 +18,6 @@ interface Props {
 }
 
 const {
-	form = 'fluffy',
 	size,
 	mood = 'idle',
 	static: isStatic = false,
@@ -41,8 +39,8 @@ const uid = 'yo-' + Math.random().toString(36).slice(2, 6);
 	aria-label={label}
 	aria-hidden={label ? undefined : 'true'}
 	focusable="false"
-	data-yo-brand-form={form}
-	set:html={yoLogoArtwork(uid, mood, form)}
+	data-yo-brand-form="fluffy"
+	set:html={yoLogoArtwork(uid, mood)}
 >
 </svg>
 

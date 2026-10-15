@@ -228,18 +228,13 @@ year precision when an award has no known month.
 
 ## Yo behavior
 
-Both forms use one SVG animation loop, with the same black bean eyes and
-shared body motion and round black glasses fitted to each form's eye centers.
-Blue keeps its bow; its saturated cartoon-blue material uses broad dome gradients
-and soft diffuse silhouette lighting for toy-like volume. In idle, the body
-flows gently while only its little right tail briefly drifts away, then melts
-back in. Keep the main cloud joined and the face stable. Attention gathers the
-tail; reading and reduced motion restore the resting outline. Keep the tail
-motion bounded on narrow screens. The live
-cloud and static branding share `yo-material.js`, keeping their shading equal; Fluffy uses the existing
-white body bitmap with live eyes. Breathing, drift, irregular blinking and
-small curious glances create life. Hands emerge only for gestures, then tuck
-away. Gaze eases toward a fine pointer; touch scrolling does not steer it.
+Yo uses Fluffy with round black glasses, black bean eyes and a small blue bow.
+The live character and static branding share the native SVG surface in
+`src/lib/yo-fluffy-svg.js`; geometry and bow colors come from `src/lib/yo-fluff.js`.
+One animation loop controls breathing, drift, irregular blinking and small
+curious glances. Hands emerge only for gestures, then tuck away. Gaze eases
+toward a fine pointer; touch scrolling does not steer it. Reading, reduced
+motion, hidden tabs and offscreen views stop continuous motion.
 
 The shared controller uses the 18-state vocabulary defined in `src/lib/yo-state.js`:
 idle, thinking, waiting, sleeping, studying, boring,

@@ -68,13 +68,6 @@ export const seenWelcome = (page: Page) => page.addInitScript(() => {
 	try { localStorage.setItem('yo-welcome.v1', 'seen'); } catch { /* localStorage unavailable */ }
 });
 
-export const viewportLoop = async (page: Page, sizes: Array<[number, number]>, run: (width: number, height: number) => Promise<void>) => {
-	for (const [width, height] of sizes) {
-		await page.setViewportSize({ width, height });
-		await run(width, height);
-	}
-};
-
 /** Selection must change icon color and silhouette without changing labels. */
 export async function verifyControlIcons(page: Page, selector: string, attribute: string, limit = Infinity): Promise<void> {
 	await page.waitForTimeout(190);
@@ -124,13 +117,6 @@ export async function tabTo(page: Page, condition: string, limit = 60): Promise<
 		await page.keyboard.press('Tab');
 	}
 	return page.evaluate<boolean>(condition);
-}
-
-export async function hoverCenter(page: Page, selector: string): Promise<{ x: number; y: number }> {
-	await page.evaluate(`document.activeElement?.blur(); document.querySelector(${JSON.stringify(selector)}).scrollIntoView({ block: 'center', behavior: 'instant' }); true`);
-	const point = await page.evaluate<{ x: number; y: number }>(`(() => { const rect = document.querySelector(${JSON.stringify(selector)}).getClientRects()[0]; return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }; })()`);
-	await page.mouse.move(point.x, point.y);
-	return point;
 }
 
 declare global {
