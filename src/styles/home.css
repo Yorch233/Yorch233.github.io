@@ -478,6 +478,12 @@ html[data-theme=dark] .home-ref {
   backdrop-filter: var(--glass-refraction, saturate(1)) saturate(1.2);
   transform: scale(calc(1 + var(--glass-flow, 0) * .002), calc(1 - var(--glass-flow, 0) * .004));
 }
+@media (min-width: 961px) {
+  .home-ref .topbar .floating-capsule::before {
+    -webkit-backdrop-filter: blur(1px) saturate(1.2);
+    backdrop-filter: var(--glass-refraction, saturate(1)) blur(1px) saturate(1.2);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .home-ref .floating-capsule::before,
   .home-ref .floating-capsule::after { transform: none; }
@@ -497,7 +503,7 @@ html[data-theme=dark] .home-ref {
 
 /* One optical material across the identity, navigation and utility capsules. */
 .home-ref .topbar .floating-capsule {
-  --glass-fill: rgb(255 255 255 / .035);
+  --glass-fill: rgb(255 255 255 / .16);
   --glass-sheen: rgb(255 255 255 / .22);
   --glass-header-highlight: rgb(255 255 255 / .24);
   --glass-soft-shadow: inset 2px 3px 8px -4px rgb(255 255 255 / .5), inset -2px -3px 8px -5px rgb(255 255 255 / .2), 0 10px 26px -12px var(--glass-shadow);

@@ -19,7 +19,7 @@ if (chromium && CSS.supports('backdrop-filter', 'url(#lens)')) {
 	const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 	const compact = matchMedia('(max-width: 960px)');
 	const useLens = element => !compact.matches || element.matches('.home-ref .topbar .floating-capsule');
-	// Vaso settings: IOR 1.5, bezel 60% of the half-height, refraction .35,
+	// Vaso settings: IOR 1.5, bezel 80% of the radius on headers, 60% elsewhere, refraction .35,
 	// depth 1, no blur, dispersion disabled. Quartic convex surface + Snell's law.
 	const bend = t => {
 		const u = 1 - Math.min(1, Math.max(0, t));
@@ -60,10 +60,11 @@ if (chromium && CSS.supports('backdrop-filter', 'url(#lens)')) {
 		const height = Math.round(element.offsetHeight);
 		if (!width || !height) return;
 		const radius = Math.min(Math.min(width, height) / 2, parseFloat(getComputedStyle(element).borderTopLeftRadius) || Math.min(width, height) / 2);
-		const rim = radius * .6;
+		const header = element.matches('.home-ref .topbar .floating-capsule, .demo-floating-header .floating-capsule');
+		const rim = radius * (header ? .8 : .6);
 		lens.baseScale = 2 * rim * .35 * Number(element.dataset.glassDepth || 1);
 		lens.filter.setAttribute('data-rest-scale', String(lens.baseScale));
-		const key = `${width}:${height}:${radius}`;
+		const key = `${width}:${height}:${radius}:${rim}`;
 		if (lens.key === key) return;
 		lens.key = key;
 		let map = cache.get(key);

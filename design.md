@@ -172,7 +172,16 @@ near-white with a faint cool-blue tint (#f7faff) surface that separates white gl
 inset header divider and Home button. Shared styles live in `home-cards.css`:
 36px horizontal insets on desktop, 20px on phones and 16px on narrow phones.
 On phones the eyebrow and Home control share a row above the full-width title.
-Content entries use fine separators and 32px spacing. News uses the shared
+Content entries use fine separators and 32px spacing.
+Publications show the opening three lines of each full abstract by default.
+Each paper has an independent Show full abstract / Show less button with an
+expanded state and an associated text region. Use justified abstract text on
+desktop and natural left alignment at 720px and below. Keep every abstract in
+`src/data/publications.js`, with no shortened synopsis substituted for it.
+White Publications controls use stronger layered shadows, including abstract
+toggles, resource links, Home and Explore more; hover and keyboard focus deepen
+the shadow, while pressing reduces it. Compact phone utility icons stay flat.
+News uses the shared
 `Timeline` component: a visible heading, dates in a left column, blue nodes
 and a continuous vertical line, with the latest update emphasized. Phones
 place each date above its text beside the rail. Keep the supplied dates and
@@ -352,8 +361,8 @@ and runtime checks must pass. Keep screenshots out of the production bundle.
 
 ## Glass surfaces
 
-Homepage floating header capsules at every width use transparent glass with near-clear fill and no backdrop blur,
-rounded meniscus refraction, soft highlights and shadows.
+Desktop floating header capsules use a 16% translucent white fill in light mode,
+rounded meniscus refraction, 1px backdrop blur, soft highlights and shadows.
 All four header capsules share the same clear glass shell, moving soft highlights and
 size-aware refraction. CV has no separate solid backing inside the utility capsule.
 Pointer presses and focus on nested controls activate their containing capsule;
@@ -364,11 +373,15 @@ Do not stack uniform gray borders or duplicate outline layers. Preserve keyboard
 focus outlines. The shared rim also applies to demo capsules and the optical
 playground; dark mode reduces highlight intensity. Size-aware SVG
 lenses follow Vaso’s quartic convex surface and Snell refraction profile: IOR 1.5,
-bezel ratio .6, refraction factor .35, depth 1 and specular .5. Clear optical lenses apply displacement only, without a blur stage.
+bezel ratio .8 on header capsules and .6 elsewhere, refraction factor .35,
+depth 1 and specular .5. Header refraction extends across 80% of the corner
+radius to make its edge bending broader. The SVG lenses apply displacement
+only; desktop header surfaces add CSS `blur(1px)` on the backdrop layer,
+keeping labels and icons sharp.
 Strength scales with capsule height; ordinary capsule interaction changes depth by at most 20%.
 The desktop homepage header uses the original segmented glass selection,
 12px taller than the navigation shell and centered with a 6px overhang above
-and below. Both the shell and selected pill remain clear; the selected pill uses
+and below. The shell has 1px backdrop blur; the selected pill remains clear and uses
 depth 1.4, the shared optical rim and size-aware refraction. It extends
 8px beyond the active link on each side. Restore the original spring (tension
 300, friction 17), with travel-based stretch capped at 36px and a brief optical
@@ -401,7 +414,7 @@ A small companion floats at the bottom-right on desktop. Secondary reading cards
 retain their narrower column.
 
 Dark mode uses a light navy tint without an opaque backing. Chromium uses the SVG backdrop lens;
-other engines keep the homepage Header transparent with a static meniscus rim, while desktop demo capsules use translucent fill without blur. Browsers without backdrop filters and
+other engines use the same 1px desktop header blur with a static meniscus rim. Browsers without backdrop filters and
 reduced-transparency users receive opaque surfaces. Lens maps regenerate
 on settled size changes, use a bounded cache, and release observers when
 leaving the page. Pointer movement moves the rim highlight; hover, focus and press

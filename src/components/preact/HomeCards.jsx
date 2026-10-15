@@ -105,6 +105,20 @@ export function AwardsCard() {
 	return <ul class="news awards">{profile.awards.map((item, i) => <Award key={item.date + i} item={item} />)}</ul>;
 }
 
+function PublicationAbstract({ paper }) {
+	const [expanded, setExpanded] = useState(false);
+	const abstractId = useId();
+	return <div class="pub-abstract" data-expanded={expanded}>
+		<p id={abstractId} class="pub-summary" data-yo-say={paperHints[paper.slug]}>{paper.abstract}</p>
+		<button type="button" class="link-pill pub-abstract-toggle" aria-expanded={expanded} aria-controls={abstractId}
+			aria-label={(expanded ? 'Collapse abstract for ' : 'Show full abstract for ') + paper.slug}
+			data-yo-say={expanded ? 'You can tuck the abstract back into three lines.' : 'Open this to read the complete abstract.'}
+			onClick={() => setExpanded(!expanded)}>
+			{expanded ? 'Show less' : 'Show full abstract'} <Icon id={expanded ? 'arrow-up' : 'arrow-down'} />
+		</button>
+	</div>;
+}
+
 export function PapersCard() {
 	const [citation, setCitation] = useState(null);
 	return <>
@@ -117,7 +131,7 @@ export function PapersCard() {
 				</span>)}
 			</p>
 			<p class="venue" data-yo-say={paper.paper ? 'Here’s where the paper was published. The IEEE link below takes you to the article.' : 'You’ll find this preprint on arXiv. The link is right below.'}>{paper.venueFull}</p>
-			<p class="pub-summary" data-yo-say={paperHints[paper.slug]}>{paper.summary}</p>
+			<PublicationAbstract paper={paper} />
 			<div class="pub-links">
 				<a class="link-pill link-pill--primary" href={paper.demo} data-yo-say={paper.slug === 'RSB' ? 'Want to hear the difference? Let’s try the RSB Demo.' : 'Let’s explore the CoF Demo and its results.'}><Icon id={paper.demoIcon} />{paper.demoLabel}</a>
 				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="file" />IEEE</a>}

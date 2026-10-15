@@ -48,9 +48,9 @@
 	z-index: -1;
 	border-radius: inherit;
 	pointer-events: none;
-	background: radial-gradient(ellipse 42% 110% at var(--glass-x, 24%) 0%, rgb(255 255 255 / .24), transparent 75%), linear-gradient(170deg, rgb(255 255 255 / .22), transparent 24%, transparent 80%, rgb(255 255 255 / .045)), rgb(255 255 255 / .12);
-	-webkit-backdrop-filter: saturate(1.2);
-	backdrop-filter: var(--glass-refraction, saturate(1)) saturate(1.2);
+	background: radial-gradient(ellipse 42% 110% at var(--glass-x, 24%) 0%, rgb(255 255 255 / .24), transparent 75%), linear-gradient(170deg, rgb(255 255 255 / .22), transparent 24%, transparent 80%, rgb(255 255 255 / .045)), rgb(255 255 255 / .16);
+	-webkit-backdrop-filter: blur(1px) saturate(1.2);
+	backdrop-filter: var(--glass-refraction, saturate(1)) blur(1px) saturate(1.2);
 	transform: scale(calc(1 + var(--glass-flow, 0) * .002), calc(1 - var(--glass-flow, 0) * .004));
 }
 .glass-defs { position: absolute; width: 0; height: 0; pointer-events: none; }

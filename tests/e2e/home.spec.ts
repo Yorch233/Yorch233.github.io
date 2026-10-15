@@ -1,5 +1,6 @@
 import { check, expect, seenWelcome, test, trackRequests, waitForExpr } from './helpers';
 import { readFile } from 'node:fs/promises';
+import { publications } from '../../src/data/publications.js';
 
 const profile = JSON.parse(await readFile('src/data/profile.json', 'utf8'));
 
@@ -112,6 +113,40 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		}
 	});
 
+	test('publication abstracts show three lines and expand independently', async ({ page }) => {
+		await seenWelcome(page);
+		await page.goto('/#publications');
+		await page.locator('.pub-abstract-toggle').first().waitFor();
+		const cards = page.locator('.pub');
+		await expect(cards).toHaveCount(publications.length);
+		for (const width of [1280, 320]) {
+			await page.setViewportSize({ width, height: 800 });
+			for (const [index, paper] of publications.entries()) {
+				const card = cards.nth(index);
+				const summary = card.locator('.pub-summary');
+				const toggle = card.locator('.pub-abstract-toggle');
+				await expect(summary).toHaveText(paper.abstract);
+				await expect(toggle).toHaveAttribute('aria-controls', (await summary.getAttribute('id'))!);
+				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+				const collapsed = await summary.evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight), align: getComputedStyle(node).textAlign, fullHeight: node.scrollHeight }));
+				expect(Math.abs(collapsed.height - collapsed.line * 3)).toBeLessThan(1);
+				expect(collapsed.fullHeight).toBeGreaterThan(collapsed.height);
+				expect(collapsed.align).toBe(width > 720 ? 'justify' : 'start');
+				await toggle.press('Enter');
+				await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+				expect(await summary.evaluate(node => node.getBoundingClientRect().height)).toBeGreaterThan(collapsed.height);
+				for (let other = 0; other < publications.length; other++) {
+					if (other !== index) await expect(cards.nth(other).locator('.pub-abstract-toggle')).toHaveAttribute('aria-expanded', 'false');
+				}
+				await toggle.press('Space');
+				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+				await expect(toggle).toBeFocused();
+				expect(Math.abs(await summary.evaluate(node => node.getBoundingClientRect().height) - collapsed.height)).toBeLessThan(1);
+			}
+			await check(page, 'document.documentElement.scrollWidth <= innerWidth', `Publication abstracts overflow at ${width}px.`);
+		}
+	});
+
 	test('glass tiers, lenses and navigation geometry', async ({ page }) => {
 		test.setTimeout(240_000);
 		await seenWelcome(page);
@@ -184,7 +219,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				Math.abs(b.height - shell.height - 12) < 1 && Math.abs(shell.top - b.top - 6) < 1 && Math.abs(b.bottom - shell.bottom - 6) < 1 &&
 				getComputedStyle(pill).backgroundColor === 'rgba(0, 0, 0, 0)' && !getComputedStyle(glass).backdropFilter.includes('blur(') &&
 				glass.style.getPropertyValue('--glass-refraction').includes('url(#home-lens-') &&
-				!getComputedStyle(document.querySelector('.actions-pill'), '::before').backdropFilter.includes('blur(');
+				getComputedStyle(document.querySelector('.actions-pill'), '::before').backdropFilter.includes('blur(1px)');
 		})()`, 'Desktop glass selection lost its 12px overhang, lens or settled geometry.');
 		await page.evaluate('history.back(); true');
 		await waitForExpr(page, "document.querySelector('.toplink[aria-current]').getAttribute('href') === '#awards'", 'Back navigation lost the awards selection.');
