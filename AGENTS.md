@@ -2,6 +2,8 @@
 
 ## Git workflow
 
+- Write commit subjects and bodies in English. Use Conventional Commit prefixes
+  such as `feat:`, `fix:`, `docs:`, `refactor:`, `test:` and `chore:`.
 - `gitea` (`https://gitea-yorch233.iepose.cn/yorch233/Yorch233.github.io.git`) is
   the private development repository. Check the actual branch tracking configuration
   before pushing; development saves belong on `gitea`.
