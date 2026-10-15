@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import YoCloud from './YoCloud.jsx';
 import YoWelcome from './YoWelcome.jsx';
+import CvDialog from './CvDialog.jsx';
 import YoDialogue from './YoDialogue.jsx';
 import YoActions from './YoActions.jsx';
 import { useYoMachine } from './yoMachine.js';
@@ -49,6 +50,8 @@ export default function MeetYo() {
 	const [focusHint, setFocusHint] = useState(null);
 	const [note, setNote] = useState(null);
 	const [welcomeOpen, setWelcomeOpen] = useState(false);
+	const [cvOpen, setCvOpen] = useState(false);
+	const modalOpen = welcomeOpen || cvOpen;
 	const [companionHovered, setCompanionHovered] = useState(false);
 	const [companionFocused, setCompanionFocused] = useState(false);
 	const [dismissed, setDismissed] = useState(false);
@@ -57,7 +60,7 @@ export default function MeetYo() {
 	const hover = awake ? pointerHint ?? focusHint : null;
 	const peeking = !awake && !dismissed;
 	const companion = useRef(null);
-	const { mood, react, reset, stopSpeech, waitingQuiet, onVisibilityChange } = useYoMachine({ reading: Boolean(topic), hidden: welcomeOpen || dismissed || compactScreen, attentive: !compactScreen && (Boolean(hover) || companionHovered || companionFocused) });
+	const { mood, react, reset, stopSpeech, waitingQuiet, onVisibilityChange } = useYoMachine({ reading: Boolean(topic), hidden: modalOpen || dismissed || compactScreen, attentive: !compactScreen && (Boolean(hover) || companionHovered || companionFocused) });
 	const noteTimer = useRef(0);
 	const heading = useRef(null);
 	const focusNext = useRef(false);
@@ -87,10 +90,10 @@ export default function MeetYo() {
 		companion.current?.querySelector('.yo-cloud')?.focus({ preventScroll: true });
 	}, [clearFeedback]);
 	useEffect(() => {
-		const escape = event => { if (event.key === 'Escape' && awake && !welcomeOpen && !document.querySelector('dialog[open]')) tuck(); };
+		const escape = event => { if (event.key === 'Escape' && awake && !modalOpen && !document.querySelector('dialog[open]')) tuck(); };
 		document.addEventListener('keydown', escape);
 		return () => document.removeEventListener('keydown', escape);
-	}, [awake, welcomeOpen, tuck]);
+	}, [awake, modalOpen, tuck]);
 	const announce = useCallback((text, duration = 2400) => {
 		clearTimeout(noteTimer.current);
 		setNote(text);
@@ -139,7 +142,6 @@ export default function MeetYo() {
 			if (!link.matches('.brand') && !topicFor(id)) return;
 			event.preventDefault();
 			open(link.matches('.brand') ? null : id);
-			if (link.hasAttribute('data-cv-request')) announce('Qing’s CV is not online yet. Email him for a copy.', 6000);
 		};
 		adopt(false);
 		window.addEventListener('hashchange', onHistory);
@@ -152,7 +154,7 @@ export default function MeetYo() {
 			clearTimeout(noteTimer.current);
 			cancelAnimationFrame(focusFrame.current);
 		};
-	}, [open, announce]);
+	}, [open]);
 
 	useEffect(() => {
 		document.querySelectorAll('.toplink').forEach((link) => {
@@ -253,13 +255,13 @@ export default function MeetYo() {
 	const selected = topicFor(topic);
 	const Card = selected?.Card;
 	const line = note ?? hover ?? selected?.line ?? MOOD_LINES[mood] ?? GREETING;
-	const dialogueActive = awake && !compactScreen && !welcomeOpen && !dismissed && Boolean(note || hover || companionHovered || companionFocused);
+	const dialogueActive = awake && !compactScreen && !modalOpen && !dismissed && Boolean(note || hover || companionHovered || companionFocused);
 	useEffect(() => {
 		if (dialogueActive && !topic && !note && !MOOD_LINES[mood]) react('speaking', Math.min(3000, line.length * 24 + 680), 2);
 		if (!dialogueActive) stopSpeech();
 	}, [line, dialogueActive, topic, note, react, stopSpeech]);
 
-	return <section class={'meet' + (selected ? ' meet--chat' : '') + (topic === 'contact' ? ' meet--contact' : '')} data-welcoming={welcomeOpen ? 'true' : undefined} aria-label="Meet Qing Yao through Yo">
+	return <section class={'meet' + (selected ? ' meet--chat' : '') + (topic === 'contact' ? ' meet--contact' : '')} data-welcoming={modalOpen ? 'true' : undefined} aria-label="Meet Qing Yao through Yo">
 		<div class="meet-main">
 			{selected ? <>
 				<article class="meet-card" aria-labelledby="section-heading" key={topic} data-yo-say={selected.line}>
@@ -290,7 +292,7 @@ export default function MeetYo() {
 			onFocusIn={() => setCompanionFocused(true)} onFocusOut={event => { if (!event.currentTarget.contains(event.relatedTarget)) setCompanionFocused(false); }}>
 			<div class="meet-bubble" id="home-yo-dialogue" aria-live="off" aria-hidden={!dialogueActive}><YoDialogue text={line} active={dialogueActive} /><button type="button" class="yo-dialogue-close" onClick={tuck} aria-label="Close Yo’s explanation">×</button></div>
 			<div class="meet-avatar" data-yo-say="That's me, Yo! Give this little cloud a gentle pat.">
-				<YoCloud key={form} form={form} peek={peeking} label={peeking ? "Yo, Qing's Bot. Hi! Click to say hello." : "Yo, Qing Yao's mascot. Pet the little cloud."} mood={peeking ? 'idle' : mood} focus={Boolean(topic)} quiet={peeking || Boolean(topic) || welcomeOpen || waitingQuiet || compactScreen} onPet={pet} onVisibilityChange={onVisibilityChange} ariaExpanded={dialogueActive} ariaControls="home-yo-dialogue">
+				<YoCloud key={form} form={form} peek={peeking} label={peeking ? "Yo, Qing's Bot. Hi! Click to say hello." : "Yo, Qing Yao's mascot. Pet the little cloud."} mood={peeking ? 'idle' : mood} focus={Boolean(topic)} quiet={peeking || Boolean(topic) || modalOpen || waitingQuiet || compactScreen} onPet={pet} onVisibilityChange={onVisibilityChange} ariaExpanded={dialogueActive} ariaControls="home-yo-dialogue">
 					{peeking && <span class="yo-peek-hi meet-yo-hi" aria-hidden="true">Hi</span>}
 				</YoCloud>
 			</div>
@@ -298,5 +300,6 @@ export default function MeetYo() {
 		</div>
 		<span class="sr-only" role="status">{note}</span>
 		<YoWelcome onOpenChange={setWelcomeOpen} />
+		<CvDialog onOpenChange={setCvOpen} />
 	</section>;
 }

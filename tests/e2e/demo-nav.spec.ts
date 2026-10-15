@@ -70,7 +70,13 @@ test.describe('Demo floating navigation & ruler', () => {
 				await page.evaluate("[...document.querySelectorAll('.demo-section-list a')].at(-1).click(); true");
 				await waitForExpr(page, "(() => { const link = [...document.querySelectorAll('.demo-section-list a')].at(-1); return location.hash === link.hash && link.getAttribute('aria-current') === 'location' && document.activeElement === document.getElementById(link.hash.slice(1)); })()", `${route} section jump never landed on the last chapter.`);
 				await check(page, "document.querySelector('[data-section-nav]').dataset.open === 'false' && document.documentElement.scrollWidth <= innerWidth", `${route} section jump leaves an open list or overflows.`);
-				await check(page, "(() => { const target = document.activeElement.getBoundingClientRect(); const header = document.querySelector('.demo-floating-header').getBoundingClientRect(); return target.top >= header.bottom + 4; })()", `${route} section anchor is hidden under the floating capsules.`);
+				await waitForExpr(page, "(() => { const target = document.activeElement.getBoundingClientRect(); const header = document.querySelector('.demo-floating-header').getBoundingClientRect(); return target.top >= header.bottom + 4; })()", `${route} section anchor is hidden under the floating capsules.`);
+                if (width <= 720) {
+                    // Hydration can shorten the phone audio list while section
+                    // reveal transforms are running. Check the settled landing too.
+                    await page.waitForTimeout(850);
+                    await check(page, "(() => { const target = document.activeElement.getBoundingClientRect(); const header = document.querySelector('.demo-floating-header').getBoundingClientRect(); return target.top >= header.bottom + 4; })()", `${route} phone anchor drifted under the header after hydration.`);
+                }
 				if (width === 1280 && height === 640) {
 					const citation = publications.find(paper => paper.slug === route)!.bibtex;
 					await check(page, `document.querySelector('[data-bibtex]').textContent === ${JSON.stringify(citation)}`, `${route} citation differs from its publication metadata.`);

@@ -144,6 +144,24 @@ export const uiIcons = {
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 3h8v8M21 3l-9 9M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5\"/></g>",
     "filled": "<path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M13 3h8v8M21 3l-9 9\"/>"
   },
+  "terminal": {
+    "id": "terminal",
+    "label": "Terminal",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2.5\" /><path d=\"m7 9 3 3-3 3m6 0h4\"/></g>",
+    "filled": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2.5\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m7 9 3 3-3 3m6 0h4\"/>"
+  },
+  "quotes": {
+    "id": "quotes",
+    "label": "Citations",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 6h6v6c0 4-2 6-5 7v-3c1.5-.7 2-1.7 2-3H4Zm10 0h6v6c0 4-2 6-5 7v-3c1.5-.7 2-1.7 2-3h-3Z\"/></g>",
+    "filled": "<path fill=\"currentColor\" d=\"M4 6h6v6c0 4-2 6-5 7v-3c1.5-.7 2-1.7 2-3H4Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M14 6h6v6c0 4-2 6-5 7v-3c1.5-.7 2-1.7 2-3h-3Z\"/>"
+  },
   "code": {
     "id": "code",
     "label": "Code",
@@ -224,6 +242,24 @@ export const uiIcons = {
     "secondary": "#bfdfff",
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4v16M4 12h16\"/></g>",
     "filled": "<rect x=\"10.6\" y=\"3\" width=\"2.8\" height=\"18\" rx=\"1.4\" fill=\"currentColor\"/><rect x=\"3\" y=\"10.6\" width=\"18\" height=\"2.8\" rx=\"1.4\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/>"
+  },
+  "maximize": {
+    "id": "maximize",
+    "label": "Maximize",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 4h6v6M20 4l-6 6M4 14v6h6M4 20l6-6\"/></g>",
+    "filled": "<path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14 4h6v6M20 4l-6 6\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M4 14v6h6M4 20l6-6\"/>"
+  },
+  "minimize": {
+    "id": "minimize",
+    "label": "Minimize",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 4v6h6M14 10l6-6M4 14h6v6M10 14l-6 6\"/></g>",
+    "filled": "<path fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14 4v6h6M14 10l6-6\"/><path fill=\"none\" stroke=\"var(--ui-icon-secondary)\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-icon-tone=\"secondary\" d=\"M4 14h6v6M10 14l-6 6\"/>"
   },
   "minus": {
     "id": "minus",

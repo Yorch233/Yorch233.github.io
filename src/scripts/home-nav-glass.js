@@ -46,7 +46,6 @@ const sync = (immediate = false) => {
     stop(); pill.width = 0;
     const active = track.querySelector('.toplink[aria-current]');
     if (!active) return;
-    const height = capsule.offsetHeight - 12;
     /* The five links are uniform 50×50 round icon buttons; the selection is
        a 64×50 full-radius capsule centered on the active one. */
     const width = 64;

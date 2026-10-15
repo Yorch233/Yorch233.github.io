@@ -11,6 +11,7 @@ import '../styles/home-cards.css';
 import '../styles/home-contact.css';
 import '../styles/home-clouds.css';
 import '../styles/yo-welcome.css';
+import '../styles/cv-dialog.css';
 
 ---
 
@@ -36,7 +37,7 @@ import '../styles/yo-welcome.css';
 				</div>
 			</nav>
 			<div class="home-utilities" role="group" aria-label="CV and appearance">
-				<a class="cv-btn floating-capsule" href="#contact" data-cv-request title="Request a CV by email" data-yo-say="Qing's CV isn't online yet. You can request a copy by email."><UiIcon id="cv" />CV</a>
+				<button class="cv-btn floating-capsule" type="button" data-cv-open aria-label="CV" aria-haspopup="dialog" aria-controls="cv-dialog" title="View Qing’s CV" data-yo-say="Open Qing’s CV and check its download availability."><UiIcon id="cv" />CV</button>
 				<button class="theme-toggle floating-capsule" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode" data-yo-say="Light or dark? Pick the view that feels comfy.">
 					<UiIcon id="moon" class="theme-moon" />
 					<UiIcon id="sun" class="theme-sun" />

@@ -1,6 +1,7 @@
 {
   "avatar": "/profile/profile-refined.webp",
   "name": "Qing Yao",
+  "cv": null,
   "summary": "I research speech enhancement with diffusion models, turning noisy recordings into clear, natural sound.",
   "monogram": "QY",
   "role": "PhD Student in Speech & Audio Processing",

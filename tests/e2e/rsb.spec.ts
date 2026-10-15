@@ -188,9 +188,9 @@ test.describe('RSB demo', () => {
 		await page.evaluate("document.querySelector('.rsb-audio-section')?.scrollIntoView({ block: 'center' }); true");
 		await waitForRequest(requests, url => url.includes('AudioDemoIsland'), 'Preact Island did not hydrate after scrolling.');
 		await waitForRequest(requests, url => url.includes('waveform.worker'), 'Default waveform view did not load the waveform Worker.');
-		/* 640x400 also covers the effective viewport of 1280x800 at 200% zoom. */
+		/* Phone layouts have their own accordion/player coverage in mobile-audio.spec.ts. */
 		let rsbIconsChecked = false;
-		for (const [width, height] of [[1280, 800], [768, 1024], [390, 844], [320, 568], [667, 375], [640, 400]]) {
+		for (const [width, height] of [[1280, 800], [768, 1024], [2560, 1440]]) {
 			await page.setViewportSize({ width, height });
 			await page.evaluate("document.querySelector('.wave-compare .view-toggle-btn').click(); true");
 			await waitForExpr(page, "(() => { const canvas = document.querySelector('.wave-canvas'); return canvas && canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data.some((value, index) => index % 4 === 3 && value > 0); })()",

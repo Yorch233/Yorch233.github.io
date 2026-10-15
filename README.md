@@ -1,65 +1,107 @@
-# Yorch233.github.io
+# Qing Yao · Academic Website
 
-Qing Yao's personal academic website and interactive paper demos.
+Source code for [Qing Yao’s academic website](https://yorch233.github.io),
+featuring a research profile, publications, news, awards, contact information,
+and interactive speech enhancement demos.
 
-## Architecture
+## Pages and research projects
 
-- Astro static site generation
-- Vite-based build pipeline provided by Astro
-- Preact Islands for interactive audio demos
-- Web Worker waveform analysis
-- Pre-generated static spectrograms
-- Opus previews with original WAV downloads
+| Page | Content | Research code |
+| --- | --- | --- |
+| [Homepage](https://yorch233.github.io/) | Biography, research interests, publications and contact | — |
+| [RSB demo](https://yorch233.github.io/RSB/) | Regularized Schrödinger Bridge: paper overview and audio comparisons | [Yorch233/RSB](https://github.com/Yorch233/RSB) |
+| [CoF demo](https://yorch233.github.io/CoF/) | Corrective Forcing: interactive results, audio comparisons and model resources | [Yorch233/CoF](https://github.com/Yorch233/CoF) |
 
-All pages are emitted as real static routes. The RSB paper page is static HTML
-except for its audio section, which hydrates only when it enters the viewport.
+This repository contains the website and demo interfaces. Training and inference
+implementations are maintained in the linked research repositories. Paper links
+and citation exports are available on the website.
 
-## Development
+## Run locally
 
-Requirements:
-
-- Node.js 22 or newer
-- npm
-- FFmpeg with `libopus` when regenerating audio previews and spectrograms
+Use Node.js 22.12 or newer and npm. From the repository root:
 
 ```bash
-npm install
+npm ci
 npm run dev
-npm run check
-npm run lint
-npm run test:unit
-npm run test:e2e
+```
+
+Open the local URL printed by Astro. To check the production build:
+
+```bash
 npm run build
 npm run preview
 ```
 
-The Playwright suite builds the site and checks the production preview;
-use `npm run test:e2e:dev` to iterate against the dev server instead.
+The site uses Astro for static pages and Preact islands for interactive features.
+The production output is written to `dist/`.
 
-Regenerate Opus previews and static spectrograms after adding or replacing WAV
-files:
+## Update content
+
+| File or directory | Purpose |
+| --- | --- |
+| `src/data/profile.json` | Biography, interests, news, education, awards, contact and CV link |
+| `src/data/publications.js` | Publication metadata, resource links and citations |
+| `src/data/rsb.js` | RSB audio sample groups and methods |
+| `src/data/cof-audio.js` | CoF audio sample groups, methods and sampling budgets |
+| `src/data/cof-results.json` | CoF evaluation values, preserved at their supplied precision |
+| `src/data/demo-guide.js` | Demo section labels and destinations |
+| `src/pages/` | Homepage and paper demo routes |
+| `src/components/` | Shared page components and interactive islands |
+| `src/styles/` | Shared and page-specific styles |
+| `public/` | Portrait, figures, audio, icons and other static assets |
+| `tests/e2e/` | Browser interaction and responsive layout checks |
+
+The optional `cv` field in `profile.json` accepts a document URL. When it is
+`null`, the CV dialog displays an unavailable message and disables downloading.
+Visual and interaction conventions are documented in [design.md](design.md).
+
+## Audio and artwork
+
+Audio comparisons use Opus for playback and original WAV files for downloading.
+Waveform analysis runs in a Web Worker; spectrograms are pre-generated AVIF
+images. On phones, expandable sample rows share a floating player. Wider
+screens retain the comparison cards.
+
+After adding or replacing WAV files, regenerate the corresponding assets with
+FFmpeg, including its Opus and AVIF encoders:
 
 ```bash
-npm run audio:build
+npm run audio:build -- RSB
+npm run audio:build -- CoF
 ```
 
-## Audio loading policy
+The logo and native SVG icon registry are regenerated automatically before a
+production build. They can also be refreshed separately:
 
-- Audio elements use `preload="none"`.
-- When an audio card activates, it fetches only RSB, Measurement, and Ground
-  Truth for the current sample.
-- Other methods are requested only when selected.
-- Audio decoding begins only after the user requests a waveform.
-- Waveforms are analyzed in a Web Worker after that delayed decode.
-- Spectrograms are pre-generated static assets with no browser-side spectral
-  computation.
-- Listening uses `.opus`; the original `.wav` remains downloadable.
+```bash
+npm run logo:build
+npm run icons:build
+```
+
+Local design references, GUI screenshots and editor metadata are excluded from
+version control. Keep production assets in `public/` and source artwork in the
+shared source modules.
+
+## Validation
+
+```bash
+npm run check
+npm run lint
+npm run test:unit
+npx playwright install chromium
+npm run test:e2e
+```
+
+The browser suite builds the site and tests its production preview, including
+navigation, dialogs, responsive layouts, audio playback and visualizations.
+`npm run test:e2e:dev` runs against the development server for faster iteration.
 
 ## Deployment
 
-The site is statically built to `dist/` and deployed to GitHub Pages using the
-official Astro GitHub Action in `.github/workflows/deploy.yml`.
+[The deployment workflow](.github/workflows/deploy.yml) builds the site and
+publishes it to GitHub Pages when `main` is updated, or when manually triggered.
+The site URL is configured in `astro.config.mjs`.
 
 ## License
 
-Apache-2.0. See `LICENSE`.
+[Apache License 2.0](LICENSE).

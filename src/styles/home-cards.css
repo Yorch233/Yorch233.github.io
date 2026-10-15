@@ -43,3 +43,23 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
   .home-ref .meet-card-head { margin-inline: 16px; }
   .home-ref .meet-card .card-body { padding-inline: 16px; }
 }
+
+/* Phone resources emphasize the Demo and main paper, with quiet utility actions. */
+@media (max-width: 720px) {
+  .home-ref .meet-card-head h2 { font-size: 22px; line-height: 1.25; }
+  .home-ref .pub-links { gap: 4px; align-items: center; }
+  .home-ref .pub-links .link-pill { padding-inline: 8px; white-space: nowrap; }
+  body.home-ref .pub-links .compact-ghost {
+    flex: 0 0 44px; width: 44px; height: 44px; padding: 0; gap: 0;
+    border-color: transparent !important; box-shadow: none !important;
+    border-radius: 50%; color: var(--muted);
+  }
+  body.home-ref .pub-links .compact-ghost::before,
+  body.home-ref .pub-links .compact-ghost::after { display: none; }
+  body.home-ref .pub-links .compact-ghost:hover { background: var(--accent-soft) !important; color: var(--accent); }
+  .home-ref .compact-ghost .icon { width: 20px; height: 20px; }
+  .home-ref .compact-ghost .compact-action-label {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}

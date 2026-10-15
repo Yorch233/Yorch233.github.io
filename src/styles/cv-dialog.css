@@ -1,0 +1,27 @@
+/* CV uses the welcome dialog's surface, backdrop and entrance animation. */
+.home-ref .cv-dialog .cv-dialog-content { padding: 36px 36px 24px; }
+.home-ref .cv-dialog-art { display: grid; place-items: center; width: 96px; height: 96px; margin: 0 auto 24px; border-radius: 28px; background: var(--accent-soft); }
+.home-ref .cv-dialog-art .ui-icon { width: 56px; height: 56px; }
+.home-ref .cv-dialog h2 { margin-bottom: 12px; font-size: 36px; line-height: 1.2; }
+.home-ref #cv-dialog-description { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+.home-ref .cv-dialog-availability { margin: 8px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.home-ref .cv-dialog-actions { display: grid; gap: 8px; }
+.home-ref .cv-dialog .cv-dialog-download { width: 100%; min-height: 48px; padding: 12px 16px; justify-content: center; gap: 10px; font-size: 15px; text-decoration: none; }
+.home-ref .cv-dialog-download .ui-icon { width: 20px; height: 20px; color: inherit !important; }
+body.home-ref .cv-dialog .cv-dialog-download:disabled { --glass-tint: #ced9e8; --glass-opacity: 50%; --glass-lower-opacity: 35%; color: var(--muted); cursor: default; transform: none; box-shadow: none !important; }
+.home-ref .cv-dialog-close { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; color: var(--muted); background: transparent; font: 500 13px/1.5 var(--sans); cursor: pointer; }
+.home-ref .cv-dialog-close:hover { color: var(--ink); background: var(--accent-soft); }
+.home-ref .cv-dialog :is(button, a):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 720px) {
+  .home-ref .cv-dialog .cv-dialog-content { padding: 28px 24px 20px; }
+  .home-ref .cv-dialog h2 { font-size: 26px; }
+  .home-ref #cv-dialog-description { font-size: 15px; }
+  .home-ref .cv-dialog-art { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 24px; }
+  .home-ref .cv-dialog-art .ui-icon { width: 48px; height: 48px; }
+}
+@media (max-height: 480px) and (min-width: 540px) {
+  .home-ref .cv-dialog .cv-dialog-content { display: block; padding: 20px 28px 16px; }
+  .home-ref .cv-dialog-art { width: 64px; height: 64px; margin-bottom: 12px; border-radius: 20px; }
+  .home-ref .cv-dialog-art .ui-icon { width: 36px; height: 36px; }
+  .home-ref .cv-dialog-availability { margin-bottom: 12px; }
+}

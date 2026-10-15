@@ -146,7 +146,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			await waitForExpr(page, `getComputedStyle(document.querySelector('.meet-bubble')).visibility === 'visible' && document.querySelector('.meet-bubble').textContent.includes(${JSON.stringify(expected)})`, `Hover narration never appeared for ${selector}.`);
 		};
 		const hoverCases: Array<[string, Array<[string, string]>]> = [
-			['about', [['.profile-portrait', "That's Qing"], ['.profile-education', 'Jiangsu University'], ['.home-about .meta > span:last-child', 'advisor'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-orcid', 'ORCID'], ['.cv-btn', "isn't online"], ['.theme-toggle', 'comfy']]],
+			['about', [['.profile-portrait', "That's Qing"], ['.profile-education', 'Jiangsu University'], ['.home-about .meta > span:last-child', 'advisor'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-orcid', 'ORCID'], ['.cv-btn', 'download availability'], ['.theme-toggle', 'comfy']]],
 			['publications', [['.pub-title a', 'Select the title'], ['.pub-authors b', 'helped write'], ['.pub-summary', publications[0]!.slug === 'RSB' ? 'RSB aims' : 'gives diffusion'], ['.pub-links .link-pill--primary', publications[0]!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub:last-of-type .link-pill--primary', publications.at(-1)!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub-links a[href*=arxiv]', 'preprint'], ['.link-pill-copy', 'BibTeX citation']]],
 			['news', [['.timeline .is-latest .date', 'CoF is on arXiv'], ['.timeline .is-latest a[href*=arxiv]', 'research preprint'], ['.timeline .is-latest a[href="/CoF/"]', 'CoF Demo'], ['.news-toggle', 'earlier updates']]],
 			['awards', [['.award-title', 'National First Prize'], ['.tip', 'competition is called'], ['.award-more', 'team worked on']]],
@@ -260,11 +260,14 @@ test.describe('Yo mascot life, narration & actions', () => {
 				getComputedStyle(document.querySelector('.meet-yo')).display === 'none' && document.querySelector('.meet-yo').inert &&
 				[...document.querySelectorAll('.toplink')].every(link => {
 					const icon = link.querySelector('.ui-icon').getBoundingClientRect(), label = link.querySelector('.nav-label').getBoundingClientRect();
-					return link.getBoundingClientRect().height >= 44 && icon.width === 24 && getComputedStyle(link).fontSize === '10px' && label.top >= icon.bottom && label.width <= link.clientWidth + 24;
+					return link.getBoundingClientRect().height >= 44 && icon.width === 20 && getComputedStyle(link).fontSize === '9px' && label.top >= icon.bottom && label.width <= link.clientWidth + 24;
 				});
 		})()`, 'Bottom navigation overflows, shows Yo by default or loses its round icon-button arrangement.');
 		await page.evaluate("document.querySelector('.cv-btn').click(); true");
-		await waitForExpr(page, "location.hash === '#contact'", 'The CV button did not reach contact from the phone.');
+        await expect(page.locator('.cv-dialog')).toBeVisible();
+        await page.locator('.cv-dialog-close').click();
+        await expect(page.locator('.cv-dialog')).not.toBeVisible();
+        await expect(page.locator('.cv-btn')).toBeFocused();
 		await page.evaluate("document.querySelector('.home-nav-links a[href=\"#publications\"]').click(); true");
 		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card')", 'Papers never opened from the phone navigation.');
 	});

@@ -121,12 +121,12 @@ export function PapersCard() {
 			<div class="pub-links">
 				<a class="link-pill link-pill--primary" href={paper.demo} data-yo-say={paper.slug === 'RSB' ? 'Want to hear the difference? Let’s try the RSB Demo.' : 'Let’s explore the CoF Demo and its results.'}><Icon id={paper.demoIcon} />{paper.demoLabel}</a>
 				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="file" />IEEE</a>}
-				<a class="link-pill" href={paper.arxiv} target="_blank" rel="noopener" data-yo-say={'Read the ' + paper.slug + ' preprint on arXiv.'}><Icon id="external" />arXiv</a>
-				<a class="link-pill" href={paper.code} target="_blank" rel="noopener" data-yo-say={'Take a peek at the open-source ' + paper.slug + ' implementation on GitHub!'}><Icon id="code" />Code</a>
-				<button type="button" class="link-pill link-pill-copy" aria-haspopup="dialog"
+				<a class={"link-pill" + (paper.paper ? " compact-ghost" : "")} aria-label="arXiv preprint" title="arXiv preprint" href={paper.arxiv} target="_blank" rel="noopener" data-yo-say={'Read the ' + paper.slug + ' preprint on arXiv.'}><Icon id="external" /><span class="compact-action-label">arXiv</span></a>
+				<a class="link-pill compact-ghost" aria-label="Source code on GitHub" title="Source code on GitHub" href={paper.code} target="_blank" rel="noopener" data-yo-say={'Take a peek at the open-source ' + paper.slug + ' implementation on GitHub!'}><Icon id="terminal" /><span class="compact-action-label">Code</span></a>
+				<button type="button" class="link-pill link-pill-copy compact-ghost" title="Citations" aria-haspopup="dialog"
 					aria-label={'Citations for ' + paper.title} data-yo-say="Choose a BibTeX citation or another format, then copy it for your bibliography."
 					onClick={event => setCitation({ paper, trigger: event.currentTarget })}>
-					<Icon id="copy" />Citations
+					<Icon id="quotes" /><span class="compact-action-label">Citations</span>
 				</button>
 			</div>
 		</article>)}

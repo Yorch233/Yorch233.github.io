@@ -36,8 +36,7 @@ On phones use a wider cloud crop, softer detail and a slightly stronger reading 
 Dark mode uses a separate dusk-cloud image: heavy charcoal/navy cloud banks
 and restrained amber afterglow, softened over navy. Keep the center dark for
 white prose, while cloud silhouettes and warm gaps remain visible. Backgrounds are fixed, decorative and inert;
-keep every section naturally scrollable and body buttons in translucent tinted glass. The asset and
-imagegen prompt are recorded in `design/home-clouds-v1/`. Glass
+keep every section naturally scrollable and body buttons in translucent tinted glass. Production background assets live under `public/`. Glass
 capsules use the optical treatment described below. Avoid decorative badges
 and repeated heavy shadows.
 
@@ -134,13 +133,18 @@ Keep visible gaps between them and leave the center clear. About Me
 leads the navigation, followed by News, Publications, Awards and Contact.
 About Me is the welcome page; its legacy hash returns to that page rather
 than opening a duplicate reading card. At widths up to 960px, the five sections
-stay visible in a bottom glass navigation capsule, with 22px icons above compact
-11px labels (10px at 360px and below). Reserve safe-area and document
+stay visible in a bottom glass navigation capsule, with 20px icons above complete
+9px navigation labels. Reserve safe-area and document
 space below content. The homepage Yo companion is hidden and inert, with its
 motion stopped; fresh visits skip the automatic welcome dialog on these screens.
 Skipping it does not consume the desktop introduction. Each destination retains a
-60px touch target. Identity, CV and theme controls stay in the top header.
-CV leads to contact with an honest availability message until a file exists.
+50×50px touch target. Identity, CV and theme controls stay in the top header.
+CV opens a dedicated native dialog with the welcome card’s surface, backdrop
+and entrance/reversed exit animation. It identifies Qing’s curriculum vitae and
+provides Download CV (with a download icon) and Close. While profile.cv is null,
+the download button is disabled and the message reads “Temporarily missing.”
+Closing via Close, Escape or the backdrop restores focus to CV without changing
+the current section or scroll position.
 
 The greeting pairs Qing’s portrait, name, affiliation and first-person
 complete About Me content: full biography, location, advisor and all research
@@ -181,8 +185,7 @@ GitHub, Hugging Face and ORCID follow as full-width rows on the right, with
 gray/blue brand icons, concise destination descriptions and fine separators.
 A vertical rule divides the groups on desktop. On phones the groups stack,
 with a horizontal separator and natural document scrolling. Keep the existing
-header capsules and avoid individual cards around profile links. The generated
-references and implementation notes live in `design/contact-v1/`.
+header capsules and avoid individual cards around profile links.
 All content uses normal document scrolling; neither the welcome area nor
 the card body has an independent vertical scroll pane or a viewport height
 limit. The header capsules stay reachable while scrolling. Yo becomes a
@@ -238,8 +241,8 @@ white body bitmap with live eyes. Breathing, drift, irregular blinking and
 small curious glances create life. Hands emerge only for gestures, then tuck
 away. Gaze eases toward a fine pointer; touch scrolling does not steer it.
 
-The shared controller now uses the approved 18-state vocabulary in
-`design/yo-states-v1/`: idle, thinking, waiting, sleeping, studying, boring,
+The shared controller uses the 18-state vocabulary defined in `src/lib/yo-state.js`:
+idle, thinking, waiting, sleeping, studying, boring,
 happy, hungry, eat-burger, drink-coffee, writing-paper, coding, teaching,
 speaking, embarrassed, daydreaming, appearing and disappearing. `yo-state.js`
 owns discrete priorities and legal chains; `yo-pose.js` interpolates five action
@@ -300,9 +303,7 @@ block arrives; the splash row reveal skips those blocks. Reduced motion and
 non-JS visitors see everything immediately.
 Reduced motion retains the same minimum, a static indicator and blue segment,
 and immediate page entrances. Local section switches keep their immediate content
-behavior. The retired loader-logo generation prompts and assets remain in
-`design/loader-logo-v2/` for reference; no loader asset is generated at build
-time.
+behavior. No loader artwork is generated at build time.
 `site-logo.js` owns
 the transparent cutout for page branding and browser favicons: a close-up
 Fluffy in a gentle right-facing side view, blue-white shading and a blue
@@ -325,8 +326,7 @@ clear waveform with receding noise (speech enhancement), particles merging
 into a coherent form (diffusion generation), and an incomplete tile grid with its returning
 tile (masked diffusion). These are visual metaphors, not scientific diagrams.
 Render at 42px on desktop, using 128px PNG derivatives.
-Keep full-size imagegen masters in `public/research-icons/v1/` and prompts
-with provenance in `design/research-icons-v1/`.
+Keep full-size artwork in `public/research-icons/v1/`.
 Research interests display Speech Enhancement, Diffusion Generative Modeling
 and Masked Diffusion Models. Retain the labels and contextual Yo hints.
 Below 960px, show three text-only tags in one row and hide their artwork.
@@ -343,7 +343,7 @@ Selection follows real `aria-current`, `aria-pressed` or
 `aria-expanded` state; hover/focus provides a colored line without pretending
 the control is selected. Primary action icons inherit the label color for
 contrast. Keep authentic brand and publisher marks recognizable.
-The `/icons/` gallery shows paired variants and downloadable SVG assets.
+Paired SVG variants remain available as static assets under `/icons/`; there is no gallery page.
 Edit `ui-icon-artwork.js` and `ui-icon-catalog.js`; `npm run icons:build` regenerates the registry,
 manifest and exports before production builds.
 
@@ -385,13 +385,13 @@ Remove moving highlights, deformation and SVG refraction. Keep a sharp upper gli
 Release lens maps and interaction listeners when entering this layout, and
 restore the desktop lenses when returning to a wider viewport. Respect dark
 mode, reduced transparency and browsers without backdrop-filter support.
-Homepage Header capsules keep their optical rim and zero-blur lenses on compact screens, with surface deformation disabled. Keep the bottom clear navigation and solid white selection, 12px
-shorter than the shell and centered with 6px clearance above and below. Hide
-the inner optical lens on phones. Use deep-blue text and active icons on white
-in both themes, 22px icons above 11px labels (10px on the narrowest phones), and a 76px shell around 60px
-touch targets. The mobile selection slides briefly without stretch or overshoot.
+Homepage header capsules and bottom navigation use 12px frosted glass on compact
+screens, with surface deformation disabled. Hide the inner optical lens on phones.
+Use deep-blue active icons on the white 64×50px selection in both themes,
+20px icons above 9px labels and a 66px shell around 50×50px touch targets. The mobile selection slides briefly without stretch or overshoot.
 The navigation shell and selected pill use fully rounded capsule ends.
-Keep all five labels complete; give Publications a little more width. Reserve
+Keep all five destinations equally sized and their complete names visible.
+The navigation labels use tight tracking to fit inside the 64px selection. Reserve
 document and safe-area space below content. Hide the homepage companion and
 his action controls on phones, and stop hidden motion. Current section, hashes, history
 and card controls drive the same indicator in both layouts.
@@ -422,7 +422,7 @@ come from `paper-authors.js`. Preserve each page's section anchors and resource
 observers. CoF follows RSB's open layout, with no enclosing article card. Its
 Results remain reachable through its chapter navigation, followed by a copyable arXiv citation.
 
-RSB and CoF show “Quick links” and its resources together in one centered, quiet line. Each resource is a full-round capsule button with a visible translucent white fill, muted control labels and a soft shadow. Keep the row on one line with local horizontal scrolling when it exceeds a narrow screen, preserving complete labels and 44px targets. Resource SVGs use
+RSB and CoF show “Quick links” and its resources together in one centered, quiet line. Each resource is a full-round capsule button with a visible translucent white fill, muted control labels and a soft shadow. On phones (≤720px), put the heading above a wrapping resource row. Keep paper links labeled and display code/model resources as 44px ghost icon buttons with accessible names. Every destination stays visible without horizontal scrolling. Resource SVGs use
 the same automatic state and palette as homepage navigation: gray outlines at
 rest, blue on hover or keyboard focus, and two-tone blue fills for active controls.
 Hero icons are 18px and decorative beside visible labels. Floating resources use
@@ -500,7 +500,7 @@ transparency fallbacks.
 The homepage keeps its Fluffy companion with round glasses and a blue bow tie
 in the bottom-right corner; RSB and CoF render no mascot companion. Section
 destinations live in `demo-guide.js` and drive the section ruler. The companion
-defaults to the edge-peeking pose from `design/rsb-yo-peek-v1/`: a clipped
+defaults to an edge-peeking pose: a clipped
 native SVG head with round glasses leaning in from the right edge, showing only
 one eye, one small gripping hand and a blue bow tie, plus a small “Hi” bubble
 within the same button. Props stay hidden while he peeks. Click, Enter or Space
@@ -606,8 +606,10 @@ the approved reference using a traced silhouette and 32 smoothly interpolated
 color bands. No raster images, data-URI textures or elliptical dome approximation
 are used in the live character or demo watermark. The original surface
 bounds (23.56, 47, 152.89, 126), glasses and bow stay unchanged. The authoring
-script and fidelity evidence live in `design/yo-vector-v2/`; regeneration is
-optional and separate from production builds. Static SVG paint is cached; only
+script is `scripts/build-yo-vector.py`; optional regeneration writes diagnostics
+to the ignored `tmp/yo-vector-v2/` directory and is separate from production builds.
+`scripts/verify-yo-artwork.mjs` takes an external reference PNG path and writes its
+comparison metrics to the same temporary directory. Static SVG paint is cached; only
 the parent pose, face and props update during animation.
 The transparent page/browser brand cutout remains separate. Paint body first,
 then face and wardrobe, then foreground props with gripping hands: raised coffee
@@ -630,3 +632,38 @@ focus containment and focus restoration preserve keyboard access. Narrow screens
 wrap citation text and allow scrolling, retaining 44px controls.
 
 Demo return navigation appears after scrolling down, with separate Scroll to top and Return to home optical capsules. Compact screens stack them beside the chapter toggle and hide them while its menu is open or a figure dialog is open. The shared floating header has a feathered translucent reading veil with a mild 4.5% dark tint, without blur, only while a capsule is visible. Reading cards and scientific plots retain their existing solid surfaces.
+
+On phones, homepage publication actions keep Demo and the main paper labeled;
+secondary arXiv, source code and citations become 44px ghost icon buttons.
+Reading-card titles use 22px and the contact address uses 16px; body copy stays
+15px and essential action labels stay at least 13px, except the compact bottom navigation
+labels, which use 9px as requested. Desktop styling is unchanged.
+
+### Phone audio browser and floating player
+
+At ≤720px, RSB and CoF replace the sample-card carousel with a quiet list:
+one row per audio ID, with its SNR/T60 metadata. The ID rows stay white;
+expanded method panels use a pale blue (#edf4ff) fill and a fine blue top
+separator. A row opens a two-column method chip grid; selecting a chip starts the shared player. CoF keeps one
+sampling-budget switch per dataset (4 NFE by default). All rows start closed,
+and expansion alone requests no audio. Above 720px, keep the existing audio
+cards, tables, pagination and visualization controls.
+
+The phone player floats at the bottom-right, clear of the bottom-left chapter
+controls. A wrapped track ID, dataset/budget and selected method identify the
+recording. Progress and elapsed/total times precede a row of 44px icon controls:
+play/pause, volume, spectrogram, waveform, WAV download and minimize. The volume
+button opens an explicit touch-accessible 0–200% slider. Visualization buttons
+expand an upper panel with a downward collapse arrow. Only that panel scrolls
+on short screens; transport remains reachable. Waveforms use the existing Worker,
+and spectrograms use static AVIF assets. Hiding visualization releases its view
+without stopping playback.
+
+Minimize leaves exactly two round buttons inside a frosted (18px blur) capsule
+to the left of the paper-resource capsule, which stays at the far right:
+play/pause and expand. The shared `maximize` / `minimize` SVG icons use
+opposing northeast/southwest arrows pointing outward / inward, respectively.
+Restoring it preserves the source, position, volume and
+visualization selection. Close stops playback and restores focus to the source
+chip. Reserve bottom document space for the current player height. Phones do
+not load all samples; switching layouts disposes the outgoing audio graph.

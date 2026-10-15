@@ -113,6 +113,20 @@ export const uiIconCatalog = [
     "secondary": "#bfdfff"
   },
   {
+    "id": "terminal",
+    "label": "Terminal",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "quotes",
+    "label": "Citations",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
     "id": "code",
     "label": "Code",
     "group": "Actions",
@@ -171,6 +185,20 @@ export const uiIconCatalog = [
   {
     "id": "plus",
     "label": "Expand",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "maximize",
+    "label": "Maximize",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "minimize",
+    "label": "Minimize",
     "group": "Actions",
     "color": "#3189f5",
     "secondary": "#bfdfff"

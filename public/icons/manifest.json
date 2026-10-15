@@ -176,6 +176,28 @@
     }
   },
   {
+    "id": "terminal",
+    "label": "Terminal",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/terminal-active-filled.svg",
+      "inactive": "/icons/terminal-inactive.svg"
+    }
+  },
+  {
+    "id": "quotes",
+    "label": "Citations",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/quotes-active-filled.svg",
+      "inactive": "/icons/quotes-inactive.svg"
+    }
+  },
+  {
     "id": "code",
     "label": "Code",
     "group": "Actions",
@@ -272,6 +294,28 @@
     "variants": {
       "active-filled": "/icons/plus-active-filled.svg",
       "inactive": "/icons/plus-inactive.svg"
+    }
+  },
+  {
+    "id": "maximize",
+    "label": "Maximize",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/maximize-active-filled.svg",
+      "inactive": "/icons/maximize-inactive.svg"
+    }
+  },
+  {
+    "id": "minimize",
+    "label": "Minimize",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/minimize-active-filled.svg",
+      "inactive": "/icons/minimize-inactive.svg"
     }
   },
   {

@@ -1,0 +1,69 @@
+import { test, expect, seenWelcome } from './helpers';
+
+test('CV dialog identifies the document, disables its missing download and restores focus', async ({ page }, testInfo) => {
+  await seenWelcome(page);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/#publications');
+  await expect(page.locator('.pub').first()).toBeVisible();
+  await expect(page.locator('html')).not.toHaveClass(/is-loading/);
+  for (const [width, height] of [[1280, 800], [390, 844], [320, 568], [667, 375], [640, 400]]) {
+    await page.setViewportSize({ width, height });
+    const before = await page.evaluate(() => ({ hash: location.hash, y: scrollY }));
+    const cv = page.getByRole('button', { name: 'CV', exact: true });
+    await cv.click();
+    const dialog = page.getByRole('dialog', { name: 'My CV', exact: true });
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText('Qing Yao’s curriculum vitae.');
+    await expect(dialog).toContainText('Temporarily missing.');
+    await expect(dialog.getByRole('button', { name: 'Download CV' })).toBeDisabled();
+    await expect(dialog.locator('.cv-dialog-download [data-icon="download"]')).toHaveCount(1);
+    const close = dialog.getByRole('button', { name: 'Close', exact: true });
+    await expect(close).toBeFocused();
+    await page.keyboard.press('Tab');
+    expect(await page.evaluate(() => document.querySelector('.cv-dialog')!.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press('Shift+Tab');
+    expect(await page.evaluate(() => document.querySelector('.cv-dialog')!.contains(document.activeElement))).toBe(true);
+    expect(await page.evaluate(() => document.body.style.overflow)).toBe('hidden');
+    const bounds = await dialog.boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.y).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(height);
+    expect(await close.evaluate(el => el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (width === 390) await page.screenshot({ path: testInfo.outputPath('cv-390.png') });
+    await close.click();
+    await expect(dialog).not.toBeVisible();
+    await expect(cv).toBeFocused();
+    expect(await page.evaluate(() => ({ hash: location.hash, y: scrollY }))).toEqual(before);
+    await expect.poll(() => page.evaluate(() => document.body.style.overflow)).not.toBe('hidden');
+  }
+  await page.locator('.cv-btn').click();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.cv-dialog')).not.toBeVisible();
+  await expect(page.locator('.cv-btn')).toBeFocused();
+  await page.locator('.cv-btn').click();
+  await page.mouse.click(2, 2);
+  await expect(page.locator('.cv-dialog')).not.toBeVisible();
+});
+
+test('CV reverses the welcome-style animation without consuming the introduction', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.locator('html')).not.toHaveClass(/is-loading/);
+  await page.locator('.cv-btn').click();
+  await expect(page.locator('.cv-dialog')).toBeVisible();
+  expect(await page.locator('.cv-dialog').evaluate(el => el.getAnimations().some(a => a.effect!.getTiming().duration === 520))).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.cv-dialog')).not.toBeVisible();
+  await expect(page.locator('.cv-btn')).toBeFocused();
+  expect(await page.evaluate(() => localStorage.getItem('yo-welcome.v1'))).toBeNull();
+  expect(await page.evaluate(() => location.hash)).toBe('');
+  await page.locator('.theme-toggle').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.locator('.cv-btn').click();
+  await expect(page.locator('.cv-dialog')).toBeVisible();
+  expect(await page.locator('.cv-dialog').evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(27, 41, 61)');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.cv-dialog')).not.toBeVisible();
+});

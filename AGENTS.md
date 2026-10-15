@@ -3,8 +3,8 @@
 ## Git workflow
 
 - `gitea` (`https://gitea-yorch233.iepose.cn/yorch233/Yorch233.github.io.git`) is
-  the private development repository. Local `main` tracks `gitea/main`, and
-  the default push remote is `gitea`.
+  the private development repository. Check the actual branch tracking configuration
+  before pushing; development saves belong on `gitea`.
 - When the user asks to save or submit development code, commit locally and
   push to `gitea`.
 - `origin` (`https://github.com/Yorch233/Yorch233.github.io.git`) is the GitHub
@@ -12,13 +12,14 @@
 - Push to `origin` only when the user explicitly requests deployment. Routine
   development saves must not push to GitHub.
 
-## 协作与独立判断
+## Collaboration and independent judgment
 
-1. 先检查是否存在错误前提、逻辑跳跃或信息缺失。
-2. 不要迎合用户的观点，保持独立判断。
-3. 涉及数据、人物与结论，尽量核实信息来源。
-4. 如果用户的表述有误，直接指出，说明依据与潜在风险。
-5. 主动提醒用户遗漏的变量、成本与认知偏差。
+1. Check for false premises, logical gaps and missing information first.
+2. Exercise independent judgment rather than agreeing automatically.
+3. Verify sources for data, people and conclusions whenever possible.
+4. Correct inaccurate statements directly, with evidence and relevant risks.
+5. Point out overlooked variables, costs and cognitive biases.
+6. Write this document entirely in English, including headings and comments.
 
 ## Scope and sources of truth
 
@@ -100,7 +101,7 @@ only the roles a screen needs; do not create extra levels to fill a scale.
 Use the system font stack for every text role and keep code in monospace.
 Headings use weight 700–800, prose 400–500 and controls 500–600. Body
 line-height is 1.65–1.8; headings use 1.15–1.3; metadata and
-controls use 1.4–1.6. Keep essential labels at least 13px and body copy at
+controls use 1.4–1.6. Keep essential labels at least 13px, except the user-requested compact bottom-navigation labels, and body copy at
 least 15px; do not shrink below the shared phone scale on mobile. Hero typography may vary
 fluidly between title/display sizes, but retain a clear hierarchy. Let long
 paper titles, method names and email addresses wrap without truncating content.
@@ -117,7 +118,7 @@ Publications, Awards, Contact. On narrow screens, keep all five destinations vis
 in a bottom navigation bar, with icons above compact labels. Keep its outer
 glass shell frosted on narrow screens (the desktop shell keeps its clear
 optical refraction). On narrow screens the five destinations are uniform
-50×50 round icon buttons (labels collapse, accessible names survive), and
+50×50 controls with icons above compact visible text labels, and
 the narrow-screen selection is an opaque white full-radius 64×50 pill,
 centered on the active one;
 desktop uses the original glass selection, 12px taller than
@@ -147,9 +148,13 @@ in its favicon (and runs automatically before production builds).
 Favicon SVGs must work without external resources.
 Do not reintroduce individual wardrobe settings.
 
-Use the approved Yo state references in `design/yo-states-v1/`. Keep prop rigs mutually exclusive and cancel entire automatic chains when interrupted. Give reactions explicit triggers and bounded lifetimes. Reading, reduced motion, hidden tabs and offscreen views stop continuous
+Use the approved Yo state definitions in `src/lib/yo-state.js` and the existing native artwork. Keep prop rigs mutually exclusive and cancel entire automatic chains when interrupted. Give reactions explicit triggers and bounded lifetimes. Reading, reduced motion, hidden tabs and offscreen views stop continuous
 motion. Returning to browsing resumes it without stale reactions. Pointer
 coordinates belong in refs, not render state. Clean up timers and observers.
+
+The header CV button opens a welcome-style dialog without changing sections.
+`profile.json` stores its download URL in `cv`; null means the download button
+is disabled with “Temporarily missing.” and a working Close button.
 
 Use truthful copy: unavailable resources need a useful alternative, not a
 fake download or dead control. The homepage footer pairs `© {current year} Qing Yao`
@@ -161,12 +166,19 @@ Homepage work must preserve demo behavior. Audio uses `preload="none"`,
 Opus playback and direct WAV downloads. Both demos share the
 `AudioDemoIsland` card (groups, methods with colors/tooltips, and a base
 path come from `src/data/rsb.js` and `src/data/cof-audio.js`); each island
-hydrates with `client:visible` and its current default waveform view loads
+hydrates with `client:visible`. Above 720px, its default waveform view loads
 Measurement and Ground Truth for the displayed samples. Other methods load
 on selection. Waveform analysis
 uses `waveform.worker.js`; spectrograms are pre-generated AVIF resources
 (`scripts/encode-audio.sh <RSB|CoF>` refreshes opus and spectrograms).
-Do not add eager processing of all samples or browser-side spectrogram FFT.
+Do not add eager processing of all samples or browser-side spectrogram FFT. On phones
+(≤720px), use a per-dataset list with one expandable row per audio ID and
+method chips that start one shared floating player. Expanding rows does not
+load audio; playing loads the selected method, and opening a visualization
+loads only its required data. Keep the desktop audio cards above 720px.
+The phone player has a progress bar above its controls, expandable waveform
+or static spectrogram views, and a bottom-right two-button minimized capsule.
+Changing layouts stops the outgoing player; closing a row does not stop audio.
 CoF audio samples cover the 1 and 4 NFE budgets behind per-dataset
 sampling-budget switches (default 4 NFE; assets live under
 `public/audio/CoF/nfe1/` and `public/audio/CoF/nfe4/`).
@@ -189,13 +201,18 @@ paper content stays the focus; the companion belongs to the homepage only.
 ## Work and verification
 
 Prefix shell commands with `rtk`; use `rtk proxy` for unsupported commands.
-Preserve existing user changes. Follow the Git workflow above for commits
+Preserve existing user changes. Before rewriting history, create a backup outside
+this repository, inspect all local and remote references, preserve current work,
+and protect remote updates with explicit expected commit IDs in force-with-lease.
+Keep design-process files, GUI screenshots and editor metadata out of version
+control. Follow `.gitignore`; do not force-add excluded local material.
+Follow the Git workflow above for commits
 and pushes: development saves go to Gitea; GitHub requires explicit deployment.
 
 - Code changes: `npm run build` (includes `astro check`), `npm run lint`,
   `npm run test:unit`, then `git diff --check`.
 - Homepage interaction or shared runtime changes: run the matching Playwright
-  spec from `tests/e2e/` (rsb, welcome, home, mascot, demo-nav, cof, icons)
+  spec from `tests/e2e/` (rsb, welcome, home, mascot, demo-nav, cof)
   with `npx playwright test tests/e2e/<file>`, and the full `npm run test:e2e`
   before considering the work done. It builds the site and exercises the
   production preview in `dist/`; `npm run test:e2e:dev` targets the dev server

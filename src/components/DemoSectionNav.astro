@@ -29,6 +29,7 @@ const { sections } = Astro.props;
 		const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
 		const targets = links.map(link => document.getElementById(link.hash.slice(1)));
 		const compact = matchMedia('(max-width: 959px), (max-height: 599px)');
+		const phone = matchMedia('(max-width: 720px)');
 		const header = document.querySelector<HTMLElement>('.demo-floating-header');
 		const article = document.querySelector('main article');
 		let frame = 0;
@@ -39,7 +40,7 @@ const { sections } = Astro.props;
 		// target to its landing spot until the user takes over or the window ends.
 		// The landing spot is captured on the first update, once the browser's
 		// own anchor scroll has settled.
-		let realign: { target: HTMLElement; top: number | null; height: number; deadline: number } | null = null;
+		let realign: { target: HTMLElement; top: number | null; height: number; deadline: number; settleUntil: number } | null = null;
 		toggle.hidden = false;
 		targets.forEach(target => target?.classList.add('demo-section-target'));
 
@@ -58,10 +59,13 @@ const { sections } = Astro.props;
 			if (realign) {
 				if (performance.now() > realign.deadline) realign = null;
 				else if (realign.top === null) {
-					realign.top = realign.target.getBoundingClientRect().top;
+					const top = realign.target.getBoundingClientRect().top;
+                    realign.top = phone.matches ? Math.max(offset, top) : top;
+                    if (top < realign.top) window.scrollTo(0, Math.max(0, scrollY + top - realign.top));
 					realign.height = document.documentElement.scrollHeight;
 				} else {
 					const height = document.documentElement.scrollHeight;
+                    if (phone.matches) realign.top = Math.max(offset, realign.top);
 					const top = realign.target.getBoundingClientRect().top;
 					if (height !== realign.height || Math.abs(top - realign.top) > 1) {
 						window.scrollTo(0, Math.max(0, scrollY + top - realign.top));
@@ -74,6 +78,9 @@ const { sections } = Astro.props;
 				if (target && target.getBoundingClientRect().top <= offset + 40) active = index;
 			});
 			if (scrollY > 0 && scrollY + innerHeight >= document.documentElement.scrollHeight - 4) active = links.length - 1;
+            // The phone list can shrink on hydration while reveal transforms
+            // are still settling; transforms do not trigger ResizeObserver.
+            if (phone.matches && realign && performance.now() < realign.settleUntil) schedule();
 			links.forEach((link, index) => {
 				if (index === active) link.setAttribute('aria-current', 'location');
 				else link.removeAttribute('aria-current');
@@ -92,7 +99,7 @@ const { sections } = Astro.props;
 			if (target) {
 				if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
 				target.focus({ preventScroll: true });
-				realign = { target, top: null, height: document.documentElement.scrollHeight, deadline: performance.now() + 5000 };
+				realign = { target, top: null, height: document.documentElement.scrollHeight, deadline: performance.now() + 5000, settleUntil: performance.now() + 750 };
 			}
 			close();
 			schedule();
@@ -118,7 +125,12 @@ const { sections } = Astro.props;
 			if (realign && realign.target.id !== location.hash.slice(1)) realign = null;
 			schedule();
 		};
-		const onUserTakesOver = () => { realign = null; };
+		const onUserTakesOver = (event: Event) => {
+            // A native fragment jump emits popstate too. Keep the phone
+            // correction for that same target; actual Back/Forward leaves it.
+            if (phone.matches && event.type === 'popstate' && realign?.target.id === location.hash.slice(1)) return;
+            realign = null;
+        };
 		const sizeObserver = new ResizeObserver(schedule);
 		if (header) sizeObserver.observe(header);
 		if (article) sizeObserver.observe(article);

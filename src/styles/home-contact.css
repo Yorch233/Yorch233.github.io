@@ -39,6 +39,6 @@
 .home-ref .contact-profile-copy > span { color: var(--muted); font-size: var(--text-1); line-height: 1.6; overflow-wrap: anywhere; }
 
 @media (max-width: 720px) {
-  .home-ref .contact-address { font-size: 20px; }
-  .home-ref .contact-location { font-size: 14px; }
+  .home-ref .contact-address { font-size: 16px; gap: 10px; }
+  .home-ref .contact-location { font-size: 13px; }
 }

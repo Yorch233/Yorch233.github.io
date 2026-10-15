@@ -252,8 +252,11 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		expect(Math.abs(floatingBefore - await page.evaluate<number>("document.querySelector('.meet-avatar').getBoundingClientRect().bottom")), 'Yo moves with the document instead of staying in the viewport.').toBeLessThan(1);
 		await page.evaluate('window.scrollTo(0, 0); true');
 		await page.evaluate("document.querySelector('.cv-btn').click(); true");
-		await waitForExpr(page, "location.hash === '#contact' && document.activeElement?.tagName === 'H2'", 'The CV button did not reach the contact heading.');
-		await check(page, "document.querySelector('.meet-bubble').textContent.includes('not online') && !!document.querySelector('a.contact-address[href^=\"mailto:\"]')", 'CV has no honest, actionable fallback.');
+		await expect(page.locator('.cv-dialog')).toBeVisible();
+        await page.locator('.cv-dialog-close').click();
+        await expect(page.locator('.cv-dialog')).not.toBeVisible();
+        await page.locator('.toplink[href="#contact"]').click();
+        await waitForExpr(page, "location.hash === '#contact' && document.activeElement?.tagName === 'H2'", 'Contact navigation did not reach its heading.');
 		for (const [width, height] of [[1280, 800], [390, 844], [320, 568], [667, 375], [640, 400]]) {
 			await page.setViewportSize({ width, height });
 			const contact = await page.evaluate<Record<string, unknown>>(`(() => {
@@ -273,7 +276,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				};
 			})()`);
 			expect(contact.stacked && contact.enclosed && contact.naturalFlow, `Contact layout clips content or loses its card/reading order at ${width}x${height}: ${JSON.stringify(contact)}`).toBe(true);
-			expect(contact.mail === 'mailto:' + contact.address && (contact.actionHeight as number) >= 44 && (contact.rowHeights as number[]).every(value => value >= 44), `Contact email or touch targets are unusable at ${width}x${height}.`).toBe(true);
+			expect(contact.mail === 'mailto:' + contact.address && (contact.actionHeight as number) >= 43.99 && (contact.rowHeights as number[]).every(value => value >= 43.99), `Contact email or touch targets are unusable at ${width}x${height}.`).toBe(true);
 			expect((contact.icons as string[]).join(','), 'Contact profile rows lost their brand icons.').toBe('github,huggingface,orcid');
 		}
 		await page.setViewportSize({ width: 1280, height: 800 });

@@ -434,10 +434,10 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
   .home-about .interests { gap: 6px; }
   .home-about .chip { padding-inline: 4px; font-size: 13px; }
   .home-ref .topic-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .home-ref .topic-chips .topic-pill { min-height: 52px; padding: 12px 14px; font-size: 12px; }
+  .home-ref .topic-chips .topic-pill { min-height: 52px; padding: 12px 14px; font-size: 13px; }
   .home-ref .topic-chips .topic-pill--primary { grid-column: 1 / -1; }
   .home-ref .topic-chips .topic-pill:last-child { grid-column: 1 / -1; }
-  .home-ref .topic-chips .topic-pill--primary .topic-label { font-size: 12px; }
+  .home-ref .topic-chips .topic-pill--primary .topic-label { font-size: 13px; }
   /* Shared compact phone scale: the display name drops to the text-6 step. */
   .meet:not(.meet--chat) .hero-name { font-size: var(--text-6); }
   .meet:not(.meet--chat) .hero-kicker { font-size: 13px; }
@@ -671,15 +671,14 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
     border: 0; border-radius: 999px; background: transparent; box-shadow: none;
     -webkit-backdrop-filter: none; backdrop-filter: none;
   }
-  /* Round icon buttons keep their 11px labels; long ones like Publications
-     overflow the 50px button slightly, which the old scale already did. */
+  /* Compact labels stay within the wider selection capsule. */
   .home-ref .topbar .toplink {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     width: 50px; min-width: 50px; max-width: 50px; height: 50px; min-height: 50px; max-height: 50px;
-    padding: 0; gap: 4px; border-radius: 999px; font-size: 10px; line-height: 1.4;
+    padding: 0; gap: 3px; border-radius: 999px; font-size: 9px; line-height: 1.2;
   }
-  .home-ref .toplink .ui-icon { width: 24px; height: 24px; }
-  .home-ref .nav-label { white-space: nowrap; }
+  .home-ref .toplink .ui-icon { width: 20px; height: 20px; }
+  .home-ref .nav-label { display: block; flex: 0 0 auto; max-width: 64px; white-space: nowrap; letter-spacing: -.02em; }
   .home-ref .layout { padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
   .home-ref .meet .meet-yo { display: none; }
   .home-ref .yo-actions-panel { max-height: calc(100dvh - var(--bottom-nav-height) - 100px - env(safe-area-inset-bottom, 0px)); }

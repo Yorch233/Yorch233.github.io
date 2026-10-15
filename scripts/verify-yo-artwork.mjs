@@ -5,7 +5,8 @@ import { yoLogoSvg } from '../src/lib/yo-logo.js';
 
 const artwork = yoLogoSvg('fluffy');
 assert(!/<image\b|data:image|fluffy-body\.webp/.test(artwork), 'Yo must be entirely SVG.');
-const reference = new URL('../design/yo-states-v1/reference/yo-live-fluffy.png', import.meta.url);
+const reference = process.argv[2];
+if (!reference) throw new Error('Usage: node scripts/verify-yo-artwork.mjs /path/to/reference.png');
 const results = [];
 for (const width of [120, 240, 800]) {
   const original = await sharp(await readFile(reference)).resize(width, width).ensureAlpha().raw().toBuffer();
@@ -26,7 +27,9 @@ for (const width of [120, 240, 800]) {
   assert(silhouetteIoU > .98, `Yo silhouette differs from the reference at ${width}px.`);
   results.push({width, meanAbsoluteError, silhouetteIoU, psnr:10*Math.log10(255**2/(squared/original.length))});
 }
-await writeFile(new URL('../design/yo-vector-v2/fidelity.json', import.meta.url), JSON.stringify(results,null,2)+'\n');
+const output = new URL('../tmp/yo-vector-v2/', import.meta.url);
+await mkdir(output, {recursive:true});
+await writeFile(new URL('fidelity.json', output), JSON.stringify(results,null,2)+'\n');
 if (process.env.SCREENSHOT_DIR) {
   await mkdir(process.env.SCREENSHOT_DIR, {recursive:true});
   await sharp(Buffer.from(artwork)).resize(800,800).png().toFile(process.env.SCREENSHOT_DIR+'/yo-pure-svg.png');

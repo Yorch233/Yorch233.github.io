@@ -1,7 +1,8 @@
 # Qing UI icons
 
-42 original glyphs × 2 states = 84 transparent standalone SVGs.
-Preview and download at /icons/.
+63 glyphs × 2 states = 126 transparent standalone SVGs.
+The catalog is listed in `manifest.json`; individual SVG assets remain available
+under `/icons/`. There is no gallery page.
 
 - *-active-filled.svg: two-tone filled body/detail planes.
 - *-inactive.svg: gray outline (#8591a3), lighter in filled mass.
@@ -19,8 +20,7 @@ Inactive means unselected, not disabled. Dark mode adjusts the palette.
 
 Eight PNG sheets in references/ were generated with built-in imagegen first,
 then interpreted as original small-size native SVG drawings. Reference sheets
-are design material, not bitmap icons used by controls. Full prompts and mode:
-design/icon-references/apple-prompts.json. GitHub and publisher marks keep
+are design material, not bitmap icons used by controls. GitHub and publisher marks keep
 recognizable authentic geometry; GitHub uses the Simple Icons CC0 glyph.
 
 Edit src/lib/ui-icon-artwork.js and src/lib/ui-icon-catalog.js, then run

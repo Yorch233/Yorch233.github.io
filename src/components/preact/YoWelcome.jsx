@@ -3,7 +3,7 @@ import YoCloud from './YoCloud.jsx';
 import YoDialogue from './YoDialogue.jsx';
 
 const SEEN_KEY = 'yo-welcome.v1';
-const WELCOME_FRAMES = [
+export const WELCOME_FRAMES = [
 	{ opacity: 0, transform: 'translateY(calc(-50vh - 50%)) scale(.72)' },
 	{ opacity: 1, transform: 'translateY(0) scale(1)' }
 ];

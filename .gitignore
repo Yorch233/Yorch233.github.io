@@ -7,3 +7,10 @@ npm-debug.log*
 test-results/
 playwright-report/
 tmp/
+
+# 本地设计资料、截图与编辑器配置不进入版本库。
+/gui-test-screenshots/
+/.zcodeignore
+/design-qa.md
+/design/
+/.zcode/
