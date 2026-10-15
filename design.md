@@ -178,9 +178,10 @@ Each paper has an independent Show full abstract / Show less button with an
 expanded state and an associated text region. Use justified abstract text on
 desktop and natural left alignment at 720px and below. Keep every abstract in
 `src/data/publications.js`, with no shortened synopsis substituted for it.
-White Publications controls use stronger layered shadows, including abstract
-toggles, resource links, Home and Explore more; hover and keyboard focus deepen
-the shadow, while pressing reduces it. Compact phone utility icons stay flat.
+White homepage controls share stronger layered shadows across every section,
+including navigation actions, abstract and list toggles, publication resources
+and research profile links. Hover and keyboard focus deepen the shadow, while
+pressing reduces it. Compact phone utility icons stay flat.
 News uses the shared
 `Timeline` component: a visible heading, dates in a left column, blue nodes
 and a continuous vertical line, with the latest update emphasized. Phones

@@ -35,14 +35,14 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
 .home-ref .pub-abstract-toggle { margin-top: 6px; padding: 6px 10px; font-size: var(--text-1); }
 .home-ref .pub-abstract-toggle .icon { width: 16px; height: 16px; }
 
-/* Give white publication controls more separation from the reading surface. */
-body.home-ref .meet:has(.pub) :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill) {
+/* Give white homepage controls consistent separation from their surfaces. */
+body.home-ref .meet :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill:not(.topic-pill--primary), .news-toggle, .award-more, .contact-profile, .contact-profile-link) {
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .7), 0 3px 6px -2px rgb(35 65 99 / .18), 0 10px 20px -8px rgb(35 65 99 / .24) !important;
 }
-body.home-ref .meet:has(.pub) :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill):is(:hover, :focus-visible) {
+body.home-ref .meet :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill:not(.topic-pill--primary), .news-toggle, .award-more, .contact-profile, .contact-profile-link):is(:hover, :focus-visible) {
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .8), 0 4px 8px -2px rgb(35 65 99 / .22), 0 12px 24px -8px rgb(35 65 99 / .28) !important;
 }
-body.home-ref .meet:has(.pub) :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill):active {
+body.home-ref .meet :is(.link-pill:not(.link-pill--primary), .meet-close, .topic-pill:not(.topic-pill--primary), .news-toggle, .award-more, .contact-profile, .contact-profile-link):active {
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 2px 5px -2px rgb(35 65 99 / .2) !important;
 }
 
@@ -70,7 +70,7 @@ body.home-ref .meet:has(.pub) :is(.link-pill:not(.link-pill--primary), .meet-clo
   .home-ref .meet-card-head h2 { font-size: 22px; line-height: 1.25; }
   .home-ref .pub-links { gap: 4px; align-items: center; }
   .home-ref .pub-links .link-pill { padding-inline: 8px; white-space: nowrap; }
-  body.home-ref .meet:has(.pub) .pub-links .compact-ghost {
+  body.home-ref .meet .pub-links .compact-ghost {
     flex: 0 0 44px; width: 44px; height: 44px; padding: 0; gap: 0;
     border-color: transparent !important; box-shadow: none !important;
     border-radius: 50%; color: var(--muted);
