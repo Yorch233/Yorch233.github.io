@@ -4,6 +4,7 @@ import { publications } from '../../data/publications.js';
 import UiIcon from './UiIcon.jsx';
 import CitationDialog from './CitationDialog.jsx';
 import Timeline from './Timeline.jsx';
+import DemoLink from './DemoLink.jsx';
 
 export const Icon = UiIcon;
 const rich = (text) => ({ __html: text });
@@ -81,6 +82,26 @@ export function NewsCard() {
 	</>;
 }
 
+function positionAwardTip(event) {
+	if (event.pointerType === 'touch') return;
+	const tip = event.target.closest?.('.tip[data-tip]');
+	if (!tip) return;
+	const paragraph = event.currentTarget;
+	const bounds = paragraph.getBoundingClientRect();
+	const bubble = getComputedStyle(tip, '::after');
+	const halfWidth = (parseFloat(bubble.width) || bounds.width) / 2;
+	const height = parseFloat(bubble.height) || 40;
+	const x = Math.max(halfWidth, Math.min(event.clientX - bounds.left, bounds.width - halfWidth));
+	const y = Math.max(event.clientY, height + 22) - bounds.top;
+	paragraph.style.setProperty('--award-tip-x', `${x}px`);
+	paragraph.style.setProperty('--award-tip-y', `${y}px`);
+}
+
+function resetAwardTip(event) {
+	event.currentTarget.style.removeProperty('--award-tip-x');
+	event.currentTarget.style.removeProperty('--award-tip-y');
+}
+
 function Award({ item }) {
 	const [open, setOpen] = useState(false);
 	const detailsId = useId();
@@ -88,8 +109,10 @@ function Award({ item }) {
 	const lead = main.match(/^<span class="accent">(.*?)<\/span>,\s*(.*)$/);
 	return <li data-yo-say={item.yoHint}>
 		<span class="date">{item.date}</span>
-		{lead ? <><h3 class="award-title">{lead[1]}</h3><p class="award-event" dangerouslySetInnerHTML={rich(lead[2])} /></>
-			: <p class="award-event" dangerouslySetInnerHTML={rich(main)} />}
+		{lead && <h3 class="award-title">{lead[1]}</h3>}
+		<p class="award-event" onPointerOver={positionAwardTip} onPointerMove={positionAwardTip}
+			onPointerLeave={resetAwardTip} onFocusCapture={resetAwardTip}
+			dangerouslySetInnerHTML={rich(lead ? lead[2] : main)} />
 		{details.length > 0 && <>
 			<div id={detailsId} class={'award-content' + (open ? ' is-open' : '')} hidden={!open} data-yo-say="Here’s what the project was about and what the team worked with.">
 				{details.map((text, i) => <span class="news-sub" key={i} dangerouslySetInnerHTML={rich(text.replace(/<\/span>\s*$/, ''))} />)}
@@ -110,11 +133,11 @@ function PublicationAbstract({ paper }) {
 	const abstractId = useId();
 	return <div class="pub-abstract" data-expanded={expanded}>
 		<p id={abstractId} class="pub-summary" data-yo-say={paperHints[paper.slug]}>{paper.abstract}</p>
-		<button type="button" class="link-pill pub-abstract-toggle" aria-expanded={expanded} aria-controls={abstractId}
+		<button type="button" class="pub-abstract-toggle" aria-expanded={expanded} aria-controls={abstractId}
 			aria-label={(expanded ? 'Collapse abstract for ' : 'Show full abstract for ') + paper.slug}
 			data-yo-say={expanded ? 'You can tuck the abstract back into three lines.' : 'Open this to read the complete abstract.'}
 			onClick={() => setExpanded(!expanded)}>
-			{expanded ? 'Show less' : 'Show full abstract'} <Icon id={expanded ? 'arrow-up' : 'arrow-down'} />
+			{expanded ? 'Hide' : 'Show'}
 		</button>
 	</div>;
 }
@@ -123,7 +146,7 @@ export function PapersCard() {
 	const [citation, setCitation] = useState(null);
 	return <>
 		{publications.map((paper) => <article class="pub" key={paper.slug} data-yo-say={'Let\'s explore ' + paper.slug + '. Hover a resource to see where it goes.'}>
-			<div class="pub-meta"><span class="pub-year" data-yo-say={'Here’s Qing’s ' + paper.year + ' paper, ' + paper.slug + '.'}>{paper.year}</span><span class="badge" data-yo-say={paper.paper ? 'You can read the published article through the IEEE link below.' : 'This one is available as a preprint on arXiv.'}>{paper.badge}</span></div>
+			<div class="pub-meta"><span class="pub-year" data-yo-say={'Here’s Qing’s ' + paper.year + ' paper, ' + paper.slug + '.'}>{paper.year}</span><span class="publication-tag" data-yo-say={paper.paper ? 'You can read the published article through the IEEE link below.' : 'This one is available as a preprint on arXiv.'}>{paper.badge}</span></div>
 			<h3 class="pub-title" data-yo-say={'This is ' + paper.slug + '. Select the title to read the paper.'}><a href={paper.paper ?? paper.arxiv} target="_blank" rel="noopener">{paper.title}</a></h3>
 			<p class="pub-authors">
 				{paper.authors.map((author, i) => <span key={author.name} data-yo-say={author.name + ' helped write this paper.'}>
@@ -133,7 +156,7 @@ export function PapersCard() {
 			<p class="venue" data-yo-say={paper.paper ? 'Here’s where the paper was published. The IEEE link below takes you to the article.' : 'You’ll find this preprint on arXiv. The link is right below.'}>{paper.venueFull}</p>
 			<PublicationAbstract paper={paper} />
 			<div class="pub-links">
-				<a class="link-pill link-pill--primary" href={paper.demo} data-yo-say={paper.slug === 'RSB' ? 'Want to hear the difference? Let’s try the RSB Demo.' : 'Let’s explore the CoF Demo and its results.'}><Icon id={paper.demoIcon} />{paper.demoLabel}</a>
+				<DemoLink paper={paper} />
 				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="file" />IEEE</a>}
 				<a class={"link-pill" + (paper.paper ? " compact-ghost" : "")} aria-label="arXiv preprint" title="arXiv preprint" href={paper.arxiv} target="_blank" rel="noopener" data-yo-say={'Read the ' + paper.slug + ' preprint on arXiv.'}><Icon id="external" /><span class="compact-action-label">arXiv</span></a>
 				<a class="link-pill compact-ghost" aria-label="Source code on GitHub" title="Source code on GitHub" href={paper.code} target="_blank" rel="noopener" data-yo-say={'Take a peek at the open-source ' + paper.slug + ' implementation on GitHub!'}><Icon id="terminal" /><span class="compact-action-label">Code</span></a>

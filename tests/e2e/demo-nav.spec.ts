@@ -16,7 +16,7 @@ test.describe('Demo floating navigation & ruler', () => {
 				await waitForExpr(page, "!document.documentElement.classList.contains('is-loading') && document.querySelectorAll('.demo-floating-header > [data-visible=\"false\"]').length === 2", `${route} never finished loading.`);
 				// First-paint branding is per document, not per viewport; verify once per route.
 				if (!brandedRoutes.has(route)) {
-					await check(page, "window.__firstYoForm === 'fluffy' && window.__firstYoIcon.includes('/yo-cutout-v1.svg') && document.querySelector('link[rel=icon]').href.includes('/yo-cutout-v1.svg') && document.querySelector('img[data-yo-logo]').src.includes('/yo-fluffy.svg')", `${route} branding lost the selected form.`);
+					await check(page, "window.__firstYoForm === 'fluffy' && window.__firstYoIcon.includes('/qing-avatar.svg') && document.querySelector('link[rel=icon]').href.includes('/qing-avatar.svg') && document.querySelector('img[data-yo-logo]').src.includes('/yo-fluffy.svg')", `${route} branding lost the selected form.`);
 					brandedRoutes.add(route);
 				}
 				await check(page, "!document.querySelector('.demo-yo') && !document.querySelector('.yo-actions-panel') && !document.querySelector('.yo-cloud')", `${route} should not render a mascot companion.`);

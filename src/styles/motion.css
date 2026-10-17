@@ -35,11 +35,20 @@ html.is-revealed .page-loader { opacity: 0; visibility: hidden; }
   transition: opacity 240ms ease;
 }
 html.is-ready .page-loader-inner { opacity: 0; }
+.page-loader-avatar {
+  display: block; width: 80px; height: 80px; margin-bottom: 20px;
+  object-fit: contain; animation: loader-avatar-float 1.6s ease-in-out infinite;
+}
+html.is-ready .page-loader-avatar { animation: none; }
+@keyframes loader-avatar-float {
+  0%, 100% { transform: translateY(4px); }
+  50% { transform: translateY(-4px); }
+}
 .page-loader-wordmark {
   display: block;
   font-size: 13px;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 380;
   letter-spacing: .08em;
   color: #6b7a90;
 }
@@ -126,6 +135,7 @@ html.is-loading .chip.sk::after,html.is-loading [data-sk~="pill"]::after{inset:-
 @media (prefers-reduced-motion: reduce){
   html.js .page-loader, .page-loader-inner { transition: none; }
   .page-loader-fill { animation: none; transform: translateX(75%); }
+  .page-loader-avatar { animation: none; transform: none; }
   html.is-revealing .page-reveal-row { animation: none !important; opacity: 1 !important; transform: none !important; }
   html.is-loading :is(.sk,[data-sk])::after{animation:none}
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important}

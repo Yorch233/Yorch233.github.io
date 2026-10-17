@@ -1,12 +1,12 @@
 .yo-actions { position: absolute; left: 0; bottom: 0; width: 100%; height: 44px; pointer-events: none; font-family: var(--sans); }
-.yo-actions-revive { position: absolute; left: -32px; bottom: 0; pointer-events: auto; display: grid; place-items: center; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 50%; background: transparent; color: #637d9e; font: 600 14px/1 var(--sans); cursor: pointer; }
+.yo-actions-revive { position: absolute; left: -32px; bottom: 0; pointer-events: auto; display: grid; place-items: center; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 50%; background: transparent; color: #637d9e; font: 450 14px/1 var(--sans); cursor: pointer; }
 .yo-actions-revive span { display: grid; place-items: center; min-width: 28px; height: 28px; border-radius: 50%; background: rgb(246 250 255 / .76); box-shadow: inset 0 1px 2px #fff, 0 4px 12px -5px rgb(42 79 123 / .22); backdrop-filter: none; }
 .yo-actions-revive:focus-visible, .yo-actions-panel button:focus-visible { outline: 2px solid #2489ff; outline-offset: 2px; }
 .yo-actions-panel { position: absolute; bottom: calc(100% + 12px); right: 0; width: min(280px, calc(100vw - 40px)); max-height: calc(100dvh - 120px); overflow: auto; padding: 16px; border-radius: 22px; background: rgb(250 253 255 / .97); box-shadow: inset 0 1px 2px #fff, 0 12px 40px -16px rgb(38 74 118 / .3); color: #40516b; pointer-events: auto; }
 .yo-actions-panel[hidden] { display: none; }
-.yo-actions-panel p { margin: 0 0 10px; color: #172b4d; font: 800 18px/1.3 var(--sans); }
+.yo-actions-panel p { margin: 0 0 10px; color: #172b4d; font: 560 18px/1.3 var(--sans); }
 .yo-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.yo-actions-panel button { min-height: 44px; padding: 8px; border: 0; border-radius: 12px; background: transparent; font: 500 14px/1.4 var(--sans); color: inherit; cursor: pointer; text-align: left; }
+.yo-actions-panel button { min-height: 44px; padding: 8px; border: 0; border-radius: 12px; background: transparent; font: 380 14px/1.4 var(--sans); color: inherit; cursor: pointer; text-align: left; }
 .yo-actions-panel button:hover { background: #e9f2ff; color: #2567bd; }
 .yo-actions-hide { width: 100%; margin-top: 8px; color: #6f8099 !important; }
 [data-dismissed=true] .meet-bubble { visibility: hidden !important; opacity: 0 !important; }

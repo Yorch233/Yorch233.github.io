@@ -30,6 +30,8 @@ test('CV dialog identifies the document, disables its missing download and resto
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
     expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(height);
     expect(await close.evaluate(el => el.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+    expect(await close.evaluate(el => getComputedStyle(el).borderColor)).toBe('rgb(232, 232, 232)');
+    expect(await close.evaluate(el => el.getBoundingClientRect().width)).toBe(await dialog.locator('.cv-dialog-download').evaluate(el => el.getBoundingClientRect().width));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if (width === 390) await page.screenshot({ path: testInfo.outputPath('cv-390.png') });
     await close.click();

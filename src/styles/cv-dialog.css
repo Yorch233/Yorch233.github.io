@@ -9,9 +9,15 @@
 .home-ref .cv-dialog .cv-dialog-download { width: 100%; min-height: 48px; padding: 12px 16px; justify-content: center; gap: 10px; font-size: 15px; text-decoration: none; }
 .home-ref .cv-dialog-download .ui-icon { width: 20px; height: 20px; color: inherit !important; }
 body.home-ref .cv-dialog .cv-dialog-download:disabled { --glass-tint: #ced9e8; --glass-opacity: 50%; --glass-lower-opacity: 35%; color: var(--muted); cursor: default; transform: none; box-shadow: none !important; }
-.home-ref .cv-dialog-close { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 14px; color: var(--muted); background: transparent; font: 500 13px/1.5 var(--sans); cursor: pointer; }
-.home-ref .cv-dialog-close:hover { color: var(--ink); background: var(--accent-soft); }
+body.home-ref #cv-dialog .cv-dialog-close { display: inline-flex; align-items: center; justify-content: center; justify-self: stretch; width: 100%; gap: 7px; min-height: 44px; padding: 8px 16px; border: 1px solid #E8E8E8 !important; border-radius: 999px; color: #25364d; background: #fff !important; box-shadow: 0 1px 2px rgb(0 0 0 / 3%) !important; font: 380 13px/1.5 var(--sans); cursor: pointer; transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease; }
+body.home-ref #cv-dialog .cv-dialog-close:is(:hover, :focus-visible) { background: #F5F5F5 !important; box-shadow: 0 2px 5px rgb(0 0 0 / 6%) !important; }
+body.home-ref #cv-dialog .cv-dialog-close::before,
+body.home-ref #cv-dialog .cv-dialog-close::after { display: none; }
+.home-ref .cv-dialog-close .ui-icon { width: 15px; height: 15px; color: inherit !important; }
 .home-ref .cv-dialog :is(button, a):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  body.home-ref #cv-dialog .cv-dialog-close { transition: none; }
+}
 @media (max-width: 720px) {
   .home-ref .cv-dialog .cv-dialog-content { padding: 28px 24px 20px; }
   .home-ref .cv-dialog h2 { font-size: 26px; }

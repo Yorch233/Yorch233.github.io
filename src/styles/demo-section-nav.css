@@ -1,4 +1,4 @@
-.demo-section-nav { position: fixed; z-index: 35; left: max(8px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); font: 500 12px/1.4 var(--sans); }
+.demo-section-nav { position: fixed; z-index: 35; left: max(8px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); font: 380 12px/1.4 var(--sans); }
 .demo-section-list { position: relative; display: flex; flex-direction: column; width: 44px; margin: 0; padding: 0; list-style: none; }
 .demo-section-list li { position: relative; }
 .demo-section-list a { position: relative; display: flex; align-items: center; width: 44px; height: 44px; color: #171717; text-decoration: none; }

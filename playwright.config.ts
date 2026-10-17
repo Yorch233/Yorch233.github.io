@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 const devServer = process.env.E2E_SERVER === 'dev';
-const port = 4322;
+const port = Number(process.env.E2E_PORT || 4322);
 const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({

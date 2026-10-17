@@ -86,7 +86,7 @@ position: relative; display: grid; grid-template-rows: minmax(0, 1fr) auto; widt
 }
 
 .rsb-figure-modal-close {
-position: absolute; top: max(16px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 400 28px/1 var(--sans); cursor: pointer;
+position: absolute; top: max(16px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font: 330 28px/1 var(--sans); cursor: pointer;
 }
 
 .rsb-figure-modal-close:hover {
@@ -127,7 +127,7 @@ background: var(--accent); color: white;
 }
 
 .rsb-figure-modal-caption h2 {
-margin: 0; color: var(--ink); font: 800 var(--text-3)/1.3 var(--display);
+margin: 0; color: var(--ink); font: 560 var(--text-3)/1.3 var(--display);
 }
 
 .rsb-figure-caption {
@@ -135,11 +135,11 @@ position: static; padding: 24px 28px; background: var(--reading-surface); color:
 }
 
 .rsb-figure-label {
-display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: var(--text-1); font-weight: 600;
+display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: var(--text-1); font-weight: 450;
 }
 
 .rsb-figure-caption h3 {
-margin: 12px 0 8px; color: var(--ink); font: 800 var(--text-3)/1.3 var(--display); letter-spacing: -.02em;
+margin: 12px 0 8px; color: var(--ink); font: 560 var(--text-3)/1.3 var(--display); letter-spacing: -.02em;
 }
 
 .rsb-figure-caption p {

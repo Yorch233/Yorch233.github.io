@@ -14,21 +14,19 @@
   transition: transform .22s ease-out; transform-style: preserve-3d;
 }
 .home-ref .citation-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.home-ref .citation-kicker { font: 600 13px/1.5 var(--sans); color: var(--muted); }
-.home-ref .citation-header h2 { font: 800 28px/1.25 var(--display); margin: 4px 0 0; }
+.home-ref .citation-header h2 { font: 560 28px/1.25 var(--display); margin: 0; }
 .home-ref .citation-close { flex: 0 0 44px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: color-mix(in srgb, var(--ink) 6%, var(--surface)); color: var(--ink); font: 28px/1 var(--sans); cursor: pointer; }
 .home-ref .citation-paper { font-size: 14px; line-height: 1.65; color: var(--muted); margin: 18px 0; overflow-wrap: anywhere; }
 .home-ref .citation-tabs { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 4px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 6%, var(--surface)); isolation: isolate; }
-.home-ref .citation-tabs button { position: relative; z-index: 1; min-height: 44px; padding: 8px 6px; border: 0; border-radius: 999px; background: transparent; font: 600 14px/1.4 var(--sans); color: var(--muted); cursor: pointer; }
+.home-ref .citation-tabs button { position: relative; z-index: 1; min-height: 44px; padding: 8px 6px; border: 0; border-radius: 999px; background: transparent; font: 450 14px/1.4 var(--sans); color: var(--muted); cursor: pointer; }
 .home-ref .citation-tabs button[aria-selected="true"] { color: var(--accent-deep, var(--ink)); }
 .home-ref .citation-slider { position: absolute; top: 4px; bottom: 4px; left: 0; width: var(--tab-width); transform: translateX(var(--tab-x)); border-radius: 999px; background: var(--surface); box-shadow: 0 2px 6px rgb(15 40 70 / .12); transition: transform .42s cubic-bezier(.2,.85,.2,1.1), width .42s ease; }
 .home-ref .citation-panel { margin: 20px 0; padding: 18px; min-height: 210px; max-height: min(340px, 40dvh); overflow: auto; border-radius: 16px; background: color-mix(in srgb, var(--ink) 3%, var(--surface)); scrollbar-width: thin; }
-.home-ref .citation-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; user-select: text; }
-.home-ref .citation-code { font: 13px/1.75 ui-monospace, SFMono-Regular, Consolas, monospace; }
-.home-ref .citation-prose { font: 16px/1.75 var(--sans); }
+.home-ref .citation-panel pre { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; user-select: text; font: 330 var(--text-2)/1.75 var(--sans); }
 .home-ref .citation-footer { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
 .home-ref .citation-status { margin-right: auto; color: var(--muted); font-size: 13px; line-height: 1.5; }
-.home-ref .citation-copy { flex-shrink: 0; min-height: 44px; padding: 10px 22px; border: 0; border-radius: 999px; background: var(--primary, #2f68c4); color: #fff; font: 600 14px/1.5 var(--sans); cursor: pointer; }
+.home-ref .citation-copy { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0; min-height: 44px; padding: 10px 22px; border: 0; border-radius: 999px; background: var(--primary, #2f68c4); color: #fff; font: 450 14px/1.5 var(--sans); cursor: pointer; }
+.home-ref .citation-copy .ui-icon { width: 18px; height: 18px; color: inherit !important; }
 .home-ref .citation-dialog button:focus-visible, .home-ref .citation-panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @keyframes citation-shade { from { background: transparent; } }
 @keyframes citation-unshade { to { background: transparent; } }

@@ -37,7 +37,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		expect(cloudsBefore).not.toBe(await page.evaluate("[...document.querySelectorAll('.home-clouds span')].map(n => getComputedStyle(n).transform).join('|')"));
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await check(page, "[...document.querySelectorAll('.home-clouds span')].every(n => getComputedStyle(n).animationName === 'none' && getComputedStyle(n).transform === 'none')", 'Cloud background keeps moving under reduced motion.');
-		await check(page, "getComputedStyle(document.querySelector('.page-loader-fill')).animationName === 'none'", 'Loader bar keeps moving under reduced motion.');
+		await check(page, "getComputedStyle(document.querySelector('.page-loader-fill')).animationName === 'none' && getComputedStyle(document.querySelector('.page-loader-avatar')).animationName === 'none'", 'Loader bar keeps moving under reduced motion.');
 		await page.evaluate("document.querySelector('.theme-toggle').click(); true");
 		await check(page, "document.documentElement.dataset.theme === 'light' && !document.documentElement.dataset.themeTransition", 'Reduced motion did not switch themes immediately.');
 		await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -113,6 +113,42 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		}
 	});
 
+	test('Demo links animate once per hover and navigate directly', async ({ page }) => {
+		await seenWelcome(page);
+		await page.goto('/#publications');
+		const link = page.locator('.pub-demo-link').first();
+		const states = () => link.locator('[data-sparkle]').evaluateAll(stars => stars.flatMap(star => star.getAnimations().map(animation => animation.playState)));
+		const bounds = () => link.locator('.ui-icon__line [data-sparkle]').evaluateAll(stars => stars.map(star => {
+			const { x, y, width, height } = star.getBoundingClientRect();
+			const origin = star.closest('svg')!.getBoundingClientRect();
+			return { x: x - origin.x, y: y - origin.y, width, height };
+		}));
+		const initialBounds = await bounds();
+		await link.hover();
+		expect(new URL(page.url()).hash).toBe('#publications');
+		await expect.poll(states).toContain('finished');
+		const finalBounds = await bounds();
+		for (const [index, box] of finalBounds.entries()) {
+			const opposite = initialBounds[1 - index];
+			for (const key of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(box[key] - opposite[key])).toBeLessThan(1);
+		}
+		await link.locator('.ui-icon').hover();
+		expect(await states()).not.toContain('running');
+		await page.locator('.pub-title').first().hover();
+		await expect.poll(states).toEqual([]);
+		await link.hover();
+		expect(await states()).toContain('running');
+		await link.click();
+		await page.waitForURL('**/CoF/');
+		await page.goBack();
+		await page.emulateMedia({ reducedMotion: 'reduce' });
+		await page.goto('/#publications');
+		await page.locator('.pub-demo-link').first().hover();
+		expect(await states()).toEqual([]);
+		await page.locator('.pub-demo-link').first().click();
+		await page.waitForURL('**/CoF/');
+	});
+
 	test('publication abstracts show three lines and expand independently', async ({ page }) => {
 		await seenWelcome(page);
 		await page.goto('/#publications');
@@ -128,12 +164,14 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				await expect(summary).toHaveText(paper.abstract);
 				await expect(toggle).toHaveAttribute('aria-controls', (await summary.getAttribute('id'))!);
 				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+				await expect(toggle).toHaveText('Show');
 				const collapsed = await summary.evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight), align: getComputedStyle(node).textAlign, fullHeight: node.scrollHeight }));
 				expect(Math.abs(collapsed.height - collapsed.line * 3)).toBeLessThan(1);
 				expect(collapsed.fullHeight).toBeGreaterThan(collapsed.height);
 				expect(collapsed.align).toBe(width > 720 ? 'justify' : 'start');
 				await toggle.press('Enter');
 				await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+				await expect(toggle).toHaveText('Hide');
 				expect(await summary.evaluate(node => node.getBoundingClientRect().height)).toBeGreaterThan(collapsed.height);
 				for (let other = 0; other < publications.length; other++) {
 					if (other !== index) await expect(cards.nth(other).locator('.pub-abstract-toggle')).toHaveAttribute('aria-expanded', 'false');
@@ -157,12 +195,12 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		   viewport loop has just ended on the compact 844x390 screen. */
 		await page.setViewportSize({ width: 844, height: 390 });
 		await page.waitForTimeout(550);
-		await check(page, "[...document.querySelectorAll('.topbar .floating-capsule')].every(node => node.style.getPropertyValue('--glass-refraction').includes('url(#home-lens-') && !getComputedStyle(node, '::before').backdropFilter.includes('blur(') && getComputedStyle(node, '::before').transform === 'none' && getComputedStyle(node, '::after').display === 'block') && document.querySelectorAll('.glass-defs feDisplacementMap').length === 4", 'Compact homepage header capsules should retain clear optical lenses without blur.');
+		await check(page, "[...document.querySelectorAll('.topbar .floating-capsule')].every(node => node.style.getPropertyValue('--glass-refraction').includes('url(#home-lens-') && (node.matches('.actions-pill') ? getComputedStyle(node, '::before').backdropFilter.includes('blur(5px)') : !getComputedStyle(node, '::before').backdropFilter.includes('blur(')) && getComputedStyle(node, '::before').transform === 'none' && getComputedStyle(node, '::after').display === 'block') && document.querySelectorAll('.glass-defs feDisplacementMap').length === 4", 'Compact header capsules should retain optical lenses, with 5px blur on the primary navigation.');
 		await page.setViewportSize({ width: 1280, height: 800 });
 		await waitForExpr(page, "[...document.querySelectorAll('.topbar .floating-capsule')].every(node => node.style.getPropertyValue('--glass-refraction').includes('url(#home-lens-'))", 'Header lens references never attached.');
 		await waitForExpr(page, "[...document.querySelectorAll('.topbar .floating-capsule')].every(node => { const id = node.style.getPropertyValue('--glass-refraction').match(/#([^)]*)/)[1]; const filter = document.getElementById(id); return Number(filter.getAttribute('width')) === node.offsetWidth && Number(filter.getAttribute('height')) === node.offsetHeight; })", 'Header lenses never matched their capsule size.');
 		await check(page, "[...document.querySelectorAll('.topbar .floating-capsule')].every(node => { const id = node.style.getPropertyValue('--glass-refraction').match(/#([^)]*)/)[1]; const filter = document.getElementById(id); return Number(filter.getAttribute('width')) === node.offsetWidth && Number(filter.getAttribute('height')) === node.offsetHeight && filter.querySelectorAll('feDisplacementMap').length === 1 && !filter.querySelector('feColorMatrix'); })", 'Header glass lenses lost their size or introduced dispersion after viewport changes.');
-		await check(page, "[...document.querySelectorAll('.topic-pill, .link-pill')].every(node => !node.style.getPropertyValue('--glass-refraction') && getComputedStyle(node).backdropFilter === 'none' && getComputedStyle(node, '::before').backdropFilter === 'none' && !['none', 'normal'].includes(getComputedStyle(node, '::after').content))", 'Body buttons should use the translucent glass tier without blur with sharp labels and reflected edges.');
+		await check(page, "[...document.querySelectorAll('.topic-pill, .link-pill')].every(node => !node.style.getPropertyValue('--glass-refraction') && getComputedStyle(node).backdropFilter === 'none' && (node.matches('.topic-pill--primary, .link-pill--primary') ? getComputedStyle(node, '::before').backdropFilter === 'none' && !['none', 'normal'].includes(getComputedStyle(node, '::after').content) : getComputedStyle(node, '::after').display === 'none'))", 'Primary buttons retain glass edges; secondary navigation and resource links remain flat without reflected edges.');
 		await check(page, "[...document.querySelectorAll('.home-clouds span')].every(node => !getComputedStyle(node).filter.includes('blur(')) && ['none'].includes(getComputedStyle(document.querySelector('.yo-welcome')).backdropFilter) && getComputedStyle(document.querySelector('.yo-welcome'), '::backdrop').backdropFilter === 'none'", 'Clouds and welcome overlays should use transparency instead of blur.');
 		const glassScale = "Number(document.querySelector('.glass-defs filter feDisplacementMap').getAttribute('scale')) / Number(document.querySelector('.glass-defs filter').getAttribute('data-rest-scale'))";
 		await check(page, "getComputedStyle(document.querySelector('.topbar')).backdropFilter === 'none'", 'Legacy header blur hides the glass rim refraction.');
@@ -219,7 +257,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				Math.abs(b.height - shell.height - 12) < 1 && Math.abs(shell.top - b.top - 6) < 1 && Math.abs(b.bottom - shell.bottom - 6) < 1 &&
 				getComputedStyle(pill).backgroundColor === 'rgba(0, 0, 0, 0)' && !getComputedStyle(glass).backdropFilter.includes('blur(') &&
 				glass.style.getPropertyValue('--glass-refraction').includes('url(#home-lens-') &&
-				getComputedStyle(document.querySelector('.actions-pill'), '::before').backdropFilter.includes('blur(1px)');
+				getComputedStyle(document.querySelector('.actions-pill'), '::before').backdropFilter.includes('blur(5px)');
 		})()`, 'Desktop glass selection lost its 12px overhang, lens or settled geometry.');
 		await page.evaluate('history.back(); true');
 		await waitForExpr(page, "document.querySelector('.toplink[aria-current]').getAttribute('href') === '#awards'", 'Back navigation lost the awards selection.');
@@ -326,7 +364,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await check(page, "!document.querySelector('.card-skel') && [...document.querySelectorAll('.pub-links .link-pill--primary')].every(a => a.textContent.trim() === 'Demo')", 'Local content is delayed or the CoF destination is misleading.');
 		await page.evaluate("document.querySelector('.brand').click(); true");
 		await waitForExpr(page, "!!document.querySelector('.meet-greet')", 'The brand click never returned home.');
-		expect(requests.some(url => url.includes('/fonts/')), 'A local font request survived the system font stack migration.').toBe(false);
+		expect(requests.some(url => url.includes('/fonts/MiSans-VF.woff2')), 'The bundled MiSans font never loaded.').toBe(true);
 		await check(page, "!document.querySelector('a[href^=\"/custom\"]') && !document.body.textContent.includes('Yo Studio')", 'The removed character creator still has a homepage entry.');
 		expect((await page.request.get('/custom/')).status(), 'The removed character creator route is still served.').toBe(404);
 	});

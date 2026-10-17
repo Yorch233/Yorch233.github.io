@@ -9,10 +9,8 @@ one glance. Yo introduces the person; the person and work own the hierarchy.
 Keep the existing portrait, Blue and Fluffy artwork, and academic content.
 
 Design variance 5, motion intensity 6, visual density 3. The homepage is
-intentionally light: ice-white canvas, blue actions and a native system font
-stack for headings and body text: `-apple-system, "system-ui", "SF Pro Text",
-"Helvetica Neue", Arial, sans-serif`. RSB and CoF use the same ice-white/blue
-reading template and system typography.
+intentionally light: ice-white canvas, blue actions and bundled MiSans for headings and body text, with the system font stack as fallback. RSB and CoF use the same ice-white/blue
+reading template and MiSans typography.
 
 ## Visual language
 
@@ -294,8 +292,8 @@ Fluffy with round glasses and a small satin-blue bow tie is the fixed public mas
 The bow sits below the glasses and shares geometry and colors across live
 and static artwork. There is no appearance
 switch, and legacy `yo-form.v1` preferences are ignored. `yo-logo.js` owns
-native static artwork for demo watermarks. The loader shows no
-mascot artwork: the white splash centers a small gray “Loading” word above a
+native static artwork for demo watermarks. The loader shows Qing’s 80px cartoon avatar, floating vertically by ±4px over
+1.6 seconds, above the small gray “Loading” word on the white splash, with a
 thin rounded gray track carrying the moving blue segment below it — no
 capsule, no percentage. Keep the loader visible for at least 777ms after its initial
 paint opportunity, then wait for fonts to settle (with a 1500ms deadline).
@@ -306,16 +304,14 @@ fades in once when it first enters the viewport, through an
 IntersectionObserver in `PaperLayout` that pre-reveals slightly before the
 block arrives; the splash row reveal skips those blocks. Reduced motion and
 non-JS visitors see everything immediately.
-Reduced motion retains the same minimum, a static indicator and blue segment,
+Reduced motion retains the same minimum, a static avatar and blue indicator,
 and immediate page entrances. Local section switches keep their immediate content
 behavior. No loader artwork is generated at build time.
-`site-logo.js` owns
-the transparent cutout for page branding and browser favicons: a close-up
-Fluffy in a gentle right-facing side view, blue-white shading and a blue
-upper-left `Yo` badge, complete cloud edges and no tile background or corner
-clipping. The favicon embeds the alpha PNG in a self-contained SVG, without a
-background rectangle or corner mask. The touch icon keeps the opaque app tile.
-Keep Qing's personal portrait separate. Both logo treatments show Yo from the first paint.
+`site-logo.js` uses Qing's existing transparent cartoon portrait for the homepage
+brand avatar and browser favicons on every page. All icons share one circular
+crop with transparent corners. The favicon embeds a resized PNG in a
+self-contained SVG. The touch icon uses the same crop at 180px.
+Yo's companion and native demo artwork remain separate from this site identity.
 Blue artwork remains an internal asset, not a user-selectable form.
 
 ## Interface icons
@@ -676,3 +672,67 @@ Restoring it preserves the source, position, volume and
 visualization selection. Close stops playback and restores focus to the source
 chip. Reserve bottom document space for the current player height. Phones do
 not load all samples; switching layouts disposes the outgoing audio graph.
+
+Reading-card secondary actions in Publications and News use
+transparent outline capsules with blue borders and a light blue hover/focus fill.
+They have no raised glass layers or resting shadows. Blue primary actions remain
+filled. Abstract toggles are plain text buttons labeled Show and Hide, with no
+icon or capsule and a minimum 44px touch target.
+
+Awards detail toggles are borderless More detail / Less detail text buttons with
+plus/minus icons. Contact research profiles retain their committed full-width glass rows,
+platform icons and right arrows. Remove only their shadows. Keep the ORCID
+identifier visible and all actions at least 44px tall.
+
+Above 720px the homepage primary navigation keeps optical refraction and uses
+5px backdrop Gaussian blur on its decorative layer. Phone navigation retains
+its 12px frosted tier. Publication venue labels are flat, softly tinted tags
+with 6px corners, without glass or shadows; CoF's tag reads arXiv.
+
+MiSans is the global default across the homepage and both paper Demos. The
+complete variable font is bundled as WOFF2 under public/fonts with Xiaomi's
+license and source attribution. Preload the shared face and use font-display:
+swap; retain the system fallback and monospace code styles.
+
+Calibrate weights to MiSans's native variable axis: prose 330 (Regular),
+secondary emphasis and controls 380–450, bold emphasis and headings 520
+(Semibold), and major display headings 560. Avoid the previous system-font
+700–800 weights, which approach MiSans Heavy and overpower the page.
+
+Publication Demo links exchange their two native sparkle shapes once over 360ms
+on each pointer entry or keyboard focus. Exchange their sizes as well as positions
+so the final silhouette matches the starting arrangement. Keep the outline stroke
+width constant during scaling. Hold the final pose until pointer/focus
+leaves, then reset; do not loop or replay while still hovered. Clicks follow the
+real href immediately. Reduced motion skips the effect. Cancel animations on
+unmount or pagehide, including browser Back reuse.
+
+Awards' Chinese-name hover tips follow the pointer, centered 10px above it.
+Clamp the bubble within the reading paragraph and the viewport's upper edge.
+Keyboard focus positions the same tip above the event text. Keep the normal
+text cursor and update pointer positioning without component render state.
+
+Citation dialogs begin with “Cite this paper”, without a paper/year kicker.
+Unselected format tabs are transparent; only the sliding selection has a white
+surface. The copy action shows the native copy icon and the stable label Copy;
+format-specific context remains in its accessible label, with feedback in the
+separate status text.
+
+The CV Close action follows the reference capsule and matches the download
+button’s full width: native close icon plus label, white surface, 1px #E8E8E8
+border and a very
+light neutral shadow. Hover/focus uses #F5F5F5; keep a 44px touch target.
+
+Homepage secondary Explore more links use white capsules with a thin #E8E8E8
+border, minimal neutral shadow and #F5F5F5 hover fill, without glass reflections.
+Keep the blue primary link filled. Both Demo pages use transparent outline
+keyword tags without shadows or reflected light. Both section headings and their
+section navigation labels read “Key Words”.
+
+Demo audio methods rest on white with thin gray outlines; selected and playing
+methods keep white labels on their method-colored fill. The main play button
+uses the primary blue. Previous/next sample controls use opaque white surfaces
+with visible soft shadows, and pale blue fill with a blue border on hover.
+
+Demo Quick links share the sample-navigation shadow. Their resource row wraps
+with visible overflow so lower shadows are not clipped by a scroll container.

@@ -61,12 +61,12 @@ test.describe('Yo mascot life, narration & actions', () => {
 		expect(idleLife.gazeRange, `Yo does not look around between interactions: ${JSON.stringify(idleLife)}`).toBeGreaterThan(1.5);
 		expect(idleLife.handsHidden, 'Idle motion exposed hands without a gesture.').toBe(true);
 		expect(idleLife.overflow, 'Fluffy caused horizontal overflow.').toBe(false);
-		await check(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && !document.querySelector('[data-yo-form]') && document.querySelector('link[rel=icon]').href.includes('/yo-cutout-v1.svg')", 'Fixed Fluffy branding is inconsistent.');
+		await check(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && !document.querySelector('[data-yo-form]') && document.querySelector('link[rel=icon]').href.includes('/qing-avatar.svg')", 'Fixed Fluffy branding is inconsistent.');
 		await waitForExpr(page, "document.querySelector('.brand-avatar').complete && document.querySelector('.brand-avatar').naturalWidth > 0", 'The brand avatar never loaded.');
 		await check(page, `document.querySelector('.brand-avatar').getAttribute('src') === ${JSON.stringify(SITE_LOGO_URL)} &&
 			document.querySelector('.hero-avatar').getAttribute('src') === ${JSON.stringify(profile.avatar)} &&
 			document.querySelector('link[rel=icon]').getAttribute('href') === ${JSON.stringify(SITE_FAVICON_URL)} &&
-			document.querySelector('link[rel=apple-touch-icon]').getAttribute('href') === ${JSON.stringify(SITE_TOUCH_ICON_URL)}`, 'The Yo cutout branding is missing or replaces Qing’s portrait.');
+			document.querySelector('link[rel=apple-touch-icon]').getAttribute('href') === ${JSON.stringify(SITE_TOUCH_ICON_URL)}`, 'Qing’s cartoon branding or portrait is missing.');
 		await check(page, `(() => {
 			const image = document.querySelector('.brand-avatar');
 			const canvas = document.createElement('canvas');
@@ -76,7 +76,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			let transparent = 0, solid = 0;
 			for (let i = 3; i < pixels.length; i += 4) { if (!pixels[i]) transparent++; if (pixels[i] > 240) solid++; }
 			return pixels[3] === 0 && transparent > canvas.width * canvas.height * 0.2 && solid > 100;
-		})()`, 'The page logo lost its transparent background or visible Yo silhouette.');
+		})()`, 'The page logo lost its transparent background or visible Qing silhouette.');
 		const siteFavicon = await (await page.request.get(SITE_FAVICON_URL)).text();
 		expect(siteFavicon.includes('data:image/png;base64,') && !siteFavicon.includes('<rect') && !siteFavicon.includes('clip-path') && !siteFavicon.includes('/logo/'), 'The transparent favicon has a tile/mask or depends on an external image.').toBe(true);
 		await check(page, `(async () => {
@@ -88,8 +88,8 @@ test.describe('Yo mascot life, narration & actions', () => {
 			let transparent = 0, solid = 0;
 			for (let i = 3; i < pixels.length; i += 4) { if (!pixels[i]) transparent++; if (pixels[i] > 240) solid++; }
 			return pixels[3] === 0 && transparent > 32 * 32 * 0.2 && solid > 100;
-		})()`, 'The actual browser SVG favicon lost alpha or its visible Yo silhouette at 32px.');
-		expect((await page.request.get(SITE_TOUCH_ICON_URL)).ok(), 'The Yo touch icon is unavailable.').toBe(true);
+		})()`, 'The actual browser SVG favicon lost alpha or its visible Qing silhouette at 32px.');
+		expect((await page.request.get(SITE_TOUCH_ICON_URL)).ok(), 'Qing’s touch icon is unavailable.').toBe(true);
 		await check(page, "!!document.querySelector('.yo-cloud-fluff [data-fluffy-surface] linearGradient') && !document.querySelector('.yo-cloud-stage image, .yo-cloud-stage feDisplacementMap')", 'Live Fluffy must use a pure SVG surface without images or displacement.');
 		const fluffyLogo = await (await page.request.get('/logo/yo-fluffy.svg')).text();
 		expect(fluffyLogo.includes('data-fluffy-surface') && !fluffyLogo.includes('<image') && !fluffyLogo.includes('data:image'), 'The native Fluffy mark depends on an external image.').toBe(true);
@@ -109,7 +109,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		await waitForExpr(page, "!!document.querySelector('.yo-cloud-mood-happy') && !!document.querySelector('.yo-cloud-face ellipse[rx=\"12\"]')", 'Petting did not produce the happy reaction.');
 		await page.reload();
 		await waitForExpr(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && !document.documentElement.classList.contains('is-loading')", 'The reload never finished.');
-		await check(page, "window.__firstYoForm === 'fluffy' && window.__firstYoIcon.includes('/yo-cutout-v1.svg')", 'Reload painted the wrong initial logo/loader form.');
+		await check(page, "window.__firstYoForm === 'fluffy' && window.__firstYoIcon.includes('/qing-avatar.svg')", 'Reload painted the wrong initial logo/loader form.');
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
 		await waitForExpr(page, "document.querySelector('.meet-yo').dataset.peeking === 'false'", 'Yo never came fully into view after reload.');
 		await page.evaluate("document.querySelector('[data-topic=publications]').click(); true");
@@ -124,8 +124,8 @@ test.describe('Yo mascot life, narration & actions', () => {
 		await page.waitForTimeout(250);
 		expect(reducedFluffy === await page.evaluate("document.querySelector('.yo-cloud-body').getAttribute('transform')") && await page.evaluate<boolean>("document.querySelector('.yo-cloud-stage').dataset.motion === 'static'"), 'Fluffy ignores reduced motion.').toBe(true);
 		await page.evaluate("window.dispatchEvent(new StorageEvent('storage', { key: 'yo-form.v1', newValue: 'blue' })); window.dispatchEvent(new CustomEvent('yo:form-change', {detail: 'blue'})); true");
-		await check(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && document.querySelector('link[rel=icon]').href.includes('/yo-cutout-v1.svg')", 'Legacy preference events changed Fluffy.');
-		expect(requests.some(url => url.includes('/fonts/')), 'A local font request survived the system font stack migration.').toBe(false);
+		await check(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && document.querySelector('link[rel=icon]').href.includes('/qing-avatar.svg')", 'Legacy preference events changed Fluffy.');
+		expect(requests.some(url => url.includes('/fonts/MiSans-VF.woff2')), 'The bundled MiSans font never loaded.').toBe(true);
 	});
 
 	test('hover and focus narration covers every section', async ({ page }) => {

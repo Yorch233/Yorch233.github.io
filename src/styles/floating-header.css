@@ -70,11 +70,11 @@
 	min-height: 50px;
 	padding: 12px 20px;
 	color: var(--ink);
-	font: 600 var(--text-1)/1.4 var(--sans);
+	font: 450 var(--text-1)/1.4 var(--sans);
 	text-decoration: none;
 }
 .demo-capsule-paper-title { font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
-.demo-capsule-publication { color: var(--muted); font-size: 11px; font-weight: 500; line-height: 1.45; overflow-wrap: anywhere; }
+.demo-capsule-publication { color: var(--muted); font-size: 11px; font-weight: 380; line-height: 1.45; overflow-wrap: anywhere; }
 .demo-resource-links { display: flex; align-items: center; gap: 2px; }
 .demo-resource-link {
 	display: inline-flex;
@@ -85,7 +85,7 @@
 	padding: 8px 12px;
 	border-radius: 999px;
 	color: var(--muted);
-	font: 600 var(--text-1)/1.4 var(--sans);
+	font: 450 var(--text-1)/1.4 var(--sans);
 	text-decoration: none;
 	white-space: nowrap;
 	transition: color 160ms ease, background 160ms ease;

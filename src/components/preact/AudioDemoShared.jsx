@@ -311,6 +311,8 @@ function SynchronizedSpectrogram({ measurementSrc, comparisonSrc, sampleName, se
 function SegmentedToggle({ fieldClass, label, icon, value, options, onChange, ariaLabel }) {
 	const trackRef = useRef(null);
 	const [thumb, setThumb] = useState(null);
+	const measuredThumb = thumb?.width > 0 ? thumb : null;
+	const activeIndex = Math.max(0, options.findIndex(option => option.key === value));
 
 	useLayoutEffect(() => {
 		const track = trackRef.current;
@@ -326,6 +328,8 @@ function SegmentedToggle({ fieldClass, label, icon, value, options, onChange, ar
 		update();
 		const observer = new ResizeObserver(update);
 		observer.observe(track);
+		const active = track.querySelector('.segmented-option.active');
+		if (active) observer.observe(active);
 		return () => observer.disconnect();
 	}, [value, options.length]);
 
@@ -338,7 +342,10 @@ function SegmentedToggle({ fieldClass, label, icon, value, options, onChange, ar
 				</span>
 			)}
 			<div class="segmented-toggle" role="group" aria-label={ariaLabel || label} ref={trackRef}>
-				{thumb && <span class="segmented-thumb" aria-hidden="true" style={{ width: `${thumb.width}px`, transform: `translateX(${thumb.left}px)` }} />}
+				<span class="segmented-thumb" aria-hidden="true" style={{
+					width: measuredThumb ? `${measuredThumb.width}px` : `calc((100% - 6px) / ${Math.max(1, options.length)})`,
+					transform: measuredThumb ? `translateX(${measuredThumb.left}px)` : `translateX(calc(3px + ${activeIndex * 100}%))`
+				}} />
 				{options.map((option) => (
 					<button
 						key={option.key}

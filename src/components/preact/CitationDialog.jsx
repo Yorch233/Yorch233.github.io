@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { CITATION_FORMATS, formatCitation } from '../../lib/citations.js';
+import UiIcon from './UiIcon.jsx';
 import '../../styles/citation-dialog.css';
 
 export default function CitationDialog({ paper, trigger, onClose }) {
@@ -109,7 +110,7 @@ export default function CitationDialog({ paper, trigger, onClose }) {
     onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === dialog.current) close(); }}>
     <div ref={flight} class="citation-flight" onPointerMove={tilt} onPointerLeave={resetTilt}>
       <section ref={card} class="citation-card">
-        <header class="citation-header"><div><span class="citation-kicker">{paper.slug} · {paper.year}</span><h2 id="citation-title">Cite this paper</h2></div>
+        <header class="citation-header"><h2 id="citation-title">Cite this paper</h2>
           <button type="button" class="citation-close" aria-label="Close citations" onClick={close} autoFocus>×</button></header>
         <p id="citation-paper" class="citation-paper">{paper.title}</p>
         <div class="citation-tabs" ref={tabs} role="tablist" aria-label="Citation format" onKeyDown={keyTabs}>
@@ -118,10 +119,11 @@ export default function CitationDialog({ paper, trigger, onClose }) {
             aria-controls="citation-panel" tabIndex={format === item.id ? 0 : -1} onClick={() => select(item.id)}>{item.label}</button>)}
         </div>
         <div id="citation-panel" role="tabpanel" aria-labelledby={'cite-tab-' + format} tabIndex={0} class="citation-panel">
-          <pre class={format === 'bib' ? 'citation-code' : 'citation-prose'}>{text}</pre>
+          <pre>{text}</pre>
         </div>
         <footer class="citation-footer"><span role="status" class="citation-status">{status}</span>
-          <button type="button" class="citation-copy" data-glass-color="blue" disabled={status === 'Copying…'} onClick={copy}>{status === 'Copied!' ? 'Copied!' : 'Copy ' + CITATION_FORMATS.find(item => item.id === format).label}</button></footer>
+          <button type="button" class="citation-copy" data-glass-color="blue" disabled={status === 'Copying…'}
+            aria-label={'Copy ' + CITATION_FORMATS.find(item => item.id === format).label + ' citation'} onClick={copy}><UiIcon id="copy" />Copy</button></footer>
       </section>
     </div>
   </dialog>;

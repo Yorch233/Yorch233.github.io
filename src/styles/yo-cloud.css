@@ -14,4 +14,4 @@
 .yo-cloud[data-peek=true] .yo-cloud-stage { overflow: hidden; }
 .yo-cloud[data-peek=true] .yo-cloud-paw,
 .yo-cloud[data-peek=true] .yo-cloud-stage > ellipse { display: none; }
-.yo-peek-hi { position: absolute; right: calc(100% - 56px); bottom: calc(100% - 16px); display: grid; place-items: center; min-width: 48px; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border-radius: 22px 22px 6px 22px; background: #fff; color: #5e7595; box-shadow: 0 8px 24px -10px rgb(38 74 118 / .22); font: 700 16px/1.4 var(--sans); }
+.yo-peek-hi { position: absolute; right: calc(100% - 56px); bottom: calc(100% - 16px); display: grid; place-items: center; min-width: 48px; min-height: 44px; padding: 4px 12px; box-sizing: border-box; border-radius: 22px 22px 6px 22px; background: #fff; color: #5e7595; box-shadow: 0 8px 24px -10px rgb(38 74 118 / .22); font: 520 16px/1.4 var(--sans); }

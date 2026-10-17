@@ -5,13 +5,13 @@
 
 /* ---------- section heading typography (icons are per-page deltas) ---------- */
 .sec-head h2, .rsb-section h2, .cof-section h2{
-  font-family:var(--sans);font-size: var(--text-1);font-weight:700;
+  font-family:var(--sans);font-size: var(--text-1);font-weight:520;
   letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
 }
 
 /* ---------- keyword chips ---------- */
 .chip, .rsb-chip, .cof-chip{
-  font-family:var(--sans);font-size: var(--text-1);font-weight:600;letter-spacing:.02em;
+  font-family:var(--sans);font-size: var(--text-1);font-weight:450;letter-spacing:.02em;
   color:var(--accent-deep);background:var(--accent-soft);
   border:1px solid var(--accent-line);border-radius:999px;
 }

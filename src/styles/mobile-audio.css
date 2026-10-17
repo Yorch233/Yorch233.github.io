@@ -16,9 +16,9 @@
 body:is(.rsb-body, .cof-body) .mobile-audio-demo .mobile-sample-trigger { display: flex; align-items: center; width: 100%; min-height: 76px; padding: 14px 12px; gap: 10px; border: 0; border-radius: 0; color: var(--ink); text-align: left; font-family: var(--sans); background: transparent !important; box-shadow: none !important; }
 .mobile-sample-trigger::before, .mobile-sample-trigger::after { display: none; }
 .mobile-sample-trigger:focus-visible { outline-offset: -3px !important; }
-.mobile-sample-number { align-self: flex-start; margin-top: 2px; flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mobile-sample-number { align-self: flex-start; margin-top: 2px; flex-shrink: 0; font-size: 12px; font-weight: 450; color: var(--muted); font-variant-numeric: tabular-nums; }
 .mobile-sample-copy { display: grid; gap: 4px; min-width: 0; flex: 1; }
-.mobile-sample-id { font: 600 13px/1.5 var(--sans); overflow-wrap: anywhere; }
+.mobile-sample-id { font: 450 13px/1.5 var(--sans); overflow-wrap: anywhere; }
 .mobile-sample-meta { font-size: 12px; line-height: 1.5; color: var(--muted); font-variant-numeric: tabular-nums; }
 .mobile-track-status { color: var(--accent); }
 .mobile-sample-chevron { width: 16px !important; height: 16px !important; flex-shrink: 0; transition: transform 180ms; }
@@ -28,7 +28,7 @@ body:is(.rsb-body, .cof-body) .mobile-audio-demo .mobile-sample-trigger { displa
 .mobile-method-panel[hidden] { display: none; }
 .mobile-method-hint { margin: 0 0 10px; color: var(--muted); font-size: 12px; }
 .mobile-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-body:is(.rsb-body, .cof-body) .mobile-methods .method-chip { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; min-height: 44px; margin: 0; padding: 8px 10px; border: 1px solid var(--line-soft); border-radius: 14px; font: 500 13px/1.4 var(--sans); color: var(--ink); }
+body:is(.rsb-body, .cof-body) .mobile-methods .method-chip { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; min-height: 44px; margin: 0; padding: 8px 10px; border: 1px solid var(--line-soft); border-radius: 14px; font: 380 13px/1.4 var(--sans); color: var(--ink); }
 .mobile-methods .chip-label { white-space: normal; overflow-wrap: anywhere; }
 .mobile-methods .method-chip > .ui-icon { flex: 0 0 16px; width: 16px; height: 16px; }
 body:is(.rsb-body, .cof-body) .mobile-methods .method-chip.active { --glass-tint: var(--method-color); --glass-opacity: 94%; --glass-lower-opacity: 84%; color: #fff; }
@@ -36,13 +36,13 @@ body:is(.rsb-body, .cof-body) .mobile-methods .method-chip.active { --glass-tint
 .mobile-methods .method-chip.active > .ui-icon .ui-icon__filled { fill: #fff; }
 
 /* Portaled outside animated article sections so fixed means viewport-fixed. */
-.floating-audio-player { position: fixed; z-index: 65; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); left: max(64px, env(safe-area-inset-left)); width: auto; max-width: 460px; margin: 0 0 0 auto; display: flex; flex-direction: column; gap: 0; max-height: calc(100dvh - 32px - env(safe-area-inset-top)); border: 1px solid rgb(255 255 255 / .9); border-radius: 24px; background: #f9fbff; box-shadow: 0 14px 44px rgb(34 61 96 / .2), inset 0 1px 0 #fff; font: 500 13px/1.5 var(--sans); color: var(--ink); isolation: isolate; animation: mobile-player-appear 220ms ease-out both; }
+.floating-audio-player { position: fixed; z-index: 65; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); left: max(64px, env(safe-area-inset-left)); width: auto; max-width: 460px; margin: 0 0 0 auto; display: flex; flex-direction: column; gap: 0; max-height: calc(100dvh - 32px - env(safe-area-inset-top)); border: 1px solid rgb(255 255 255 / .9); border-radius: 24px; background: #f9fbff; box-shadow: 0 14px 44px rgb(34 61 96 / .2), inset 0 1px 0 #fff; font: 380 13px/1.5 var(--sans); color: var(--ink); isolation: isolate; animation: mobile-player-appear 220ms ease-out both; }
 .floating-audio-player .ui-icon { width: 20px; height: 20px; flex-shrink: 0; }
 .mobile-player-identity { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 10px 4px 16px; gap: 4px; min-width: 0; flex-shrink: 0; }
 .mobile-player-identity > div { min-width: 0; }
 .mobile-player-context { color: var(--muted); font-size: 12px; }
-.mobile-player-track { margin: 2px 0; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
-.mobile-player-method { font-size: 12px; font-weight: 600; }
+.mobile-player-track { margin: 2px 0; font-size: 13px; font-weight: 450; overflow-wrap: anywhere; }
+.mobile-player-method { font-size: 12px; font-weight: 450; }
 body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border: 0; border-radius: 50%; padding: 0; color: var(--muted); text-decoration: none; background: transparent !important; box-shadow: none !important; cursor: pointer; }
 .floating-audio-player .mobile-player-button::before, .floating-audio-player .mobile-player-button::after { display: none; }
 body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button:is(:hover, [aria-pressed=true], [aria-expanded=true]) { background: var(--accent-soft) !important; color: var(--accent); }
@@ -80,7 +80,7 @@ body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-play { backg
 .floating-audio-player .spectrogram-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .floating-audio-player .spectrogram-gap { display: none; }
 .floating-audio-player .spectrogram-side { padding: 22px 0 24px 36px; }
-.floating-audio-player .spectrogram-side::before { content: attr(data-label); position: absolute; left: 36px; top: 0; font-size: 12px; font-weight: 600; }
+.floating-audio-player .spectrogram-side::before { content: attr(data-label); position: absolute; left: 36px; top: 0; font-size: 12px; font-weight: 450; }
 .floating-audio-player .spectrogram-image-frame { height: 106px; }
 .floating-audio-player .spectrogram-axis-y { top: 22px; width: 36px; bottom: 24px; }
 .floating-audio-player .spectrogram-axis-x { left: 36px; }

@@ -393,8 +393,8 @@ export const uiIcons = {
     "group": "Appearance",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 5c1 5 3 7 7 8-4 1-6 3-7 8-1-5-3-7-7-8 4-1 6-3 7-8ZM19 2c.5 2.5 1.5 3.5 4 4-2.5.5-3.5 1.5-4 4-.5-2.5-1.5-3.5-4-4 2.5-.5 3.5-1.5 4-4Z\"/></g>",
-    "filled": "<path fill=\"currentColor\" d=\"M9 5c1 5 3 7 7 8-4 1-6 3-7 8-1-5-3-7-7-8 4-1 6-3 7-8Z\"/><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M19 2c.5 2.5 1.5 3.5 4 4-2.5.5-3.5 1.5-4 4-.5-2.5-1.5-3.5-4-4 2.5-.5 3.5-1.5 4-4Z\"/>"
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><g data-sparkle=\"large\"><path d=\"M9 5c1 5 3 7 7 8-4 1-6 3-7 8-1-5-3-7-7-8 4-1 6-3 7-8Z\"/></g><g data-sparkle=\"small\"><path d=\"M19 2c.5 2.5 1.5 3.5 4 4-2.5.5-3.5 1.5-4 4-.5-2.5-1.5-3.5-4-4 2.5-.5 3.5-1.5 4-4Z\"/></g></g>",
+    "filled": "<g data-sparkle=\"large\"><path fill=\"currentColor\" d=\"M9 5c1 5 3 7 7 8-4 1-6 3-7 8-1-5-3-7-7-8 4-1 6-3 7-8Z\"/></g><g data-sparkle=\"small\"><path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M19 2c.5 2.5 1.5 3.5 4 4-2.5.5-3.5 1.5-4 4-.5-2.5-1.5-3.5-4-4 2.5-.5 3.5-1.5 4-4Z\"/></g>"
   },
   "arrow-left": {
     "id": "arrow-left",

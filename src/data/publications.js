@@ -7,7 +7,7 @@ export const publications = [
 		venue: 'arXiv preprint',
 		venueFull: 'arXiv preprint arXiv:2609.24651, September 2026',
 		year: '2026',
-		badge: 'Preprint',
+    badge: 'arXiv',
 		authors: [
 			{ name: 'Qing Yao', highlight: true },
 			{ name: 'Lijian Gao' },

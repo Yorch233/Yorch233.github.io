@@ -3,7 +3,7 @@
 .cof-news { display: flex; align-items: center; gap: 12px; margin-top: 28px; padding: 16px 20px; border-radius: 20px; background: var(--accent-soft); }
 .cof-news .cof-news-icon { width: 30px; height: 30px; }
 .cof-news-content { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
-.cof-news-tag { flex-shrink: 0; color: var(--accent-deep); font-size: 13px; font-weight: 700; }
+.cof-news-tag { flex-shrink: 0; color: var(--accent-deep); font-size: 13px; font-weight: 520; }
 .cof-news-text { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .cof-news a { color: var(--accent-deep); text-underline-offset: 3px; }
 .cof-results-intro { margin: 0 0 28px; color: var(--muted); font-size: 16px; line-height: 1.75; }

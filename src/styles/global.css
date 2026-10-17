@@ -3,6 +3,15 @@
    shared component styling lives in components.css; the loader/skeleton/
    entrance motion system lives in motion.css. */
 
+/* MiSans by Xiaomi. Bundled locally; license: /fonts/MiSans-License.pdf. */
+@font-face {
+	font-family: "MiSans";
+	src: url('/fonts/MiSans-VF.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 150 700;
+	font-display: swap;
+}
+
 :root {
 	color-scheme: light;
 	font-family: var(--sans);
@@ -28,8 +37,8 @@
 	--shadow-soft: 0 1px 2px rgba(32, 60, 110, .04), 0 12px 32px -14px rgba(32, 60, 110, .16);
 	--shadow-pop: 0 2px 8px rgba(32, 60, 110, .08), 0 22px 48px -18px rgba(32, 60, 110, .24);
 	--gold: #a5762a;          /* award highlights */
-	--sans: -apple-system, "system-ui", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-	/* Use the platform UI family throughout; keep code in a monospace stack. */
+	--sans: "MiSans", -apple-system, "system-ui", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+	/* MiSans is shared by headings, body and controls; code stays monospace. */
 	--mono: "SFMono-Regular", ui-monospace, "JetBrains Mono", Menlo, monospace;
 	/* type scale — six steps, ~1.25 between neighbors, body anchored at 16.
 	   No font-size anywhere may fall outside these tokens (desktop values). */
@@ -53,6 +62,7 @@ html {
 }
 
 body {
+	font-weight: 330;
 	margin: 0;
 	min-height: 100vh;
 }
@@ -78,3 +88,6 @@ a {
 		--text-6: 30px;
 	}
 }
+
+/* Native MiSans weights: Regular 330, Medium 380, Semibold 520. */
+h1, h2, h3, h4, h5, h6, b, strong { font-weight: 520; }

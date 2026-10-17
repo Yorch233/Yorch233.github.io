@@ -45,7 +45,7 @@ Do not describe CoF as an unpublished teaser or promise audio it does not host.
 - `src/lib/yo-pose.js`: continuous interpolation of approved state keyframes.
 - `src/components/preact/YoCloud.jsx`: illustration and continuous motion.
 - `src/lib/yo-logo.js`: shared static artwork and branding.
-- `src/lib/site-logo.js`: transparent Yo page/browser logo and app tile for the touch icon.
+- `src/lib/site-logo.js`: Qing’s cartoon page/browser logo and touch icon.
 
 Keep instructions about durable behavior here; keep detailed visual choices
 in `design.md`. Check source before documenting current implementation.
@@ -65,12 +65,12 @@ Give meaningful homepage content contextual Yo text on hover after activation, a
 controls equivalent hints on keyboard focus. Keep hover narration transient and
 out of live announcements; direct-action feedback takes priority.
 
-Use the established ice-white/blue palette and the system font stack
-`-apple-system, "system-ui", "SF Pro Text", "Helvetica Neue", Arial, sans-serif`
+Use the established ice-white/blue palette and bundled MiSans as the default font, followed by the system fallback stack
 for headings, prose and controls. Keep soft toy depth, achromatic glass floating
 header capsules and rounded reading cards.
 Use three glass tiers: clear optical glass for floating header and return capsules, translucent tinted glass for body buttons, and native frosted glass on compact screens. Keep labels and focus outside the filtered layer; support white, blue, green (#31D73F) and custom tints. Each tier has a sharp upper highlight and soft lower reflection, with subtle colored spill.
-Use opacity and translucent gradient layers for softening backgrounds, scrims, dialogs and ordinary glass; do not add blur unless frosted glass is explicitly requested. On narrow screens the Homepage header capsules, the bottom navigation bar and its white selection go frosted (light 12px blur); at desktop size the Homepage Header capsules retain optical refraction with the requested 1px backdrop blur. Compact demo capsules and body buttons keep their explicitly frosted tier.
+Use opacity and translucent gradient layers for softening backgrounds, scrims, dialogs and ordinary glass; do not add blur unless frosted glass is explicitly requested. On narrow screens the Homepage header capsules, the bottom navigation bar and its white selection go frosted (light 12px blur); at desktop size the Homepage header capsules retain optical refraction with 1px backdrop blur, while the primary navigation uses 5px blur above 720px. Compact demo capsules and body buttons keep their explicitly frosted tier.
+Homepage reading-card secondary actions use transparent outline capsules instead of raised glass. Abstract toggles are text-only Show/Hide buttons. Awards detail toggles are borderless text buttons with plus/minus icons; Contact research profiles retain their original glass rows, platform icons and right arrows, without shadows. Preserve filled blue primary actions.
 Keep the background minimal and low contrast so content remains the focus.
 Default to light mode; preserve an explicitly saved theme. The welcome page follows the selected light reference: a large portrait
 left of the complete introduction, full-width interest and action rows,
@@ -100,8 +100,8 @@ component headings, 20px section headings and 22–26px page titles; a short
 display name may use 26–30px. Choose
 only the roles a screen needs; do not create extra levels to fill a scale.
 
-Use the system font stack for every text role and keep code in monospace.
-Headings use weight 700–800, prose 400–500 and controls 500–600. Body
+Use bundled MiSans for every text role and keep code in monospace.
+With MiSans, headings use native weights 520–560, prose 330–380 and controls 380–450. Body
 line-height is 1.65–1.8; headings use 1.15–1.3; metadata and
 controls use 1.4–1.6. Keep essential labels at least 13px, except the user-requested compact bottom-navigation labels, and body copy at
 least 15px; do not shrink below the shared phone scale on mobile. Hero typography may vary
@@ -136,17 +136,17 @@ reading links bypass it. Do not add a footer introduction link. Keep dialog focu
 and restore it on close, with no duplicate visible mascot while it is open.
 
 Yo uses Fluffy with round glasses and a small blue bow tie throughout the site, without an appearance
-switch. Ignore legacy appearance preferences. Use the generated transparent
-Yo cutout within pages and in the browser favicon; the touch icon retains the app tile.
-Keep Qing Yao's portrait separate.
-The loader is a plain white splash showing a small gray "Loading" word above
-the gray linear track and blue indicator, with no mascot artwork; it stays
-visible for at least 777ms, with a static indicator under reduced motion. Demo watermarks use native Fluffy artwork.
+switch. Ignore legacy appearance preferences. Use one circular crop of Qing Yao’s
+existing cartoon portrait for the homepage brand avatar, all browser favicons
+and the touch icon. Keep Yo’s companion and demo artwork separate.
+The loader is a plain white splash showing Qing’s cartoon avatar floating gently
+above a small gray "Loading" word, the gray linear track and blue indicator; it stays
+visible for at least 777ms, with a static avatar and indicator under reduced motion. Stop the avatar animation when the loader hides. Demo watermarks use native Fluffy artwork.
 The animated character uses pure SVG geometry and paint, without embedded raster
 textures. Match the approved Fluffy silhouette and shading; keep static branding
 cutouts separate from the animated rig.
-`npm run logo:build` regenerates the native logo SVGs and embeds the transparent cutout
-in its favicon (and runs automatically before production builds).
+`npm run logo:build` regenerates the native Yo SVGs and Qing’s portrait browser
+icons (and runs automatically before production builds).
 Favicon SVGs must work without external resources.
 Do not reintroduce individual wardrobe settings.
 
@@ -201,6 +201,14 @@ RSB and CoF have no mascot companion. Keep the demos free of Yo so the
 paper content stays the focus; the companion belongs to the homepage only.
 
 ## Work and verification
+
+Keep the user's dev server running during incremental edits and use hot updates.
+Do not stop dev for verification; run production builds alongside dev and use dev-targeted checks or a separate preview port.
+Keep Vite's dev and build dependency caches separate so builds cannot invalidate
+modules already referenced by an open dev page.
+During iterative visual edits, apply changes and hot updates first. Defer test
+runs until the user asks for verification or the work is ready to commit; run
+the required checks below before committing.
 
 Prefix shell commands with `rtk`; use `rtk proxy` for unsupported commands.
 Preserve existing user changes. Before rewriting history, create a backup outside

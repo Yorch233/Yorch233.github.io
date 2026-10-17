@@ -96,7 +96,7 @@ export default function CvDialog({ onOpenChange }) {
         {profile.cv
           ? <a class="topic-pill topic-pill--primary cv-dialog-download" href={profile.cv} download="Qing-Yao-CV.pdf"><UiIcon id="download" />Download CV</a>
           : <button class="topic-pill topic-pill--primary cv-dialog-download" type="button" disabled aria-describedby="cv-dialog-availability"><UiIcon id="download" />Download CV</button>}
-        <button class="cv-dialog-close" ref={closeButton} type="button" onClick={close}>Close</button>
+        <button class="cv-dialog-close" ref={closeButton} type="button" onClick={close}><UiIcon id="close" />Close</button>
       </div>
     </div>
   </dialog>;
