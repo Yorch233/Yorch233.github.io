@@ -46,7 +46,9 @@ body:is(.rsb-body, .cof-body) .mobile-methods .method-chip.active { --glass-tint
 body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 44px; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border: 0; border-radius: 50%; padding: 0; color: var(--muted); text-decoration: none; background: transparent !important; box-shadow: none !important; cursor: pointer; }
 .floating-audio-player .mobile-player-button::before, .floating-audio-player .mobile-player-button::after { display: none; }
 body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button:is(:hover, [aria-pressed=true], [aria-expanded=true]) { background: var(--accent-soft) !important; color: var(--accent); }
-body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-play { background: var(--accent) !important; color: #fff; }
+body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button.mobile-player-play { background: #242424 !important; color: #fff !important; }
+body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button.mobile-player-play::before,
+body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button.mobile-player-play::after { content: none !important; display: none !important; }
 .floating-audio-player .mobile-player-play .ui-icon { color: #fff !important; }
 .floating-audio-player .mobile-player-play .ui-icon__filled [data-icon-tone] { fill: #fff; }
 .mobile-player-button:disabled { opacity: .5; cursor: wait; }
