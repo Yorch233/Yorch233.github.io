@@ -169,6 +169,21 @@ test.describe('CoF results controls & values', () => {
 		});
 	}
 
+	test('ultra-wide chart row stays compact', async ({ page }) => {
+		test.setTimeout(300_000);
+		await page.setViewportSize({ width: 2560, height: 1200 });
+		await page.goto('/CoF/');
+		await waitForExpr(page, "!document.documentElement.classList.contains('is-loading')", 'CoF never finished loading.');
+		await page.evaluate("document.querySelector('.cof-results').scrollIntoView({block: 'start', behavior: 'instant'}); true");
+		await waitForExpr(page, "!document.querySelector('.cof-results').closest('astro-island').hasAttribute('ssr')", 'The CoF results island never hydrated.');
+		await waitForExpr(page, "[...document.querySelectorAll('.cof-results-svg')].every(n => Math.abs(n.viewBox.baseVal.width - n.getBoundingClientRect().width) < 2)", 'CoF charts never became ready.');
+		await waitForExpr(page, "[...document.querySelectorAll('.cof-results-bars')].every(n => n.viewBox.baseVal.height === 168)", 'Ultra-wide charts never switched to the compact plot height.');
+		await check(page, "(() => { const groups = [...document.querySelectorAll('.cof-results-bar-group')]; const rows = new Set(groups.map(g => Math.round(g.getBoundingClientRect().top))); const svgs = [...document.querySelectorAll('.cof-results-bars')]; const bars = [...document.querySelectorAll('.cof-results-bars .cof-results-bar > rect')].map(r => r.getBoundingClientRect()); return rows.size === 1 && svgs.every(n => Math.round(n.getBoundingClientRect().height) === 168) && Math.max(...bars.map(r => r.height)) < 130 && document.documentElement.scrollWidth <= innerWidth; })()", 'The ultra-wide row should fit five compact plots with shorter bars.');
+		await page.setViewportSize({ width: 1440, height: 1200 });
+		await waitForExpr(page, "[...document.querySelectorAll('.cof-results-bars')].every(n => n.viewBox.baseVal.height === 232)", 'Chart height never returned to the standard plot after leaving ultra-wide.');
+		await check(page, "(() => { const groups = [...document.querySelectorAll('.cof-results-bar-group')]; const rows = new Set(groups.map(g => Math.round(g.getBoundingClientRect().top))); return rows.size === 2 && document.documentElement.scrollWidth <= innerWidth; })()", 'The standard layout should return to a wrapped grid with taller plots.');
+	});
+
 	test('audio samples: lazy hydration, budget switch, methods and playback', async ({ page }) => {
 		test.setTimeout(300_000);
 		const requests = trackRequests(page);

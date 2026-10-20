@@ -550,10 +550,11 @@ the bar's top edge; bars too short to hold the chip stack it under the value
 just above the bar. Bars render a lighter tint of the method theme colour.
 Metric hint labels with a dotted-underline affordance sit below each x-axis;
 hover or keyboard focus reveals a short accessible explanation. The five
-chart-view plots share one size and flow into one to four columns as the view
-width allows: four per row on ultra-wide screens once the paper column widens
-past 2000px, three per row on wide screens, two on medium screens and one on
-phones; a row that does not fill its maximum stays centered.
+chart-view plots share one size and flow into one to five columns as the view
+width allows: five per row on ultra-wide screens once the paper column widens
+past 2000px, with a shorter plot so the bars do not turn tall and thin; three
+per row on wide screens, two on medium screens and one on phones; a row that
+does not fill its maximum stays centered.
 Keep the results workspace focused on the charts without a numerical table or
 source/download footer.
 Every method owns a theme colour, shown saturated on its shaped monogram
@@ -563,7 +564,9 @@ a lighter tint of the same theme colour. CoF variants keep the base shape and
 switch the letters to "Co", and take the branch's shared orange — `#ff7210`
 marks on `#ff954c` bars, matching `statusColors.cof`/`barTints.cof` from the
 2026-09-17 design, saturated slightly on 2026-10-20. Each bar reveals
-its method, budget and value on hover, keyboard focus or tap.
+its method, budget and value on hover, keyboard focus or tap. The active bar
+restores full fill and draws a pure black outline, shared with its variant
+pair when one exists.
 The top legend explains the WER plot's ring-marked clean reference bar, so
 every chart group shares one structure and the five x-axes align horizontally.
 Order bars: Unprocessed, SGMSE+, StoRM, SB-VE, CoF (SB-VE),

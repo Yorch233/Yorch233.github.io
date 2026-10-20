@@ -16,6 +16,20 @@ function useChartWidth() {
 	return [ref, width];
 }
 
+// The ultra-wide paper column fits all five plots in one row, leaving each
+// plot narrow; a shorter plot keeps the bars from turning tall and thin.
+function useUltraWide() {
+	const [matches, setMatches] = useState(false);
+	useEffect(() => {
+		const query = matchMedia('(min-width: 2000px)');
+		const sync = () => setMatches(query.matches);
+		sync();
+		query.addEventListener('change', sync);
+		return () => query.removeEventListener('change', sync);
+	}, []);
+	return matches;
+}
+
 const chipMonograms = { Unprocessed: 'Un', 'SGMSE+': 'SG', StoRM: 'St', 'Clean reference': 'Cl' };
 
 // NFE changes keep the charts mounted and FLIP each bar from its previous
@@ -184,7 +198,7 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 	</div>;
 }
 
-function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel }) {
+function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel, compact }) {
 	const [ref, width] = useChartWidth();
 	const rows = benchmarkRows(dataset, metric, nfe);
 	const values = rows.map(row => row.value);
@@ -195,7 +209,9 @@ function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel }) {
 	const includesZero = minValue <= 0;
 	const low = includesZero ? Math.min(0, minValue - padding) : Math.max(0, minValue - padding);
 	const high = includesZero ? Math.max(0, maxValue + padding) : maxValue + padding;
-	const y = value => 216 - (value - low) / (high - low) * 188;
+	const chartHeight = compact ? 168 : 232;
+	const plotHeight = compact ? 124 : 188;
+	const y = value => chartHeight - 16 - (value - low) / (high - low) * plotHeight;
 	const baseline = includesZero ? 0 : low;
 	const plotLeft = 34;
 	const step = (width - plotLeft - 4) / rows.length;
@@ -209,7 +225,7 @@ function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel }) {
 	// Large enough that the white two-letter monogram inside the chip stays
 	// legible at 1:1 (the chip's 22-unit viewBox maps to this pixel size).
 	const badge = width < 280 ? 18 : 22;
-	return <div class="cof-results-bar-chart"><svg ref={ref} class="cof-results-svg cof-results-bars" data-bar-metric={metric} viewBox={`0 0 ${width} 232`} role="group" aria-label={`${dataset}: ${metric} benchmark comparison at NFE ${nfe}. Positive-only scales are truncated and marked; zero remains visible when values cross it. Reference methods use their reported budgets.`}>
+	return <div class="cof-results-bar-chart"><svg ref={ref} class="cof-results-svg cof-results-bars" data-bar-metric={metric} viewBox={`0 0 ${width} ${chartHeight}`} role="group" aria-label={`${dataset}: ${metric} benchmark comparison at NFE ${nfe}. Positive-only scales are truncated and marked; zero remains visible when values cross it. Reference methods use their reported budgets.`}>
 		{[0, 1, 2, 3, 4].map(i => {
 			const level = low + (high - low) * i / 4;
 			return <g key={i}><line x1={plotLeft} x2={width - 4} y1={y(level)} y2={y(level)} class="cof-results-gridline" /><text x={plotLeft - 6} y={y(level) + 4} text-anchor="end" class="cof-results-axis-label">{formatMetric(metric, level)}</text></g>;
@@ -277,6 +293,7 @@ export default function CoFResults() {
 	const [nfe, setNfe] = useState(4);
 	const [view, setView] = useState('bars');
 	const [budgetOpen, setBudgetOpen] = useState(false);
+	const ultraWide = useUltraWide();
 	// Method highlighted through the legend or any bar; shared across the
 	// five Chart-view plots so one hover focuses the method everywhere.
 	const [activeMethod, setActiveMethod] = useState(null);
@@ -462,7 +479,7 @@ export default function CoFResults() {
 					})}</ul>
 				</div>
 					<div class="cof-results-bar-grid">{metrics.map(name => <div class="cof-results-bar-group" key={name}>
-						<Bars dataset={shown.dataset} metric={name} nfe={shown.nfe} activeLabel={activeMethod} onActiveLabel={setActiveMethod} />
+						<Bars dataset={shown.dataset} metric={name} nfe={shown.nfe} activeLabel={activeMethod} onActiveLabel={setActiveMethod} compact={ultraWide} />
 						<MetricHint name={name} />
 					</div>)}</div>
 			</section> : <section key="curves" class="cof-results-panel cof-results-curve-panel" aria-labelledby="cof-curves-heading">
