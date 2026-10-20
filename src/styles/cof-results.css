@@ -188,10 +188,9 @@
 /* The Curves panel opens with the same chip legend as Chart view; its entries
    focus the matching curve or reference line and dim the rest. */
 .cof-results-curve-panel .cof-results-legend-groups { padding: 0 0 14px; border-top: 0; }
-.cof-results-curve-series, .cof-results-curve-panel .cof-results-reference-line, .cof-results-curve-panel .cof-results-reference-label { transition: opacity 160ms ease; }
+.cof-results-curve-series, .cof-results-curve-panel .cof-results-reference-line { transition: opacity 160ms ease; }
 .cof-results-svg .cof-results-axis-title { fill: var(--ink); font-weight: 450; }
 .cof-results-svg .cof-results-reference-line line { vector-effect: non-scaling-stroke; }
-.cof-results-svg .cof-results-reference-label { fill: #45566e; font-size: 10px; font-weight: 520; paint-order: stroke; stroke: white; stroke-width: 5px; stroke-linejoin: round; }
 @media (min-width: 1200px) {
   .cof-results-filter-rows { display: grid; grid-template-columns: max-content max-content minmax(0, 1fr); align-items: center; gap: 12px; }
   .cof-results-filter-rows[data-view="curves"] { grid-template-columns: max-content max-content; }
@@ -214,7 +213,6 @@
   .cof-results-metric-control { gap: 8px; }
   .cof-results-metric-control > .cof-results-option-label { width: 100%; }
   .cof-results-svg .cof-results-point-label { font-size: 7px; stroke-width: 2.5px; }
-  .cof-results-svg .cof-results-reference-label { font-size: 9px; stroke-width: 4px; }
   .cof-results-budget-popover { right: auto; left: 0; width: min(420px, calc(100vw - 72px)); }
   .cof-results-curve-panel { padding: 14px 8px; }
   .cof-results-metric-tooltip { left: 0; transform: translateY(-3px); }

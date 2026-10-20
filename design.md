@@ -299,8 +299,8 @@ and static artwork. There is no appearance
 switch, and legacy `yo-form.v1` preferences are ignored. `yo-logo.js` owns
 native static artwork for demo watermarks. The loader shows Qing’s 80px cartoon avatar, floating vertically by ±4px over
 1.6 seconds, above the small gray “Loading” word on the white splash, with a
-thin rounded gray track carrying the moving blue segment below it — no
-capsule, no percentage. Keep the loader visible for at least 777ms after its initial
+five-bar blue wave rising and falling below it — no track, no percentage.
+Keep the loader visible for at least 777ms after its initial
 paint opportunity, then wait for fonts to settle (with a 1500ms deadline).
 During the second phase, fade the white splash away while page content enters
 in horizontal rows from top to bottom, each row rising slightly as it fades in.
@@ -309,8 +309,8 @@ fades in once when it first enters the viewport, through an
 IntersectionObserver in `PaperLayout` that pre-reveals slightly before the
 block arrives; the splash row reveal skips those blocks. Reduced motion and
 non-JS visitors see everything immediately.
-Reduced motion retains the same minimum, a static avatar and blue indicator,
-and immediate page entrances. Local section switches keep their immediate content
+Reduced motion retains the same minimum, a static avatar and a still five-bar
+wave, and immediate page entrances. Local section switches keep their immediate content
 behavior. No loader artwork is generated at build time.
 `site-logo.js` uses Qing's existing transparent cartoon portrait for the homepage
 brand avatar and browser favicons on every page. All icons share one circular
@@ -519,8 +519,8 @@ or clicking away returns him to the edge. Hover and focus keep him quiet until
 invited. The existing first-visit welcome dialog remains separate, and phones
 continue to hide the homepage companion. Once invited, interactive controls
 offer transient hover narration and keyboard-focus hints, while deliberate
-requests receive polite feedback. Use a readable 16px speech bubble with a 44px
-close button, Escape/outside-click dismissal and focus return. Reading content
+requests receive polite feedback. Use a readable 16px speech bubble, Escape/outside-click dismissal and focus return,
+with a 44px bye-hand control at Yo's bottom-left corner. Reading content
 settles him into static studying. Respect reduced motion and hidden tabs.
 Keep all Yo speech conversational, including homepage hints. Use natural short
 sentences with no semicolon breaks. Preserve the scientific meaning of any

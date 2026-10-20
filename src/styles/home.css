@@ -644,9 +644,24 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
 .home-ref .meet .meet-yo[data-peeking=true] .meet-avatar { width: 112px; }
 .home-ref .meet .meet-yo[data-peeking=true] .meet-bubble { visibility: hidden; pointer-events: none; }
 .home-ref .meet .meet-yo-hi { right: calc(100% - 64px); bottom: calc(100% - 8px); }
-.home-ref .meet .meet-bubble { padding-right: 52px; pointer-events: auto; }
-.home-ref .meet .yo-dialogue-close { position: absolute; top: 0; right: 0; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; color: var(--muted); font: 24px/1 var(--sans); cursor: pointer; }
-.home-ref .meet .yo-dialogue-close:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.home-ref .meet .meet-bubble { pointer-events: auto; }
+.home-ref .meet .meet-yo > .yo-dialogue-close { position: absolute; z-index: 2; bottom: -10px; left: -10px; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 22px; color: var(--muted); pointer-events: auto; cursor: pointer; transition: width 180ms ease; }
+.home-ref .meet .yo-dialogue-close .yo-bye-icon { flex: none; width: 20px; height: 20px; transition: transform 180ms ease; }
+.home-ref .meet .yo-bye-label { flex: none; width: 0; overflow: hidden; opacity: 0; color: var(--muted); font: 450 13px/1 var(--sans); white-space: nowrap; transition: width 180ms ease, margin-left 180ms ease, opacity 140ms ease; }
+.home-ref .meet .yo-dialogue-close:is(:hover, :focus-visible) { width: 78px; }
+.home-ref .meet .yo-dialogue-close:is(:hover, :focus-visible) .yo-bye-label { width: 25px; margin-left: 6px; opacity: 1; }
+.home-ref .meet .yo-dialogue-close:hover .yo-bye-icon { transform: rotate(-12deg); }
+.home-ref .meet .yo-dialogue-close:active .yo-bye-icon { transform: rotate(6deg) scale(.92); }
+.home-ref .meet .meet-yo > .yo-dialogue-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.home-ref .meet--chat .meet-yo > .yo-dialogue-close { bottom: -4px; left: -4px; }
+.home-ref .meet--chat .yo-dialogue-close .yo-bye-icon { width: 18px; height: 18px; }
+.home-ref .meet--chat .yo-dialogue-close:is(:hover, :focus-visible) { width: 74px; }
+.home-ref .meet--chat .yo-dialogue-close::before, .home-ref .meet--chat .yo-dialogue-close::after { inset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .home-ref .meet .yo-dialogue-close, .home-ref .meet .yo-bye-label { transition: none; }
+  .home-ref .meet .yo-dialogue-close .yo-bye-icon { transition: none; }
+  .home-ref .meet .yo-dialogue-close:is(:hover, :active) .yo-bye-icon { transform: none; }
+}
 @media (max-width: 720px) {
   .home-ref .layout { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
   .home-ref .meet .meet-yo { right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }

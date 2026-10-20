@@ -123,11 +123,10 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 	const height = Math.max(320, Math.min(480, width * .48));
 	const plot = { left: width < 480 ? 42 : 64, right: width - 24, top: 32, bottom: height - 52 };
 	const references = [
-		{ label: 'Unprocessed', color: '#a9afb8', marker: 'cross', value: results.unprocessed[dataset][metric], budget: 'No processing', annotationBudget: '', dash: '5 4' },
+		{ label: 'Unprocessed', color: '#a9afb8', theme: '#64748b', marker: 'cross', value: results.unprocessed[dataset][metric], budget: 'No processing', annotationBudget: '', dash: '5 4' },
 		...baselineStyles.map(item => ({ ...item, label: item.short, value: results.baselines[dataset][item.label][metric], budget: `NFE ${item.budget}`, annotationBudget: item.budget })),
-		...(metric === 'WER' ? [{ label: 'Clean reference', color: '#a9afb8', marker: 'ring', value: results.clean[dataset].WER, budget: 'Clean speech' }] : [])
+		...(metric === 'WER' ? [{ label: 'Clean reference', color: '#a9afb8', theme: '#7d8a99', marker: 'ring', value: results.clean[dataset].WER, budget: 'Clean speech' }] : [])
 	];
-	const referenceLines = references.filter(item => ['Unprocessed', 'SGMSE+', 'StoRM'].includes(item.label));
 	const values = series.flatMap(item => results.curves[dataset][metric][item.key].map(point => point[1]));
 	const min = Math.min(...values), max = Math.max(...values);
 	const margin = (max - min) * .12 || .1;
@@ -136,14 +135,21 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 	const y = value => plot.bottom - (value - low) / (high - low) * (plot.bottom - plot.top);
 	const beyondRange = value => value < low ? 'below' : value > high ? 'above' : null;
 	const yClamped = value => Math.min(plot.bottom, Math.max(plot.top, y(value)));
-	const referenceAnnotations = referenceLines.map(item => ({ ...item, beyond: beyondRange(item.value), labelY: yClamped(item.value) })).sort((a, b) => a.labelY - b.labelY);
-	for (let i = 1; i < referenceAnnotations.length; i++) referenceAnnotations[i].labelY = Math.max(referenceAnnotations[i].labelY, referenceAnnotations[i - 1].labelY + 14);
-	const referenceOvershoot = Math.max(0, referenceAnnotations.at(-1).labelY - (plot.bottom - 7));
-	referenceAnnotations.forEach(item => { item.labelY -= referenceOvershoot; });
-	const referenceUndershoot = Math.max(0, plot.top + 7 - referenceAnnotations[0].labelY);
-	referenceAnnotations.forEach(item => { item.labelY += referenceUndershoot; });
+	// References out of range clamp to an edge; stack them inward so every
+	// reference keeps a visible line without the old right-edge labels.
+	const referenceLines = references.map(item => {
+		const beyond = beyondRange(item.value);
+		return { ...item, beyond, yRef: yClamped(item.value) + (beyond === 'above' ? 5 : beyond === 'below' ? -5 : 0) };
+	}).sort((a, b) => a.yRef - b.yRef
+		|| (a.beyond === 'above' && b.beyond === 'above' ? b.value - a.value : 0)
+		|| (a.beyond === 'below' && b.beyond === 'below' ? a.value - b.value : 0));
+	for (let i = 1; i < referenceLines.length; i++) referenceLines[i].yRef = Math.max(referenceLines[i].yRef, referenceLines[i - 1].yRef + 14);
+	const referenceOvershoot = Math.max(0, referenceLines.at(-1).yRef - (plot.bottom - 2));
+	referenceLines.forEach(item => { item.yRef -= referenceOvershoot; });
+	const referenceUndershoot = Math.max(0, plot.top + 2 - referenceLines[0].yRef);
+	referenceLines.forEach(item => { item.yRef += referenceUndershoot; });
 	return <div class="cof-results-curve-wrap">
-		<svg ref={ref} class="cof-results-svg" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`${dataset}: ${metric} versus NFE, vertical axis zoomed to the model curves; references beyond the range clamp to the plot edge`}>
+		<svg ref={ref} class="cof-results-svg" viewBox={`0 0 ${width} ${height}`} role="group" aria-label={`${dataset}: ${metric} versus NFE, vertical axis zoomed to the model curves; beyond-range references stack inward from the plot edge`}>
 			{[0, 1, 2, 3, 4].map(i => {
 				const level = low + (high - low) * i / 4;
 				return <g key={i}><line x1={plot.left} x2={plot.right} y1={y(level)} y2={y(level)} class="cof-results-gridline" /><text x={plot.left - 9} y={y(level) + 4} text-anchor="end">{formatMetric(metric, level)}</text></g>;
@@ -151,15 +157,19 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 			{budgets.map(budget => <line key={budget} x1={x(budget)} x2={x(budget)} y1={plot.top} y2={plot.bottom} class="cof-results-gridline" />)}
 			<text class="cof-results-axis-title" x={plot.left} y="16">{metric}{metricUnit(metric) && ` (${metricUnit(metric)})`} {metric === 'WER' ? '↓' : '↑'}</text>
 			{referenceLines.map(item => {
-				const beyond = beyondRange(item.value);
-				const yRef = yClamped(item.value);
+				const beyond = item.beyond;
+				const yRef = item.yRef;
 				const budgetNote = item.annotationBudget ? `, budget ${item.annotationBudget}` : '';
-				const shortBudget = item.annotationBudget ? `@${item.annotationBudget}` : '';
 				const refActive = activeLabel === item.label;
 				const refDimmed = activeLabel !== null && !refActive;
-				return <g key={item.label} class="cof-results-reference-line" data-reference-name={item.label} data-reference-budget={item.annotationBudget} data-reference-value={item.value} data-beyond={beyond || undefined} style={{ opacity: refDimmed ? .3 : 1 }} role="img" aria-label={`${item.label} reference${budgetNote}: ${formatMetric(metric, item.value)}${metricUnit(metric) && ` ${metricUnit(metric)}`}${beyond ? ', beyond the displayed vertical range' : ''}`}>
-					<title>{item.label}{shortBudget} · {formatMetric(metric, item.value)}{metricUnit(metric) && ` ${metricUnit(metric)}`}{beyond ? ` · beyond range (${beyond})` : ''}</title>
-					<line x1={plot.left} x2={plot.right} y1={yRef} y2={yRef} stroke={item.color} stroke-width={refActive ? 2.25 : 1.5} stroke-dasharray={item.dash} />
+				const showReference = () => {
+					onActiveLabel(item.label);
+					setTooltip({ kind: 'reference', item, value: item.value, budget: item.budget, px: (plot.left + plot.right) / 2, py: yRef });
+				};
+				const hideReference = () => { onActiveLabel(null); setTooltip(null); };
+				return <g key={item.label} class="cof-results-reference-line" data-reference-name={item.label} data-reference-budget={item.annotationBudget} data-reference-value={item.value} data-beyond={beyond || undefined} style={{ opacity: refDimmed ? .3 : 1 }} role="img" aria-label={`${item.label} reference${budgetNote}: ${formatMetric(metric, item.value)}${metricUnit(metric) && ` ${metricUnit(metric)}`}${beyond ? ', beyond the displayed vertical range' : ''}`} onPointerEnter={showReference} onPointerLeave={hideReference}>
+					<line class="cof-results-reference-hit" x1={plot.left} x2={plot.right} y1={yRef} y2={yRef} stroke="transparent" stroke-width="12" pointer-events="stroke" />
+					<line class="cof-results-reference-stroke" x1={plot.left} x2={plot.right} y1={yRef} y2={yRef} stroke={item.theme ?? item.color} stroke-width={refActive ? 2.25 : 1.5} stroke-dasharray={item.dash} />
 				</g>;
 			})}
 			{series.map(item => {
@@ -178,7 +188,7 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 						const inspected = tooltip !== null && tooltip.item.key === item.key && tooltip.budget === budget;
 						const size = inspected ? chipSize * 1.3 : chipSize;
 						return <g key={budget} class="cof-results-point" data-nfe={budget} tabindex="0" role="img" aria-label={`${item.label}, NFE ${budget}: ${formatMetric(metric, value)} ${metricUnit(metric)}`}
-							onPointerEnter={() => { onActiveLabel(item.label); setTooltip({ item, budget, value, px: x(budget), py: y(value) }); }} onPointerLeave={() => { onActiveLabel(null); setTooltip(null); }} onFocus={() => { onActiveLabel(item.label); setTooltip({ item, budget, value, px: x(budget), py: y(value) }); }} onBlur={() => { onActiveLabel(null); setTooltip(null); }}
+							onPointerEnter={() => { onActiveLabel(item.label); setTooltip({ kind: 'point', item, budget, value, px: x(budget), py: y(value) }); }} onPointerLeave={() => { onActiveLabel(null); setTooltip(null); }} onFocus={() => { onActiveLabel(item.label); setTooltip({ kind: 'point', item, budget, value, px: x(budget), py: y(value) }); }} onBlur={() => { onActiveLabel(null); setTooltip(null); }}
 							>
 							<circle cx={x(budget)} cy={y(value)} r="11" fill="transparent" />
 							<svg class="cof-results-point-chip" x={x(budget) - size / 2} y={y(value) - size / 2} width={size} height={size} viewBox="0 0 22 22" aria-hidden="true" pointer-events="none"><ChipShape item={item} /></svg>
@@ -186,13 +196,12 @@ function CurveChart({ dataset, metric, activeLabel, onActiveLabel }) {
 					})}
 				</g>;
 			})}
-			{referenceAnnotations.map(item => <text key={item.label} class="cof-results-reference-label" data-reference-name={item.label} x={plot.right - 5} y={item.labelY} text-anchor="end" dominant-baseline="middle" style={{ opacity: activeLabel !== null && activeLabel !== item.label ? .3 : 1 }}>{item.label}{item.annotationBudget ? `@${item.annotationBudget}` : ''}{item.beyond === 'below' ? ' ↓' : item.beyond === 'above' ? ' ↑' : ''}</text>)}
 			{(width >= 480 ? budgets : [1, 4, 8, 16, 24]).map(budget => <text key={budget} x={x(budget)} y={plot.bottom + 22} text-anchor="middle">{budget}</text>)}
 			<text x={(plot.left + plot.right) / 2} y={height - 6} text-anchor="middle">NFE</text>
 		</svg>
 		{tooltip && <div class="cof-results-point-tooltip" data-flip={tooltip.py < 110 || undefined} aria-hidden="true" style={{ left: `${Math.min(Math.max(tooltip.px, 84), width - 84)}px`, top: `${tooltip.py}px` }}>
 			<span class="cof-results-point-tooltip-method"><MethodChip item={tooltip.item} />{tooltip.item.label}</span>
-			<span>NFE {tooltip.budget}</span>
+			<span>{tooltip.kind === 'reference' ? tooltip.budget : `NFE ${tooltip.budget}`}</span>
 			<span>{metric}{metricUnit(metric) && ` (${metricUnit(metric)})`}: <strong>{formatMetric(metric, tooltip.value)}</strong></span>
 		</div>}
 	</div>;
@@ -483,6 +492,7 @@ export default function CoFResults() {
 					<ul class="cof-results-bar-key">{[
 						{ label: 'Unprocessed', budget: '', theme: '#64748b' },
 						...baselineStyles.map(item => ({ label: item.short, budget: item.budget, theme: item.theme })),
+						...(shown.metric === 'WER' ? [{ label: 'Clean reference', budget: '', theme: '#7d8a99' }] : []),
 						...series.map(item => ({ label: item.label, budget: '', theme: item.theme, chipShape: item.chipShape, monogram: item.monogram, dashed: item.dashed }))
 					].map(row => {
 						const suffix = row.budget ? `@${row.budget}` : '';

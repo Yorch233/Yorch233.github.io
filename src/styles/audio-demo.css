@@ -389,6 +389,7 @@ body:is(.rsb-body, .cof-body) .audio-demo-island .wave-compare .method-chip {
 }
 .audio-demo-island .wave-compare .method-chip:hover:not(.active, .playing) { color: var(--accent-deep) !important; }
 body:is(.rsb-body, .cof-body) .audio-demo-island .wave-compare .method-chip:is(.active, .playing) {
+	border-color: var(--method-color, var(--accent)) !important;
 	box-shadow: 0 5px 13px color-mix(in srgb, var(--method-color, var(--accent)) 30%, transparent) !important; color: #fff !important;
 }
 .audio-demo-island .wave-compare .method-chip:is(.active, .playing) .chip-action { background: #fff; box-shadow: none; }

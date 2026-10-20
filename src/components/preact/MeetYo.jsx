@@ -289,12 +289,23 @@ export default function MeetYo() {
 		<div ref={companion} class="meet-yo" inert={compactScreen} aria-hidden={compactScreen ? 'true' : undefined} data-peeking={peeking ? 'true' : 'false'} data-dismissed={dismissed ? 'true' : undefined} data-feedback={note || hover ? 'true' : undefined}
 			onPointerEnter={() => setCompanionHovered(true)} onPointerLeave={() => setCompanionHovered(false)}
 			onFocusIn={() => setCompanionFocused(true)} onFocusOut={event => { if (!event.currentTarget.contains(event.relatedTarget)) setCompanionFocused(false); }}>
-			<div class="meet-bubble" id="home-yo-dialogue" aria-live="off" aria-hidden={!dialogueActive}><YoDialogue text={line} active={dialogueActive} /><button type="button" class="yo-dialogue-close" onClick={tuck} aria-label="Close Yo’s explanation">×</button></div>
+			<div class="meet-bubble" id="home-yo-dialogue" aria-live="off" aria-hidden={!dialogueActive}><YoDialogue text={line} active={dialogueActive} /></div>
 			<div class="meet-avatar" data-yo-say="That's me, Yo! Give this little cloud a gentle pat.">
 				<YoCloud peek={peeking} label={peeking ? "Yo, Qing's Bot. Hi! Click to say hello." : "Yo, Qing Yao's mascot. Pet the little cloud."} mood={peeking ? 'idle' : mood} focus={Boolean(topic)} quiet={peeking || Boolean(topic) || modalOpen || waitingQuiet || compactScreen} onPet={pet} onVisibilityChange={onVisibilityChange} ariaExpanded={dialogueActive} ariaControls="home-yo-dialogue">
 					{peeking && <span class="yo-peek-hi meet-yo-hi" aria-hidden="true">Hi</span>}
 				</YoCloud>
 			</div>
+			{dialogueActive && <button type="button" class="yo-dialogue-close" onClick={tuck} aria-label="Say bye to Yo" aria-controls="home-yo-dialogue">
+				<svg class="yo-bye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<g transform="rotate(-12 12 12)">
+						<path d="M15.1 11.6V5.8a1.7 1.7 0 0 0-3.4 0v4.8" />
+						<path d="M11.7 10.9V3.9a1.7 1.7 0 0 0-3.4 0v7" />
+						<path d="M8.3 11.2V6.4a1.7 1.7 0 0 0-3.4 0v8.3" />
+						<path d="M15.1 7.8a1.7 1.7 0 0 1 3.4 0v5.9a6.8 6.8 0 0 1-6.8 6.8h-1c-2.4 0-4-.9-5.2-2.1l-2.6-2.6a1.7 1.7 0 0 1 2.4-2.4l2.8 2.7" />
+					</g>
+				</svg>
+				<span class="yo-bye-label" aria-hidden="true">Bye</span>
+			</button>}
 			<YoActions hidden={dismissed} onAction={next => { setAwake(true); clearTimeout(noteTimer.current); setNote(null); react(next); }} onHide={() => { setAwake(false); setDismissed(true); }} onShow={() => setDismissed(false)} />
 		</div>
 		<span class="sr-only" role="status">{note}</span>

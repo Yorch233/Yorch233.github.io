@@ -9,19 +9,22 @@ test.describe('RSB demo', () => {
 		await page.waitForLoadState('load');
 		await waitForExpr(page, "document.documentElement.classList.contains('is-ready')", 'The page loader never finished.');
 		await check(page, `(() => {
-			const loader = document.querySelector('.page-loader'), wordmark = document.querySelector('.page-loader-wordmark'), bar = document.querySelector('.page-loader-bar');
-			if (!wordmark || !bar || !loader) return false;
-			const track = bar.querySelector('.page-loader-track'), fill = bar.querySelector('.page-loader-fill');
+			const loader = document.querySelector('.page-loader'), wordmark = document.querySelector('.page-loader-wordmark'), wave = document.querySelector('.page-loader-wave');
+			if (!wordmark || !wave || !loader) return false;
+			const bars = [...wave.children];
 			const avatar = loader.querySelector('.page-loader-avatar');
 			const rows = [...document.querySelectorAll('.page-reveal-row')];
 			const delays = rows.map(row => parseFloat(getComputedStyle(row).getPropertyValue('--page-reveal-delay')) || 0);
-			return wordmark.textContent === 'Loading' && avatar?.complete && avatar.naturalWidth > 0 && avatar.getBoundingClientRect().bottom < wordmark.getBoundingClientRect().top && getComputedStyle(avatar).animationName === 'none' && !document.querySelector('.page-loader-wave') &&
+			const barStyles = bars.map(bar => getComputedStyle(bar));
+			return wordmark.textContent === 'Loading' && avatar?.complete && avatar.naturalWidth > 0 && avatar.getBoundingClientRect().bottom < wordmark.getBoundingClientRect().top && getComputedStyle(avatar).animationName === 'none' &&
 				window.__loaderInitialBackground === 'rgb(255, 255, 255)' && !loader.querySelector('.page-loader-sky') &&
 				!document.querySelector('.page-loader-subtitle, .page-loader-label') &&
-				bar.getBoundingClientRect().top >= wordmark.getBoundingClientRect().bottom && bar.clientWidth > bar.clientHeight * 3 &&
-				getComputedStyle(track).backgroundColor === 'rgb(209, 215, 223)' && getComputedStyle(fill).backgroundColor === 'rgb(47, 104, 196)' &&
+				wave.getBoundingClientRect().top >= wordmark.getBoundingClientRect().bottom &&
+				bars.length === 5 && barStyles.every(style => style.backgroundColor === 'rgb(47, 104, 196)' && parseFloat(style.width) < parseFloat(style.height) && style.animationName === 'loader-wave') &&
+				new Set(barStyles.map(style => style.animationDelay)).size === 5 &&
+				!document.querySelector('.page-loader-bar, .page-loader-track, .page-loader-fill') &&
 				rows.length > 0 && Math.max(...delays) > 0 && !document.querySelector('.page-loader-ring') && window.__loaderVisibleDuration >= 777;
-		})()`, 'Loader must open on a plain white splash — a small "Loading" word above a thin gray/blue track and Qing’s cartoon avatar above the wordmark — then stage a top-to-bottom row reveal after at least 777ms.');
+		})()`, 'Loader must open on a plain white splash — Qing’s cartoon avatar above a small "Loading" word and five blue wave bars — then stage a top-to-bottom row reveal after at least 777ms.');
 
 		expect(requests.some(url => url.includes('AudioDemoIsland')), 'Preact Island loaded before becoming visible.').toBe(false);
 		expect(requests.some(url => url.endsWith('.opus')), 'Audio loaded before the Island became visible.').toBe(false);
@@ -41,7 +44,7 @@ test.describe('RSB demo', () => {
 			const selectedView = getComputedStyle(activeView), unselectedView = getComputedStyle(inactiveView);
 			const sweep = getComputedStyle(activeMethod, '::before');
 			const navigation = getComputedStyle(document.querySelector('.audio-nav-btn'));
-			return navigation.backgroundColor === 'rgb(255, 255, 255)' && navigation.boxShadow !== 'none' && active.backgroundColor === 'rgb(255, 255, 255)' && active.color === 'rgb(255, 255, 255)' && sweep.backgroundColor !== 'rgba(0, 0, 0, 0)' && sweep.clipPath.includes('142%') && sweep.transitionDuration !== '0s' && active.boxShadow !== 'none' && active.borderRadius === '999px' &&
+			return navigation.backgroundColor === 'rgb(255, 255, 255)' && navigation.boxShadow !== 'none' && active.backgroundColor === 'rgb(255, 255, 255)' && active.color === 'rgb(255, 255, 255)' && active.borderColor === sweep.backgroundColor && sweep.backgroundColor !== 'rgba(0, 0, 0, 0)' && sweep.clipPath.includes('142%') && sweep.transitionDuration !== '0s' && active.boxShadow !== 'none' && active.borderRadius === '999px' &&
 				getComputedStyle(comparison.querySelector('.progress-play')).backgroundColor === 'rgb(47, 104, 196)' &&
 				inactive.backgroundColor === 'rgb(255, 255, 255)' && inactive.borderColor === 'rgb(223, 227, 233)' && inactive.boxShadow !== 'none' && inactive.borderRadius === '999px' &&
 				(() => { const thumb = activeView.parentElement.querySelector('.segmented-thumb'); return thumb && getComputedStyle(thumb).backgroundColor === 'rgb(255, 255, 255)' && parseInt(thumb.style.width, 10) > 0 && getComputedStyle(thumb).transitionDuration !== '0s'; })() &&

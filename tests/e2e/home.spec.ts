@@ -37,7 +37,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		expect(cloudsBefore).not.toBe(await page.evaluate("[...document.querySelectorAll('.home-clouds span')].map(n => getComputedStyle(n).transform).join('|')"));
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await check(page, "[...document.querySelectorAll('.home-clouds span')].every(n => getComputedStyle(n).animationName === 'none' && getComputedStyle(n).transform === 'none')", 'Cloud background keeps moving under reduced motion.');
-		await check(page, "getComputedStyle(document.querySelector('.page-loader-fill')).animationName === 'none' && getComputedStyle(document.querySelector('.page-loader-avatar')).animationName === 'none'", 'Loader bar keeps moving under reduced motion.');
+		await check(page, "[...document.querySelectorAll('.page-loader-wave span')].every(n => getComputedStyle(n).animationName === 'none') && getComputedStyle(document.querySelector('.page-loader-avatar')).animationName === 'none'", 'Loader wave keeps moving under reduced motion.');
 		await page.evaluate("document.querySelector('.theme-toggle').click(); true");
 		await check(page, "document.documentElement.dataset.theme === 'light' && !document.documentElement.dataset.themeTransition", 'Reduced motion did not switch themes immediately.');
 		await page.emulateMedia({ reducedMotion: 'no-preference' });

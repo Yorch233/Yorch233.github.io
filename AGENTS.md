@@ -140,8 +140,8 @@ switch. Ignore legacy appearance preferences. Use one circular crop of Qing Yao�
 existing cartoon portrait for the homepage brand avatar, all browser favicons
 and the touch icon. Keep Yo’s companion and demo artwork separate.
 The loader is a plain white splash showing Qing’s cartoon avatar floating gently
-above a small gray "Loading" word, the gray linear track and blue indicator; it stays
-visible for at least 777ms, with a static avatar and indicator under reduced motion. Stop the avatar animation when the loader hides. Demo watermarks use native Fluffy artwork.
+above a small gray "Loading" word and a five-bar blue wave; it stays
+visible for at least 777ms, with a static avatar and wave under reduced motion. Stop the avatar animation when the loader hides. Demo watermarks use native Fluffy artwork.
 The animated character uses pure SVG geometry and paint, without embedded raster
 textures. Match the approved Fluffy silhouette and shading; keep static branding
 cutouts separate from the animated rig.
