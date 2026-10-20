@@ -380,8 +380,8 @@ html[data-theme-transition]::view-transition-group(root) { animation: none; }
 .home-ref .profile-identifiers a:hover { color: var(--accent-deep); text-decoration: underline; }
 .meet:not(.meet--chat) .hero-kicker { justify-self: start; display: inline-flex; gap: 10px; padding: 5px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 14px; font-weight: 450; }
 .meet:not(.meet--chat) .hero-name { font-size: clamp(40px, 4.8vw, 60px); font-weight: 560; }
-.home-about .lede { max-width: none; font-size: var(--text-2); font-weight: 380; font-family: var(--sans); }
-.home-about .about-copy { max-width: none; }
+.home-about .lede { max-width: none; font-size: var(--text-2); font-weight: 380; font-family: var(--sans); text-align: justify; text-align-last: start; }
+.home-about .about-copy { max-width: none; text-align: justify; text-align-last: start; }
 .home-about .meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0 0 6px; font-size: 13px; line-height: 1.5; }
 .home-about .meta > span { align-items: flex-start; gap: 10px; min-width: 0; padding-inline: 14px; }
 .home-about .meta > span:first-child { padding-left: 0; }
@@ -413,6 +413,7 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
   .home-about .meta { grid-template-columns: 1fr; gap: 8px; }
   .home-about .meta > span, .home-about .meta > span + span { border: 0; padding: 0; }
   .home-about .meta .icon { margin-top: 9px; }
+  .home-about .lede, .home-about .about-copy { text-align: start; }
   .home-about .interests { grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)); gap: 8px; }
   .home-about .chip { position: relative; min-width: 0; min-height: 52px; padding: 8px 6px; border: 1px solid var(--accent-line); border-radius: 12px; text-align: center; line-height: 1.4; }
   .home-about .research-interest-art { display: none; }
@@ -420,7 +421,7 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
   .home-about .research-interest-compact, .home-about .research-interest-compact > span { display: block; }
   html:not([data-theme=dark]) .home-about .chip:first-child { background: #f0f6fd; border-color: #dce8f6; color: #466c99; }
   html:not([data-theme=dark]) .home-about .chip:nth-child(2) { background: #f6f3fc; border-color: #e8e1f4; color: #716293; }
-  html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #fcf6ef; border-color: #f0e4d6; color: #8b7050; }
+  html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #fcf6ef; border-color: #f0e4d6; color: #805d36; }
   .home-ref .topic-chips .topic-pill { padding-inline: 16px; gap: 10px; }
 }
 @media (max-width: 720px) {

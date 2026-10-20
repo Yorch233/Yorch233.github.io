@@ -57,7 +57,7 @@ test.describe('Homepage welcome dialog & citations', () => {
 			'A first mobile visit shows Yo, blocks scrolling or consumes the desktop introduction.');
 	});
 
-	test('poke, explore, skip, outside click and remembered dismissal', async ({ page }) => {
+	test('poke, explore, close, outside click and remembered dismissal', async ({ page }) => {
 		test.setTimeout(240_000);
 		const requests = trackRequests(page);
 		await page.goto('/');
@@ -75,8 +75,8 @@ test.describe('Homepage welcome dialog & citations', () => {
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await freshWelcome();
 		await check(page, "document.querySelector('.yo-welcome').getAnimations().length === 0", 'Welcome flies in under reduced motion.');
-		await page.evaluate("document.querySelector('.yo-welcome-skip').click(); true");
-		await waitForExpr(page, "!document.querySelector('.yo-welcome').open && document.activeElement.matches('.hero-name')", 'Skipping did not close the dialog.');
+		await page.evaluate("document.querySelector('.yo-welcome-close').click(); true");
+		await waitForExpr(page, "!document.querySelector('.yo-welcome').open && document.activeElement.matches('.hero-name')", 'The close control did not dismiss the welcome dialog.');
 		await page.emulateMedia({ reducedMotion: 'no-preference' });
 		await freshWelcome();
 		await page.mouse.click(2, 2);

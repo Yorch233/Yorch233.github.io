@@ -10,7 +10,7 @@
   "bio": [
     "Hi, I'm Qing Yao, a Ph.D. student at Jiangsu University. My research focuses on **generative speech enhancement**, aiming to achieve high-fidelity speech reconstruction through efficient generative modeling.",
     "I explore two complementary directions: **continuous diffusion models**, particularly Schrödinger bridges, operating in the complex-valued time–frequency domain, and **discrete masked diffusion models** operating on acoustic tokens extracted from neural audio codecs.",
-    "Motivated by the ill-posed nature of speech enhancement, I seek to develop generative approaches that balance reconstruction fidelity, perceptual naturalness, and computational efficiency, while improving generalization across diverse acoustic conditions."
+    "Motivated by the ill-posed nature of speech enhancement, I seek to develop generative approaches that reconcile reconstruction fidelity, perceptual naturalness, and computational efficiency, while improving generalization across diverse acoustic conditions."
   ],
   "interests": [
     "Speech Enhancement",

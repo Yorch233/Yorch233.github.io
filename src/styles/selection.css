@@ -1,0 +1,77 @@
+/* Text selection is reserved for reading content. Controls, navigation,
+   chips, charts and the mascot's own chrome opt out so dragging, double
+   clicking or long pressing them never paints a selection. Prose, headings,
+   author/contact details, figure captions, data tables and citations keep
+   native selection. */
+
+button,
+label,
+[role='button'],
+[role='tab'],
+[role='switch'],
+input[type='range'] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Page chrome and loading state. */
+.page-loader,
+.home-clouds,
+.home-ref :is(.skip-link, .brand, .toplink, .meet-more-label, .topic-pill, .link-pill, .chip),
+.home-ref .meet-yo,
+.home-ref .yo-welcome,
+.home-ref .citation-dialog :is(.citation-header, .citation-tabs, .citation-footer) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Demo chrome: floating header, section rail, return links and resource pills. */
+.demo-floating-header,
+.demo-section-nav,
+.demo-return,
+.paper-resource-group :is(a, button),
+:is(.rsb-home-link, .cof-home-link),
+:is(.rsb-chip, .cof-chip),
+:is(.rsb-legend, .cof-legend),
+:is(.rsb-abstract-audio, .cof-abstract-audio),
+:is(.rsb-figure-media, .cof-figure-media),
+:is(.rsb-figure-controls, .cof-figure-controls),
+:is(.rsb-figure-modal-close, .rsb-figure-modal-media),
+:is(.rsb-citation-header, .cof-citation-header) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Audio player chrome and plot furniture; waveform sample names and metrics,
+   dataset descriptions and the simple data table stay selectable. */
+.audio-demo-island :is(
+  .dataset-index,
+  .dataset-task,
+  .dataset-count,
+  .segmented-field-label,
+  .sample-jump,
+  .method-group-label,
+  .wave-desc-index,
+  .wave-desc-label,
+  .wave-desc-tip,
+  .wave-panel-header,
+  .wave-time-axis,
+  .spectrogram-block,
+  .progress-row,
+  .method-tip-global,
+  .canvas-loading,
+  .audio-actions,
+  .mobile-method-hint
+),
+.progress-tooltip,
+.floating-audio-player {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* CoF benchmark filters, legends and charts. */
+.cof-results-controls,
+.cof-results-charts {
+  -webkit-user-select: none;
+  user-select: none;
+}

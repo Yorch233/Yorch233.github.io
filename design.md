@@ -107,10 +107,10 @@ faded (the `page:ready` handoff) and never covers the page loader. The greeting
 expression settles after 1.8 seconds; petting gives a bounded happy response.
 The homepage title is “Qing Yao - Generative Speech Enhancement”. Keep the greeting brief:
 “Hi, I’m Yo.”, “I am Qing's Bot. This is Qing's academic home. His research turns noisy speech into clear, natural sound. News, publications and awards are all here.”
-and Explore / Skip;
+and Explore;
 show the short petting response only after interaction. The dialog flies in
 from above the viewport while growing from 72% to full size over 520ms.
-Explore, Skip, the close control, Escape and backdrop all reverse that same
+Explore, the close control, Escape and backdrop all reverse that same
 animation, including when dismissed mid-entrance. Keep the modal and scroll
 lock active until it leaves, then restore focus. Reduced motion dismisses
 immediately; a hidden tab finishes the motion. Remember dismissal locally.
@@ -146,7 +146,9 @@ the current section or scroll position.
 
 The greeting pairs Qing’s portrait, name, affiliation and first-person
 complete About Me content: full biography, location, advisor and all research
-interests, using the shared AboutCard source. The welcome page is a reading
+interests, using the shared AboutCard source. On desktop the biography spans
+the story column and is justified, matching the metadata row above it; at
+960px and below it keeps natural left alignment. The welcome page is a reading
 surface; it does not require an About Me button to reveal that content.
 The four further-reading buttons sit below the complete introduction: Publications
 is a compact blue capsule in the same action group; News, Awards and Contact use
@@ -173,8 +175,8 @@ On phones the eyebrow and Home control share a row above the full-width title.
 Content entries use fine separators and 32px spacing.
 Publications show the opening three lines of each full abstract by default.
 Each paper has an independent Show full abstract / Show less button with an
-expanded state and an associated text region. Use justified abstract text on
-desktop and natural left alignment at 720px and below. Keep every abstract in
+expanded state and an associated text region. Keep abstract text left-aligned
+at a comfortable reading measure on desktop and phones. Keep every abstract in
 `src/data/publications.js`, with no shortened synopsis substituted for it.
 White homepage controls share stronger layered shadows across every section,
 including navigation actions, abstract and list toggles, publication resources

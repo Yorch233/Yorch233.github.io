@@ -134,7 +134,7 @@
 /* Curve explorer: open controls above a single white plotting surface. */
 .cof-results-workspace { padding: 28px; background: var(--surface); border: 1px solid var(--line-soft); box-shadow: var(--shadow-soft); }
 .cof-results-plot-header { margin: 0 0 24px; gap: 24px; }
-.cof-results-plot-header h3 { font-size: var(--text-4); letter-spacing: -.035em; }
+.cof-results-plot-header h3 { font-size: 24px; letter-spacing: -.035em; }
 .cof-results-controls { padding: 0; gap: 20px; border: 0; border-radius: 0; background: transparent; }
 /* The Chart-only budget row and the Curves metric row crossfade on view
    switches: the outgoing block fades while both stay mounted, the incoming
@@ -200,7 +200,7 @@
 }
 @media (max-width: 560px) {
   .cof-results-workspace { padding: 20px 16px 16px; border-radius: 24px; }
-  .cof-results-plot-header h3 { font-size: 24px; }
+  .cof-results-plot-header h3 { font-size: 18px; }
   .cof-results-filter-rows { gap: 16px; }
   .cof-results-filter-row { flex-wrap: wrap; gap: 10px; width: 100%; }
   .cof-results-filter-row + .cof-results-filter-row { padding: 0; border: 0; }

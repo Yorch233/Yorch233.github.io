@@ -106,7 +106,22 @@ export default function YoWelcome({ onOpenChange }) {
 		const bounds = dialog.current.getBoundingClientRect();
 		if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close();
 	};
-	return <dialog class="yo-welcome" ref={dialog} aria-labelledby="yo-welcome-title" aria-describedby="yo-welcome-description" onClose={closed} onCancel={event => { event.preventDefault(); close(); }} onClick={backdrop}>
+	const containFocus = event => {
+		if (event.key !== 'Tab') return;
+		const focusable = [...event.currentTarget.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+			.filter(element => element.getClientRects().length > 0);
+		if (!focusable.length) return;
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last.focus();
+		} else if (!event.shiftKey && (document.activeElement === last || !event.currentTarget.contains(document.activeElement))) {
+			event.preventDefault();
+			first.focus();
+		}
+	};
+	return <dialog class="yo-welcome" ref={dialog} aria-labelledby="yo-welcome-title" aria-describedby="yo-welcome-description" onClose={closed} onCancel={event => { event.preventDefault(); close(); }} onClick={backdrop} onKeyDown={containFocus}>
 		<button class="yo-welcome-close" type="button" aria-label="Close introduction" onClick={close}><span aria-hidden="true">×</span></button>
 		<div class="yo-welcome-scroll">
 			<div class="yo-welcome-cloud">
@@ -117,7 +132,6 @@ export default function YoWelcome({ onOpenChange }) {
 				<p id="yo-welcome-description"><YoDialogue active={visible} text="I am Qing's Bot. This is Qing's academic home. His research turns noisy speech into clear, natural sound. News, publications and awards are all here." /></p>
 				<p class="yo-welcome-note" aria-live="polite"><YoDialogue active={visible && petted} text={petted ? 'Hehe. That tickles!' : ''} /></p>
 				<button ref={explore} class="topic-pill topic-pill--primary yo-welcome-explore" type="button" onClick={close}>Explore <span aria-hidden="true">→</span></button>
-				<button class="yo-welcome-skip" type="button" onClick={close}>Skip</button>
 			</div>
 		</div>
 	</dialog>;

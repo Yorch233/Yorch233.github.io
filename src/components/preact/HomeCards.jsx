@@ -17,6 +17,8 @@ const bioHints = [
 	'He wants speech to sound natural, stay faithful and work efficiently across different acoustic conditions.'
 ];
 const EmailLink = () => <a class="profile-email" data-yo-say="This is Qing's email address. Send him a note any time." href={'mailto:' + profile.contact.email}><Icon id="mail" /><span>{profile.contact.email}</span></a>;
+const GithubLink = () => <a class="profile-github" aria-label="GitHub: Yorch233" data-yo-say="Explore Qing's projects and open-source work on GitHub." href={profile.contact.github} target="_blank" rel="noopener"><Icon id="github" /><span>Yorch233</span></a>;
+const HuggingFaceLink = () => <a class="profile-huggingface" aria-label="Hugging Face: Yorch233" data-yo-say="Visit Qing's Hugging Face profile for models and research resources." href={profile.contact.huggingFace} target="_blank" rel="noopener"><Icon id="huggingface" /><span>Yorch233</span></a>;
 const OrcidLink = ({ className }) => <a class={className} data-yo-say="You can find Qing's research record through his ORCID." href={'https://orcid.org/' + profile.contact.orcid} target="_blank" rel="noopener"><Icon id="orcid" /><span>ORCID: {profile.contact.orcid}</span></a>;
 const interestHints = {
 	'Speech Enhancement': 'A little less noise, a little more clarity. Qing researches clearer, more natural speech.',
@@ -52,8 +54,10 @@ export function AboutCard({ welcome = false }) {
 				<p class="hero-kicker" data-yo-say="Start here: meet Qing and get to know his research."><span aria-hidden="true">—</span> About Me</p>
 			<h1 class="hero-name" tabIndex={-1} data-yo-say="This is Qing Yao! He's a PhD student working on speech and generative models.">{profile.name}</h1>
 				{meta}{biography}
-				<div class="profile-identifiers" aria-label="Email and ORCID">
+				<div class="profile-identifiers" aria-label="Email, GitHub, Hugging Face and ORCID">
 					<EmailLink />
+					<GithubLink />
+					<HuggingFaceLink />
 					<OrcidLink className="profile-orcid" />
 				</div>
 			</div>

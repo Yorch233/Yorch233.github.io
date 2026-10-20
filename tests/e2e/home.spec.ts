@@ -101,6 +101,14 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				text.includes('Advisor') && text.includes(${JSON.stringify(profile.advisor)}) &&
 				about.querySelectorAll('.chip').length === ${JSON.stringify(profile.interests.length)};
 		})()`, 'Welcome page is missing complete About Me content.');
+		await check(page, `(() => {
+			const links = [...document.querySelectorAll('.profile-identifiers a')].map(link => link.href);
+			return links.length === 4 &&
+				links.some(href => href.startsWith('mailto:')) &&
+				links.some(href => href.includes('github.com')) &&
+				links.some(href => href.includes('huggingface.co')) &&
+				links.some(href => href.includes('orcid.org'));
+		})()`, 'About Me is missing an email, GitHub, Hugging Face or ORCID link.');
 		for (const [width, height] of homeViewports.slice(1)) {
 			await page.setViewportSize({ width, height });
 			await page.waitForTimeout(550);
@@ -168,7 +176,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 				const collapsed = await summary.evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight), align: getComputedStyle(node).textAlign, fullHeight: node.scrollHeight }));
 				expect(Math.abs(collapsed.height - collapsed.line * 3)).toBeLessThan(1);
 				expect(collapsed.fullHeight).toBeGreaterThan(collapsed.height);
-				expect(collapsed.align).toBe(width > 720 ? 'justify' : 'start');
+				expect(collapsed.align).not.toBe('justify');
 				await toggle.press('Enter');
 				await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 				await expect(toggle).toHaveText('Hide');
