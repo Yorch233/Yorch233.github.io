@@ -57,9 +57,13 @@
 .cof-results-bars .cof-results-zero-label { font-size: 9px; }
 .cof-results-bars .cof-results-value { font-weight: 380; }
 .cof-results-bars .cof-results-highlight { font-weight: 520; }
+.cof-results-bars .cof-results-value.cof-results-best { font-weight: 640; }
 .cof-results-bar-chart { position: relative; }
 .cof-results-bar { outline: none; }
-.cof-results-bar[data-active] > rect { stroke: var(--accent-deep); stroke-width: 1.5; }
+/* Baseline bars sit back at half strength so the two orange CoF variants read
+   first; hovering, focusing or selecting a method restores full colour. */
+.cof-results-bar:not([data-cof]) > rect { fill-opacity: .36; stroke-opacity: .45; }
+.cof-results-bar[data-active] > rect { fill-opacity: 1; stroke-opacity: 1; stroke: var(--accent-deep); stroke-width: 1.5; }
 .cof-results-bar:focus-visible > rect { stroke: var(--ink); stroke-width: 2; }
 .cof-results-bar-name { fill: var(--ink); font-size: 11px; font-weight: 520; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
 .cof-results-bar-name .cof-results-bar-name-nfe { fill: var(--muted); font-size: 10px; font-weight: 450; }
@@ -141,14 +145,15 @@
    one fades in when the swap removes the fading class. */
 /* The Chart-only budget trigger and the Curves metric row crossfade on view
    switches. The budget trigger slides in from the right when Chart mounts
-   and slides back out to the right when it leaves. */
+   and slides back out to the right when it leaves; changing the NFE budget
+   leaves it in place. */
 .cof-results-explorer-controls { transition: opacity 240ms ease; }
 .cof-results-explorer-controls.cof-results-fading { opacity: 0; transition-duration: 200ms; }
 .cof-results-workspace.cof-results-resizing .cof-results-explorer-controls:not(.cof-results-fading) { animation: cof-control-in 240ms ease; }
 @keyframes cof-control-in { from { opacity: 0; } }
 .cof-results-nfe-control { transition: opacity 200ms ease, transform 200ms ease; }
 .cof-results-nfe-control.cof-results-fading { opacity: 0; transform: translateX(24px); }
-.cof-results-workspace.cof-results-resizing .cof-results-nfe-control:not(.cof-results-fading) { animation: cof-budget-in 240ms ease; }
+.cof-results-workspace.cof-results-resizing[data-view-change] .cof-results-nfe-control:not(.cof-results-fading) { animation: cof-budget-in 240ms ease; }
 @keyframes cof-budget-in { from { opacity: 0; transform: translateX(24px); } }
 .cof-results-filter-rows { display: flex; align-items: center; flex-wrap: wrap; gap: 24px 32px; }
 .cof-results-filter-row { align-items: center; gap: 16px; }
@@ -172,10 +177,8 @@
 .cof-results-budget-trigger[aria-expanded=true] .cof-results-budget-chevron { transform: rotate(180deg); }
 .cof-results-nfe-control { position: relative; display: flex; align-items: center; gap: 10px; justify-self: start; min-width: 0; }
 .cof-results-budget-popover { position: absolute; z-index: 50; top: calc(100% + 12px); right: 0; width: min(420px, calc(100vw - 32px)); box-sizing: border-box; padding: 18px 20px 14px; border: 1px solid var(--line-soft); border-radius: 20px; background: #fff; box-shadow: 0 16px 44px rgb(37 54 77 / .18); }
-.cof-results-budget-slider { --slider-thumb-size: 76px; --slider-thumb-half: 38px; --slider-accent: #2f68c4; --slider-track: #e7eef9; width: 100%; }
-.cof-results-budget-slider .discrete-slider-thumb { font-size: 13px; }
-.cof-results-budget-slider .discrete-slider-labels { height: 18px; margin-top: 0; }
-.cof-results-budget-slider .discrete-slider-labels span { font-size: 12px; }
+.cof-results-budget-slider { --slider-thumb-size: 34px; --slider-thumb-half: 17px; --slider-accent: #2f68c4; --slider-track: #e8eaed; width: 100%; }
+.cof-results-budget-slider .discrete-slider-labels { height: 18px; margin-top: 2px; }
 .cof-results-explorer-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 24px; width: 100%; border-top: 1px solid var(--line); padding-top: 20px; }
 .cof-results-metric-control { margin: 0; align-items: center; gap: 6px; }
 .cof-results-metric-control > .cof-results-option-label { margin-right: 10px; }

@@ -78,12 +78,16 @@ export function NewsCard() {
 	});
 	return <>
 		<Timeline id={timelineId} items={items} renderItem={item => item.award
-			? <p>Received a <span dangerouslySetInnerHTML={rich(item.award.html.split('<span class="news-sub">')[0].replace('</span>, ', '</span> in '))} /> <a href="#awards" data-yo-say="Want to see what the team built? Take a look at the award details.">View award details</a>.</p>
+			? <p>Received a <span class="accent">{item.award.title}</span> in <AwardCompetition item={item.award} />, as {item.award.role.toLowerCase()} and {item.award.contribution.toLowerCase()}. <a href="#awards" data-yo-say="Want to see what the team built? Take a look at the award details.">View award details</a>.</p>
 			: <p dangerouslySetInnerHTML={rich(item.html)} />} />
 		{profile.news.length > 4 && <button class="news-toggle" type="button" aria-expanded={all} aria-controls={timelineId} data-yo-say={all ? 'You can tuck the older updates away here.' : 'There’s more! Open this to see the earlier updates.'} onClick={() => setAll(!all)}>
 			{all ? 'Show less' : 'View all news'} <Icon id={all ? 'arrow-up' : 'arrow-down'} />
 		</button>}
 	</>;
+}
+
+function AwardCompetition({ item }) {
+	return <><span class="tip tip-wide" tabIndex={0} data-tip={item.competitionChinese}>{item.competition}</span>{item.category && <> ({item.category})</>}</>;
 }
 
 function positionAwardTip(event) {
@@ -106,25 +110,44 @@ function resetAwardTip(event) {
 	event.currentTarget.style.removeProperty('--award-tip-y');
 }
 
+function AwardOliveBranch({ mirrored = false }) {
+	return <svg class={'award-olive' + (mirrored ? ' award-olive--right' : '')} viewBox="0 0 24 40" aria-hidden="true" focusable="false">
+		<path d="M21 37C7 30 5 16 13 4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+		<g fill="currentColor">
+			<path d="M12 7C9 4 11 1 15 0C16 4 15 6 12 7Z" />
+			<path d="M9 13C4 12 3 8 4 5C8 7 10 10 9 13Z" />
+			<path d="M9 16C9 11 13 8 17 8C16 13 13 16 9 16Z" />
+			<path d="M8 22C3 20 1 16 2 12C7 15 9 18 8 22Z" />
+			<path d="M10 25C9 20 12 17 16 16C16 21 14 24 10 25Z" />
+			<path d="M13 30C7 30 3 27 2 23C8 23 12 26 13 30Z" />
+			<path d="M16 33C13 29 14 25 18 22C20 27 19 31 16 33Z" />
+			<path d="M21 37C15 39 10 37 8 33C14 32 18 34 21 37Z" />
+		</g>
+	</svg>;
+}
+
+function AwardTitleArtwork({ title, honored, glint = false }) {
+	return <span class={'award-title-artwork' + (glint ? ' award-title-glint' : '')} aria-hidden={glint ? 'true' : undefined}>
+		{honored && <AwardOliveBranch />}
+		<span>{title}</span>
+		{honored && <AwardOliveBranch mirrored />}
+	</span>;
+}
+
 function Award({ item }) {
-	const [open, setOpen] = useState(false);
-	const detailsId = useId();
-	const [main, ...details] = item.html.split('<span class="news-sub">');
-	const lead = main.match(/^<span class="accent">(.*?)<\/span>,\s*(.*)$/);
+	const nationalFirstPrize = item.title === 'National First Prize';
 	return <li data-yo-say={item.yoHint}>
 		<span class="date">{item.date}</span>
-		{lead && <h3 class="award-title">{lead[1]}</h3>}
+		<div class="award-heading">
+			<h3 class={'award-title' + (nationalFirstPrize ? ' award-title--honored' : '')}>
+				<AwardTitleArtwork title={item.title} honored={nationalFirstPrize} />
+				{nationalFirstPrize && <AwardTitleArtwork title={item.title} honored glint />}
+			</h3>
+			<span class="award-role">{item.role}</span>
+		</div>
 		<p class="award-event" onPointerOver={positionAwardTip} onPointerMove={positionAwardTip}
-			onPointerLeave={resetAwardTip} onFocusCapture={resetAwardTip}
-			dangerouslySetInnerHTML={rich(lead ? lead[2] : main)} />
-		{details.length > 0 && <>
-			<div id={detailsId} class={'award-content' + (open ? ' is-open' : '')} hidden={!open} data-yo-say="Here’s what the project was about and what the team worked with.">
-				{details.map((text, i) => <span class="news-sub" key={i} dangerouslySetInnerHTML={rich(text.replace(/<\/span>\s*$/, ''))} />)}
-			</div>
-			<button type="button" class="award-more" aria-expanded={open} aria-controls={detailsId} data-yo-say={open ? 'All done? You can tuck the details away here.' : 'Want to know what the team worked on? Have a peek.'} onClick={() => setOpen(!open)}>
-				{open ? 'Less detail' : 'More detail'} <Icon id={open ? 'minus' : 'plus'} />
-			</button>
-		</>}
+			onPointerLeave={resetAwardTip} onFocusCapture={resetAwardTip}><AwardCompetition item={item} /></p>
+		<div class="award-tags"><span class="award-topic"><span class="award-topic-label">Topic</span>{item.topic}</span></div>
 	</li>;
 }
 

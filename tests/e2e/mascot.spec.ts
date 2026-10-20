@@ -149,7 +149,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			['about', [['.profile-portrait', "That's Qing"], ['.profile-education', 'Jiangsu University'], ['.home-about .meta > span:last-child', 'advisor'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-github', 'open-source work'], ['.profile-huggingface', 'Hugging Face'], ['.profile-orcid', 'ORCID'], ['.cv-btn', 'download availability'], ['.theme-toggle', 'comfy']]],
 			['publications', [['.pub-title a', 'Select the title'], ['.pub-authors b', 'helped write'], ['.pub-summary', publications[0]!.slug === 'RSB' ? 'RSB aims' : 'gives diffusion'], ['.pub-links .link-pill--primary', publications[0]!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub:last-of-type .link-pill--primary', publications.at(-1)!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub-links a[href*=arxiv]', 'preprint'], ['.link-pill-copy', 'BibTeX citation']]],
 			['news', [['.timeline .is-latest .date', 'CoF is on arXiv'], ['.timeline .is-latest a[href*=arxiv]', 'research preprint'], ['.timeline .is-latest a[href="/CoF/"]', 'CoF Demo'], ['.news-toggle', 'earlier updates']]],
-			['awards', [['.award-title', 'National First Prize'], ['.tip', 'competition is called'], ['.award-more', 'team worked on']]],
+			['awards', [['.award-title', 'National First Prize'], ['.tip', 'competition is called'], ['.award-topic', 'National First Prize']]],
 			['contact', [['.contact-address', 'mail app'], ['.contact-social a[href*=github]', 'open-source work'], ['.contact-social a[href*=huggingface]', 'Hugging Face'], ['.contact-social a[href*=orcid]', 'research record']]]
 		];
 		for (const [section, cases] of hoverCases) {
@@ -172,16 +172,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 				await hoverYo('.news-toggle', 'tuck the older updates');
 			}
 			if (section === 'awards') {
-				await check(page, "[...document.querySelectorAll('.award-more')].every(button => { const panel = document.getElementById(button.getAttribute('aria-controls')); return button.getAttribute('aria-expanded') === 'false' && panel?.hidden && panel.getBoundingClientRect().height === 0; })", 'Award details are visible before expansion or missing their control association.');
-				await page.evaluate("document.querySelector('.award-more').click(); true");
-				await check(page, "(() => { const panels = [...document.querySelectorAll('.award-content')]; return !panels[0].hidden && panels[0].getBoundingClientRect().height > 0 && panels[0].textContent.includes('Key technologies:') && panels[1].hidden; })()", 'Opening one award does not reveal its details independently.');
-				await hoverYo('.award-content.is-open .news-sub', 'what the project was about');
-				await page.evaluate("document.querySelector('.award-more').click(); true");
-				await check(page, "document.querySelector('.award-content').hidden && document.querySelector('.award-content').getBoundingClientRect().height === 0 && document.querySelector('.award-more').getAttribute('aria-expanded') === 'false'", 'Award details do not collapse again.');
-				await page.evaluate("document.querySelectorAll('.award-more')[1].focus(); true");
-				await page.keyboard.press('Enter');
-				await waitForExpr(page, "document.querySelectorAll('.award-more')[1].getAttribute('aria-expanded') === 'true'", 'Keyboard did not expand the second award.');
-				await check(page, "(() => { const panels = [...document.querySelectorAll('.award-content')]; return panels[0].hidden && !panels[1].hidden && panels[1].getBoundingClientRect().height > 0 && panels[1].textContent.includes('Natural language understanding'); })()", 'The shorter award does not expose new content with keyboard activation.');
+				await check(page, "!document.querySelector('.award-more, .award-content') && [...document.querySelectorAll('.award-topic')].length === 2 && [...document.querySelectorAll('.award-topic')].every(topic => topic.getBoundingClientRect().height > 0)", 'Awards should show both project topics directly without a detail disclosure.');
 			}
 		}
 		await hoverYo('.home-footer', 'Thanks for visiting');

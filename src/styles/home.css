@@ -180,11 +180,9 @@ body.home-ref {
 .news p { max-width: 62ch; text-wrap: pretty; }
 .news em { font-style: normal; font-weight: 420; }
 .accent { color: var(--accent); font-weight: 450; }
-.news-toggle, .award-more { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 0; border: 0; background: none; color: var(--accent); font-size: var(--text-1); }
+.news-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 0; border: 0; background: none; color: var(--accent); font-size: var(--text-1); }
 .award-title { margin: var(--space-2) 0; color: var(--accent-deep); font: 560 var(--text-3)/1.35 var(--display); }
 .award-event { position: relative; color: var(--ink); }
-.award-content { margin-top: var(--space-3); color: var(--muted); font-size: var(--text-1); line-height: 1.75; }
-.award-content[hidden] { display: none; }
 .news-sub { display: block; }
 .news-sub + .news-sub { margin-top: 6px; }
 .tip { border-bottom: 1px dotted var(--muted); }
@@ -665,7 +663,7 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
 .home-ref .toplink .ui-icon { width: 17px; height: 17px; }
 .home-ref .cv-btn { gap: 6px; }
 .home-ref .cv-btn .ui-icon { width: 18px; height: 18px; }
-.home-ref :is(.news-toggle, .award-more) .ui-icon { width: 16px; height: 16px; }
+.home-ref .news-toggle .ui-icon { width: 16px; height: 16px; }
 .home-ref .topic-pill .topic-arrow { width: 18px; height: 18px; }
 .home-ref :is(.topic-pill--primary, .link-pill--primary, .contact-mail) .ui-icon { color: inherit !important; }
 

@@ -11,9 +11,9 @@ export const budgets = [1, 2, 4, 8, 16, 24];
 // orange ring.
 export const series = [
 	{ key: 'sb', label: 'SB-VE', color: '#65aefc', barColor: '#65aefc', theme: '#238bfa', chipShape: 'triangle', monogram: 'SB', marker: 'circle' },
-	{ key: 'cof_sb', label: 'CoF (SB-VE)', color: '#f97316', barColor: '#fb9d5c', theme: '#f97316', chipShape: 'triangle', monogram: 'Co', marker: 'circleDot', dashed: true },
+	{ key: 'cof_sb', label: 'CoF (SB-VE)', color: '#ff7210', barColor: '#ff954c', theme: '#ff7210', chipShape: 'triangle', monogram: 'Co', marker: 'circleDot', dashed: true },
 	{ key: 'cfm', label: 'OT-CFM', color: '#ae8df9', barColor: '#ae8df9', theme: '#8b5cf6', chipShape: 'square', monogram: 'OT', marker: 'triangle' },
-	{ key: 'cof_cfm', label: 'CoF (OT-CFM)', color: '#f97316', barColor: '#fb9d5c', theme: '#f97316', chipShape: 'square', monogram: 'Co', marker: 'triangleDot', dashed: true }
+	{ key: 'cof_cfm', label: 'CoF (OT-CFM)', color: '#ff7210', barColor: '#ff954c', theme: '#ff7210', chipShape: 'square', monogram: 'Co', marker: 'triangleDot', dashed: true }
 ];
 export const baselineStyles = [
 	{ label: 'SGMSE+ (NFE=100)', short: 'SGMSE+', budget: '100', color: '#a6adb6', barColor: '#bd866c', theme: '#a0522d', marker: 'square', dash: '8 4' },

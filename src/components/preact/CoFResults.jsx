@@ -1,5 +1,5 @@
 import UiIcon from './UiIcon.jsx';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { results, datasets, metrics, budgets, series, baselineStyles, metricUnit, formatMetric, benchmarkRows } from '../../lib/cof-results.js';
 import DiscreteSlider from './DiscreteSlider.jsx';
 
@@ -17,6 +17,56 @@ function useChartWidth() {
 }
 
 const chipMonograms = { Unprocessed: 'Un', 'SGMSE+': 'SG', StoRM: 'St', 'Clean reference': 'Cl' };
+
+// NFE changes keep the charts mounted and FLIP each bar from its previous
+// geometry, so values re-settle in place without the whole chart fading.
+const barGeometryKey = bar => {
+	const chart = bar.closest('[data-bar-metric]');
+	return `${chart?.dataset.barMetric}|${bar.dataset.barMethod}`;
+};
+
+function readBarGeometry(root) {
+	const map = new Map();
+	root?.querySelectorAll('.cof-results-bars .cof-results-bar').forEach(bar => {
+		const rect = bar.querySelector(':scope > rect');
+		if (!rect) return;
+		const style = getComputedStyle(rect);
+		const y = parseFloat(style.y);
+		const height = parseFloat(style.height);
+		map.set(barGeometryKey(bar), {
+			y: Number.isFinite(y) ? y : Number(rect.getAttribute('y')),
+			height: Number.isFinite(height) ? height : Number(rect.getAttribute('height')),
+			valueTop: bar.querySelector('.cof-results-value')?.getBoundingClientRect().top,
+			badgeTop: bar.querySelector('.cof-results-bar-badge')?.getBoundingClientRect().top,
+			nameTop: bar.querySelector('.cof-results-bar-name')?.getBoundingClientRect().top
+		});
+	});
+	return map;
+}
+
+function morphBars(root, previous) {
+	const options = { duration: 340, easing: 'cubic-bezier(0.4, 0, 0.2, 1)' };
+	root?.querySelectorAll('.cof-results-bars .cof-results-bar').forEach(bar => {
+		const old = previous.get(barGeometryKey(bar));
+		const rect = bar.querySelector(':scope > rect');
+		if (!old || !rect) return;
+		const y = Number(rect.getAttribute('y'));
+		const height = Number(rect.getAttribute('height'));
+		if (old.y !== y || old.height !== height) {
+			rect.animate([{ y: `${old.y}px`, height: `${old.height}px` }, { y: `${y}px`, height: `${height}px` }], options);
+		}
+		const shift = (selector, oldTop) => {
+			const element = bar.querySelector(selector);
+			if (!element || !Number.isFinite(oldTop)) return;
+			const dy = oldTop - element.getBoundingClientRect().top;
+			if (Math.abs(dy) < .5) return;
+			element.animate([{ transform: `translateY(${dy}px)` }, { transform: 'translateY(0)' }], options);
+		};
+		shift('.cof-results-value', old.valueTop);
+		shift('.cof-results-bar-badge', old.badgeTop);
+		shift('.cof-results-bar-name', old.nameTop);
+	});
+}
 
 // Method chip: a shaped badge in the method's own theme colour with its
 // two-letter monogram inside. SB-VE renders as a triangle, OT-CFM as a
@@ -155,6 +205,7 @@ function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel }) {
 	const cofPairs = { 'SB-VE': ['SB-VE', 'CoF (SB-VE)'], 'CoF (SB-VE)': ['SB-VE', 'CoF (SB-VE)'], 'OT-CFM': ['OT-CFM', 'CoF (OT-CFM)'], 'CoF (OT-CFM)': ['OT-CFM', 'CoF (OT-CFM)'] };
 	const focusLabels = activeLabel !== null ? (cofPairs[activeLabel] ?? [activeLabel]) : null;
 	const chartHasActive = focusLabels !== null && rows.some(candidate => focusLabels.includes(candidate.label));
+	const bestValue = formatMetric(metric, (metric === 'WER' ? Math.min : Math.max)(...rows.filter(row => row.label !== 'Unprocessed' && !row.reference).map(row => row.value)));
 	// Large enough that the white two-letter monogram inside the chip stays
 	// legible at 1:1 (the chip's 22-unit viewBox maps to this pixel size).
 	const badge = width < 280 ? 18 : 22;
@@ -178,12 +229,13 @@ function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel }) {
 			const valueY = chipInside ? barTop - 9 : barTop - 12 - badge - 7;
 			const active = focusLabels !== null && focusLabels.includes(row.label);
 			const dimmed = chartHasActive && !active;
+			const best = !row.reference && row.label !== 'Unprocessed' && formatMetric(metric, row.value) === bestValue;
 			const nameY = valueY - 15;
 			const nameSuffix = row.budget && row.budget !== '—' ? `@${row.budget}` : '';
-			return <g key={row.label} class="cof-results-bar" data-bar-method={row.label} data-bar-value={formatMetric(metric, row.value)} data-monogram={row.monogram ?? chipMonograms[row.label] ?? row.label.slice(0, 2)} data-active={active || undefined} opacity={dimmed ? .35 : 1} tabindex="0" role="img" aria-label={`${row.label} · ${row.label === 'Unprocessed' ? 'No processing' : row.budget ? `NFE ${row.budget}` : 'reference'} · ${metric}: ${formatMetric(metric, row.value)} ${metricUnit(metric)}`}
+			return <g key={row.label} class="cof-results-bar" data-bar-method={row.label} data-bar-value={formatMetric(metric, row.value)} data-monogram={row.monogram ?? chipMonograms[row.label] ?? row.label.slice(0, 2)} data-cof={row.dashed || undefined} data-active={active || undefined} opacity={dimmed ? .35 : 1} tabindex="0" role="img" aria-label={`${row.label} · ${row.label === 'Unprocessed' ? 'No processing' : row.budget ? `NFE ${row.budget}` : 'reference'} · ${metric}: ${formatMetric(metric, row.value)} ${metricUnit(metric)}`}
 				onPointerEnter={() => onActiveLabel(row.label)} onPointerLeave={() => onActiveLabel(null)} onFocus={() => onActiveLabel(row.label)} onBlur={() => onActiveLabel(null)} onKeyDown={event => { if (event.key === 'Escape') onActiveLabel(null); }}>
 			<rect x={center - barWidth / 2} y={barTop} width={barWidth} height={barHeight} rx="3" fill={row.reference ? '#fff' : row.barColor ?? row.color} stroke={row.reference ? '#98a2b0' : undefined} stroke-width={row.reference ? 1.25 : undefined} stroke-dasharray={row.reference ? '4 3' : undefined} />
-			<text x={center} y={valueY} text-anchor="middle" class={`cof-results-value${row.dashed ? ' cof-results-highlight' : ''}`} style={{ fontSize: width < 280 ? '10px' : '12px' }}>{formatMetric(metric, row.value)}</text>
+			<text x={center} y={valueY} text-anchor="middle" class={`cof-results-value${row.dashed ? ' cof-results-highlight' : ''}${best ? ' cof-results-best' : ''}`} style={{ fontSize: width < 280 ? '10px' : '12px' }}>{formatMetric(metric, row.value)}</text>
 			<svg class="cof-results-bar-badge" x={center - badge / 2} y={badgeY - badge / 2} width={badge} height={badge} viewBox="0 0 22 22" aria-hidden="true" pointer-events="none"><ChipShape item={row} /></svg>
 			{active && <text class="cof-results-bar-name" x={center} y={nameY} text-anchor="middle">{row.label}{nameSuffix && <tspan class="cof-results-bar-name-nfe">{nameSuffix}</tspan>}</text>}
 			<title>{row.label}, NFE {row.budget}: {formatMetric(metric, row.value)} {metricUnit(metric)}</title>
@@ -230,8 +282,13 @@ export default function CoFResults() {
 	const [activeMethod, setActiveMethod] = useState(null);
 	const [shown, setShown] = useState({ dataset, metric, nfe, view });
 	const shownRef = useRef(shown);
-	const changing = shown.dataset !== dataset || shown.metric !== metric || shown.nfe !== nfe || shown.view !== view;
+	// NFE-only changes update immediately and morph the bars; everything else
+	// keeps the fade-out/swap/fade-in transition.
+	const fading = shown.dataset !== dataset || shown.metric !== metric || shown.view !== view;
+	const switchingView = shown.view !== view;
 	const [settling, setSettling] = useState(false);
+	const [viewSettling, setViewSettling] = useState(false);
+	const flipRef = useRef(null);
 	const workspaceRef = useRef(null);
 	const budgetControlRef = useRef(null);
 	const budgetTriggerRef = useRef(null);
@@ -256,9 +313,21 @@ export default function CoFResults() {
 				shownRef.current = next;
 				setShown(next);
 				setSettling(false);
+				setViewSettling(false);
 			}
 			return;
 		}
+		const nfeOnly = cur.dataset === next.dataset && cur.metric === next.metric && cur.view === next.view && cur.nfe !== next.nfe;
+		if (nfeOnly) {
+			flipRef.current = readBarGeometry(workspaceRef.current);
+			shownRef.current = next;
+			setShown(next);
+			setSettling(false);
+			setViewSettling(false);
+			return;
+		}
+		const viewChange = cur.view !== next.view;
+		setViewSettling(viewChange);
 		const timers = [];
 		// Swap only after the fade-out has fully finished (200ms transition,
 		// 230ms swap timer), then fade the new charts in while the card eases
@@ -293,6 +362,7 @@ export default function CoFResults() {
 						timers.push(setTimeout(() => {
 							card.style.height = '';
 							setSettling(false);
+							setViewSettling(false);
 						}, 380));
 					});
 					return;
@@ -304,6 +374,12 @@ export default function CoFResults() {
 		}, 230));
 		return () => timers.forEach(timer => clearTimeout(timer));
 	}, [dataset, metric, nfe, view]);
+	useLayoutEffect(() => {
+		const previous = flipRef.current;
+		if (!previous) return;
+		flipRef.current = null;
+		morphBars(workspaceRef.current, previous);
+	}, [shown]);
 	useEffect(() => {
 		const closeOnOutsidePointer = event => {
 			if (budgetTriggerRef.current?.getAttribute('aria-expanded') === 'true' && !budgetControlRef.current?.contains(event.target)) setBudgetOpen(false);
@@ -321,10 +397,10 @@ export default function CoFResults() {
 		};
 	}, []);
 	return <div class="cof-results" data-dataset={dataset} data-metric={metric} data-nfe={nfe} data-view={view}>
-		<div ref={workspaceRef} class={`cof-results-workspace${settling ? ' cof-results-resizing' : ''}`}>
+		<div ref={workspaceRef} class={`cof-results-workspace${settling ? ' cof-results-resizing' : ''}`} data-view-change={viewSettling ? 'true' : undefined}>
 		<div class="cof-results-plot-header">
 			<div><h3 id={view === 'bars' ? 'cof-bars-heading' : 'cof-curves-heading'}>Benchmark comparison</h3></div>
-			<div class={`cof-results-controls${changing ? ' cof-results-fading' : ''}`} data-view={shown.view} role="group" aria-label={view === 'bars' ? 'Results filters and sampling budget' : 'Results filters'}>
+			<div class={`cof-results-controls${fading ? ' cof-results-fading' : ''}`} data-view={shown.view} role="group" aria-label={view === 'bars' ? 'Results filters and sampling budget' : 'Results filters'}>
 				<div class="cof-results-filter-panel" role="group" aria-label={view === 'bars' ? 'Dataset, view, and sampling budget' : 'Dataset and view'}>
 					<div class="cof-results-filter-rows" data-view={shown.view}>
 						<div class="cof-results-filter-row" role="group" aria-label="Results dataset">
@@ -341,7 +417,7 @@ export default function CoFResults() {
 								<button type="button" class="cof-results-filter-choice" aria-pressed={view === 'curves'} onClick={() => { lockCard(); setView('curves'); setBudgetOpen(false); }}><UiIcon id="line-chart" tone={view === 'curves' ? 'inverse' : undefined} /><span>Curves</span></button>
 							</div>
 						</div>
-						{shown.view === 'bars' && <div class={`cof-results-nfe-control${changing ? ' cof-results-fading' : ''}`} ref={budgetControlRef}>
+						{shown.view === 'bars' && <div class={`cof-results-nfe-control${switchingView ? ' cof-results-fading' : ''}`} ref={budgetControlRef}>
 							<span class="cof-results-option-label">Sampling</span>
 							<button
 								ref={budgetTriggerRef}
@@ -362,21 +438,22 @@ export default function CoFResults() {
 										class="cof-results-budget-slider"
 										options={budgetSliderOptions}
 										value={nfe}
-										onChange={value => { lockCard(); setNfe(value); }}
+										onChange={setNfe}
 										ariaLabel="NFE"
 										formatValue={value => `${value} NFE`}
-										thumbContent={<span>{nfe} NFE</span>}
+										caption="NFE"
+										celebrateMax
 									/>
 								</div>
 							</div>}
 						</div>
 					</div>
-				{shown.view === 'curves' && <div class={`cof-results-explorer-controls${changing ? ' cof-results-fading' : ''}`}>
+				{shown.view === 'curves' && <div class={`cof-results-explorer-controls${fading ? ' cof-results-fading' : ''}`}>
 					<div class="cof-results-metric-control" role="group" aria-label="Results metric"><span class="cof-results-option-label">Metric</span>{metrics.map(name => <MetricSelector key={name} name={name} selected={metric === name} onSelect={() => { lockCard(); setMetric(name); }} />)}</div>
 				</div>}
 			</div>
 		</div>
-		<div class={`cof-results-charts${changing ? ' cof-results-fading' : ''}`} id="cof-results-chart">
+		<div class={`cof-results-charts${fading ? ' cof-results-fading' : ''}`} id="cof-results-chart">
 			{shown.view === 'bars' ? <section key="bars" class="cof-results-panel cof-results-bar-panel" aria-labelledby="cof-bars-heading">
 				<div class="cof-results-legend-groups">
 					<ul class="cof-results-bar-key">{[...benchmarkRows(shown.dataset, metrics[0], shown.nfe).slice(0, 1), { label: 'Clean reference', budget: '', reference: true, color: '#a9afb8', theme: '#a9afb8', marker: 'ring' }, ...benchmarkRows(shown.dataset, metrics[0], shown.nfe).slice(1)].map(row => {

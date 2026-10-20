@@ -228,10 +228,13 @@ invent response-time promises or publication claims. The first Publications
 resource button is labeled “Demo” for both RSB and CoF, preserving their URLs. News links also use “Demo”; both page kickers read “Paper Demo”. CoF is not labeled a paper overview.
 News must describe those destinations
 accurately. Show citation success and failure accessibly and independently
-per paper. Awards and news retain their disclosure controls. Award project
-details start hidden; More detail reveals the topic and key technologies,
-and Less detail hides them again. Each award expands independently and its
-button exposes the controlled panel and expanded state to assistive technology.
+per paper. News retains its disclosure control. Each award shows
+its prize title in gold between olive branches, with the team-leader annotation
+on its right. A soft 45-degree highlight sweeps across the gold lettering and
+olive branches once every five seconds, with a quiet embossed text treatment.
+Reduced motion keeps the gold artwork static. The competition name is the subtitle and the project topic remains
+visible in a tag below it. Awards display only these details, with no expansion
+button or hidden contribution and technology panel.
 News also includes the award milestones in its timeline, reusing award records
 through their IDs and linking to Awards for project details. Retain the supplied
 year precision when an award has no known month.
@@ -557,9 +560,9 @@ Every method owns a theme colour, shown saturated on its shaped monogram
 chip: circle chips for Unprocessed, SGMSE+, StoRM and the WER plot's Clean
 reference, a triangle chip for SB-VE and a square chip for OT-CFM. Bars render
 a lighter tint of the same theme colour. CoF variants keep the base shape and
-switch the letters to "Co", and take the branch's shared orange — `#f97316`
-marks on `#fb9d5c` bars, matching `statusColors.cof`/`barTints.cof` from the
-2026-09-17 design. Each bar reveals
+switch the letters to "Co", and take the branch's shared orange — `#ff7210`
+marks on `#ff954c` bars, matching `statusColors.cof`/`barTints.cof` from the
+2026-09-17 design, saturated slightly on 2026-10-20. Each bar reveals
 its method, budget and value on hover, keyboard focus or tap.
 The top legend explains the WER plot's ring-marked clean reference bar, so
 every chart group shares one structure and the five x-axes align horizontally.
@@ -681,8 +684,8 @@ They have no raised glass layers or resting shadows. Blue primary actions remain
 filled. Abstract toggles are plain text buttons labeled Show and Hide, with no
 icon or capsule and a minimum 44px touch target.
 
-Awards detail toggles are borderless More detail / Less detail text buttons with
-plus/minus icons. Contact research profiles retain their committed full-width glass rows,
+Awards end with the visible topic tag and have no detail toggle.
+Contact research profiles retain their committed full-width glass rows,
 platform icons and right arrows. Remove only their shadows. Keep the ORCID
 identifier visible and all actions at least 44px tall.
 

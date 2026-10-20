@@ -77,15 +77,19 @@ const resources = [
 	</PaperSection>
 
 	<PaperSection variant="cof" headingId="cof-results-heading" label="Results" class="cof-fade">
-		<p class="cof-results-intro">Compare pretrained and CoF post-trained models across the two datasets. Chart view benchmarks all five metrics at one sampling budget, and Curves view traces each metric over NFE (number of function evaluations) steps.</p>
+		<p class="cof-results-intro">
+			Compare pretrained and CoF post-trained models on <span class="cof-accent">WSJ0+WHAM</span> (denoising) and{' '}
+			<span class="cof-accent">WSJ0+REVERB</span> (dereverberation). <span class="cof-accent">Chart view</span> benchmarks
+			all five metrics at one sampling budget, and <span class="cof-accent">Curves view</span> traces each metric over NFE
+			(number of function evaluations).
+		</p>
 		<CoFResults client:visible />
 	</PaperSection>
 
 	<PaperSection variant="cof" headingId="cof-audio-heading" label="Audio Samples" class="cof-fade">
 		<p class="cof-results-intro">
-			Listen to <span class="cof-accent">10 samples</span> drawn from two datasets:{' '}
-			<span class="cof-accent">WSJ0+WHAM</span> is the denoising dataset and <span class="cof-accent">WSJ0+REVERB</span> is the dereverberation dataset. Every
-			sample compares the pretrained formulation with its CoF post-trained counterpart. Use the sampling-budget toggles to hear the same samples at{' '}
+			Listen to <span class="cof-accent">10 samples</span> from both datasets. Every sample compares the pretrained
+			formulation with its CoF post-trained counterpart. Use the sampling-budget toggles to hear the same samples at{' '}
 			<span class="cof-accent">1 NFE</span> and <span class="cof-accent">4 NFE</span>.
 		</p>
 		<AudioDemoIsland

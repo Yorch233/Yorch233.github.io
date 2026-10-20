@@ -33,7 +33,7 @@ export const methodOptions = [
 	{
 		key: 'SB-VE_cof',
 		label: 'CoF (SB-VE)',
-		color: '#f97316',
+		color: '#ff7210',
 		family: 'cof',
 		description: 'CoF (SB-VE) is the SB-VE model after Corrective Forcing post-training.'
 	},
@@ -46,7 +46,7 @@ export const methodOptions = [
 	{
 		key: 'OT-CFM_cof',
 		label: 'CoF (OT-CFM)',
-		color: '#f97316',
+		color: '#ff7210',
 		family: 'cof',
 		description: 'CoF (OT-CFM) is the OT-CFM model after Corrective Forcing post-training.'
 	},
