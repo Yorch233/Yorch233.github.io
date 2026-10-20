@@ -76,16 +76,6 @@ const resources = [
 		</div>
 	</PaperSection>
 
-	<PaperSection variant="cof" headingId="cof-results-heading" label="Results" class="cof-fade">
-		<p class="cof-results-intro">
-			Compare pretrained and CoF post-trained models on <span class="cof-accent">WSJ0+WHAM</span> (denoising) and{' '}
-			<span class="cof-accent">WSJ0+REVERB</span> (dereverberation). <span class="cof-accent">Chart view</span> benchmarks
-			all five metrics at one sampling budget, and <span class="cof-accent">Curves view</span> traces each metric over NFE
-			(number of function evaluations).
-		</p>
-		<CoFResults client:visible />
-	</PaperSection>
-
 	<PaperSection variant="cof" headingId="cof-audio-heading" label="Audio Samples" class="cof-fade">
 		<p class="cof-results-intro">
 			Listen to <span class="cof-accent">10 samples</span> from both datasets. Every sample compares the pretrained
@@ -98,6 +88,16 @@ const resources = [
 			methods={methodOptions}
 			budgets={budgetOptions}
 		/>
+	</PaperSection>
+
+	<PaperSection variant="cof" headingId="cof-results-heading" label="Results" class="cof-fade">
+		<p class="cof-results-intro">
+			Compare pretrained and CoF post-trained models on <span class="cof-accent">WSJ0+WHAM</span> (denoising) and{' '}
+			<span class="cof-accent">WSJ0+REVERB</span> (dereverberation). <span class="cof-accent">Chart view</span> benchmarks
+			all five metrics at one sampling budget, and <span class="cof-accent">Curves view</span> traces each metric over NFE
+			(number of function evaluations).
+		</p>
+		<CoFResults client:visible />
 	</PaperSection>
   <PaperCitation variant="cof" headingId="cof-citation-heading" bibtex={publication.bibtex} />
 </PaperLayout>

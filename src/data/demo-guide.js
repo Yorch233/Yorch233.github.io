@@ -14,8 +14,8 @@ export const demoGuides = {
 		{ id: 'cof-resources', label: 'Resources' },
 		{ id: 'cof-abstract-heading', label: 'Abstract' },
 		{ id: 'cof-keywords-heading', label: 'Key Words' },
-		{ id: 'cof-results-heading', label: 'Results' },
 		{ id: 'cof-audio-heading', label: 'Audio Samples' },
+		{ id: 'cof-results-heading', label: 'Results' },
 		{ id: 'cof-citation-heading', label: 'Citation' }
 	]
 };

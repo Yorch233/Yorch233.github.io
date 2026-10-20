@@ -526,6 +526,7 @@ Keep all Yo speech conversational, including homepage hints. Use natural short
 sentences with no semicolon breaks. Preserve the scientific meaning of any
 summary without reading publication metadata or abstracts verbatim.
 
+On the CoF page, Audio Samples come before the results workspace.
 CoF results pair a five-metric vertical bar overview (Chart view) with a
 single-metric Metric vs NFE curve explorer (Curves view) inside one white
 rounded workspace. One control row follows the Results heading: Dataset
@@ -581,7 +582,9 @@ Show either the bar overview or NFE curves, selected by one sliding switch
 between the two mode labels; default to bars. Its checked state means NFE curves.
 Keep dataset, metric and NFE selections when switching.
 In Curves view the metric selector capsules live in the controls below the
-budget row. Curve y-axes zoom to the model curves so the CoF
+budget row. One small caption below the chart explains the selected metric:
+what it measures, its scale and which direction is better. Curve y-axes zoom
+to the model curves so the CoF
 and pretrained differences stay readable; references that fall outside the
 zoomed range clamp to the plot edge with a direction arrow in their label, and
 the Unprocessed reference carries no budget suffix. Curves are independent

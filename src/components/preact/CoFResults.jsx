@@ -262,11 +262,11 @@ function Bars({ dataset, metric, nfe, activeLabel, onActiveLabel, compact }) {
 }
 
 const metricDescriptions = {
-	PESQ: 'Perceived quality vs. clean speech. Higher is better.',
-	ESTOI: 'Intelligibility vs. clean speech. Higher is better.',
-	'SI-SDR': 'Signal fidelity vs. clean speech in dB. Higher is better.',
-	UTMOS: 'Predicted quality without a reference. Higher is better.',
-	WER: 'Word errors vs. reference transcript. Lower is better.'
+	PESQ: 'Perceived quality against clean speech, scored −0.5 to 4.5. Higher is better.',
+	ESTOI: 'Intelligibility against clean speech, scored 0 to 1. Higher is better.',
+	'SI-SDR': 'Signal fidelity against clean speech in dB, where negative values are possible. Higher is better.',
+	UTMOS: 'Predicted quality without a reference, scored 1 to 5. Higher is better.',
+	WER: 'Word error rate against the reference transcript, 0% and up. Lower is better.'
 };
 
 function MetricHint({ name }) {
@@ -279,12 +279,8 @@ function MetricHint({ name }) {
 }
 
 function MetricSelector({ name, selected, onSelect }) {
-	const id = `cof-metric-help-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-	const [open, setOpen] = useState(false);
-	return <div class="cof-results-metric-selector" data-tooltip-open={open || undefined} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-		<button type="button" class="cof-results-metric-option" aria-pressed={selected} aria-label={`Select ${name}${metricUnit(name) ? ` (${metricUnit(name)})` : ''} metric`} aria-describedby={id} onClick={onSelect} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}>{name}{metricUnit(name) && ` (${metricUnit(name)})`} <span aria-hidden="true">{name === 'WER' ? '↓' : '↑'}</span></button>
-		<span id={id} class="cof-results-metric-tooltip" role="tooltip">{metricDescriptions[name]}</span>
-	</div>;
+	const label = `${name}${metricUnit(name) ? ` (${metricUnit(name)})` : ''}`;
+	return <button type="button" class="cof-results-metric-option" aria-pressed={selected} aria-label={`Select ${label} metric`} onClick={onSelect}>{label} <span aria-hidden="true">{name === 'WER' ? '↓' : '↑'}</span></button>;
 }
 
 export default function CoFResults() {
@@ -482,7 +478,7 @@ export default function CoFResults() {
 						<Bars dataset={shown.dataset} metric={name} nfe={shown.nfe} activeLabel={activeMethod} onActiveLabel={setActiveMethod} compact={ultraWide} />
 						<MetricHint name={name} />
 					</div>)}</div>
-			</section> : <section key="curves" class="cof-results-panel cof-results-curve-panel" aria-labelledby="cof-curves-heading">
+			</section> : <section key="curves" class="cof-results-panel cof-results-curve-panel" aria-labelledby="cof-curves-heading" aria-describedby="cof-results-metric-note">
 				<div class="cof-results-legend-groups">
 					<ul class="cof-results-bar-key">{[
 						{ label: 'Unprocessed', budget: '', theme: '#64748b' },
@@ -494,6 +490,7 @@ export default function CoFResults() {
 					})}</ul>
 				</div>
 				<CurveChart dataset={shown.dataset} metric={shown.metric} activeLabel={activeMethod} onActiveLabel={setActiveMethod} />
+				<p class="cof-results-metric-note" id="cof-results-metric-note"><span aria-hidden="true">*</span><strong>{shown.metric}{metricUnit(shown.metric) && ` (${metricUnit(shown.metric)})`}:</strong> {metricDescriptions[shown.metric]}</p>
 			</section>}
 		</div>
 		</div>
