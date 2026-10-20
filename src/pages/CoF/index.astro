@@ -41,17 +41,23 @@ const resources = [
 	<PaperSection variant="cof" headingId="cof-abstract-heading" label="Abstract" class="cof-fade">
 		<div class="cof-abstract-wrap">
 			<p class="cof-abstract">
-				<span class="cof-highlight">Diffusion and flow models</span> for speech enhancement face a{' '}
-				<span class="cof-issue">training–inference mismatch</span>: training uses analytical path states,
-				while inference operates on self-generated trajectories, where{' '}
-				<span class="cof-issue">prediction and discretization errors accumulate</span>.
-				We introduce <span class="cof-highlight">Corrective Forcing (CoF)</span>, a unified{' '}
-				<span class="cof-highlight">post-training framework</span> that adapts models to these rollout states.
-				CoF corrects clean-speech predictions toward the ground truth under varying sampling schedules
-				and regularizes local transitions against locally corrected counterfactual references.
-				A shared <span class="cof-highlight">clean-speech prediction parameterization</span> enables
-				the same objective for diffusion and flow models. Experiments with SB-VE and OT-CFM on three
-				benchmarks show gains in perceptual quality and reconstruction fidelity across sampling budgets.
+				<span class="cof-highlight">Diffusion and flow models</span>, as promising generative paradigms
+				for speech enhancement, face a <span class="cof-issue">training–inference mismatch</span>:
+				training uses analytical path states, whereas inference recursively evaluates models on
+				self-generated rollout states along discretized sampling
+				trajectories. This mismatch causes{' '}
+				<span class="cof-issue">prediction and discretization errors to accumulate</span>. To address it,
+				we introduce <span class="cof-highlight">Corrective Forcing (CoF)</span>, a{' '}
+				<span class="cof-highlight">post-training paradigm</span> that forces diffusion and flow models
+				to learn from <span class="cof-highlight">self-generated rollouts</span> and correct their predictions. CoF corrects clean-speech predictions
+				on rollout states toward the ground truth under dynamic sampling schedules, exposing the model to
+				varying inference conditions. It further regularizes local evolution using{' '}
+				<span class="cof-highlight">locally corrected counterfactual transitions</span> as references for
+				factual transitions. By expressing model outputs through a shared{' '}
+				<span class="cof-highlight">clean-speech prediction parameterization</span>, CoF applies the same
+				post-training objective across diffusion and flow formulations. Experiments with SB-VE and OT-CFM
+				demonstrate improvements in perceptual quality and reconstruction fidelity, together with robust
+				performance across different numbers of sampling steps.
 			</p>
 			<div class="cof-legend" aria-hidden="true">
 				<span class="cof-legend-item">
