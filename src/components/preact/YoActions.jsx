@@ -8,26 +8,43 @@ const actions = [
 	['happy', 'A little joy'], ['boring', 'Feeling bored'], ['daydreaming', 'Daydream'],
 	['embarrassed', 'A shy smile']
 ];
-export default function YoActions({ hidden = false, onAction, onHide, onShow }) {
+// A freshly entered state may not be flipped again immediately.
+const SWITCH_LOCK = 1200;
+export default function YoActions({ triggerVisible = false, onAction }) {
 	const id = 'yo-actions-' + useId().replace(/:/g, '');
 	const [open, setOpen] = useState(false);
+	const [locked, setLocked] = useState(false);
 	const root = useRef(null);
-	const restoreButton = useRef(null);
 	const returnFocus = useRef(false);
 	const openState = useRef(open);
+	const lockUntil = useRef(0);
+	const lockTimer = useRef(0);
+	const choose = mood => {
+		if (Date.now() < lockUntil.current) return;
+		close();
+		onAction(mood);
+		lockUntil.current = Date.now() + SWITCH_LOCK;
+		setLocked(true);
+		clearTimeout(lockTimer.current);
+		lockTimer.current = setTimeout(() => setLocked(false), SWITCH_LOCK);
+	};
+	useEffect(() => () => clearTimeout(lockTimer.current), []);
 	const close = () => { returnFocus.current = true; setOpen(false); };
+	const toggle = () => {
+		if (openState.current) { close(); return; }
+		returnFocus.current = false;
+		setOpen(true);
+		requestAnimationFrame(() => root.current?.querySelector('.yo-actions-panel:not([hidden]) button')?.focus({ preventScroll: true }));
+	};
 	useLayoutEffect(() => {
 		openState.current = open;
 		if (open) root.current?.querySelector('.yo-actions-panel button')?.focus({ preventScroll: true });
 		else if (returnFocus.current) {
 			returnFocus.current = false;
-			const target = hidden ? restoreButton.current : root.current?.parentElement?.querySelector('.yo-cloud');
-			target?.focus({ preventScroll: true });
+			root.current?.parentElement?.querySelector('.yo-cloud')?.focus({ preventScroll: true });
 		}
 	}, [open]);
-	useEffect(() => { if (hidden) setOpen(false); }, [hidden]);
 	useEffect(() => {
-		if (hidden) return;
 		const focusFirstAction = () => requestAnimationFrame(() => {
 			root.current?.querySelector('.yo-actions-panel:not([hidden]) button')?.focus({ preventScroll: true });
 		});
@@ -55,7 +72,7 @@ export default function YoActions({ hidden = false, onAction, onHide, onShow }) 
 			document.removeEventListener('contextmenu', openFromYo);
 			document.removeEventListener('keydown', openFromKeyboard);
 		};
-	}, [hidden]);
+	}, []);
 	useEffect(() => {
 		if (!open) return;
 		const outside = event => { if (!root.current?.contains(event.target)) setOpen(false); };
@@ -68,14 +85,17 @@ export default function YoActions({ hidden = false, onAction, onHide, onShow }) 
 		};
 	}, [open]);
 	return <div class="yo-actions" ref={root}>
-		{hidden && <button ref={restoreButton} class="yo-actions-revive" type="button" aria-label="Bring Yo back" onClick={() => {
-			onShow();
-			requestAnimationFrame(() => root.current?.parentElement?.querySelector('.yo-cloud')?.focus({ preventScroll: true }));
-		}}><span aria-hidden="true">Yo</span></button>}
-		<div class="yo-actions-panel" id={id} hidden={!open || hidden}>
+		{triggerVisible && <button class="yo-actions-trigger" type="button" aria-label="Yo's action menu" aria-expanded={open} aria-controls={id} onClick={toggle}>
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+				<rect x="3.6" y="3.6" width="7.2" height="7.2" rx="1.8" />
+				<rect x="13.2" y="3.6" width="7.2" height="7.2" rx="1.8" />
+				<rect x="3.6" y="13.2" width="7.2" height="7.2" rx="1.8" />
+				<circle cx="16.8" cy="16.8" r="3.6" />
+			</svg>
+		</button>}
+		<div class="yo-actions-panel" id={id} hidden={!open}>
 			<p>Yo’s little day</p>
-			<div class="yo-actions-grid">{actions.map(([mood, label]) => <button type="button" key={mood} data-yo-action={mood} onClick={() => { close(); onAction(mood); }}>{label}</button>)}</div>
-			<button class="yo-actions-hide" type="button" onClick={() => { close(); onHide(); }}>Let Yo rest offscreen</button>
+			<div class="yo-actions-grid">{actions.map(([mood, label]) => <button type="button" key={mood} data-yo-action={mood} aria-disabled={locked || undefined} onClick={() => choose(mood)}>{label}</button>)}</div>
 		</div>
 	</div>;
 }

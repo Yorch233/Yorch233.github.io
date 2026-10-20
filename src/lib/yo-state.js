@@ -58,7 +58,7 @@ export function transitionYo(state, event, now) {
 		const clean = finishChain(state, now, () => .5);
 		const chain = mood === 'hungry' ? ['eat-burger', 'happy'] : mood === 'eat-burger' ? ['happy'] : [];
 		return { ...clean, lastActivity: event.passive ? state.lastActivity : now, reaction: mood,
-			until: now + Math.min(10000, event.duration ?? YO_STATES[mood]), priority, chain };
+			until: now + Math.max(2000, Math.min(10000, event.duration ?? YO_STATES[mood])), priority, chain };
 	}
 	if (event.type === 'cancel') return finishChain(state, now, () => .5);
 	if (event.type === 'activity') {
@@ -72,7 +72,7 @@ export function advanceYo(state, now, context = {}, random = Math.random) {
 	if (state.presence === 'hidden') return state;
 	if (state.presence !== 'visible') return now >= state.presenceUntil
 		? { ...state, presence: state.presence === 'appearing' ? 'visible' : 'hidden' } : state;
-	if (context.reading || context.paused || context.audio || context.reducedMotion || context.attentive) {
+	if (context.reading || context.paused || context.audio || context.reducedMotion) {
 		if (state.group) return finishChain(state, now, random);
 	}
 	if (state.reaction && now >= state.until) {

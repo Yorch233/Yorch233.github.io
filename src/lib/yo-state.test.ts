@@ -77,6 +77,14 @@ test('direct feedback wins over narration and never resumes a canceled prop chai
 	expect(state.reaction).toBeNull();
 });
 
+test('every reaction state lasts at least two seconds', () => {
+	let state = transitionYo(initialYoState(), { type: 'react', mood: 'happy', duration: 500 }, 1000);
+	expect(yoMood(state, 2900)).toBe('happy');
+	expect(yoMood(state, 3001)).toBe('idle');
+	state = transitionYo(state, { type: 'react', mood: 'speaking', priority: 2 }, 4000);
+	expect(yoMood(state, 5999)).toBe('speaking');
+});
+
 test('group and state cooldowns filter before renormalizing', () => {
 	const state = { ...initialYoState(), lastGroup: 'work', cooldowns: { 'eat-burger': 1000, 'drink-coffee': 1000, boring: 1000 } };
 	for (let i = 0; i < 100; i++) {
@@ -92,6 +100,16 @@ test('all quiet environments prohibit autonomous draws; two starts per minute ma
 	}
 	const state = { ...initialYoState(), starts: [1000, 5000] };
 	expect(advanceYo(state, 12000, {}, () => .99).reaction).toBeNull();
+});
+
+test('attention pauses new draws without canceling a running chain', () => {
+	const chained = { ...initialYoState(), reaction: 'studying', chain: ['thinking', 'coding'], group: 'work', priority: 1, until: 2000, lastActivity: 0 };
+	const kept = advanceYo(chained, 1000, { attentive: true }, () => .5);
+	expect(kept.reaction).toBe('studying');
+	expect(kept.chain).toEqual(['thinking', 'coding']);
+	const advanced = advanceYo(chained, 2600, { attentive: true }, () => .5);
+	expect(advanced.reaction).toBe('thinking');
+	expect(advanced.chain).toEqual(['coding']);
 });
 
 test('absence, reset and explicit hiding cannot revive stale reactions', () => {

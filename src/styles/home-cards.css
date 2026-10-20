@@ -27,7 +27,7 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
 .home-ref .meet-card .news-toggle:hover { background: var(--accent-bright-soft); color: var(--accent-deep); }
 
 .home-ref .pub-abstract { width: 100%; max-width: none; margin-top: var(--space-4); }
-.home-ref .card-body .pub-summary { max-width: 57ch; margin: 0; line-height: 1.75; text-wrap: wrap; }
+.home-ref .card-body .pub-summary { max-width: calc(var(--text-3) * 41.29); margin: 0; line-height: 1.75; text-wrap: wrap; }
 .home-ref .pub-abstract[data-expanded=false] .pub-summary {
   display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
   max-height: 5.25em; overflow: hidden;

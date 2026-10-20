@@ -18,18 +18,18 @@ const TOPICS = [
 const topicFor = (id) => TOPICS.find((topic) => topic.id === id);
 const GREETING = "I'm Yo, Qing's Bot. Let's meet Qing!";
 const MOOD_LINES = {
-	waiting: 'Take your time. I’m here when you need me.',
-	sleeping: 'Zzz. Dreaming of clearer sound.',
-	daydreaming: 'Hmm… what shall we explore next?',
-	thinking: 'A little thought is taking shape.',
-	studying: 'One page at a time.',
-	'writing-paper': 'A little reading, a little thinking, a little writing.',
-	coding: 'Tap, tap. A little cloud at the keyboard.',
-	hungry: 'Time for a tiny burger break.',
-	'eat-burger': 'One little bite. Mmm!',
-	'drink-coffee': 'A quiet coffee break.',
-	boring: 'Maybe a little daydream?',
-	embarrassed: 'A shy little cloud smile.'
+	waiting: ['Take your time. I’m here when you need me.', 'No rush. I’ll keep watch.', 'Standing by whenever you need me.'],
+	sleeping: ['Zzz. Dreaming of clearer sound.', 'Zzz. Five more minutes.', 'Shh. The little cloud is recharging.'],
+	daydreaming: ['Hmm… what shall we explore next?', 'Just floating along on a tiny idea.', 'Cloud thoughts drift by slowly.'],
+	thinking: ['A little thought is taking shape.', 'Hmm. Let me mull this over.', 'Quietly lining up some ideas.'],
+	studying: ['One page at a time.', 'A few more notes, then a stretch.', 'Reading a little more.'],
+	'writing-paper': ['A little reading, a little thinking, a little writing.', 'Finding the right words, one line at a time.', 'The draft grows slowly but surely.'],
+	coding: ['Tap, tap. A little cloud at the keyboard.', 'Fixing one bug and finding two more.', 'The terminal is my weather today.'],
+	hungry: ['Time for a tiny burger break.', 'My tummy is rumbling a little.', 'A small snack would really help.'],
+	'eat-burger': ['One little bite. Mmm!', 'Nom nom. Best cloud meal ever.', 'Burgers make everything better.'],
+	'drink-coffee': ['A quiet coffee break.', 'Sip. The clouds can wait.', 'Warm cup, calm cloud.'],
+	boring: ['Maybe a little daydream?', 'Nothing to do. I’ll hum a tune.', 'It’s very quiet around here.'],
+	embarrassed: ['A shy little cloud smile.', 'Oops. You saw that?', 'Hiding behind my glasses.']
 };
 
 function TopicButton({ topic, compact = false }) {
@@ -53,13 +53,17 @@ export default function MeetYo() {
 	const modalOpen = welcomeOpen || cvOpen;
 	const [companionHovered, setCompanionHovered] = useState(false);
 	const [companionFocused, setCompanionFocused] = useState(false);
-	const [dismissed, setDismissed] = useState(false);
 	const [awake, setAwake] = useState(false);
 	const [compactScreen, setCompactScreen] = useState(false);
-	const hover = awake ? pointerHint ?? focusHint : null;
-	const peeking = !awake && !dismissed;
+	const awakeRef = useRef(false);
+	awakeRef.current = awake;
+	// Freshly chosen states narrate themselves for at least two seconds before
+	// content hints may take the bubble back.
+	const stateLineUntil = useRef(0);
+	const hover = awake && Date.now() >= stateLineUntil.current ? pointerHint ?? focusHint : null;
+	const peeking = !awake;
 	const companion = useRef(null);
-	const { mood, react, reset, stopSpeech, waitingQuiet, onVisibilityChange } = useYoMachine({ reading: Boolean(topic), hidden: modalOpen || dismissed || compactScreen, attentive: !compactScreen && (Boolean(hover) || companionHovered || companionFocused) });
+	const { mood, react, reset, stopSpeech, waitingQuiet, onVisibilityChange } = useYoMachine({ reading: Boolean(topic), hidden: modalOpen || compactScreen, attentive: !compactScreen && (Boolean(hover) || companionHovered || companionFocused) });
 	const noteTimer = useRef(0);
 	const heading = useRef(null);
 	const focusNext = useRef(false);
@@ -167,7 +171,12 @@ export default function MeetYo() {
 		const hint = (target) => {
 			const element = target?.closest?.('[data-yo-say], .news a, .tip[data-tip]');
 			if (!element) return null;
-			if (element.hasAttribute('data-yo-say')) return element.getAttribute('data-yo-say');
+			if (element.hasAttribute('data-yo-say')) {
+				// Once Yo is awake his own hover shows the current state's line;
+				// the pat invitation only narrates while he peeks from the edge.
+				if (awakeRef.current && element.classList.contains('meet-avatar')) return null;
+				return element.getAttribute('data-yo-say');
+			}
 			if (element.matches('.tip')) return 'This competition is called ' + element.dataset.tip + '.';
 			const href = element.getAttribute('href');
 			if (href?.startsWith('https://arxiv.org/')) return 'Read the research preprint on arXiv.';
@@ -253,10 +262,16 @@ export default function MeetYo() {
 	};
 	const selected = topicFor(topic);
 	const Card = selected?.Card;
-	const line = note ?? hover ?? selected?.line ?? MOOD_LINES[mood] ?? GREETING;
-	const dialogueActive = awake && !compactScreen && !modalOpen && !dismissed && Boolean(note || hover || companionHovered || companionFocused);
+	// Each mood draws one random line on entry and keeps it for the whole state.
+	const moodLine = useRef(null);
+	if (moodLine.current?.mood !== mood) {
+		const lines = MOOD_LINES[mood] ?? [GREETING];
+		moodLine.current = { mood, text: lines[Math.floor(Math.random() * lines.length)] };
+	}
+	const line = note ?? hover ?? selected?.line ?? moodLine.current.text;
+	const dialogueActive = awake && !compactScreen && !modalOpen && Boolean(note || hover || companionHovered || companionFocused);
 	useEffect(() => {
-		if (dialogueActive && !topic && !note && !MOOD_LINES[mood]) react('speaking', Math.min(3000, line.length * 24 + 680), 2);
+		if (dialogueActive && !topic && !note && !MOOD_LINES[mood]) react('speaking', Math.max(2000, Math.min(3000, line.length * 24 + 680)), 2);
 		if (!dialogueActive) stopSpeech();
 	}, [line, dialogueActive, topic, note, react, stopSpeech]);
 
@@ -286,7 +301,7 @@ export default function MeetYo() {
 				</section>
 			</div>}
 		</div>
-		<div ref={companion} class="meet-yo" inert={compactScreen} aria-hidden={compactScreen ? 'true' : undefined} data-peeking={peeking ? 'true' : 'false'} data-dismissed={dismissed ? 'true' : undefined} data-feedback={note || hover ? 'true' : undefined}
+		<div ref={companion} class="meet-yo" inert={compactScreen} aria-hidden={compactScreen ? 'true' : undefined} data-peeking={peeking ? 'true' : 'false'} data-feedback={note || hover ? 'true' : undefined}
 			onPointerEnter={() => setCompanionHovered(true)} onPointerLeave={() => setCompanionHovered(false)}
 			onFocusIn={() => setCompanionFocused(true)} onFocusOut={event => { if (!event.currentTarget.contains(event.relatedTarget)) setCompanionFocused(false); }}>
 			<div class="meet-bubble" id="home-yo-dialogue" aria-live="off" aria-hidden={!dialogueActive}><YoDialogue text={line} active={dialogueActive} /></div>
@@ -306,7 +321,14 @@ export default function MeetYo() {
 				</svg>
 				<span class="yo-bye-label" aria-hidden="true">Bye</span>
 			</button>}
-			<YoActions hidden={dismissed} onAction={next => { setAwake(true); clearTimeout(noteTimer.current); setNote(null); react(next); }} onHide={() => { setAwake(false); setDismissed(true); }} onShow={() => setDismissed(false)} />
+			<YoActions triggerVisible={dialogueActive} onAction={next => {
+				setAwake(true);
+				clearTimeout(noteTimer.current);
+				setNote(null);
+				stateLineUntil.current = Date.now() + 2000;
+				setPointerHint(null);
+				react(next);
+			}} />
 		</div>
 		<span class="sr-only" role="status">{note}</span>
 		<YoWelcome onOpenChange={setWelcomeOpen} />

@@ -263,17 +263,18 @@ test.describe('Yo mascot life, narration & actions', () => {
 		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card')", 'Papers never opened from the phone navigation.');
 	});
 
-	test('action menu, prop rigs, hide and revive', async ({ page }) => {
+	test('action menu, prop rigs and narration', async ({ page }) => {
 		test.setTimeout(240_000);
 		await seenWelcome(page);
 		await page.setViewportSize({ width: 1280, height: 800 });
 		await page.goto('/#publications');
 		await waitForExpr(page, "location.hash === '#publications' && !!document.querySelector('.meet-card') && !document.documentElement.classList.contains('is-loading')", 'The homepage never finished loading.');
 		// Approved life states use the real controls, with one mutually exclusive rig.
+		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').click(); true");
 		await page.evaluate("document.querySelector('.meet-avatar .yo-cloud').focus(); document.querySelector('.meet-avatar .yo-cloud').dispatchEvent(new KeyboardEvent('keydown', { key: 'F10', shiftKey: true, bubbles: true, cancelable: true })); true");
 		await waitForExpr(page, "!document.querySelector('.yo-actions-panel').hidden", 'Shift+F10 never opened the action menu.');
 		await waitForExpr(page, 'document.activeElement === document.querySelector(\'.yo-actions-panel button\')', 'The action menu never took focus.');
-		await check(page, '!document.querySelector(\'.yo-actions-toggle\')', 'Yo’s action menu must open from the keyboard without a separate toggle button.');
+		await check(page, "document.querySelector('.yo-actions-trigger')?.getAttribute('aria-expanded') === 'true' && document.querySelector('.yo-actions-trigger')?.getAttribute('aria-controls') === document.querySelector('.yo-actions-panel').id", 'Yo’s action menu must stay reachable from the keyboard and reflect its state on the trigger.');
 		await page.evaluate("document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true })); true");
 		await waitForExpr(page, "document.querySelector('.yo-actions-panel').hidden && document.activeElement === document.querySelector('.meet-avatar .yo-cloud')", 'Escape did not close the action menu onto Yo.');
 		const openYoActions = async () => {
@@ -286,7 +287,13 @@ test.describe('Yo mascot life, narration & actions', () => {
 			await page.evaluate(`document.querySelector('[data-yo-action=${JSON.stringify(mood)}]').click(); true`);
 			await waitForExpr(page, `document.querySelector('.meet-avatar .yo-cloud').dataset.mood === ${JSON.stringify(mood)}`, `Choosing ${mood} never applied the mood.`);
 		};
-		for (const action of ['thinking', 'studying', 'writing-paper', 'coding', 'hungry', 'drink-coffee', 'boring', 'daydreaming', 'embarrassed']) {
+		await chooseYo('thinking');
+		// A freshly entered state rejects an immediate switch until the lock lapses.
+		await openYoActions();
+		await page.evaluate("document.querySelector('[data-yo-action=coding]').click(); true");
+		await check(page, "document.querySelector('.meet-avatar .yo-cloud').dataset.mood === 'thinking' && document.querySelector('[data-yo-action=coding]').getAttribute('aria-disabled') === 'true'", 'A fresh state allowed an immediate switch or missed the lock hint.');
+		for (const action of ['studying', 'writing-paper', 'coding', 'happy', 'hungry', 'drink-coffee', 'boring', 'daydreaming', 'embarrassed']) {
+			await page.waitForTimeout(1400);
 			await chooseYo(action);
 			if (['studying', 'writing-paper', 'coding', 'drink-coffee'].includes(action)) {
 				await waitForExpr(page, `Number(document.querySelector('[data-yo-prop=${JSON.stringify(action)}]').getAttribute('opacity')) === 1`, `The ${action} prop never appeared.`);
@@ -294,23 +301,16 @@ test.describe('Yo mascot life, narration & actions', () => {
 				await check(page, "[...document.querySelectorAll('.meet-avatar [data-yo-prop]')].filter(n=>Number(n.getAttribute('opacity'))>.01).length === 1", 'Yo overlapped two prop rigs.');
 			}
 		}
+		await page.waitForTimeout(1400);
 		await chooseYo('drink-coffee');
 		await page.waitForTimeout(2200);
 		if (process.env.SCREENSHOT_DIR) {
 			await page.screenshot({ path: `${process.env.SCREENSHOT_DIR}/yo-coffee.png` });
 		}
-		await chooseYo('coding');
-		await openYoActions();
-		await page.evaluate("document.querySelector('.yo-actions-hide').click(); true");
-		await waitForExpr(page, "document.querySelector('.meet-avatar .yo-cloud').dataset.mood === 'hidden' && document.querySelector('.yo-actions-revive')", 'Hiding never produced the revive control.');
-		await check(page, "document.querySelector('.meet-avatar .yo-cloud').inert && [...document.querySelectorAll('.meet-avatar [data-yo-prop]')].every(n=>Number(n.getAttribute('opacity'))===0)", 'Dismissed Yo left interactive content or props.');
-		await page.evaluate("document.querySelector('.yo-actions-revive').click(); true");
-		await waitForExpr(page, "document.querySelector('.meet-yo').dataset.peeking === 'true' && document.querySelector('.meet-yo-hi').textContent === 'Hi' && !document.querySelector('.meet-avatar .yo-cloud').inert", 'Reviving never brought Yo back to the edge.');
-		await waitForExpr(page, "document.querySelector('.meet-avatar .yo-cloud').dataset.mood === 'idle'", 'Revived Yo never settled to idle.');
 		for (const [width, height] of [[320, 667], [667, 320]]) {
 			await page.setViewportSize({ width, height });
 			await waitForExpr(page, "document.querySelector('.meet-yo').inert && document.querySelector('.meet-avatar svg').dataset.motion === 'static'", `Yo never went inert at ${width}x${height}.`);
-			await check(page, "getComputedStyle(document.querySelector('.meet-yo')).display === 'none' && !document.querySelector('.yo-actions-toggle') && document.querySelector('.yo-actions-panel').hidden", `Mobile Yo or his action menu remains visible or active at ${width}x${height}.`);
+			await check(page, "getComputedStyle(document.querySelector('.meet-yo')).display === 'none' && !document.querySelector('.yo-actions-trigger') && document.querySelector('.yo-actions-panel').hidden", `Mobile Yo or his action menu remains visible or active at ${width}x${height}.`);
 		}
 		if (process.env.SCREENSHOT_DIR) {
 			for (const [name, width, height] of [['desktop', 1280, 800], ['phone', 390, 844]] as const) {

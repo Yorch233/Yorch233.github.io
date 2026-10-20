@@ -157,11 +157,14 @@ companion floating at the bottom-right of the desktop viewport. Show narration o
 hover, focus or explicit feedback. Meaningful content and controls across all five
 sections carry contextual Yo hints, including header links, research interests,
 publication resources, news, awards and contact. Hover hints take priority over
-section and idle narration; bounded direct-action feedback takes priority over hints.
+section and idle narration, except that once Yo is awake his own hover and
+focus show the current state's line instead of the pat invitation; bounded
+direct-action feedback takes priority over hints.
 Moving away clears the hover hint. Keyboard focus offers the same descriptions
 without adding tab stops to static content. Hover narration is not a live announcement.
 Reserve end-of-page space so actions and the
-footer remain reachable. Reduce the avatar size on phones and in reading mode. Closing a section restores
+footer remain reachable. Phones reduce the avatar size; the welcome page and
+reading sections share one companion size. Closing a section restores
 focus to its welcome-page button. Show author content first in DOM and
 reading order; the floating companion comes after the content in the DOM.
 
@@ -270,19 +273,23 @@ After 12s without user activity, browsing may select one complete short chain:
 gentle 60%, academic 25%, emotion 10%, snack 5%. Academic chains read, think,
 then write a paper or code. Snack chains are hungry → burger → happy, or coffee.
 Leave 18–32s of idle between chains, filter cooldowns before drawing, disallow
-consecutive groups, and limit automatic chain starts to two per minute. Genuine
-45s inactivity ends automatic play and selects waiting; 90s selects sleeping.
-Activity cancels an automatic chain and wakes Yo. Animations never refresh the
-user-activity clock. Interrupted chains never resume their remaining props.
+consecutive groups, and limit automatic chain starts to two per minute.
+Genuine 45s inactivity ends automatic play and selects waiting; 90s selects
+sleeping. Pointer activity cancels an automatic chain and wakes Yo only when
+it happens over the reading card; side whitespace and the mascot himself never
+interrupt his current state, while keyboard input always counts as activity.
+Hovering or focusing the mascot only postpones new autonomous play — his
+running state and chain continue. Animations never refresh the user-activity
+clock. Interrupted chains never resume their remaining props.
 
-The small “Yo’s little day” menu offers deliberate life actions, Escape/outside
-dismissal and an offscreen-rest action with a reachable “Bring Yo back” control.
+The small “Yo’s little day” menu offers deliberate life actions with
+Escape/outside dismissal; a chosen action briefly locks the others. Yo stays
+on the page, so there is no offscreen-rest action or “Bring Yo back” control.
 It keeps 44px targets on phones. There is no Pause motion button. Reduced motion
 uses representative static poses, stops automatic chains and shows text at once.
 Hidden tabs and offscreen views cancel stale chains and stop frames; returning
 resets inactivity without replaying missed actions. No live announcements for
-autonomous chatter or hover previews. Explicit hiding remains in effect across
-navigation and tab restoration.
+autonomous chatter or hover previews.
 
 Yo's dialogue enters from 8px below with a 180ms fade, then reveals one
 grapheme at a time (up to 24ms per character, capped at 2.4s for long copy).
@@ -471,8 +478,10 @@ to white with a method-colored play or pause glyph (the CoF variants
 therefore stay branch orange in every highlighted state). Playback and
 pause glyphs are white on the method's own colored badge (the main playback
 button uses the accent blue); sample expansion uses blue glass with
-white labels. The Yo action panel opens by right-clicking the mascot or by the
-focused keyboard context-menu command, without a separate ellipsis trigger. Phones stack
+white labels. The Yo action panel opens by right-clicking the mascot, by the
+focused keyboard context-menu command, or by the menu-icon trigger in the
+control row beneath him; a chosen action briefly locks the other actions
+(hinted with aria-disabled) so a fresh state cannot be flipped at once. Phones stack
 the two spectrograms with their method labels and retain the same frequency/time
 axes. Load failures surface as a single centered message over the active
 canvas view. Narrow screens rework the sample card: tablets (<=960px) lay the
@@ -520,7 +529,9 @@ invited. The existing first-visit welcome dialog remains separate, and phones
 continue to hide the homepage companion. Once invited, interactive controls
 offer transient hover narration and keyboard-focus hints, while deliberate
 requests receive polite feedback. Use a readable 16px speech bubble, Escape/outside-click dismissal and focus return,
-with a 44px bye-hand control at Yo's bottom-left corner. Reading content
+with a control row beneath Yo holding a 36px menu-icon trigger on the left
+and a 36px bye-hand control beside it; the Bye label reveals on hover and
+focus. Reading content
 settles him into static studying. Respect reduced motion and hidden tabs.
 Keep all Yo speech conversational, including homepage hints. Use natural short
 sentences with no semicolon breaks. Preserve the scientific meaning of any

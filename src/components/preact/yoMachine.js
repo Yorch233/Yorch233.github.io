@@ -38,7 +38,13 @@ export function useYoMachine({ reading = false, paused = false, attentive = fals
 	useEffect(() => {
 		const media = matchMedia('(prefers-reduced-motion: reduce)');
 		const preference = () => setReducedMotion(media.matches);
-		const activity = () => { if (!document.hidden && visible.current) dispatch({ type: 'activity' }); };
+		const activity = event => {
+			if (document.hidden || !visible.current) return;
+			// Only engaging the reading card interrupts Yo; side whitespace and
+			// the mascot himself never cancel his current state.
+			if (event.type !== 'keydown' && !(event.target instanceof Element && event.target.closest('.meet-card'))) return;
+			dispatch({ type: 'activity' });
+		};
 		const visibility = () => { if (document.hidden) cancel(); else if (state.current.presence === 'visible') reset(); };
 		const feedback = event => react(event.type === 'copy:done' ? 'happy' : 'embarrassed');
 		const pending = event => dispatch({ type: 'pending', active: event.detail === true });

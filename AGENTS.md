@@ -60,7 +60,7 @@ without interacting with him.
 Use direct labels and accurate destination descriptions.
 Write Yo's speech as friendly, conversational English with short natural
 sentences. Avoid semicolons and reciting formal publication summaries.
-Yo defaults to peeking from the right edge with one visible eye and a small “Hi” greeting on the homepage. Activate him before contextual narration; closing his explanation returns him to the edge. Right-clicking him opens his action menu; the focused mascot also responds to the context-menu key and Shift+F10. Do not show a separate ellipsis trigger. Keep a small “Bring Yo back” control only when he has been intentionally dismissed.
+Yo defaults to peeking from the right edge with one visible eye and a small “Hi” greeting on the homepage. Activate him before contextual narration; closing his explanation returns him to the edge. Right-clicking him opens his action menu; the focused mascot also responds to the context-menu key and Shift+F10, and the menu expands from a menu-icon trigger in the control row beneath him (the Bye control sits to its right). Choosing a menu action locks the other actions for a short moment so a fresh state cannot be flipped immediately. Yo stays on the page; there is no dismiss control.
 Give meaningful homepage content contextual Yo text on hover after activation, and interactive
 controls equivalent hints on keyboard focus. Keep hover narration transient and
 out of live announcements; direct-action feedback takes priority.
@@ -151,7 +151,7 @@ Favicon SVGs must work without external resources.
 Do not reintroduce individual wardrobe settings.
 
 Use the approved Yo state definitions in `src/lib/yo-state.js` and the existing native artwork. Keep prop rigs mutually exclusive and cancel entire automatic chains when interrupted. Give reactions explicit triggers and bounded lifetimes. Reading, reduced motion, hidden tabs and offscreen views stop continuous
-motion. Returning to browsing resumes it without stale reactions. Pointer
+motion. Returning to browsing resumes it without stale reactions. Mouse activity counts only over the reading card; side whitespace and Yo himself never interrupt his state, while keyboard input always does. Pointer
 coordinates belong in refs, not render state. Clean up timers and observers.
 
 The header CV button opens a welcome-style dialog without changing sections.
