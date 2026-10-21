@@ -29,6 +29,12 @@ const { title, publication, titleTarget, resourcesTarget } = Astro.props;
 		const header = capsule.parentElement;
 		if (!source || !header) return;
 		let observer: IntersectionObserver | undefined;
+		let classObserver: MutationObserver | undefined;
+		let lastEntry: IntersectionObserverEntry | undefined;
+		// The phone audio player reserves room beside the floating resources
+		// capsule, so the capsule must stay visible whenever that player exists
+		// instead of hiding behind its source section.
+		const keepForPlayer = () => capsule.classList.contains('demo-resources-capsule') && document.body.classList.contains('has-mobile-audio-player');
 		const observeSource = () => {
 			observer?.disconnect();
 			// Treat the fixed capsule's footprint as the top of the reading area.
@@ -39,26 +45,34 @@ const { title, publication, titleTarget, resourcesTarget } = Astro.props;
 			// reading area begins.
 			const anchor = header.querySelector<HTMLElement>('.demo-title-capsule') ?? capsule;
 			const topBoundary = anchor.offsetTop + anchor.offsetHeight + header.getBoundingClientRect().top + 8;
-			observer = new IntersectionObserver(([entry]) => {
+			const evaluate = (entry?: IntersectionObserverEntry) => {
+				if (entry) lastEntry = entry;
 				// Sources below the viewport must not trigger a floating copy.
-				const visible = !entry.isIntersecting && entry.boundingClientRect.bottom < topBoundary;
+				const visible = keepForPlayer() || (!!lastEntry && !lastEntry.isIntersecting && lastEntry.boundingClientRect.bottom < topBoundary);
 				if (!visible && capsule.contains(document.activeElement)) {
 					(source.querySelector<HTMLElement>('a') ?? source).focus({ preventScroll: true });
 				}
 				capsule.dataset.visible = String(visible);
 				capsule.inert = !visible;
-			}, {
+			};
+			observer = new IntersectionObserver(entries => evaluate(entries[0]), {
 				threshold: 0,
 				// Keep anchor jumps observable even when they skip the viewport.
 				rootMargin: `-${topBoundary}px 0px ${document.documentElement.scrollHeight}px 0px`
 			});
 			observer.observe(source);
+			if (capsule.classList.contains('demo-resources-capsule')) {
+				classObserver?.disconnect();
+				classObserver = new MutationObserver(() => evaluate());
+				classObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+			}
 		};
 		const sizeObserver = new ResizeObserver(observeSource);
 		sizeObserver.observe(header);
 		// Disconnect the latest observer, including replacements after reflow.
 		disposers.push(() => {
 			observer?.disconnect();
+			classObserver?.disconnect();
 			sizeObserver.disconnect();
 		});
 	});
