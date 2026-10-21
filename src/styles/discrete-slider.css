@@ -26,6 +26,7 @@
   border-radius: 999px;
   background: var(--slider-track);
   box-shadow: inset 0 1px 2px rgb(37 54 77 / .08);
+  overflow: hidden;
 }
 .discrete-slider-fill {
   position: absolute;
@@ -76,6 +77,7 @@
 .discrete-slider[data-max] .discrete-slider-dot { opacity: .7; }
 .discrete-slider-bubble {
   position: absolute;
+  left: 100%;
   width: var(--bubble-size, 4px);
   height: var(--bubble-size, 4px);
   border-radius: 50%;
@@ -85,15 +87,16 @@
   filter: blur(var(--bubble-blur, 0));
   transform: translate(-50%, -50%);
   pointer-events: none;
-  transition: opacity 280ms ease;
 }
+/* Bubbles drift in from the right edge, fade up, then fade out toward the
+   left; staggered negative delays keep the stream continuous at full budget. */
 .discrete-slider[data-max] .discrete-slider-bubble {
-  opacity: var(--bubble-opacity, .8);
-  animation: discrete-slider-bubble var(--bubble-duration, 4s) ease-in-out var(--bubble-delay, 0s) infinite alternate;
+  animation: discrete-slider-bubble var(--bubble-duration, 4s) linear var(--bubble-delay, 0s) infinite;
 }
 @keyframes discrete-slider-bubble {
-  from { transform: translate(-50%, -50%) translateY(3px); }
-  to { transform: translate(-50%, -50%) translateY(-4px); }
+  0% { left: 100%; opacity: 0; }
+  12%, 72% { opacity: var(--bubble-opacity, .8); }
+  100% { left: 0%; opacity: 0; }
 }
 .discrete-slider-thumb {
   position: absolute;
@@ -127,9 +130,9 @@
 .discrete-slider[data-disabled] .discrete-slider-input, .discrete-slider[data-disabled] label { cursor: default; }
 @media (max-width: 720px) { .discrete-slider { font-size: 14px; } }
 @media (prefers-reduced-motion: reduce) {
-  .discrete-slider-fill, .discrete-slider-fill::before, .discrete-slider-thumb, .discrete-slider-dot, .discrete-slider-bubble { transition: none; }
+  .discrete-slider-fill, .discrete-slider-fill::before, .discrete-slider-thumb, .discrete-slider-dot { transition: none; }
   .discrete-slider[data-max] .discrete-slider-glow { animation: none; opacity: .7; transform: none; }
-  .discrete-slider[data-max] .discrete-slider-bubble { animation: none; }
+  .discrete-slider[data-max] .discrete-slider-bubble { animation: none; opacity: 0; }
   .discrete-slider-control:has(.discrete-slider-input:active) .discrete-slider-thumb { transform: translate(-50%, -50%); }
 }
 @media (forced-colors: active) {

@@ -550,6 +550,28 @@
     }
   },
   {
+    "id": "arxiv-logo",
+    "label": "arXiv brand",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/arxiv-logo-active-filled.svg",
+      "inactive": "/icons/arxiv-logo-inactive.svg"
+    }
+  },
+  {
+    "id": "ieee",
+    "label": "IEEE",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/ieee-active-filled.svg",
+      "inactive": "/icons/ieee-inactive.svg"
+    }
+  },
+  {
     "id": "github",
     "label": "GitHub",
     "group": "Actions",

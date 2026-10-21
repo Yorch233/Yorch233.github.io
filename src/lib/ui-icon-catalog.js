@@ -351,6 +351,20 @@ export const uiIconCatalog = [
     "secondary": "#bfdfff"
   },
   {
+    "id": "arxiv-logo",
+    "label": "arXiv brand",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "ieee",
+    "label": "IEEE",
+    "group": "Actions",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
     "id": "github",
     "label": "GitHub",
     "group": "Actions",

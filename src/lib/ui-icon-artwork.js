@@ -42,6 +42,8 @@ export const uiIconArtwork = {
  arxiv: pair(path('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 11l8 7m0-7-8 7'),
   p('M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z') + s('M14 3v4a2 2 0 0 0 2 2h4Z') + stroke('M8 11l8 7m0-7-8 7', 'var(--ui-icon-secondary)', 2.1)),
  // Keep the familiar standard brand silhouette in both interaction states.
+ 'arxiv-logo': { line: brandInset(uiBrandArtwork.arxiv), filled: brandInset(circle(12, 12.15, 11.8, secondary) + uiBrandArtwork.arxiv) },
+ ieee: { line: brandInset(uiBrandArtwork.ieee), filled: brandInset(circle(12, 12.15, 11.8, secondary) + uiBrandArtwork.ieee) },
  github: { line: brandInset(uiBrandArtwork.github), filled: brandInset(circle(12, 12.15, 11.8, secondary) + uiBrandArtwork.github) },
  orcid: { line: brandInset(uiBrandArtwork.orcid), filled: brandInset(circle(12, 12, 11.8, secondary) + uiBrandArtwork.orcid) },
  huggingface: { line: brandInset(uiBrandArtwork.huggingface), filled: brandInset(circle(12.025, 11.508, 10.3, secondary) + uiBrandArtwork.huggingface) },

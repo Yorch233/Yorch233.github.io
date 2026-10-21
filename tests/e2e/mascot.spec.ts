@@ -155,6 +155,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		for (const [section, cases] of hoverCases) {
 			await page.evaluate(`document.querySelector('.toplink[href="#${section}"]').click(); true`);
 			await waitForExpr(page, section === 'about' ? "!!document.querySelector('.meet-greet')" : `location.hash === '#${section}' && !!document.querySelector('.meet-card')`, `The ${section} section never opened.`);
+			if (section === 'publications') await page.evaluate("document.querySelector('.pub-abstract-toggle').click(); true");
 			for (const [selector, expected] of cases) await hoverYo(selector, expected);
 			if (section === 'publications') {
 				await page.evaluate("document.querySelector('.link-pill-copy').click(); true");

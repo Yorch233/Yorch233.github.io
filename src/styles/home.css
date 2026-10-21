@@ -206,7 +206,7 @@ body.home-ref {
 .pub-links { margin-top: var(--space-4); }
 .link-pill { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: var(--nested-radius); background: var(--surface); color: var(--accent); font-size: var(--text-1); font-weight: 380; text-decoration: none; line-height: 1.4; }
 .link-pill:hover, .link-pill.is-copied { border-color: var(--accent-line); background: var(--accent-soft); }
-.link-pill--primary { background: var(--accent); border-color: var(--accent); color: white; }
+.link-pill--primary { background: var(--accent); border-color: var(--accent); color: white; border-radius: 999px; }
 .link-pill--primary, .contact-mail { box-shadow: 0 3px 0 var(--accent-deep); }
 .link-pill, .contact-mail { transition: background 160ms, transform 160ms, box-shadow 160ms; }
 .link-pill:active, .contact-mail:active { transform: translateY(2px); }

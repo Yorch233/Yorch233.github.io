@@ -698,8 +698,10 @@ not load all samples; switching layouts disposes the outgoing audio graph.
 Reading-card secondary actions in Publications and News use
 transparent outline capsules with blue borders and a light blue hover/focus fill.
 They have no raised glass layers or resting shadows. Blue primary actions remain
-filled. Abstract toggles are plain text buttons labeled Show and Hide, with no
-icon or capsule and a minimum 44px touch target.
+filled. Publication resource pills drop the border and keep quiet gray labels
+that turn blue on hover or focus. Abstracts stay fully hidden behind TLDR lines;
+plain text buttons labeled Expand and Collapse sit inline after the TLDR or the
+abstract and carry no icon, capsule or resting shadow.
 
 Awards end with the visible topic tag and have no detail toggle.
 Contact research profiles retain their committed full-width glass rows,

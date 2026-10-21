@@ -26,13 +26,18 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
 }
 .home-ref .meet-card .news-toggle:hover { background: var(--accent-bright-soft); color: var(--accent-deep); }
 
-.home-ref .pub-abstract { width: 100%; max-width: none; margin-top: var(--space-4); }
+/* TLDR and the abstract read as plain text with inline tags; the abstract stays
+   fully hidden until expanded and its toggle flows right after the visible text. */
+.home-ref .card-body .pub-tldr,
 .home-ref .card-body .pub-summary { max-width: calc(var(--text-3) * 41.29); margin: 0; line-height: 1.75; text-wrap: wrap; }
-.home-ref .pub-abstract[data-expanded=false] .pub-summary {
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
-  max-height: 5.25em; overflow: hidden;
-}
-.home-ref .pub-abstract-toggle { display: inline-flex; align-items: center; min-height: 44px; margin-top: 6px; padding: 6px 0; border: 0; background: transparent; color: var(--accent); font: 380 var(--text-1)/1.5 var(--sans); cursor: pointer; }
+.home-ref .card-body .pub-tldr { margin-top: var(--space-4); }
+.home-ref .card-body .pub-summary { display: inline; }
+.home-ref .pub-abstract { max-width: calc(var(--text-3) * 41.29); margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.home-ref .pub-abstract[hidden] { display: none; }
+.home-ref .pub-inline-tag { display: inline-block; margin-right: 8px; padding: 0 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font: 520 var(--text-1)/1.75 var(--sans); vertical-align: 2px; }
+/* Buttons stay atomic inline in Chromium; the negative margins cancel the
+   padding inside the line box while the padding keeps a roomy hit area. */
+.home-ref .pub-abstract-toggle { display: inline-block; margin: -12px 0 -12px 6px; padding: 12px 2px; border: 0; background: transparent; color: var(--accent); font: inherit; font-weight: 480; line-height: 1; cursor: pointer; white-space: nowrap; }
 .home-ref .pub-abstract-toggle:is(:hover, :focus-visible) { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px; }
 
 /* Quiet secondary navigation follows the white outline capsule treatment. */
@@ -71,8 +76,9 @@ body.home-ref .meet .topic-pill:not(.topic-pill--primary)::after { display: none
 /* Phone resources emphasize the Demo and main paper, with quiet utility actions. */
 @media (max-width: 720px) {
   .home-ref .meet-card-head h2 { font-size: 22px; line-height: 1.25; }
-  .home-ref .pub-links { gap: 4px; align-items: center; }
+  .home-ref .pub-links { gap: 3px; align-items: center; }
   .home-ref .pub-links .link-pill { padding-inline: 8px; white-space: nowrap; }
+  .home-ref .pub-links .link-pill--primary { padding-inline: 7px; gap: 6px; }
   body.home-ref .meet .pub-links .compact-ghost {
     flex: 0 0 44px; width: 44px; height: 44px; padding: 0; gap: 0;
     border-color: transparent !important; box-shadow: none !important;
@@ -98,6 +104,9 @@ body.home-ref .meet .meet-card :is(.link-pill:not(.link-pill--primary), .meet-cl
   border-color: var(--accent) !important; background: var(--accent-soft) !important;
   color: var(--accent-deep); box-shadow: none !important;
 }
+/* Publication resource pills read as borderless text actions with quiet gray labels. */
+body.home-ref .meet .meet-card .pub-links .link-pill:not(.link-pill--primary) { border-color: transparent !important; color: var(--muted); }
+body.home-ref .meet .meet-card .pub-links .link-pill:not(.link-pill--primary):is(:hover, :focus-visible) { border-color: transparent !important; color: var(--accent); }
 body.home-ref .meet .meet-card :is(.link-pill:not(.link-pill--primary), .meet-close, .news-toggle)::before,
 body.home-ref .meet .meet-card :is(.link-pill:not(.link-pill--primary), .meet-close, .news-toggle)::after {
   display: none; -webkit-backdrop-filter: none !important; backdrop-filter: none !important;

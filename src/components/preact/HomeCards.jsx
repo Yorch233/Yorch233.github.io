@@ -1,4 +1,4 @@
-import { useId, useState } from 'preact/hooks';
+import { useId, useRef, useState } from 'preact/hooks';
 import profile from '../../data/profile.json';
 import { publications } from '../../data/publications.js';
 import UiIcon from './UiIcon.jsx';
@@ -158,15 +158,29 @@ export function AwardsCard() {
 function PublicationAbstract({ paper }) {
 	const [expanded, setExpanded] = useState(false);
 	const abstractId = useId();
-	return <div class="pub-abstract" data-expanded={expanded}>
-		<p id={abstractId} class="pub-summary" data-yo-say={paperHints[paper.slug]}>{paper.abstract}</p>
-		<button type="button" class="pub-abstract-toggle" aria-expanded={expanded} aria-controls={abstractId}
-			aria-label={(expanded ? 'Collapse abstract for ' : 'Show full abstract for ') + paper.slug}
-			data-yo-say={expanded ? 'You can tuck the abstract back into three lines.' : 'Open this to read the complete abstract.'}
-			onClick={() => setExpanded(!expanded)}>
-			{expanded ? 'Hide' : 'Show'}
-		</button>
-	</div>;
+	const collapsedToggle = useRef(null);
+	const expandedToggle = useRef(null);
+	const toggle = next => {
+		setExpanded(next);
+		// The clicked control unmounts with the layout flip; carry focus over.
+		requestAnimationFrame(() => (next ? expandedToggle : collapsedToggle).current?.focus());
+	};
+	return <>
+		<p class="pub-tldr" data-yo-say="Here is the quick takeaway before the full abstract.">
+			<span class="pub-inline-tag">TLDR</span>{paper.tldr}
+			{!expanded && <button type="button" ref={collapsedToggle} class="pub-abstract-toggle" aria-expanded={false}
+				aria-controls={abstractId} aria-label={'Expand abstract for ' + paper.slug}
+				data-yo-say="Open this to read the complete abstract."
+				onClick={() => toggle(true)}>Expand</button>}
+		</p>
+		<div class="pub-abstract" id={abstractId} hidden={!expanded}>
+			<p class="pub-summary" data-yo-say={paperHints[paper.slug]}><span class="pub-inline-tag">Abstract</span>{paper.abstract}</p>
+			{expanded && <button type="button" ref={expandedToggle} class="pub-abstract-toggle" aria-expanded={true}
+				aria-controls={abstractId} aria-label={'Collapse abstract for ' + paper.slug}
+				data-yo-say="You can tuck the abstract away again."
+				onClick={() => toggle(false)}>Collapse</button>}
+		</div>
+	</>;
 }
 
 export function PapersCard() {
@@ -184,9 +198,11 @@ export function PapersCard() {
 			<PublicationAbstract paper={paper} />
 			<div class="pub-links">
 				<DemoLink paper={paper} />
-				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="file" />IEEE</a>}
-				<a class={"link-pill" + (paper.paper ? " compact-ghost" : "")} aria-label="arXiv preprint" title="arXiv preprint" href={paper.arxiv} target="_blank" rel="noopener" data-yo-say={'Read the ' + paper.slug + ' preprint on arXiv.'}><Icon id="external" /><span class="compact-action-label">arXiv</span></a>
-				<a class="link-pill compact-ghost" aria-label="Source code on GitHub" title="Source code on GitHub" href={paper.code} target="_blank" rel="noopener" data-yo-say={'Take a peek at the open-source ' + paper.slug + ' implementation on GitHub!'}><Icon id="terminal" /><span class="compact-action-label">Code</span></a>
+				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="ieee" />IEEE</a>}
+				<a class="link-pill compact-ghost" aria-label="arXiv preprint" title="arXiv preprint" href={paper.arxiv} target="_blank" rel="noopener" data-yo-say={'Read the ' + paper.slug + ' preprint on arXiv.'}><Icon id="arxiv-logo" /><span class="compact-action-label">arXiv</span></a>
+				<a class="link-pill compact-ghost" aria-label="Source code on GitHub" title="Source code on GitHub" href={paper.code} target="_blank" rel="noopener" data-yo-say={'Take a peek at the open-source ' + paper.slug + ' implementation on GitHub!'}><Icon id="github" /><span class="compact-action-label">GitHub</span></a>
+				{paper.huggingface && <a class="link-pill compact-ghost" aria-label="Models on Hugging Face" title="Models on Hugging Face" href={paper.huggingface} target="_blank" rel="noopener" data-yo-say={'Browse the ' + paper.slug + ' models on Hugging Face.'}><Icon id="huggingface" /><span class="compact-action-label">Hugging Face</span></a>}
+				{paper.modelscope && <a class="link-pill compact-ghost" aria-label="Models on ModelScope" title="Models on ModelScope" href={paper.modelscope} target="_blank" rel="noopener" data-yo-say={'The ' + paper.slug + ' models are also on ModelScope.'}><Icon id="modelscope" /><span class="compact-action-label">ModelScope</span></a>}
 				<button type="button" class="link-pill link-pill-copy compact-ghost" title="Citations" aria-haspopup="dialog"
 					aria-label={'Citations for ' + paper.title} data-yo-say="Choose a BibTeX citation or another format, then copy it for your bibliography."
 					onClick={event => setCitation({ paper, trigger: event.currentTarget })}>

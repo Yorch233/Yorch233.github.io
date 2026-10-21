@@ -1,25 +1,28 @@
 import { useEffect, useId, useState } from 'preact/hooks';
 import '../../styles/discrete-slider.css';
 
-// Fixed bubble field for the maxed state: deterministic positions keep SSR
-// and hydration identical while the drift stays purely decorative.
+// Fixed bubble lanes for the maxed state: deterministic positions keep SSR
+// and hydration identical while the right-to-left drift stays purely decorative.
+// Every lane shares one crossing duration and an evenly spaced phase offset so
+// bubbles enter as a steady stream instead of clumping.
+const MAX_BUBBLE_DURATION = 4;
 const MAX_BUBBLES = [
-	{ x: 6, y: 36, size: 3, opacity: .7, delay: '-.2s', duration: '3.8s', blur: .2 },
-	{ x: 10, y: 64, size: 2, opacity: .55, delay: '-1.4s', duration: '3.2s', blur: .3 },
-	{ x: 15, y: 42, size: 4, opacity: .85, delay: '-2.1s', duration: '4.4s', blur: .4 },
-	{ x: 21, y: 58, size: 2, opacity: .6, delay: '-.8s', duration: '3.5s', blur: .2 },
-	{ x: 27, y: 32, size: 3, opacity: .8, delay: '-1.9s', duration: '4.1s', blur: .25 },
-	{ x: 33, y: 66, size: 4, opacity: .7, delay: '-.5s', duration: '3.7s', blur: .4 },
-	{ x: 39, y: 44, size: 2, opacity: .9, delay: '-2.6s', duration: '4.6s', blur: .2 },
-	{ x: 45, y: 60, size: 3, opacity: .55, delay: '-1.1s', duration: '3.4s', blur: .3 },
-	{ x: 51, y: 35, size: 4, opacity: .82, delay: '-2.3s', duration: '4.2s', blur: .35 },
-	{ x: 57, y: 68, size: 2, opacity: .65, delay: '-.7s', duration: '3.1s', blur: .2 },
-	{ x: 63, y: 46, size: 3, opacity: .75, delay: '-1.7s', duration: '4.5s', blur: .3 },
-	{ x: 70, y: 34, size: 2, opacity: .5, delay: '-2.9s', duration: '3.6s', blur: .2 },
-	{ x: 77, y: 62, size: 4, opacity: .86, delay: '-.4s', duration: '4.0s', blur: .4 },
-	{ x: 84, y: 40, size: 3, opacity: .62, delay: '-1.2s', duration: '3.3s', blur: .25 },
-	{ x: 90, y: 66, size: 2, opacity: .72, delay: '-2.5s', duration: '4.3s', blur: .3 },
-	{ x: 95, y: 34, size: 3, opacity: .6, delay: '-.9s', duration: '3.9s', blur: .2 }
+	{ y: 36, size: 3, opacity: .7, blur: .2 },
+	{ y: 64, size: 2, opacity: .55, blur: .3 },
+	{ y: 42, size: 4, opacity: .85, blur: .4 },
+	{ y: 58, size: 2, opacity: .6, blur: .2 },
+	{ y: 32, size: 3, opacity: .8, blur: .25 },
+	{ y: 66, size: 4, opacity: .7, blur: .4 },
+	{ y: 44, size: 2, opacity: .9, blur: .2 },
+	{ y: 60, size: 3, opacity: .55, blur: .3 },
+	{ y: 35, size: 4, opacity: .82, blur: .35 },
+	{ y: 68, size: 2, opacity: .65, blur: .2 },
+	{ y: 46, size: 3, opacity: .75, blur: .3 },
+	{ y: 34, size: 2, opacity: .5, blur: .2 },
+	{ y: 62, size: 4, opacity: .86, blur: .4 },
+	{ y: 40, size: 3, opacity: .62, blur: .25 },
+	{ y: 52, size: 2, opacity: .72, blur: .3 },
+	{ y: 48, size: 3, opacity: .6, blur: .2 }
 ];
 
 /** A controlled slider for an ordered set of discrete, possibly uneven values. */
@@ -59,16 +62,15 @@ export default function DiscreteSlider({
 					<span class="discrete-slider-glow" />
 				</span>
 				{options.map((option, step) => <span key={option.value} class="discrete-slider-dot" data-filled={step <= index || undefined} style={{ left: controlPosition(step) }} />)}
-				{celebrateMax && MAX_BUBBLES.map(bubble => <span
-					key={`${bubble.x}-${bubble.y}`}
+				{celebrateMax && MAX_BUBBLES.map((bubble, lane) => <span
+					key={`${bubble.y}-${lane}`}
 					class="discrete-slider-bubble"
 					style={{
-						left: `${bubble.x}%`,
 						top: `${bubble.y}%`,
 						'--bubble-size': `${bubble.size}px`,
 						'--bubble-opacity': bubble.opacity,
-						'--bubble-delay': bubble.delay,
-						'--bubble-duration': bubble.duration,
+						'--bubble-delay': `${-(lane * MAX_BUBBLE_DURATION / MAX_BUBBLES.length).toFixed(3)}s`,
+						'--bubble-duration': `${MAX_BUBBLE_DURATION}s`,
 						'--bubble-blur': `${bubble.blur}px`
 					}}
 				/>)}

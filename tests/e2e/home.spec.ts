@@ -157,7 +157,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await page.waitForURL('**/CoF/');
 	});
 
-	test('publication abstracts show three lines and expand independently', async ({ page }) => {
+	test('publication abstracts stay hidden until expanded', async ({ page }) => {
 		await seenWelcome(page);
 		await page.goto('/#publications');
 		await page.locator('.pub-abstract-toggle').first().waitFor();
@@ -167,27 +167,24 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 			await page.setViewportSize({ width, height: 800 });
 			for (const [index, paper] of publications.entries()) {
 				const card = cards.nth(index);
-				const summary = card.locator('.pub-summary');
+				const abstractBlock = card.locator('.pub-abstract');
 				const toggle = card.locator('.pub-abstract-toggle');
-				await expect(summary).toHaveText(paper.abstract);
-				await expect(toggle).toHaveAttribute('aria-controls', (await summary.getAttribute('id'))!);
+				await expect(card.locator('.pub-tldr')).toContainText(paper.tldr);
+				await expect(abstractBlock).toBeHidden();
+				await expect(toggle).toHaveAttribute('aria-controls', (await abstractBlock.getAttribute('id'))!);
 				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-				await expect(toggle).toHaveText('Show');
-				const collapsed = await summary.evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight), align: getComputedStyle(node).textAlign, fullHeight: node.scrollHeight }));
-				expect(Math.abs(collapsed.height - collapsed.line * 3)).toBeLessThan(1);
-				expect(collapsed.fullHeight).toBeGreaterThan(collapsed.height);
-				expect(collapsed.align).not.toBe('justify');
+				await expect(toggle).toHaveText('Expand');
 				await toggle.press('Enter');
+				await expect(abstractBlock).toBeVisible();
+				await expect(abstractBlock.locator('.pub-summary')).toHaveText('Abstract' + paper.abstract);
 				await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-				await expect(toggle).toHaveText('Hide');
-				expect(await summary.evaluate(node => node.getBoundingClientRect().height)).toBeGreaterThan(collapsed.height);
+				await expect(toggle).toHaveText('Collapse');
 				for (let other = 0; other < publications.length; other++) {
-					if (other !== index) await expect(cards.nth(other).locator('.pub-abstract-toggle')).toHaveAttribute('aria-expanded', 'false');
+					if (other !== index) await expect(cards.nth(other).locator('.pub-abstract')).toBeHidden();
 				}
 				await toggle.press('Space');
-				await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+				await expect(abstractBlock).toBeHidden();
 				await expect(toggle).toBeFocused();
-				expect(Math.abs(await summary.evaluate(node => node.getBoundingClientRect().height) - collapsed.height)).toBeLessThan(1);
 			}
 			await check(page, 'document.documentElement.scrollWidth <= innerWidth', `Publication abstracts overflow at ${width}px.`);
 		}
