@@ -125,7 +125,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		expect(reducedFluffy === await page.evaluate("document.querySelector('.yo-cloud-body').getAttribute('transform')") && await page.evaluate<boolean>("document.querySelector('.yo-cloud-stage').dataset.motion === 'static'"), 'Fluffy ignores reduced motion.').toBe(true);
 		await page.evaluate("window.dispatchEvent(new StorageEvent('storage', { key: 'yo-form.v1', newValue: 'blue' })); window.dispatchEvent(new CustomEvent('yo:form-change', {detail: 'blue'})); true");
 		await check(page, "document.querySelector('.yo-cloud')?.dataset.form === 'fluffy' && document.querySelector('link[rel=icon]').href.includes('/qing-avatar.svg')", 'Legacy preference events changed Fluffy.');
-		expect(requests.some(url => url.includes('/fonts/MiSans-VF.woff2')), 'The bundled MiSans font never loaded.').toBe(true);
+		expect(requests.some(url => url.includes('/fonts/MiSans-Latin-VF.woff2')), 'The bundled MiSans Latin font never loaded.').toBe(true);
 	});
 
 	test('hover and focus narration covers every section', async ({ page }) => {
@@ -209,7 +209,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 				return JSON.stringify([Math.round(card.getBoundingClientRect().width), getComputedStyle(card).borderRadius,
 					getComputedStyle(head).marginLeft, getComputedStyle(head).paddingTop, getComputedStyle(head).borderBottomColor,
 					getComputedStyle(title).fontSize, getComputedStyle(body).padding,
-					document.querySelector('.card-kicker').textContent, Math.round(document.querySelector('.meet-close').getBoundingClientRect().height)]);
+					Math.round(document.querySelector('.meet-close').getBoundingClientRect().height)]);
 			})()`);
 			sharedCardFrame ??= frame;
 			expect(frame, `Card ${topic} diverges from the shared reading frame on a narrow phone. Shared: ${sharedCardFrame}`).toBe(sharedCardFrame);

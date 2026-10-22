@@ -37,10 +37,9 @@ const {
 		</script>}
 		<link rel="icon" href={SITE_FAVICON_URL} type="image/svg+xml" />
 		<link rel="apple-touch-icon" href={SITE_TOUCH_ICON_URL} sizes="180x180" />
-		<link rel="preload" href="/fonts/MiSans-VF.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/MiSans-Latin-VF.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="license" href="/fonts/MiSans-License.pdf" title="MiSans font license" />
 		{bodyClass === 'home-ref' && <link rel="preload" href="/backgrounds/cloud-sky-v1.webp" as="image" fetchpriority="high" />}
-		<link rel="preconnect" href="https://cdn.simpleicons.org" />
 		<title>{title}</title>
 		<slot name="head" />
 		<script is:inline>document.documentElement.classList.add("js","is-loading");</script>

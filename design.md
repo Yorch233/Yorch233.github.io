@@ -9,8 +9,10 @@ one glance. Yo introduces the person; the person and work own the hierarchy.
 Keep the existing portrait, Blue and Fluffy artwork, and academic content.
 
 Design variance 5, motion intensity 6, visual density 3. The homepage is
-intentionally light: ice-white canvas, blue actions and bundled MiSans for headings and body text, with the system font stack as fallback. RSB and CoF use the same ice-white/blue
-reading template and MiSans typography.
+intentionally light: ice-white canvas, blue actions and bundled MiSans Latin for
+headings and body text, with the system CJK and system font stacks as fallback.
+RSB and CoF use the same ice-white/blue reading template and MiSans Latin
+typography.
 
 ## Visual language
 
@@ -713,12 +715,14 @@ Above 720px the homepage primary navigation keeps optical refraction and uses
 its 12px frosted tier. Publication venue labels are flat, softly tinted tags
 with 6px corners, without glass or shadows; CoF's tag reads arXiv.
 
-MiSans is the global default across the homepage and both paper Demos. The
-complete variable font is bundled as WOFF2 under public/fonts with Xiaomi's
-license and source attribution. Preload the shared face and use font-display:
-swap; retain the system fallback and monospace code styles.
+MiSans Latin is the global default across the homepage and both paper Demos.
+The official Latin variable cut is bundled as WOFF2 under public/fonts with
+Xiaomi's license and source attribution. The complete CJK font stays out of the
+page load; Chinese award tooltips use the system CJK fallback. Preload the shared
+face and use font-display: swap; retain the system fallback and monospace code
+styles.
 
-Calibrate weights to MiSans's native variable axis: prose 330 (Regular),
+Calibrate weights to the bundled MiSans Latin variable axis: prose 330 (Regular),
 secondary emphasis and controls 380–450, bold emphasis and headings 520
 (Semibold), and major display headings 560. Avoid the previous system-font
 700–800 weights, which approach MiSans Heavy and overpower the page.

@@ -97,7 +97,7 @@ test.describe('Homepage welcome dialog & citations', () => {
 		const readingPose = await page.evaluate("document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform') + '|' + [...document.querySelectorAll('.meet-avatar [data-fluffy-surface]')].map(puff => puff.getAttribute('transform')).join('|')");
 		await page.waitForTimeout(250);
 		expect(readingPose).toBe(await page.evaluate("document.querySelector('.meet-avatar .yo-cloud-body').getAttribute('transform') + '|' + [...document.querySelectorAll('.meet-avatar [data-fluffy-surface]')].map(puff => puff.getAttribute('transform')).join('|')"));
-		expect(requests.some(url => url.includes('/fonts/MiSans-VF.woff2')), 'The bundled MiSans font never loaded.').toBe(true);
+		expect(requests.some(url => url.includes('/fonts/MiSans-Latin-VF.woff2')), 'The bundled MiSans Latin font never loaded.').toBe(true);
 		expect(requests.some(url => /fonts\.(googleapis|gstatic)\.com/.test(url)), 'A render-blocking remote font dependency remains.').toBe(false);
 	});
 

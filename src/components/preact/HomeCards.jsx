@@ -64,7 +64,7 @@ export function AboutCard({ welcome = false }) {
 		</div> : <>{meta}{biography}</>}
 		<section class="research-focus" aria-labelledby="research-focus-title" data-yo-say="Here’s what Qing likes working on. Hover one and I'll tell you a little more.">
 			<h3 id="research-focus-title">Research interests</h3>
-			<div class="interests">{profile.interests.map(interest => <span class="chip" key={interest} data-yo-say={interestHints[interest]}>{welcome && <img class="research-interest-art" src={interestArtwork[interest]} alt="" width="128" height="128" decoding="async" />}<span class="research-interest-label">{interest}</span><span class="research-interest-compact" aria-hidden="true">{(compactInterestLabels[interest] || [interest]).map(line => <span key={line}>{line}</span>)}</span></span>)}</div>
+			<div class="interests">{profile.interests.map(interest => <span class="chip" key={interest} data-yo-say={interestHints[interest]}>{welcome && <img class="research-interest-art" src={interestArtwork[interest]} alt="" width="128" height="128" loading="lazy" decoding="async" />}<span class="research-interest-label">{interest}</span><span class="research-interest-compact" aria-hidden="true">{(compactInterestLabels[interest] || [interest]).map(line => <span key={line}>{line}</span>)}</span></span>)}</div>
 		</section>
 	</>;
 }

@@ -94,7 +94,7 @@ body.home-ref {
 }
 .meet-main { min-height: 0; min-width: 0; height: auto; display: flex; flex-direction: column; justify-content: flex-start; }
 .meet-greet { width: 100%; max-height: none; overflow: visible; padding: 8px 4px; scrollbar-width: thin; }
-.hero-kicker, .card-kicker, .meet-more-label { margin: 0; color: var(--muted); font-size: var(--text-1); font-weight: 380; }
+.hero-kicker, .meet-more-label { margin: 0; color: var(--muted); font-size: var(--text-1); font-weight: 380; }
 .hero-kicker { color: var(--accent); font: 520 var(--text-3)/1.4 var(--display); margin-bottom: var(--space-4); }
 .hero-person { display: flex; align-items: center; gap: var(--space-4); }
 .hero-avatar { display: block; flex-shrink: 0; width: 80px; height: 80px; border-radius: 24px; object-fit: cover; }
@@ -146,7 +146,6 @@ body.home-ref {
   display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-shrink: 0;
   padding: var(--panel-inset); border-bottom: 1px solid var(--line-soft); background: var(--card-head);
 }
-.card-kicker { margin-bottom: var(--space-1); }
 .meet-card-head h2 { margin: 0; font: 560 var(--text-4)/1.25 var(--display); letter-spacing: -.025em; }
 .meet-card-head h2:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .meet-close { display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 999px; color: var(--muted); background: var(--bg); font-size: var(--text-1); }
@@ -271,7 +270,6 @@ body.home-ref {
   .meet-card-head { padding: var(--panel-inset); }
   .card-body { padding: var(--panel-inset); }
   .card-body > :not(:first-child) { margin-top: var(--space-5); }
-  .card-kicker { margin-bottom: 3px; }
   .contact-mail { gap: 8px; }
 }
 @media (max-width: 360px) {
@@ -307,7 +305,6 @@ body.home-ref {
   .topic-pill { min-height: 40px; padding-block: 8px; }
   .topic-pill--primary { min-height: 64px; }
   .meet-card-head { padding: 12px var(--panel-inset); }
-  .card-kicker { display: none; }
   .card-body { padding: 16px var(--panel-inset); }
   .meet-more { padding-top: 8px; }
   .topic-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }

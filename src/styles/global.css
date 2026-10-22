@@ -3,10 +3,12 @@
    shared component styling lives in components.css; the loader/skeleton/
    entrance motion system lives in motion.css. */
 
-/* MiSans by Xiaomi. Bundled locally; license: /fonts/MiSans-License.pdf. */
+/* MiSans Latin by Xiaomi, the official Latin cut. The complete CJK font stays
+   out of the page load; Chinese award tooltips use the system CJK fallback.
+   License: /fonts/MiSans-License.pdf. */
 @font-face {
-	font-family: "MiSans";
-	src: url('/fonts/MiSans-VF.woff2') format('woff2');
+	font-family: "MiSans Latin";
+	src: url('/fonts/MiSans-Latin-VF.woff2') format('woff2');
 	font-style: normal;
 	font-weight: 150 700;
 	font-display: swap;
@@ -37,8 +39,8 @@
 	--shadow-soft: 0 1px 2px rgba(32, 60, 110, .04), 0 12px 32px -14px rgba(32, 60, 110, .16);
 	--shadow-pop: 0 2px 8px rgba(32, 60, 110, .08), 0 22px 48px -18px rgba(32, 60, 110, .24);
 	--gold: #a5762a;          /* award highlights */
-	--sans: "MiSans", -apple-system, "system-ui", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-	/* MiSans is shared by headings, body and controls; code stays monospace. */
+	--sans: "MiSans Latin", -apple-system, "system-ui", "SF Pro Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+	/* MiSans Latin is shared by headings, body and controls; code stays monospace. */
 	--mono: "SFMono-Regular", ui-monospace, "JetBrains Mono", Menlo, monospace;
 	/* type scale — six steps, ~1.25 between neighbors, body anchored at 16.
 	   No font-size anywhere may fall outside these tokens (desktop values). */

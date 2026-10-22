@@ -7,10 +7,6 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
   border-bottom-color: var(--line);
 }
 .home-ref .meet-card-heading { min-width: 0; }
-.home-ref .meet-card .card-kicker {
-  display: block; margin-bottom: 8px; color: var(--accent);
-  font-weight: 450; letter-spacing: .1em; text-transform: uppercase;
-}
 .home-ref .meet-card-head h2 { font-size: var(--text-5); text-wrap: balance; }
 .home-ref .meet-close { flex-shrink: 0; }
 .home-ref .meet-close .icon { width: 16px; height: 16px; }
@@ -61,8 +57,7 @@ body.home-ref .meet .topic-pill:not(.topic-pill--primary)::after { display: none
     margin-inline: 20px; padding: 20px 0; gap: 8px 12px;
   }
   .home-ref .meet-card-heading { display: contents; }
-  .home-ref .meet-card .card-kicker { grid-column: 1; grid-row: 1; margin: 0; }
-  .home-ref .meet-card-head h2 { grid-column: 1 / -1; grid-row: 2; }
+  .home-ref .meet-card-head h2 { grid-column: 1; grid-row: 1; }
   .home-ref .meet-close { grid-column: 2; grid-row: 1; font-size: 14px; }
   .home-ref .meet-card .card-body { padding: 24px 20px 28px; }
   .home-ref .meet-card .news-toggle { font-size: 14px; }

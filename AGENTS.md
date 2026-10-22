@@ -58,6 +58,9 @@ visible on the welcome page, with Publications still easy to reach. Yo is a smal
 companion, introduced as Qing's Bot. Content must be immediately reachable
 without interacting with him.
 Use direct labels and accurate destination descriptions.
+Keep additions earned: no gratuitous text, decorative labels or extra elements,
+and no eyebrow/kicker lines above headings. Add something only when it carries
+real information or an action, following “Less is More” by Jakub.
 Write Yo's speech as friendly, conversational English with short natural
 sentences. Avoid semicolons and reciting formal publication summaries.
 Yo defaults to peeking from the right edge with one visible eye and a small “Hi” greeting on the homepage. Activate him before contextual narration; closing his explanation returns him to the edge. Right-clicking him opens his action menu; the focused mascot also responds to the context-menu key and Shift+F10, and the menu expands from a menu-icon trigger in the control row beneath him (the Bye control sits to its right). Choosing a menu action locks the other actions for a short moment so a fresh state cannot be flipped immediately. Yo stays on the page; there is no dismiss control.
@@ -65,7 +68,8 @@ Give meaningful homepage content contextual Yo text on hover after activation, a
 controls equivalent hints on keyboard focus. Keep hover narration transient and
 out of live announcements; direct-action feedback takes priority.
 
-Use the established ice-white/blue palette and bundled MiSans as the default font, followed by the system fallback stack
+Use the established ice-white/blue palette and the bundled official MiSans Latin
+cut as the default font, followed by the system CJK and system fallback stacks
 for headings, prose and controls. Keep soft toy depth, achromatic glass floating
 header capsules and rounded reading cards.
 Use three glass tiers: clear optical glass for floating header and return capsules, translucent tinted glass for body buttons, and native frosted glass on compact screens. Keep labels and focus outside the filtered layer; support white, blue, green (#31D73F) and custom tints. Each tier has a sharp upper highlight and soft lower reflection, with subtle colored spill.
@@ -100,8 +104,11 @@ component headings, 20px section headings and 22–26px page titles; a short
 display name may use 26–30px. Choose
 only the roles a screen needs; do not create extra levels to fill a scale.
 
-Use bundled MiSans for every text role and keep code in monospace.
-With MiSans, headings use native weights 520–560, prose 330–380 and controls 380–450. Body
+Use the bundled official MiSans Latin cut for every text role and keep code in
+monospace. Chinese award tooltips use the system CJK fallback. Do not subset or
+otherwise modify MiSans; Xiaomi's license prohibits adapting the font or its
+components.
+With MiSans Latin, headings use native weights 520–560, prose 330–380 and controls 380–450. Body
 line-height is 1.65–1.8; headings use 1.15–1.3; metadata and
 controls use 1.4–1.6. Keep essential labels at least 13px, except the user-requested compact bottom-navigation labels, and body copy at
 least 15px; do not shrink below the shared phone scale on mobile. Hero typography may vary

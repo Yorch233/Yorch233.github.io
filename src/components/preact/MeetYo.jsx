@@ -6,7 +6,6 @@ import YoDialogue from './YoDialogue.jsx';
 import YoActions from './YoActions.jsx';
 import { useYoMachine } from './yoMachine.js';
 import { AboutCard, NewsCard, PapersCard, AwardsCard, ContactCard, Icon } from './HomeCards.jsx';
-import profile from '../../data/profile.json';
 
 const TOPICS = [
 	{ id: 'publications', label: 'Publications', title: 'Publications', icon: 'file', line: "Let’s look at Qing's papers, code and demos.", Card: PapersCard },
@@ -280,7 +279,7 @@ export default function MeetYo() {
 			{selected ? <>
 				<article class="meet-card" aria-labelledby="section-heading" key={topic} data-yo-say={selected.line}>
 					<header class="meet-card-head">
-						<div class="meet-card-heading"><p class="card-kicker">{profile.name}</p><h2 id="section-heading" ref={heading} tabIndex={-1}>{selected.title}</h2></div>
+						<div class="meet-card-heading"><h2 id="section-heading" ref={heading} tabIndex={-1}>{selected.title}</h2></div>
 						<button class="meet-close" type="button" data-yo-say="Back to Qing's introduction. I'll come along!" onClick={() => open(null)}><Icon id="arrow-left" />Home</button>
 					</header>
 					<div class="card-body" role="region" aria-label={selected.title}>{Card && <Card />}</div>

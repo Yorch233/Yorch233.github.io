@@ -369,7 +369,7 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 		await check(page, "!document.querySelector('.card-skel') && [...document.querySelectorAll('.pub-links .link-pill--primary')].every(a => a.textContent.trim() === 'Demo')", 'Local content is delayed or the CoF destination is misleading.');
 		await page.evaluate("document.querySelector('.brand').click(); true");
 		await waitForExpr(page, "!!document.querySelector('.meet-greet')", 'The brand click never returned home.');
-		expect(requests.some(url => url.includes('/fonts/MiSans-VF.woff2')), 'The bundled MiSans font never loaded.').toBe(true);
+		expect(requests.some(url => url.includes('/fonts/MiSans-Latin-VF.woff2')), 'The bundled MiSans Latin font never loaded.').toBe(true);
 		await check(page, "!document.querySelector('a[href^=\"/custom\"]') && !document.body.textContent.includes('Yo Studio')", 'The removed character creator still has a homepage entry.');
 		expect((await page.request.get('/custom/')).status(), 'The removed character creator route is still served.').toBe(404);
 	});
