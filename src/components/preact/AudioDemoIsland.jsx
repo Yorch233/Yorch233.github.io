@@ -26,17 +26,33 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 	const viewRef = useRef(null);
 	const prevViewRef = useRef(viewMode);
 	const viewTimersRef = useRef([]);
+	const identityRef = useRef({ basePath, sampleName });
+	const generationRef = useRef(0);
+	const mountedRef = useRef(true);
+	const selectedMethodRef = useRef(selectedMethod);
 	const [volume, setVolume] = useGlobalVolume();
-	const currentSampleRef = useRef(sampleName);
 	const audioRef = useRef(null);
 	const canvasRef = useRef(null);
 	const gainRef = useRef(null);
 	const mediaSourceRef = useRef(null);
 	const animationRef = useRef(0);
 	const pendingPlayRef = useRef(false);
+	const playbackIntentRef = useRef(0);
 	const tooltipTimerRef = useRef(0);
 	const analyzeWaveform = useWaveformWorker();
-	currentSampleRef.current = sampleName;
+	if (identityRef.current.basePath !== basePath || identityRef.current.sampleName !== sampleName) {
+		identityRef.current = { basePath, sampleName };
+	}
+	selectedMethodRef.current = selectedMethod;
+
+	// Requests capture the branch identity at start. Effects that change
+	// budget or sample advance the generation, so late responses can be
+	// discarded without placing component validity in the shared cache.
+	const isCurrentAudio = useCallback((identity, generation) => Boolean(
+		mountedRef.current &&
+		identity === identityRef.current &&
+		generation === generationRef.current
+	), []);
 
 	const orderedMethods = useMemo(() => {
 		const measurement = methods.find((method) => method.key === 'Measurement');
@@ -63,48 +79,59 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
             // SSR keeps the desktop markup; a phone swaps it before paint.
             if (window.matchMedia('(max-width: 720px)').matches) throw new Error('Compact audio layout');
 			const url = assetUrl(basePath, method, sampleName, 'opus');
+			const identity = identityRef.current;
+			const generation = generationRef.current;
 			setStatuses((current) => ({ ...current, [method]: 'loading' }));
 			try {
 				const resource = await loadOpus(url);
-				if (currentSampleRef.current === sampleName) {
+				if (isCurrentAudio(identity, generation)) {
 					setResources((current) => ({ ...current, [method]: resource }));
 					setStatuses((current) => ({ ...current, [method]: 'ready' }));
 				}
 				return resource;
 			} catch (error) {
-				if (currentSampleRef.current === sampleName) {
+				if (isCurrentAudio(identity, generation)) {
 					setStatuses((current) => ({ ...current, [method]: 'error' }));
 				}
 				throw error;
 			}
 		},
-		[basePath, sampleName]
+		[basePath, isCurrentAudio, sampleName]
 	);
 
 	const waveformFor = useCallback(
 		async (method) => {
 			const url = assetUrl(basePath, method, sampleName, 'opus');
 			if (!waveformDataCache.has(url)) {
-				waveformDataCache.set(
-					url,
-					(async () => {
-						const resource = await ensureMethod(method);
-						const context = getDecodeContext();
-						const audioBuffer = await context.decodeAudioData(resource.buffer.slice(0));
-						const values = await analyzeWaveform(audioBuffer.getChannelData(0));
-						return { values, duration: audioBuffer.duration };
-					})()
-				);
+				const pending = (async () => {
+					const resource = await loadOpus(url);
+					const context = getDecodeContext();
+					const audioBuffer = await context.decodeAudioData(resource.buffer.slice(0));
+					const values = await analyzeWaveform(audioBuffer.getChannelData(0));
+					return { values, duration: audioBuffer.duration };
+				})();
+				// Mobile and desktop share this cache. Remove only the failed
+				// pending entry so an existing control can retry later.
+				pending.catch(() => {
+					if (waveformDataCache.get(url) === pending) waveformDataCache.delete(url);
+				});
+				waveformDataCache.set(url, pending);
 			}
 			return waveformDataCache.get(url);
 		},
-		[analyzeWaveform, basePath, ensureMethod, sampleName]
+		[analyzeWaveform, basePath, sampleName]
 	);
 
 	const ensureWaveforms = useCallback(async () => {
         if (window.matchMedia('(max-width: 720px)').matches) return;
 		const key = `${sampleName}|${selectedMethod}`;
-		if (waveforms[key]) return;
+		if (waveforms[key]) {
+			setWaveformStatus('ready');
+			setWaveformError('');
+			return;
+		}
+		const request = { identity: identityRef.current, generation: generationRef.current, method: selectedMethod };
+		const isCurrentWaveView = () => request.method === selectedMethodRef.current && isCurrentAudio(request.identity, request.generation);
 		setWaveformStatus('loading');
 		setWaveformError('');
 		try {
@@ -112,21 +139,24 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 				waveformFor('Measurement'),
 				selectedMethod === 'Measurement' ? waveformFor('Measurement') : waveformFor(selectedMethod)
 			]);
-			if (currentSampleRef.current !== sampleName) return;
+			if (!isCurrentWaveView()) return;
 			setWaveforms((current) => ({ ...current, [key]: { measurement, selected } }));
 			setDuration((current) => current || selected.duration || measurement.duration);
 			setWaveformStatus('ready');
 		} catch (error) {
+			if (!isCurrentWaveView()) return;
 			setWaveformStatus('error');
 			setWaveformError(error instanceof Error ? error.message : String(error));
 		}
-	}, [sampleName, selectedMethod, waveformFor, waveforms]);
+	}, [isCurrentAudio, sampleName, selectedMethod, waveformFor, waveforms]);
 
 	const ensureMethodRef = useRef(ensureMethod);
 	ensureMethodRef.current = ensureMethod;
 
 	// A new sample resets everything, including the selection.
 	useEffect(() => {
+		generationRef.current += 1;
+		playbackIntentRef.current += 1;
 		setSelectedMethod('Measurement');
 		setResources({});
 		setStatuses({});
@@ -146,6 +176,8 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 		const changed = prevBaseRef.current !== basePath;
 		prevBaseRef.current = basePath;
 		if (!changed) return;
+		generationRef.current += 1;
+		playbackIntentRef.current += 1;
 		audioRef.current?.pause();
 		setResources({});
 		setStatuses({});
@@ -198,30 +230,38 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 	}, [volume]);
 
 	useEffect(() => {
+		const request = { identity: identityRef.current, generation: generationRef.current, method: selectedMethod };
+		const intent = playbackIntentRef.current;
 		const audio = audioRef.current;
 		const source = resources[selectedMethod]?.objectUrl;
-		// Loading another method or adjusting volume must not reset the
-		// selected source or consume its pending playback twice.
-		if (!audio || !source || audio.src === source) return;
-		audio.pause();
-		audio.src = source;
-		audio.load();
-		setCurrentTime(0);
-		setDuration(0);
-		setHasEnded(false);
+		if (!audio || !source) return;
+		// Returning to a cached method can reuse the already-bound source;
+		// it still needs to consume a pending play request without reloading
+		// or resetting progress.
+		if (audio.src !== source) {
+			audio.pause();
+			audio.src = source;
+			audio.load();
+			setCurrentTime(0);
+			setDuration(0);
+			setHasEnded(false);
+		}
 		if (pendingPlayRef.current) {
 			pendingPlayRef.current = false;
 			window.setTimeout(async () => {
-                if (audio !== audioRef.current) return;
+                // Graph resume and timers can race a new method/budget; only
+                // the exact resource load may trigger this autoplay.
+                if (!isCurrentAudio(request.identity, request.generation) || selectedMethodRef.current !== request.method || playbackIntentRef.current !== intent) return;
 				try {
 					await ensureAudioGraph();
+					if (!isCurrentAudio(request.identity, request.generation) || selectedMethodRef.current !== request.method || playbackIntentRef.current !== intent || audio !== audioRef.current) return;
 					await audio.play();
 				} catch {
 					// Playback can still be blocked by a restrictive browser policy.
 				}
 			}, 0);
 		}
-	}, [ensureAudioGraph, resources, selectedMethod]);
+	}, [ensureAudioGraph, isCurrentAudio, resources, selectedMethod]);
 
 	const stopAnimation = () => {
 		window.cancelAnimationFrame(animationRef.current);
@@ -240,24 +280,35 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 
 	useEffect(() => {
         const audio = audioRef.current;
-        return () => { pendingPlayRef.current = false; audio?.pause(); mediaSourceRef.current?.disconnect(); gainRef.current?.disconnect(); stopAnimation(); };
+        return () => { mountedRef.current = false; pendingPlayRef.current = false; playbackIntentRef.current += 1; audio?.pause(); mediaSourceRef.current?.disconnect(); gainRef.current?.disconnect(); stopAnimation(); };
     }, []);
 
 	const togglePlayback = async () => {
 		const audio = audioRef.current;
 		if (!audio) return;
+		const request = { identity: identityRef.current, generation: generationRef.current, method: selectedMethodRef.current };
+		const intent = ++playbackIntentRef.current;
 		if (!resources[selectedMethod]) {
 			pendingPlayRef.current = true;
-			await ensureMethod(selectedMethod);
+			try {
+				await ensureMethod(selectedMethod);
+			} catch {
+				if (isCurrentAudio(request.identity, request.generation) && selectedMethodRef.current === request.method) pendingPlayRef.current = false;
+				return;
+			}
+			if (!isCurrentAudio(request.identity, request.generation) || selectedMethodRef.current !== request.method) return;
 			return;
 		}
 		await ensureAudioGraph();
+		if (!isCurrentAudio(request.identity, request.generation) || selectedMethodRef.current !== request.method || playbackIntentRef.current !== intent) return;
+		const current = audioRef.current;
+		if (!current) return;
 		if (hasEnded) {
-			audio.currentTime = 0;
+			current.currentTime = 0;
 			setHasEnded(false);
 		}
-		if (audio.paused) await audio.play();
-		else audio.pause();
+		if (current.paused) await current.play();
+		else current.pause();
 	};
 
 	const handleMethodClick = async (method) => {
@@ -266,10 +317,20 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 			return;
 		}
 		audioRef.current?.pause();
+		playbackIntentRef.current += 1;
 		setSelectedMethod(method);
 		setPinnedLegend(null);
 		pendingPlayRef.current = true;
-		if (!resources[method]) await ensureMethod(method);
+		if (!resources[method]) {
+			const request = { identity: identityRef.current, generation: generationRef.current };
+			try {
+				await ensureMethod(method);
+			} catch {
+				if (isCurrentAudio(request.identity, request.generation) && selectedMethodRef.current === method) pendingPlayRef.current = false;
+				return;
+			}
+			return;
+		}
 	};
 
 	const handleMethodHover = (event, method) => {

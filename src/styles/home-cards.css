@@ -36,7 +36,7 @@ html:not([data-theme=dark]) .home-ref .meet-card { --reading-surface: #f7faff; b
 .home-ref .pub-abstract-toggle { display: inline-block; margin: -12px 0 -12px 6px; padding: 12px 2px; border: 0; background: transparent; color: var(--accent); font: inherit; font-weight: 480; line-height: 1; cursor: pointer; white-space: nowrap; }
 .home-ref .pub-abstract-toggle:is(:hover, :focus-visible) { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px; }
 
-/* Quiet secondary navigation follows the white outline capsule treatment. */
+/* Quiet secondary navigation uses outline capsules with themed fills. */
 body.home-ref .meet .topic-pill:not(.topic-pill--primary) {
   border: 1px solid #e8e8e8; background: #fff; color: #25364d;
   box-shadow: 0 1px 2px rgb(0 0 0 / .03) !important;
@@ -44,6 +44,12 @@ body.home-ref .meet .topic-pill:not(.topic-pill--primary) {
 body.home-ref .meet .topic-pill:not(.topic-pill--primary):is(:hover, :focus-visible) {
   border-color: #e8e8e8; background: #f5f5f5;
   box-shadow: 0 2px 5px rgb(0 0 0 / .06) !important;
+}
+html[data-theme=dark] body.home-ref .meet .topic-pill:not(.topic-pill--primary) {
+  border-color: var(--line); background: var(--surface); color: var(--ink);
+}
+html[data-theme=dark] body.home-ref .meet .topic-pill:not(.topic-pill--primary):is(:hover, :focus-visible) {
+  border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-deep);
 }
 body.home-ref .meet .topic-pill:not(.topic-pill--primary):active {
   box-shadow: none !important;
@@ -71,7 +77,7 @@ body.home-ref .meet .topic-pill:not(.topic-pill--primary)::after { display: none
 /* Phone resources emphasize the Demo and main paper, with quiet utility actions. */
 @media (max-width: 720px) {
   .home-ref .meet-card-head h2 { font-size: 22px; line-height: 1.25; }
-  .home-ref .pub-links { gap: 3px; align-items: center; }
+  .home-ref .pub-links { gap: 3px 1px; align-items: center; }
   .home-ref .pub-links .link-pill { padding-inline: 8px; white-space: nowrap; }
   .home-ref .pub-links .link-pill--primary { padding-inline: 7px; gap: 6px; }
   body.home-ref .meet .pub-links .compact-ghost {

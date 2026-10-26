@@ -7,6 +7,13 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const desktop = matchMedia('(min-width: 961px)');
 const abort = new AbortController();
 const options = { signal: abort.signal };
+const header = track.closest('.topbar');
+// Protect labels when reading content passes behind the optical capsules.
+// Only the threshold crossing changes the DOM; no render state is involved.
+const syncHeaderReadability = () => header.toggleAttribute('data-reading', scrollY > 64);
+window.addEventListener('scroll', syncHeaderReadability, { ...options, passive: true });
+window.addEventListener('pageshow', syncHeaderReadability, options);
+syncHeaderReadability();
 const pill = { x: 0, width: 0, vx: 0, vw: 0, targetX: 0, targetWidth: 0 };
 let frame, previous;
 const draw = () => {

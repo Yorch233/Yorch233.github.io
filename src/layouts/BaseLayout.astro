@@ -33,13 +33,18 @@ const {
 				if (theme !== 'light' && theme !== 'dark') theme = 'light';
 				document.documentElement.dataset.theme = theme;
 				document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#111b2b' : '#f7faff');
+				var background = document.createElement('link');
+				background.rel = 'preload';
+				background.as = 'image';
+				background.href = theme === 'dark' ? '/backgrounds/cloud-dusk-v1.webp' : '/backgrounds/cloud-sky-v1.webp';
+				background.setAttribute('fetchpriority', 'high');
+				document.head.appendChild(background);
 			})();
 		</script>}
 		<link rel="icon" href={SITE_FAVICON_URL} type="image/svg+xml" />
 		<link rel="apple-touch-icon" href={SITE_TOUCH_ICON_URL} sizes="180x180" />
 		<link rel="preload" href="/fonts/MiSans-Latin-VF.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="license" href="/fonts/MiSans-License.pdf" title="MiSans font license" />
-		{bodyClass === 'home-ref' && <link rel="preload" href="/backgrounds/cloud-sky-v1.webp" as="image" fetchpriority="high" />}
 		<title>{title}</title>
 		<slot name="head" />
 		<script is:inline>document.documentElement.classList.add("js","is-loading");</script>

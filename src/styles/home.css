@@ -421,6 +421,12 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
   html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #fcf6ef; border-color: #f0e4d6; color: #805d36; }
   .home-ref .topic-chips .topic-pill { padding-inline: 16px; gap: 10px; }
 }
+
+/* The double-column biography is too narrow at mid widths for natural
+   justified spacing; large desktop retains the established typography. */
+@media (min-width: 961px) and (max-width: 1160px) {
+  .home-ref .home-about .lede, .home-ref .home-about .about-copy { text-align: start; }
+}
 @media (max-width: 720px) {
   .home-ref main { padding-block: 28px 24px; }
   .meet:not(.meet--chat) { gap: 24px; }
@@ -523,6 +529,11 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
   --glass-sheen: rgb(222 236 255 / .09);
   --glass-header-highlight: rgb(222 236 255 / .1);
   --glass-soft-shadow: inset 2px 3px 8px -4px rgb(230 241 255 / .24), inset -2px -3px 8px -5px rgb(230 241 255 / .1), 0 10px 26px -12px var(--glass-shadow);
+}
+@media (min-width: 961px) {
+  /* Retain the optical lens and rim while separating labels from scrolled text. */
+  .home-ref .topbar[data-reading] .floating-capsule { --glass-fill: rgb(247 250 255 / .84); }
+  html[data-theme=dark] .home-ref .topbar[data-reading] .floating-capsule { --glass-fill: rgb(20 31 48 / .9); }
 }
 .home-ref .home-utilities .cv-btn { background: transparent; }
 .home-ref .home-utilities :is(.cv-btn, .theme-toggle):hover { background: rgb(120 159 215 / .1); }

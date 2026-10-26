@@ -372,7 +372,8 @@ and runtime checks must pass. Keep screenshots out of the production bundle.
 
 ## Glass surfaces
 
-Desktop floating header capsules use a 16% translucent white fill in light mode,
+At the page top, desktop floating header capsules use a 16% translucent white
+fill in light mode,
 rounded meniscus refraction, 1px backdrop blur, soft highlights and shadows.
 All four header capsules share the same clear glass shell, moving soft highlights and
 size-aware refraction. CV has no separate solid backing inside the utility capsule.
@@ -389,10 +390,15 @@ depth 1 and specular .5. Header refraction extends across 80% of the corner
 radius to make its edge bending broader. The SVG lenses apply displacement
 only; desktop header surfaces add CSS `blur(1px)` on the backdrop layer,
 keeping labels and icons sharp.
+When reading content scrolls beneath the desktop header, its neutral fill becomes
+stronger in the selected theme so text and portraits do not compete with capsule
+labels. Returning to the top restores the clear fill. Refraction, rims and the
+existing blur levels stay intact; compact frosted shells and the white bottom-nav
+selection keep their existing treatment.
 Strength scales with capsule height; ordinary capsule interaction changes depth by at most 20%.
 The desktop homepage header uses the original segmented glass selection,
 12px taller than the navigation shell and centered with a 6px overhang above
-and below. The shell has 1px backdrop blur; the selected pill remains clear and uses
+and below. The navigation shell has 5px backdrop blur; the selected pill remains clear and uses
 depth 1.4, the shared optical rim and size-aware refraction. It extends
 8px beyond the active link on each side. Restore the original spring (tension
 300, friction 17), with travel-based stretch capped at 36px and a brief optical

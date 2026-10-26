@@ -5,6 +5,7 @@ import CvDialog from './CvDialog.jsx';
 import YoDialogue from './YoDialogue.jsx';
 import YoActions from './YoActions.jsx';
 import { useYoMachine } from './yoMachine.js';
+import { copyReadingState, readHomeEntry, withHomeEntry } from '../../lib/home-history.js';
 import { AboutCard, NewsCard, PapersCard, AwardsCard, ContactCard, Icon } from './HomeCards.jsx';
 
 const TOPICS = [
@@ -15,6 +16,15 @@ const TOPICS = [
 	{ id: 'contact', label: 'Contact', actionLabel: 'Contact me', title: 'Get in touch', icon: 'mail', line: "Here's how to reach Qing.", Card: ContactCard }
 ];
 const topicFor = (id) => TOPICS.find((topic) => topic.id === id);
+const focusSelector = element => {
+	if (!(element instanceof HTMLElement) || !element.closest('.meet-main')) return null;
+	const paper = element.closest('[data-paper]');
+	if (paper && element.matches('.pub-abstract-toggle')) return `[data-paper="${CSS.escape(paper.dataset.paper)}"] .pub-abstract-toggle`;
+	if (element.matches('.news-toggle')) return '.news-toggle';
+	if (element.id === 'section-heading' || element.matches('.hero-name')) return element.id ? '#section-heading' : '.hero-name';
+	if (element.matches('a[href]')) return `.meet-main a[href="${CSS.escape(element.getAttribute('href'))}"]`;
+	return null;
+};
 const GREETING = "I'm Yo, Qing's Bot. Let's meet Qing!";
 const MOOD_LINES = {
 	waiting: ['Take your time. I’m here when you need me.', 'No rush. I’ll keep watch.', 'Standing by whenever you need me.'],
@@ -44,6 +54,21 @@ function TopicButton({ topic, compact = false }) {
 
 export default function MeetYo() {
 	const [topic, setTopic] = useState(null);
+	const [readingState, setReadingState] = useState(() => copyReadingState());
+	const readingRef = useRef(readingState);
+	const entries = useRef(new Map());
+	const currentEntry = useRef(null);
+	const entrySequence = useRef(0);
+	const lastAdopted = useRef('');
+	const restoreFrame = useRef(0);
+	const restoring = useRef(false);
+	const restoreToken = useRef(0);
+	const updateReading = useCallback(update => {
+		const next = copyReadingState(update(readingRef.current));
+		readingRef.current = next;
+		if (currentEntry.current) currentEntry.current.reading = copyReadingState(next);
+		setReadingState(next);
+	}, []);
 	const [pointerHint, setPointerHint] = useState(null);
 	const [focusHint, setFocusHint] = useState(null);
 	const [note, setNote] = useState(null);
@@ -101,41 +126,133 @@ export default function MeetYo() {
 		setNote(text);
 		noteTimer.current = setTimeout(() => setNote(null), duration);
 	}, []);
+	const cancelRestore = useCallback(() => {
+		restoreToken.current += 1;
+		cancelAnimationFrame(restoreFrame.current);
+		restoring.current = false;
+	}, []);
+	const saveCurrent = useCallback(() => {
+		const entry = currentEntry.current;
+		if (!entry || restoring.current) return;
+		entry.scrollY = window.scrollY;
+		entry.reading = copyReadingState(readingRef.current);
+		entry.focus = focusSelector(document.activeElement) ?? entry.focus;
+		// A popstate already points to the destination entry. Only replace
+		// state while the browser still points to the entry being saved.
+		if (readHomeEntry(history.state)?.id === entry.id) history.replaceState(withHomeEntry(history.state, entry), '');
+	}, []);
+	const focusEntry = useCallback(entry => {
+		let target = entry.focus ? document.querySelector(entry.focus) : null;
+		if (!target?.getClientRects().length || target.closest('[hidden], [inert]')) {
+			if (entry.topic) target = heading.current;
+			else if (entry.hash === '#about') target = document.querySelector('.hero-name');
+			else target = document.querySelector(`.meet-greet [data-topic="${entry.returnTopic}"]`) ?? document.querySelector('.brand');
+		}
+		target?.focus({ preventScroll: true });
+	}, []);
+	const restoreEntry = useCallback((entry, focus = true) => {
+		cancelRestore();
+		cancelAnimationFrame(focusFrame.current);
+		clearFeedback();
+		restoring.current = true;
+		focusNext.current = false;
+		currentEntry.current = entry;
+		entries.current.set(entry.id, entry);
+		readingRef.current = copyReadingState(entry.reading);
+		setReadingState(readingRef.current);
+		setTopic(entry.topic);
+		if (entry.topic) returnTopic.current = entry.topic;
+		const token = restoreToken.current;
+		const started = performance.now();
+		const settle = () => {
+			if (restoreToken.current !== token) return;
+			const maximum = document.documentElement.scrollHeight - window.innerHeight;
+			if (maximum + 1 >= entry.scrollY || performance.now() - started >= 1500) {
+				window.scrollTo({ top: entry.scrollY, behavior: 'instant' });
+				if (focus) focusEntry(entry);
+				restoring.current = false;
+				return;
+			}
+			restoreFrame.current = requestAnimationFrame(settle);
+		};
+		// Preact commits the selected card and its controlled expansions before
+		// these frames. Wait for reachable height instead of accepting a clamp.
+		restoreFrame.current = requestAnimationFrame(() => {
+			restoreFrame.current = requestAnimationFrame(settle);
+		});
+	}, [cancelRestore, clearFeedback, focusEntry]);
 	const open = useCallback((id, writeHistory = true, focus = true) => {
 		const destination = topicFor(id)?.id ?? null;
 		const next = destination === 'about' ? null : destination;
+		if (!restoring.current) saveCurrent();
+		cancelRestore();
 		clearFeedback();
 		focusNext.current = focus;
 		if (next) returnTopic.current = next;
-		if (writeHistory) {
-			const hash = destination ? '#' + destination : '';
-			if (location.hash !== hash) history.pushState(history.state, '', location.pathname + location.search + hash);
+		const hash = destination ? '#' + destination : '';
+		const changed = writeHistory && location.hash !== hash;
+		if (changed || !currentEntry.current) {
+			const entry = {
+				id: `${performance.timeOrigin}-${++entrySequence.current}`,
+				hash: writeHistory ? hash : location.hash,
+				topic: next,
+				returnTopic: returnTopic.current,
+				scrollY: 0,
+				focus: null,
+				reading: copyReadingState(readingRef.current)
+			};
+			if (changed) history.pushState(withHomeEntry(history.state, entry), '', location.pathname + location.search + hash);
+			else history.replaceState(withHomeEntry(history.state, entry), '');
+			currentEntry.current = entry;
+			entries.current.set(entry.id, entry);
+		} else {
+			currentEntry.current.scrollY = 0;
+			currentEntry.current.focus = null;
 		}
+		lastAdopted.current = currentEntry.current.id + '|' + location.hash;
 		setTopic(next);
-		// Also handles selecting the already-open section.
 		cancelAnimationFrame(focusFrame.current);
 		if (focus) focusFrame.current = requestAnimationFrame(() => {
 			window.scrollTo({ top: 0, behavior: 'instant' });
-			if (next) heading.current?.focus({ preventScroll: true });
-			else if (destination === 'about') document.querySelector('.hero-name')?.focus({ preventScroll: true });
-			else {
-				const action = document.querySelector('.meet-greet [data-topic="' + returnTopic.current + '"]');
-				const sectionLink = document.querySelector('.toplink[href="#' + returnTopic.current + '"]');
-				const target = action ?? (sectionLink?.getClientRects().length ? sectionLink : document.querySelector('.brand'));
-				target?.focus({ preventScroll: true });
-			}
+			focusEntry(currentEntry.current);
 		});
-	}, [clearFeedback]);
+	}, [cancelRestore, clearFeedback, focusEntry, saveCurrent]);
 
 	useEffect(() => {
+		const previousRestoration = history.scrollRestoration;
+		history.scrollRestoration = 'manual';
 		const adopt = (focus = true) => {
 			const hash = location.hash.slice(1);
-			if (hash === 'main-content') return;
-			const id = hash;
-			open(id, false, focus);
+			const saved = readHomeEntry(history.state);
+			const signature = (saved?.id ?? '') + '|' + location.hash;
+			if (signature === lastAdopted.current) return;
+			const entry = (saved && entries.current.get(saved.id)) ?? saved;
+			if (entry && entry.hash === location.hash) {
+				lastAdopted.current = signature;
+				restoreEntry(entry, focus);
+			} else if (hash === 'main-content') {
+				// The native skip link keeps the current section. It still needs
+				// a distinct entry so Back can restore that section after leaving.
+				cancelRestore();
+				const skipped = {
+					id: `${performance.timeOrigin}-${++entrySequence.current}`,
+					hash: location.hash, topic: currentEntry.current?.topic ?? null,
+					returnTopic: returnTopic.current, scrollY: window.scrollY,
+					focus: '#main-content', reading: copyReadingState(readingRef.current)
+				};
+				currentEntry.current = skipped;
+				entries.current.set(skipped.id, skipped);
+				history.replaceState(withHomeEntry(history.state, skipped), '');
+				lastAdopted.current = skipped.id + '|' + location.hash;
+			} else {
+				// A native hash change creates an entry too, but must not push a
+				// second one. Give it its own snapshot rather than reusing a key.
+				currentEntry.current = null;
+				open(hash, false, focus);
+			}
 		};
 		const onHistory = () => adopt();
-		const navigate = (event) => {
+		const navigate = event => {
 			if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 			const link = event.target.closest?.('a');
 			if (!link || link.target || link.hasAttribute('download')) return;
@@ -145,18 +262,41 @@ export default function MeetYo() {
 			event.preventDefault();
 			open(link.matches('.brand') ? null : id);
 		};
+		const scroll = () => {
+			if (!restoring.current && currentEntry.current?.hash === location.hash) currentEntry.current.scrollY = window.scrollY;
+		};
+		const focusChanged = event => {
+			if (restoring.current || !currentEntry.current) return;
+			const selector = focusSelector(event.target);
+			if (selector) currentEntry.current.focus = selector;
+		};
+		const interrupt = () => {
+			cancelRestore();
+			cancelAnimationFrame(focusFrame.current);
+		};
 		adopt(false);
 		window.addEventListener('hashchange', onHistory);
 		window.addEventListener('popstate', onHistory);
+		window.addEventListener('scroll', scroll, { passive: true });
+		window.addEventListener('pagehide', saveCurrent);
+		document.addEventListener('focusin', focusChanged);
 		document.addEventListener('click', navigate);
+		const interruptions = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
+		interruptions.forEach(type => document.addEventListener(type, interrupt, { passive: true }));
 		return () => {
+			history.scrollRestoration = previousRestoration;
 			window.removeEventListener('hashchange', onHistory);
 			window.removeEventListener('popstate', onHistory);
+			window.removeEventListener('scroll', scroll);
+			window.removeEventListener('pagehide', saveCurrent);
+			document.removeEventListener('focusin', focusChanged);
 			document.removeEventListener('click', navigate);
+			interruptions.forEach(type => document.removeEventListener(type, interrupt));
 			clearTimeout(noteTimer.current);
+			cancelRestore();
 			cancelAnimationFrame(focusFrame.current);
 		};
-	}, [open]);
+	}, [cancelRestore, open, restoreEntry, saveCurrent]);
 
 	useEffect(() => {
 		document.querySelectorAll('.toplink').forEach((link) => {
@@ -282,7 +422,8 @@ export default function MeetYo() {
 						<div class="meet-card-heading"><h2 id="section-heading" ref={heading} tabIndex={-1}>{selected.title}</h2></div>
 						<button class="meet-close" type="button" data-yo-say="Back to Qing's introduction. I'll come along!" onClick={() => open(null)}><Icon id="arrow-left" />Home</button>
 					</header>
-					<div class="card-body" role="region" aria-label={selected.title}>{Card && <Card />}</div>
+					<div class="card-body" role="region" aria-label={selected.title}>{Card && <Card expanded={readingState.news} onExpandedChange={news => updateReading(current => ({ ...current, news }))}
+							abstracts={readingState.abstracts} onAbstractChange={(slug, expanded) => updateReading(current => ({ ...current, abstracts: { ...current.abstracts, [slug]: expanded } }))} />}</div>
 				</article>
 				<nav class="meet-more" aria-label="Other sections">
 					<span class="meet-more-label" data-yo-say="There's more to explore. Pick another section below.">Explore more</span>

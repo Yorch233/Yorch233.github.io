@@ -69,8 +69,7 @@ export function AboutCard({ welcome = false }) {
 	</>;
 }
 
-export function NewsCard() {
-	const [all, setAll] = useState(false);
+export function NewsCard({ expanded: all = false, onExpandedChange: setAll = () => {} } = {}) {
 	const timelineId = useId();
 	const items = (all ? profile.news : profile.news.slice(0, 4)).map(item => {
 		const award = item.awardId ? profile.awards.find(entry => entry.id === item.awardId) : null;
@@ -155,15 +154,14 @@ export function AwardsCard() {
 	return <ul class="news awards">{profile.awards.map((item, i) => <Award key={item.date + i} item={item} />)}</ul>;
 }
 
-function PublicationAbstract({ paper }) {
-	const [expanded, setExpanded] = useState(false);
+function PublicationAbstract({ paper, expanded = false, onExpandedChange }) {
 	const abstractId = useId();
 	const collapsedToggle = useRef(null);
 	const expandedToggle = useRef(null);
 	const toggle = next => {
-		setExpanded(next);
+		onExpandedChange(paper.slug, next);
 		// The clicked control unmounts with the layout flip; carry focus over.
-		requestAnimationFrame(() => (next ? expandedToggle : collapsedToggle).current?.focus());
+		requestAnimationFrame(() => (next ? expandedToggle : collapsedToggle).current?.focus({ preventScroll: true }));
 	};
 	return <>
 		<p class="pub-tldr" data-yo-say="Here is the quick takeaway before the full abstract.">
@@ -183,10 +181,10 @@ function PublicationAbstract({ paper }) {
 	</>;
 }
 
-export function PapersCard() {
+export function PapersCard({ abstracts = {}, onAbstractChange = () => {} } = {}) {
 	const [citation, setCitation] = useState(null);
 	return <>
-		{publications.map((paper) => <article class="pub" key={paper.slug} data-yo-say={'Let\'s explore ' + paper.slug + '. Hover a resource to see where it goes.'}>
+		{publications.map((paper) => <article class="pub" key={paper.slug} data-paper={paper.slug} data-yo-say={'Let\'s explore ' + paper.slug + '. Hover a resource to see where it goes.'}>
 			<div class="pub-meta"><span class="pub-year" data-yo-say={'Here’s Qing’s ' + paper.year + ' paper, ' + paper.slug + '.'}>{paper.year}</span><span class="publication-tag" data-yo-say={paper.paper ? 'You can read the published article through the IEEE link below.' : 'This one is available as a preprint on arXiv.'}>{paper.badge}</span></div>
 			<h3 class="pub-title" data-yo-say={'This is ' + paper.slug + '. Select the title to read the paper.'}><a href={paper.paper ?? paper.arxiv} target="_blank" rel="noopener">{paper.title}</a></h3>
 			<p class="pub-authors">
@@ -195,7 +193,7 @@ export function PapersCard() {
 				</span>)}
 			</p>
 			<p class="venue" data-yo-say={paper.paper ? 'Here’s where the paper was published. The IEEE link below takes you to the article.' : 'You’ll find this preprint on arXiv. The link is right below.'}>{paper.venueFull}</p>
-			<PublicationAbstract paper={paper} />
+			<PublicationAbstract paper={paper} expanded={abstracts[paper.slug] === true} onExpandedChange={onAbstractChange} />
 			<div class="pub-links">
 				<DemoLink paper={paper} />
 				{paper.paper && <a class="link-pill" href={paper.paper} target="_blank" rel="noopener" data-yo-say="Open the published paper on IEEE Xplore."><Icon id="ieee" />IEEE</a>}
