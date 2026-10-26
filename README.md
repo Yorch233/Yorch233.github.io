@@ -81,6 +81,10 @@ npm run icons:build
 Local design references, GUI screenshots and editor metadata are excluded from
 version control. Keep production assets in `public/` and source artwork in the
 shared source modules.
+The paired `/icons/` SVGs and manifest are supported static exports alongside
+the inline runtime registry; an unrequested export is not a retired icon.
+Keep asset documentation in `docs/`, outside the published asset directory.
+See the [UI icon guide](docs/ui-icons.md) and [font provenance](docs/fonts.md).
 
 ## Validation
 

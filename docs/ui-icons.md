@@ -1,8 +1,10 @@
 # Qing UI icons
 
-63 glyphs × 2 states = 126 transparent standalone SVGs.
-The catalog is listed in `manifest.json`; individual SVG assets remain available
-under `/icons/`. There is no gallery page.
+Each catalog glyph has two transparent standalone SVG states.
+The generated catalog is listed in [manifest.json](../public/icons/manifest.json);
+individual SVG assets remain available under `/icons/`. There is no gallery page.
+These are supported static exports even when a page does not request their URLs:
+Astro and Preact controls use the same artwork through an inline SVG registry.
 
 - *-active-filled.svg: two-tone filled body/detail planes.
 - *-inactive.svg: gray outline (#8591a3), lighter in filled mass.
@@ -18,10 +20,11 @@ Hover/focus colors the outline; selection activates two-tone fill.
 Tone=inverse keeps primary actions readable. Keep visible labels or aria-labels.
 Inactive means unselected, not disabled. Dark mode adjusts the palette.
 
-Eight PNG sheets in references/ were generated with built-in imagegen first,
-then interpreted as original small-size native SVG drawings. Reference sheets
-are design material, not bitmap icons used by controls. GitHub and publisher marks keep
-recognizable authentic geometry; GitHub uses the Simple Icons CC0 glyph.
+The original small-size native SVG drawings were interpreted from image-generated
+reference sheets. Those sheets are local design material, kept outside `public/`
+and version control, rather than bitmap icons used by controls. GitHub and
+publisher marks keep recognizable authentic geometry; GitHub uses the Simple
+Icons CC0 glyph.
 
 Edit src/lib/ui-icon-artwork.js and src/lib/ui-icon-catalog.js, then run
 npm run icons:build. Production prebuild regenerates registry, manifest and

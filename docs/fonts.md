@@ -14,7 +14,7 @@ Chinese award tooltips fall back to the system CJK stack.
   changes.
   - SHA-256: `9e5fd0cb47d4dadf077461b94184494da55f40e2da2a87c8de275ac5db3bc7c2`
 - Copyright © 2020–2024 Beijing Xiaomi Mobile Software Co., Ltd. All Rights Reserved.
-- License: MiSans-License.pdf, copied from https://hyperos.mi.com/font-download/MiSans字体知识产权许可协议.pdf
+- License: [MiSans-License.pdf](../public/fonts/MiSans-License.pdf), copied from https://hyperos.mi.com/font-download/MiSans字体知识产权许可协议.pdf
 
 The complete CJK source remains available from Xiaomi at
 https://hyperos.mi.com/font-download/MiSans.zip if the site later needs bundled
