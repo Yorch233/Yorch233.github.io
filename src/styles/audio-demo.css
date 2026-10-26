@@ -360,6 +360,13 @@ flex: 1 1 400px; min-width: 0;
 display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 4px; max-width: 100%; min-width: 0; overflow: visible;
 }
 
+@media (min-width: 961px) {
+  /* A wrapped Methods caption must not pull the reference buttons upward.
+     Match the method row's inset so the actual button bottoms align. */
+  .method-list { align-items: flex-end; }
+  .method-group-primary { padding-block: 4px; }
+}
+
 .method-group-scroll::-webkit-scrollbar {
 	height: 0;
 }
