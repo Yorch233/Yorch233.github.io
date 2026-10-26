@@ -2,7 +2,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { createPortal } from 'preact/compat';
 import UiIcon from './UiIcon.jsx';
 import MobileAudioDemo from './MobileAudioDemo.jsx';
-import { assetUrl, loadOpus, getDecodeContext, formatTime, sampleMeta, mixColor, useGlobalVolume, useWaveformWorker, waveformDataCache, defaultMethodColor, measurementColor, SynchronizedSpectrogram, SegmentedToggle } from './AudioDemoShared.jsx';
+import SpectrumView from './SpectrumView.jsx';
+import { assetUrl, loadOpus, getDecodeContext, formatTime, sampleMeta, mixColor, getSpectrumTracks, useGlobalVolume, useWaveformWorker, waveformDataCache, defaultMethodColor, measurementColor, SynchronizedSpectrogram, SegmentedToggle } from './AudioDemoShared.jsx';
 
 function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budgetKey, onBudgetChange }) {
 	const [selectedMethod, setSelectedMethod] = useState('Measurement');
@@ -67,6 +68,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 	const selectedLabel = methods.find((method) => method.key === selectedMethod)?.label || selectedMethod;
 	const measurementLabel = methods.find((method) => method.key === 'Measurement')?.label || 'Measurement';
 	const comparing = selectedMethod !== 'Measurement';
+	const spectrumTracks = useMemo(() => getSpectrumTracks(basePath, sampleName, methods, selectedMethod), [basePath, sampleName, methods, selectedMethod]);
 	const meta = sampleMeta(sampleName);
 	const activeLegend = pinnedLegend ?? hoveredLegend;
 	const progressPercent = duration ? (currentTime / duration) * 100 : 0;
@@ -188,10 +190,10 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 		setHasEnded(false);
 		setPinnedLegend(null);
 		fadeStartRef.current = performance.now();
-		setFading(true);
+		setFading(viewMode !== 'spectrum');
 		new Set(['Measurement', 'Ground_Truth']).forEach((method) => ensureMethod(method).catch(() => {}));
 		if (!['Measurement', 'Ground_Truth'].includes(selectedMethod)) ensureMethod(selectedMethod).catch(() => {});
-	}, [basePath, selectedMethod, ensureMethod]);
+	}, [basePath, selectedMethod, ensureMethod, viewMode]);
 
 	// After the caches are cleared (and on the faded state itself), reload the
 	// plot data; this also drives the fade end even in the spectrogram view.
@@ -209,6 +211,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 	}, [fading, waveformStatus]);
 
 	useEffect(() => {
+		if (viewMode === 'spectrum') setFading(false);
 		if (viewMode === 'waveform') ensureWaveforms();
 	}, [ensureWaveforms, viewMode]);
 
@@ -475,6 +478,18 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 	const handleViewChange = (next) => {
 		if (next === viewMode) return;
 		const el = viewRef.current;
+		if (next === 'spectrum' || viewMode === 'spectrum') {
+			for (const timer of viewTimersRef.current) window.clearTimeout(timer);
+			viewTimersRef.current = [];
+			if (el) {
+				el.getAnimations?.().forEach(animation => animation.cancel());
+				el.classList.remove('is-fading');
+				el.style.height = '';
+				el.style.transition = '';
+			}
+			setViewMode(next);
+			return;
+		}
 		if (!el || typeof el.animate !== 'function' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			setViewMode(next);
 			return;
@@ -681,7 +696,8 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 							value={viewMode}
 							options={[
 								{ key: 'waveform', label: 'Waveform', icon: 'wave', buttonClass: 'view-toggle-btn' },
-								{ key: 'spectrogram', label: 'Spectrogram', icon: 'spectrogram', buttonClass: 'view-toggle-btn' }
+								{ key: 'spectrogram', label: 'Spectrogram', icon: 'spectrogram', buttonClass: 'view-toggle-btn' },
+								{ key: 'spectrum', label: 'Spectrum', icon: 'line-chart', buttonClass: 'view-toggle-btn' }
 							]}
 							onChange={handleViewChange}
 						/>
@@ -689,6 +705,11 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 				</div>
 
 				<div ref={viewRef} class="wave-view">
+				{viewMode === 'spectrum' && <SpectrumView
+					key={`${basePath}|${sampleName}|${selectedMethod}`}
+					tracks={spectrumTracks} time={currentTime} playing={isPlaying} audioRef={audioRef}
+					highlightedTrack={activeLegend === 'measurement' ? 0 : comparing && activeLegend === 'compare' ? 1 : null}
+				/>}
 				{viewMode === 'waveform' && (
 					<>
 						<div class="wave-canvas-wrap" onMouseEnter={() => setIsPlayheadHover(true)} onMouseLeave={() => setIsPlayheadHover(false)}>

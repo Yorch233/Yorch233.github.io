@@ -108,7 +108,7 @@ test.describe('RSB demo', () => {
 		expect(waveformState.cards, 'Visible comparison card count').toBe(2);
 		expect(waveformState.methods, 'Method chip count').toBe(6);
 		expect(waveformState.actions.every((count: number) => count === 3), 'Dataset navigation controls do not match the original layout.').toBe(true);
-		expect(waveformState.views, 'Waveform/Spectrogram toggle is incomplete.').toBe(2);
+		expect(waveformState.views, 'Visualization mode toggle is incomplete.').toBe(3);
 		expect(requests.some(url => url.endsWith('.spectrogram.avif')), 'Waveform view unexpectedly loaded a spectrogram.').toBe(false);
 
 		await page.evaluate(`

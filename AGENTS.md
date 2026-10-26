@@ -180,13 +180,23 @@ Measurement and Ground Truth for the displayed samples. Other methods load
 on selection. Waveform analysis
 uses `waveform.worker.js`; spectrograms are pre-generated AVIF resources
 (`scripts/encode-audio.sh <RSB|CoF>` refreshes opus and spectrograms).
-Do not add eager processing of all samples or browser-side spectrogram FFT. On phones
-(≤720px), use a per-dataset list with one expandable row per audio ID and
+Do not add eager processing of all samples or browser-side spectrogram FFT.
+
+The experimental Spectrum mode is separate from the AVIF spectrogram: analyze
+only the current short-time frequency-energy frame in an on-demand Worker.
+Use a fixed logarithmic frequency axis from 20 Hz to 20 kHz, with energy in
+dBFS, different line and point colors, and a subtle area fill.
+Keep the frame aligned with playback, paused seeks and method/sample/budget
+changes. Stop continuous analysis offscreen or in hidden tabs, and terminate
+the spectrum Workers when the view closes. Do not precompute time-frequency grids.
+
+On phones (≤720px), use a per-dataset list with one expandable row per audio ID and
 method chips that start one shared floating player. Expanding rows does not
 load audio; playing loads the selected method, and opening a visualization
 loads only its required data. Keep the desktop audio cards above 720px.
 The phone player has a progress bar above its controls, expandable waveform
-or static spectrogram views, and a bottom-right two-button minimized capsule.
+or static spectrogram views, a Spectrum option in the expanded view selector,
+and a bottom-right two-button minimized capsule.
 Changing layouts stops the outgoing player; closing a row does not stop audio.
 CoF audio samples cover the 1 and 4 NFE budgets behind per-dataset
 sampling-budget switches (default 4 NFE; assets live under

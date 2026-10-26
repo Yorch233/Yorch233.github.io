@@ -1229,6 +1229,9 @@ position: absolute; bottom: 52px; right: 0; background: var(--surface); border-r
   .method-chip { flex: 1; }
   .method-chip .chip-action { margin-left: auto; }
 }
+@media (min-width: 721px) and (max-width: 960px) {
+  .method-group-primary { grid-template-columns: repeat(2, minmax(146px, 1fr)); }
+}
 @media (max-width: 720px) {
   .audio-demo-island { gap: 32px; margin-top: 24px; }
   .audio-group-header { flex-wrap: wrap; gap: 12px; }

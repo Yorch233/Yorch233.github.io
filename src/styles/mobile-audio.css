@@ -68,6 +68,8 @@ body:is(.rsb-body, .cof-body) .floating-audio-player .mobile-player-button.mobil
 .mobile-volume-panel input { display: block; width: 100%; height: 44px; margin: 4px 0 0; accent-color: var(--accent); }
 .mobile-player-visualization { display: flex; flex-direction: column; min-height: 0; overflow: hidden; border-top: 1px solid var(--line-soft); margin-top: 8px; animation: mobile-player-appear 200ms ease-out; }
 .mobile-visualization-header { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; color: var(--muted); flex-shrink: 0; }
+.mobile-visualization-select { min-width: 0; max-width: calc(100% - 44px); min-height: 44px; padding: 8px 30px 8px 10px; border: 1px solid var(--line-soft); border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font: 450 13px/1.5 var(--sans); cursor: pointer; }
+.mobile-visualization-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .mobile-visualization-content { overflow-y: auto; min-height: 0; padding: 0 12px 10px; overscroll-behavior: contain; max-height: min(330px, 44dvh); }
 .mobile-waveform { min-width: 0; }
 .mobile-waveform-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; padding: 4px 0 10px; font-size: 12px; color: var(--muted); }

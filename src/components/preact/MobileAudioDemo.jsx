@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import UiIcon from './UiIcon.jsx';
-import { assetUrl, loadOpus, getDecodeContext, formatTime, sampleMeta, useGlobalVolume, useWaveformWorker, waveformDataCache, SynchronizedSpectrogram, SegmentedToggle } from './AudioDemoShared.jsx';
+import SpectrumView from './SpectrumView.jsx';
+import { assetUrl, loadOpus, getDecodeContext, formatTime, sampleMeta, getSpectrumTracks, useGlobalVolume, useWaveformWorker, waveformDataCache, SynchronizedSpectrogram, SegmentedToggle } from './AudioDemoShared.jsx';
 import '../../styles/mobile-audio.css';
 
 const sameTrack = (a, b) => a && b && a.basePath === b.basePath && a.sample === b.sample && a.method.key === b.method.key;
@@ -119,7 +120,7 @@ function MobileWaveform({ active, time, duration }) {
   </div>;
 }
 
-function FloatingPlayer({ active, playing, loading, error, time, duration, volume, setVolume, onToggle, onSeek, onClose }) {
+function FloatingPlayer({ active, methods, audioRef, playing, loading, error, time, duration, volume, setVolume, onToggle, onSeek, onClose }) {
   const [minimized, setMinimized] = useState(false);
   const [view, setView] = useState(null);
   const [volumeOpen, setVolumeOpen] = useState(false);
@@ -129,8 +130,10 @@ function FloatingPlayer({ active, playing, loading, error, time, duration, volum
   const expandRef = useRef(null);
   const waveformButton = useRef(null);
   const spectrogramButton = useRef(null);
+  const lastViewTrigger = useRef(null);
+  const spectrumTracks = useMemo(() => getSpectrumTracks(active.basePath, active.sample, methods, active.method.key), [active.basePath, active.sample, methods, active.method.key]);
   const collapseView = () => {
-    const trigger = view === 'waveform' ? waveformButton.current : spectrogramButton.current;
+    const trigger = lastViewTrigger.current || waveformButton.current;
     setView(null); trigger?.focus();
   };
   useEffect(() => {
@@ -155,7 +158,10 @@ function FloatingPlayer({ active, playing, loading, error, time, duration, volum
     setMinimized(small); setVolumeOpen(false);
     requestAnimationFrame(() => (small ? expandRef.current : minimizeRef.current)?.focus());
   };
-  const toggleView = mode => { setView(current => current === mode ? null : mode); setVolumeOpen(false); };
+  const toggleView = mode => {
+    lastViewTrigger.current = mode === 'waveform' ? waveformButton.current : spectrogramButton.current;
+    setView(current => current === mode ? null : mode); setVolumeOpen(false);
+  };
   const control = (id, label, action, extra = {}) => <button type="button" class="mobile-player-button" aria-label={label} title={label} onClick={action} {...extra}><UiIcon id={id} /></button>;
   const playButton = control(loading ? 'loading' : playing ? 'pause' : 'play', loading ? 'Loading audio' : error ? 'Retry playback' : playing ? 'Pause' : 'Play', onToggle, { class: 'mobile-player-button mobile-player-play', disabled: loading });
   return createPortal(<aside ref={playerRef} class={`audio-demo-island floating-audio-player${minimized ? ' is-minimized' : ''}`} aria-label="Audio player" data-method={active.method.key} data-sample={active.sample} data-budget={active.budgetLabel}>
@@ -165,9 +171,14 @@ function FloatingPlayer({ active, playing, loading, error, time, duration, volum
         {control('close', 'Close player', onClose)}
       </div>
       {view && <div class="mobile-player-visualization" id="mobile-player-visualization" onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); collapseView(); } }}>
-        <div class="mobile-visualization-header"><span>{view === 'waveform' ? 'Waveform' : 'Spectrogram'}</span>{control('arrow-down', 'Collapse visualization', collapseView)}</div>
+        <div class="mobile-visualization-header">
+          <select class="mobile-visualization-select" aria-label="Visualization mode" value={view} onChange={event => setView(event.currentTarget.value)}>
+            <option value="waveform">Waveform</option><option value="spectrogram">Spectrogram</option><option value="spectrum">Spectrum</option>
+          </select>
+          {control('arrow-down', 'Collapse visualization', collapseView)}
+        </div>
         <div class="mobile-visualization-content">
-          {view === 'waveform' ? <MobileWaveform active={active} time={time} duration={duration} /> : <SynchronizedSpectrogram measurementSrc={assetUrl(active.basePath, 'Measurement', active.sample, 'spectrogram')} comparisonSrc={assetUrl(active.basePath, active.method.key, active.sample, 'spectrogram')} sampleName={active.sample} selectedLabel={active.method.label} measurementLabel="Unprocessed" duration={duration} comparing={active.method.key !== 'Measurement'} />}
+          {view === 'spectrum' ? <SpectrumView key={`${active.basePath}|${active.sample}|${active.method.key}`} tracks={spectrumTracks} time={time} playing={playing} audioRef={audioRef} /> : view === 'waveform' ? <MobileWaveform active={active} time={time} duration={duration} /> : <SynchronizedSpectrogram measurementSrc={assetUrl(active.basePath, 'Measurement', active.sample, 'spectrogram')} comparisonSrc={assetUrl(active.basePath, active.method.key, active.sample, 'spectrogram')} sampleName={active.sample} selectedLabel={active.method.label} measurementLabel="Unprocessed" duration={duration} comparing={active.method.key !== 'Measurement'} />}
         </div>
       </div>}
       <div class="mobile-player-transport">
@@ -275,6 +286,6 @@ export default function MobileAudioDemo({ groups, methods, basePath = null, budg
   return <div class="audio-demo-island mobile-audio-demo">
     <audio ref={audioRef} class="wave-audio" preload="none" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onLoadedMetadata={event => setDuration(event.currentTarget.duration)} onTimeUpdate={event => setTime(event.currentTarget.currentTime)} onError={() => { setLoading(false); setPlaying(false); setError('Audio could not load. Please try again.'); }} />
     {groups.map(group => <MobileDataset key={group.id} group={group} methods={methods} basePath={basePath} budgets={budgets} active={active} playing={playing} loading={loading} onSelect={select} onBudgetChange={changeBudget} />)}
-    {active && <FloatingPlayer active={active} playing={playing} loading={loading} error={error} time={time} duration={duration} volume={volume} setVolume={setVolume} onToggle={toggle} onSeek={value => { if (audioRef.current) { audioRef.current.currentTime = value; setTime(value); } }} onClose={close} />}
+    {active && <FloatingPlayer active={active} methods={methods} audioRef={audioRef} playing={playing} loading={loading} error={error} time={time} duration={duration} volume={volume} setVolume={setVolume} onToggle={toggle} onSeek={value => { if (audioRef.current) { audioRef.current.currentTime = value; setTime(value); } }} onClose={close} />}
   </div>;
 }
