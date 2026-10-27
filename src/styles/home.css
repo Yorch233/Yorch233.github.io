@@ -406,11 +406,19 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
 .home-ref .topic-chips .topic-icon { width: 22px; height: 22px; }
 .home-ref .topic-chips .topic-icon .icon { width: 20px; height: 20px; }
 @media (max-width: 960px) {
-  .profile-overview { grid-template-columns: 220px minmax(0, 1fr); gap: 28px; }
-  .home-about .meta { grid-template-columns: 1fr; gap: 8px; }
+  .home-ref .profile-overview { grid-template-columns: clamp(160px, 20vw, 192px) minmax(0, 1fr); gap: 12px 32px; }
+  .home-ref .profile-story { display: contents; }
+  .home-ref .profile-story > * { grid-column: 1 / -1; }
+  .home-ref .profile-story > .hero-kicker,
+  .home-ref .profile-story > .hero-name,
+  .home-ref .profile-story > .profile-meta { grid-column: 2; }
+  .home-ref .profile-portrait { grid-column: 1; grid-row: 1 / 4; align-self: center; }
+  .home-ref .home-about .meta { grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px 16px; margin: 0; }
   .home-about .meta > span, .home-about .meta > span + span { border: 0; padding: 0; }
   .home-about .meta .icon { margin-top: 9px; }
   .home-about .lede, .home-about .about-copy { text-align: start; }
+  .home-ref .profile-story > .lede, .home-ref .profile-story > .about-copy { margin-top: 12px; }
+  .home-ref .profile-identifiers { margin-top: 8px; }
   .home-about .interests { grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)); gap: 8px; }
   .home-about .chip { position: relative; min-width: 0; min-height: 52px; padding: 8px 6px; border: 1px solid var(--accent-line); border-radius: 12px; text-align: center; line-height: 1.4; }
   .home-about .research-interest-art { display: none; }
@@ -430,12 +438,9 @@ html:not([data-theme=dark]) .home-about .chip:nth-child(3) { background: #faf1e7
 @media (max-width: 720px) {
   .home-ref main { padding-block: 28px 24px; }
   .meet:not(.meet--chat) { gap: 24px; }
-  .profile-overview { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-  .profile-portrait { width: min(64%, 220px); justify-self: center; }
-  .profile-story { gap: 16px; }
+  .home-ref .profile-overview { grid-template-columns: clamp(104px, 30vw, 144px) minmax(0, 1fr); column-gap: 20px; }
+  .profile-portrait { width: 100%; }
   .home-about { gap: 28px; margin-bottom: 24px; }
-  .home-about .meta { grid-template-columns: 1fr 1fr; gap: 10px 16px; }
-  .home-about .meta > span:last-child { grid-column: 1 / -1; }
   .home-about .interests { gap: 6px; }
   .home-about .chip { padding-inline: 4px; font-size: 13px; }
   .home-ref .topic-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -475,6 +480,7 @@ html[data-theme=dark] .home-ref {
 .home-ref .floating-capsule::before {
   content: ''; position: absolute; inset: -1px; z-index: -1;
   border-radius: inherit; pointer-events: none;
+  clip-path: inset(0 round 999px);
   background: linear-gradient(135deg, var(--glass-sheen), transparent 28%, transparent 76%, rgb(255 255 255 / .02)), var(--glass-fill);
   -webkit-backdrop-filter: saturate(1.2);
   backdrop-filter: saturate(1.2);
@@ -600,7 +606,7 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
   .home-ref .toplink { min-height: 44px; padding-inline: 14px; }
   .home-ref .home-nav-indicator { top: -13px; height: 78px; background: transparent; box-shadow: none; transition: none; z-index: 2; }
   .home-ref .home-nav-glass {
-    display: block; position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none;
+    display: block; position: absolute; inset: 0; border-radius: inherit; overflow: hidden; clip-path: inset(0 round 999px); pointer-events: none;
     background: transparent; -webkit-backdrop-filter: saturate(1.2);
     backdrop-filter: var(--glass-refraction, saturate(1)) saturate(1.2); box-shadow: var(--glass-soft-shadow);
   }
@@ -615,9 +621,8 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
   .home-ref .home-nav-glass { background: var(--accent-soft); }
   .home-ref .home-nav-indicator { z-index: 0; }
 }
-/* Phone bar: the whole capsule goes frosted (the desktop shell keeps its
-   clear optical refraction), while the selection stays a white block --
-   softer 18px corners, and a width a touch wider than its height. */
+/* Compact navigation uses a frosted shell and an inset white capsule that
+   grows with its navigation cell, keeping fully rounded ends. */
 @media (max-width: 960px) {
   /* Compact screens go frosted: header capsules and the bottom bar share
      the same blur; the desktop capsules keep their clear optical lens. */
@@ -707,10 +712,10 @@ html[data-theme=dark] .home-ref .topbar .floating-capsule {
     border: 0; border-radius: 999px; background: transparent; box-shadow: none;
     -webkit-backdrop-filter: none; backdrop-filter: none;
   }
-  /* Compact labels stay within the wider selection capsule. */
+  /* Each equal-width cell is clickable, including the wider selected area. */
   .home-ref .topbar .toplink {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    width: 50px; min-width: 50px; max-width: 50px; height: 50px; min-height: 50px; max-height: 50px;
+    width: 100%; min-width: 0; max-width: none; height: 50px; min-height: 50px; max-height: 50px;
     padding: 0; gap: 3px; border-radius: 999px; font-size: 9px; line-height: 1.2;
   }
   .home-ref .toplink .ui-icon { width: 20px; height: 20px; }

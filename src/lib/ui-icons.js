@@ -330,8 +330,8 @@ export const uiIcons = {
     "group": "Audio",
     "color": "#3189f5",
     "secondary": "#bfdfff",
-    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 4v16M15 4v16M4 9h16M4 15h16\"/></g>",
-    "filled": "<rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"currentColor\"/><rect x=\"6\" y=\"6\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"10.5\" y=\"6\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"white\"/><rect x=\"15\" y=\"6\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"6\" y=\"10.5\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"white\"/><rect x=\"10.5\" y=\"10.5\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"15\" y=\"10.5\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"white\"/><rect x=\"6\" y=\"15\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"10.5\" y=\"15\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"white\"/><rect x=\"15\" y=\"15\" width=\"3\" height=\"3\" rx=\"0.7\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/>"
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 3v17.5H22\"/><path d=\"M6 7 9 5.5h4L16 7h5\" opacity=\".35\"/><path d=\"M6 11.5 9 10h4l3 1.5h5\" opacity=\".65\"/><path d=\"M6 16 9 14.5h4l3 1.5h5\"/></g>",
+    "filled": "<rect x=\"5.5\" y=\"3.5\" width=\"16.5\" height=\"14.5\" rx=\"1.2\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><g opacity=\".35\"><path fill=\"currentColor\" d=\"m6 6 3-1.5h4L16 6h5v2h-5l-3-1.5H9L6 8Z\"/></g><g opacity=\".65\"><path fill=\"currentColor\" d=\"m6 10.5 3-1.5h4l3 1.5h5v2h-5L13 11H9l-3 1.5Z\"/></g><path fill=\"currentColor\" d=\"m6 15 3-1.5h4L16 15h5v2h-5l-3-1.5H9L6 17Z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M3.5 3v17.5H22\"/>"
   },
   "bar-chart": {
     "id": "bar-chart",
@@ -341,6 +341,24 @@ export const uiIcons = {
     "secondary": "#bfdfff",
     "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 21.5h19\"/><rect x=\"4\" y=\"13\" width=\"3\" height=\"6\" rx=\".6\"/><rect x=\"10.5\" y=\"8\" width=\"3\" height=\"11\" rx=\".6\"/><rect x=\"17\" y=\"3\" width=\"3\" height=\"16\" rx=\".6\"/></g>",
     "filled": "<rect x=\"3.5\" y=\"13\" width=\"4\" height=\"7\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"10\" y=\"8\" width=\"4\" height=\"12\" rx=\"1\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><rect x=\"16.5\" y=\"3\" width=\"4\" height=\"17\" rx=\"1\" fill=\"currentColor\"/><rect x=\"2\" y=\"21\" width=\"20\" height=\"1.5\" rx=\"0.75\" fill=\"currentColor\"/>"
+  },
+  "help-circle": {
+    "id": "help-circle",
+    "label": "Help",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9.2\" /><path d=\"M9.3 8.8a2.8 2.8 0 1 1 4.6 2.2c-1.2.7-1.9 1.2-1.9 2.5\"/><circle cx=\"12\" cy=\"17\" r=\"0.8\" fill=\"currentColor\"/></g>",
+    "filled": "<circle cx=\"12\" cy=\"12\" r=\"9.2\" fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\"/><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9.2\" /></g><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9.3 8.8a2.8 2.8 0 1 1 4.6 2.2c-1.2.7-1.9 1.2-1.9 2.5\"/><circle cx=\"12\" cy=\"17\" r=\"1\" fill=\"currentColor\"/>"
+  },
+  "spectrum": {
+    "id": "spectrum",
+    "label": "Spectrum",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "line": "<g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 3v17.5H22M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17\"/></g>",
+    "filled": "<path fill=\"var(--ui-icon-secondary)\" data-icon-tone=\"secondary\" d=\"M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17v3.5H5.5Z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M3.5 3v17.5H22M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17\"/>"
   },
   "line-chart": {
     "id": "line-chart",

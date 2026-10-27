@@ -93,10 +93,8 @@ const getSpectrumTracks = (basePath, sampleName, methods, selectedMethod) => {
 	return keys.map(key => {
 		const method = methods.find(item => item.key === key);
 		const lineColor = method?.color || defaultMethodColor;
-		const rgb = Number.parseInt(lineColor.replace('#', ''), 16);
-		const brightness = .299 * ((rgb >> 16) & 255) + .587 * ((rgb >> 8) & 255) + .114 * (rgb & 255);
 		return { url: assetUrl(basePath, key, sampleName, 'opus'), label: method?.label || key,
-			lineColor, pointColor: brightness > 140 ? '#24549e' : '#d97706' };
+			lineColor };
 	});
 };
 

@@ -53,9 +53,9 @@ const sync = (immediate = false) => {
     stop(); pill.width = 0;
     const active = track.querySelector('.toplink[aria-current]');
     if (!active) return;
-    /* The five links are uniform 50×50 round icon buttons; the selection is
-       a 64×50 full-radius capsule centered on the active one. */
-    const width = 64;
+    // Let the pill follow its equal-width navigation cell, with breathing room
+    // on wide bars and enough space for the complete label on small phones.
+    const width = Math.min(active.offsetWidth, Math.max(64, active.offsetWidth - 12));
     indicator.dataset.instant = String(immediate || reduced.matches || document.hidden);
     indicator.style.width = `${width}px`;
     indicator.style.height = `${active.offsetHeight}px`;

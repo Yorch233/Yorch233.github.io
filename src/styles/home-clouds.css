@@ -15,7 +15,8 @@
 }
 .home-ref .home-clouds span:nth-child(2) { animation-delay: -16s; }
 .home-ref .home-clouds span:nth-child(3) {
-  background: var(--cloud-texture) 62% 74% / 135% auto no-repeat;
+  /* Cover tall viewports too, so the photo edge cannot become a horizontal seam. */
+  background: var(--cloud-texture) 62% 74% / cover no-repeat;
   filter: var(--cloud-grade); opacity: .28;
   mask-image: linear-gradient(transparent 10%, #000 48%, #000 68%, transparent 95%);
   animation-name: cloud-bank-flow; animation-duration: 42s; animation-delay: -21s;
@@ -42,9 +43,9 @@
   100% { transform: translate3d(-18%, -2%, 0) scale(1.08); opacity: 0; }
 }
 @keyframes cloud-bank-flow {
-  0% { transform: translate3d(20%, 3%, 0); opacity: 0; }
+  0% { transform: translate3d(18%, 3%, 0) scale(1.08); opacity: 0; }
   25%, 75% { opacity: .34; }
-  100% { transform: translate3d(-20%, -3%, 0); opacity: 0; }
+  100% { transform: translate3d(-18%, -3%, 0) scale(1.08); opacity: 0; }
 }
 @keyframes cloud-mist-flow {
   0% { transform: translate3d(18%, 2%, 0); opacity: 0; }
@@ -64,7 +65,7 @@ html[data-theme=dark] .home-ref .home-clouds::after {
 @media (max-width: 720px) {
   .home-ref .home-clouds { --cloud-grade: saturate(.85); --cloud-veil: rgb(248 251 255 / .44); }
   .home-ref .home-clouds span:nth-child(-n+2) { background-position: 42% center; }
-  .home-ref .home-clouds span:nth-child(3) { background-size: auto 120%; background-position: 65% center; opacity: .2; }
+  .home-ref .home-clouds span:nth-child(3) { background-position: 65% center; opacity: .2; }
   html[data-theme=dark] .home-ref .home-clouds { --cloud-grade: brightness(.8) saturate(.78); --cloud-veil: rgb(11 19 32 / .38); }
 }
 html[data-clouds-paused=true] .home-ref .home-clouds span { animation-play-state: paused; }

@@ -138,7 +138,8 @@ stay visible in a bottom glass navigation capsule, with 20px icons above complet
 space below content. The homepage Yo companion is hidden and inert, with its
 motion stopped; fresh visits skip the automatic welcome dialog on these screens.
 Skipping it does not consume the desktop introduction. Each destination retains a
-50×50px touch target. Identity, CV and theme controls stay in the top header.
+50px-high touch target that fills its equal-width cell. Identity, CV and theme
+controls stay in the top header.
 CV opens a dedicated native dialog with the welcome card’s surface, backdrop
 and entrance/reversed exit animation. It identifies Qing’s curriculum vitae and
 provides Download CV (with a download icon) and Close. While profile.cv is null,
@@ -150,7 +151,8 @@ The greeting pairs Qing’s portrait, name, affiliation and first-person
 complete About Me content: full biography, location, advisor and all research
 interests, using the shared AboutCard source. On desktop the biography spans
 the story column and is justified, matching the metadata row above it; at
-960px and below it keeps natural left alignment. The welcome page is a reading
+960px and below it spans the full width beneath the portrait and identity row,
+keeping natural left alignment. The welcome page is a reading
 surface; it does not require an About Me button to reveal that content.
 The four further-reading buttons sit below the complete introduction: Publications
 is a compact blue capsule in the same action group; News, Awards and Contact use
@@ -412,11 +414,14 @@ restore the desktop lenses when returning to a wider viewport. Respect dark
 mode, reduced transparency and browsers without backdrop-filter support.
 Homepage header capsules and bottom navigation use 12px frosted glass on compact
 screens, with surface deformation disabled. Hide the inner optical lens on phones.
-Use deep-blue active icons on the white 64×50px selection in both themes,
-20px icons above 9px labels and a 66px shell around 50×50px touch targets. The mobile selection slides briefly without stretch or overshoot.
+Use deep-blue active icons on the white, 50px-high selection in both themes,
+20px icons above 9px labels and a 66px shell around equal-width touch targets.
+Let the selection grow with its cell, leaving up to 6px on each side; on the
+smallest screens it can fill the cell to keep labels readable. The whole cell
+is clickable. The mobile selection slides briefly without stretch or overshoot.
 The navigation shell and selected pill use fully rounded capsule ends.
 Keep all five destinations equally sized and their complete names visible.
-The navigation labels use tight tracking to fit inside the 64px selection. Reserve
+The navigation labels use tight tracking and remain inside the selection. Reserve
 document and safe-area space below content. Hide the homepage companion and
 his action controls on phones, and stop hidden motion. Current section, hashes, history
 and card controls drive the same indicator in both layouts.
@@ -425,8 +430,12 @@ on the backdrop. Labels and focus outlines stay sharp. Do not add RGB
 dispersion or rainbow rims. Body buttons, including welcome-page section links, paper resources and audio controls, use the middle glass tier: translucent tint gradients without backdrop blur, a fine translucent upper highlight, gentle convex shading and a soft tinted lower rim, giving a polished gemstone thickness without opaque white streaks. The lower edge is more transparent. Primary actions keep saturated blue and white labels for contrast. Colored buttons cast a small, dispersed tinted shadow. Use `data-glass-color="white|blue|green"` (green is #31D73F), or set `--glass-tint` for other colors; `--glass-opacity` and `--glass-lower-opacity` tune the fill. Compact screens use 18px frosted blur for these controls too. Highlights stay at the rim of floating capsules rather than
 washing the whole pane white. The welcome page uses a 1120px composition: a 300px portrait beside the
 complete biography, then full-width interest capsules and four action buttons.
-Phones stack the portrait and biography, retain one row of three text-only
-interest tags, and wrap the action buttons.
+At 960px and below, the portrait sits beside the name, affiliation, location and
+advisor; the three attributes share a row when space permits and wrap into
+fewer columns on smaller screens. Keep the portrait proportional to this
+identity block. All three biography paragraphs and contact identifiers span the
+full width underneath. Phones keep this arrangement with a smaller portrait, retain
+one row of three text-only interest tags, and wrap the action buttons.
 A small companion floats at the bottom-right on desktop. Secondary reading cards
 retain their narrower column.
 

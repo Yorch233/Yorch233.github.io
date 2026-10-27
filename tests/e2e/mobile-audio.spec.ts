@@ -38,16 +38,39 @@ for (const route of ['RSB', 'CoF']) {
     await expect(player.locator('output')).toHaveText('125%');
     await page.keyboard.press('Escape');
     await expect(player.locator('.mobile-volume-panel')).toHaveCount(0);
-    await player.getByRole('button', { name: 'Waveform', exact: true }).click();
+    await player.getByRole('button', { name: 'Visualization', exact: true }).click();
+    await expect(player.getByRole('tab', { name: 'Waveform', exact: true })).toHaveAttribute('aria-selected', 'true');
     await waitForExpr(page, "(() => { const canvas = document.querySelector('.floating-audio-player canvas'); return canvas && canvas.width > 0 && canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data.some((v, i) => i % 4 === 3 && v > 0); })()", 'The phone waveform never painted.');
     expect(requests.some(url => url.includes('waveform.worker'))).toBe(true);
     const slider = player.getByRole('slider', { name: 'Playback position' });
     await slider.fill('1');
     expect(await page.locator('.mobile-audio-demo audio').evaluate((el: HTMLAudioElement) => Math.abs(el.currentTime - 1))).toBeLessThan(.05);
-    await player.getByRole('button', { name: 'Collapse visualization' }).click();
+    await player.getByRole('button', { name: 'Visualization', exact: true }).click();
     await expect(player.locator('.mobile-player-visualization')).toHaveCount(0);
-    await expect(player.getByRole('button', { name: 'Waveform', exact: true })).toBeFocused();
-    await player.getByRole('button', { name: 'Spectrogram', exact: true }).click();
+    await expect(player.getByRole('button', { name: 'Visualization', exact: true })).toBeFocused();
+    await player.getByRole('button', { name: 'Visualization', exact: true }).click();
+    await player.getByRole('tab', { name: 'Waveform', exact: true }).focus();
+    for (const [key, label] of [['Home', 'Waveform'], ['End', 'Spectrum'], ['End', 'Spectrum'], ['Home', 'Waveform']]) {
+      const scrollY = await page.evaluate(() => window.scrollY);
+      await page.keyboard.press(key);
+      await expect(player.getByRole('tab', { name: label, exact: true })).toBeFocused();
+      await expect(player.getByRole('tab', { name: label, exact: true })).toHaveAttribute('aria-selected', 'true');
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      expect(await page.evaluate(() => window.scrollY), `${key} must not scroll the page at a tab boundary`).toBe(scrollY);
+    }
+    await page.keyboard.press('ArrowRight');
+    await expect(player.getByRole('tab', { name: 'Spectrogram', exact: true })).toBeFocused();
+    await expect(player.getByRole('tab', { name: 'Spectrogram', exact: true })).toHaveAttribute('aria-selected', 'true');
+    await expect.poll(() => player.locator('.mobile-visualization-tabs').evaluate(track => {
+      const style = getComputedStyle(track, '::before');
+      const selected = track.querySelector('[aria-selected=true]')!;
+      const bounds = selected.getBoundingClientRect();
+      const center = track.getBoundingClientRect().left + parseFloat(style.left) + new DOMMatrixReadOnly(style.transform).m41 + parseFloat(style.width) / 2;
+      return Math.abs(center - bounds.left - bounds.width / 2);
+    })).toBeLessThan(1);
+    expect(await player.getByRole('tab').evaluateAll(tabs => tabs.every(tab =>
+      getComputedStyle(tab).boxShadow === 'none' && getComputedStyle(tab, '::before').content === 'none' && getComputedStyle(tab, '::after').content === 'none'
+    ))).toBe(true);
     await waitForExpr(page, "(() => { const images = [...document.querySelectorAll('.floating-audio-player .spectrogram-canvas')]; return images.length === 2 && images.every(img => img.complete && img.naturalWidth > 0); })()", 'Phone spectrograms must use the static AVIF pair.');
     expect([...new Set(requests.filter(url => url.endsWith('.spectrogram.avif')))]).toHaveLength(2);
     await player.screenshot({ path: testInfo.outputPath(`${route}-phone-player.png`) });
@@ -84,9 +107,15 @@ for (const route of ['RSB', 'CoF']) {
         expect(box!.height).toBeGreaterThanOrEqual(44);
         expect(box!.width).toBeGreaterThanOrEqual(44);
       }
+      for (const tab of await player.getByRole('tab').all()) {
+        const box = await tab.boundingBox();
+        expect(box!.height).toBeGreaterThanOrEqual(44);
+        expect(await tab.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+      }
     }
     await page.setViewportSize({ width: 390, height: 844 });
-    await player.getByRole('button', { name: 'Collapse visualization' }).click();
+    await player.getByRole('button', { name: 'Visualization', exact: true }).click();
+    await player.getByRole('button', { name: 'Visualization', exact: true }).click();
     await player.getByRole('button', { name: 'Minimize player' }).click();
     await group.locator('.mobile-sample-trigger').nth(1).click();
     await group.locator('.mobile-sample').nth(1).locator('.method-chip').last().click();
@@ -94,6 +123,7 @@ for (const route of ['RSB', 'CoF']) {
     expect((await player.getAttribute('data-sample'))?.startsWith(selectedId!)).toBe(true);
     await player.getByRole('button', { name: 'Expand player' }).click();
     if (route === 'CoF') {
+      await player.getByRole('button', { name: 'Visualization', exact: true }).click();
       await group.getByRole('button', { name: '1 NFE', exact: true }).click();
       await expect(group).toHaveAttribute('data-budget', 'nfe1');
       await expect(page.locator('.mobile-audio-group').nth(1)).toHaveAttribute('data-budget', 'nfe4');

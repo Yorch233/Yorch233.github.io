@@ -108,10 +108,11 @@ if (chromium && CSS.supports('backdrop-filter', 'url(#lens)')) {
 		element.style.setProperty('--glass-refraction', `url(#${lens.filter.id})`);
 	};
 	const resize = new ResizeObserver(entries => {
-		// During the spring, stretch the existing map with its surface; redraw only once settled.
+		// Resize every filter before paint; the old rectangular region can leak
+		// during window resizing. Regenerate the displacement image once settled.
 		entries.forEach(({ target }) => {
 			const lens = lenses.get(target);
-			if (!lens || !target.matches('.home-nav-glass') || !target.offsetWidth) return;
+			if (!lens || !target.offsetWidth || !target.offsetHeight) return;
 			for (const node of [lens.filter, lens.filter.querySelector('feImage')]) {
 				node?.setAttribute('width', String(target.offsetWidth));
 				node?.setAttribute('height', String(target.offsetHeight));

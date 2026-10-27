@@ -122,19 +122,17 @@ function MobileWaveform({ active, time, duration }) {
 
 function FloatingPlayer({ active, methods, audioRef, playing, loading, error, time, duration, volume, setVolume, onToggle, onSeek, onClose }) {
   const [minimized, setMinimized] = useState(false);
-  const [view, setView] = useState(null);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [view, setView] = useState('waveform');
   const [volumeOpen, setVolumeOpen] = useState(false);
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
   const minimizeRef = useRef(null);
   const expandRef = useRef(null);
-  const waveformButton = useRef(null);
-  const spectrogramButton = useRef(null);
-  const lastViewTrigger = useRef(null);
+  const visualizationButton = useRef(null);
   const spectrumTracks = useMemo(() => getSpectrumTracks(active.basePath, active.sample, methods, active.method.key), [active.basePath, active.sample, methods, active.method.key]);
   const collapseView = () => {
-    const trigger = lastViewTrigger.current || waveformButton.current;
-    setView(null); trigger?.focus();
+    setViewOpen(false); visualizationButton.current?.focus();
   };
   useEffect(() => {
     if (!volumeOpen) return undefined;
@@ -158,9 +156,8 @@ function FloatingPlayer({ active, methods, audioRef, playing, loading, error, ti
     setMinimized(small); setVolumeOpen(false);
     requestAnimationFrame(() => (small ? expandRef.current : minimizeRef.current)?.focus());
   };
-  const toggleView = mode => {
-    lastViewTrigger.current = mode === 'waveform' ? waveformButton.current : spectrogramButton.current;
-    setView(current => current === mode ? null : mode); setVolumeOpen(false);
+  const toggleVisualization = () => {
+    setViewOpen(current => !current); setVolumeOpen(false);
   };
   const control = (id, label, action, extra = {}) => <button type="button" class="mobile-player-button" aria-label={label} title={label} onClick={action} {...extra}><UiIcon id={id} /></button>;
   const playButton = control(loading ? 'loading' : playing ? 'pause' : 'play', loading ? 'Loading audio' : error ? 'Retry playback' : playing ? 'Pause' : 'Play', onToggle, { class: 'mobile-player-button mobile-player-play', disabled: loading });
@@ -170,14 +167,21 @@ function FloatingPlayer({ active, methods, audioRef, playing, loading, error, ti
         <div><span class="mobile-player-context">{active.group.name}{active.budgetLabel && ` · ${active.budgetLabel}`}</span><p class="mobile-player-track">{active.sample.replace(/_(snr|t60)=.*$/, '')}</p><span class="mobile-player-method" style={{ color: active.method.color }}>{active.method.label}</span></div>
         {control('close', 'Close player', onClose)}
       </div>
-      {view && <div class="mobile-player-visualization" id="mobile-player-visualization" onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); collapseView(); } }}>
+      {viewOpen && <div class="mobile-player-visualization" id="mobile-player-visualization" onKeyDown={event => { if (event.key === 'Escape') { event.stopPropagation(); collapseView(); } }}>
         <div class="mobile-visualization-header">
-          <select class="mobile-visualization-select" aria-label="Visualization mode" value={view} onChange={event => setView(event.currentTarget.value)}>
-            <option value="waveform">Waveform</option><option value="spectrogram">Spectrogram</option><option value="spectrum">Spectrum</option>
-          </select>
-          {control('arrow-down', 'Collapse visualization', collapseView)}
+          <div class="mobile-visualization-tabs" data-view={view} role="tablist" aria-label="Visualization mode" onKeyDown={event => {
+            const order = ['waveform', 'spectrogram', 'spectrum'];
+            if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+            event.preventDefault();
+            const offset = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : event.key === 'Home' ? -order.indexOf(view) : event.key === 'End' ? order.length - 1 - order.indexOf(view) : 0;
+            const next = order[(order.indexOf(view) + offset + order.length) % order.length];
+            setView(next);
+            document.getElementById(`mobile-visualization-tab-${next}`)?.focus();
+          }}>
+            {['waveform', 'spectrogram', 'spectrum'].map(mode => <button key={mode} type="button" role="tab" id={`mobile-visualization-tab-${mode}`} class="mobile-visualization-tab" aria-selected={view === mode} aria-controls="mobile-player-visualization-content" tabIndex={view === mode ? 0 : -1} onClick={() => setView(mode)}>{mode === 'waveform' ? 'Waveform' : mode === 'spectrogram' ? 'Spectrogram' : 'Spectrum'}</button>)}
+          </div>
         </div>
-        <div class="mobile-visualization-content">
+        <div id="mobile-player-visualization-content" class="mobile-visualization-content" role="tabpanel" aria-labelledby={`mobile-visualization-tab-${view}`} tabIndex={0}>
           {view === 'spectrum' ? <SpectrumView key={`${active.basePath}|${active.sample}|${active.method.key}`} tracks={spectrumTracks} time={time} playing={playing} audioRef={audioRef} /> : view === 'waveform' ? <MobileWaveform active={active} time={time} duration={duration} /> : <SynchronizedSpectrogram measurementSrc={assetUrl(active.basePath, 'Measurement', active.sample, 'spectrogram')} comparisonSrc={assetUrl(active.basePath, active.method.key, active.sample, 'spectrogram')} sampleName={active.sample} selectedLabel={active.method.label} measurementLabel="Unprocessed" duration={duration} comparing={active.method.key !== 'Measurement'} />}
         </div>
       </div>}
@@ -189,8 +193,7 @@ function FloatingPlayer({ active, methods, audioRef, playing, loading, error, ti
             {control(volume === 0 ? 'volume-off' : volume < 100 ? 'volume-low' : 'audio', 'Volume', () => setVolumeOpen(current => !current), { 'aria-expanded': volumeOpen, 'aria-controls': 'mobile-volume-panel' })}
             {volumeOpen && <div class="mobile-volume-panel" id="mobile-volume-panel"><label for="mobile-audio-volume">Volume <output>{volume}%</output></label><input id="mobile-audio-volume" type="range" min="0" max="200" value={volume} onInput={event => setVolume(Number(event.currentTarget.value))} aria-label="Global volume" /></div>}
           </div>
-          {control('spectrogram', 'Spectrogram', () => toggleView('spectrogram'), { ref: spectrogramButton, 'aria-pressed': view === 'spectrogram', 'aria-expanded': view === 'spectrogram', 'aria-controls': view ? 'mobile-player-visualization' : undefined })}
-          {control('wave', 'Waveform', () => toggleView('waveform'), { ref: waveformButton, 'aria-pressed': view === 'waveform', 'aria-expanded': view === 'waveform', 'aria-controls': view ? 'mobile-player-visualization' : undefined })}
+          {control('layers', 'Visualization', toggleVisualization, { ref: visualizationButton, 'aria-expanded': viewOpen, 'aria-controls': 'mobile-player-visualization' })}
           <a class="mobile-player-button mobile-player-download" href={assetUrl(active.basePath, active.method.key, active.sample, 'wav')} download aria-label={`Download ${active.method.label} WAV`} title="Download WAV"><UiIcon id="download" /></a>
           {control('minimize', 'Minimize player', () => changeSize(true), { ref: minimizeRef })}
         </div>

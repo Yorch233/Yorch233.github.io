@@ -135,8 +135,21 @@ export const uiIconArtwork = {
   speakerFilled + stroke('M18 8a7 7 0 0 1 0 8', 'var(--ui-icon-secondary)', 2.2)),
  'volume-off': pair(path('M13 7V4L8 8M5 9H3.5v6H7l6 5v-8M3 3l18 18'),
   speakerFilled + stroke('M2.5 2.5l19 19', 'var(--ui-icon-secondary)', 2.8)),
- spectrogram: pair('<rect x="3" y="3" width="18" height="18" rx="2"/>' + path('M9 4v16M15 4v16M4 9h16M4 15h16'),
-  rect(3, 3, 18, 18, 2) + [6, 10.5, 15].flatMap((y, i) => [6, 10.5, 15].map((x, j) => rect(x, y, 3, 3, .7, (i + j) % 2 === 0 ? secondary : 'fill="white"'))).join('')),
+ // Time runs right; frequency runs up. Harmonic ridges vary in energy over time.
+ spectrogram: pair(path('M3.5 3v17.5H22') +
+  '<path d="M6 7 9 5.5h4L16 7h5" opacity=".35"/>' +
+  '<path d="M6 11.5 9 10h4l3 1.5h5" opacity=".65"/>' +
+  path('M6 16 9 14.5h4l3 1.5h5'),
+  rect(5.5, 3.5, 16.5, 14.5, 1.2, secondary) +
+  '<g opacity=".35">' + p('m6 6 3-1.5h4L16 6h5v2h-5l-3-1.5H9L6 8Z') + '</g>' +
+  '<g opacity=".65">' + p('m6 10.5 3-1.5h4l3 1.5h5v2h-5L13 11H9l-3 1.5Z') + '</g>' +
+  p('m6 15 3-1.5h4L16 15h5v2h-5l-3-1.5H9L6 17Z') + stroke('M3.5 3v17.5H22', 'currentColor', 1.7)),
+ // One energy-versus-frequency slice, with resonant peaks instead of a trend line.
+ 'help-circle': pair(circle(12, 12, 9.2, '') + path('M9.3 8.8a2.8 2.8 0 1 1 4.6 2.2c-1.2.7-1.9 1.2-1.9 2.5') + circle(12, 17, .8),
+  circle(12, 12, 9.2, secondary) + outline(circle(12, 12, 9.2, '')) + stroke('M9.3 8.8a2.8 2.8 0 1 1 4.6 2.2c-1.2.7-1.9 1.2-1.9 2.5', 'currentColor', 1.7) + circle(12, 17, 1)),
+ spectrum: pair(path('M3.5 3v17.5H22M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17'),
+  s('M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17v3.5H5.5Z') +
+  stroke('M3.5 3v17.5H22M5.5 17C6.8 17 6.9 7.5 8.4 7.5S10 16 11.3 16 12.8 4.5 14.3 4.5 15.9 14 17.3 14 18.2 11 19.1 11 20.6 17 22 17', 'currentColor', 1.7)),
  'bar-chart': pair(path('M2.5 21.5h19') + '<rect x="4" y="13" width="3" height="6" rx=".6"/><rect x="10.5" y="8" width="3" height="11" rx=".6"/><rect x="17" y="3" width="3" height="16" rx=".6"/>',
   rect(3.5, 13, 4, 7, 1, secondary) + rect(10, 8, 4, 12, 1, secondary) + rect(16.5, 3, 4, 17, 1) + rect(2, 21, 20, 1.5, .75)),
  'line-chart': pair(path('M4 17v4h16V5M4 17C8 17 8 11 12 10S18 8 20 4') + circle(4, 17, 1.7, '') + circle(12, 10, 1.7, '') + circle(20, 4, 1.7, ''),

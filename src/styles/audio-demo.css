@@ -1370,6 +1370,12 @@ position: absolute; bottom: 52px; right: 0; background: var(--surface); border-r
 	display: none !important;
 }
 
+body:is(.rsb-body, .cof-body) .audio-demo-island .wave-panel .legend-item {
+	position: static !important;
+	isolation: auto !important;
+	border-color: transparent !important;
+}
+
 .audio-demo-island .wave-compare .method-chip:is(.active, .playing) .chip-spinner { border-color: rgb(255 255 255 / .38); border-top-color: #fff; }
 
 /* Play/pause badges: a white glyph on the method's own colour, in every
@@ -1403,7 +1409,7 @@ body:is(.rsb-body, .cof-body) .audio-demo-island .wave-panel .progress-play {
 	opacity: 0.88;
 }
 
-.audio-demo-island .wave-panel .legend-item {
+body:is(.rsb-body, .cof-body) .audio-demo-island .wave-panel .legend-item {
 	background: transparent !important;
 	box-shadow: none !important;
 }

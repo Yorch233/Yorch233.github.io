@@ -2,27 +2,43 @@ import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { getDecodeContext, loadOpus } from './AudioDemoShared.jsx';
 import { spectrumFrequencyPosition } from '../../lib/spectrum.js';
 import '../../styles/spectrum.css';
+import SpectrumInfo from './SpectrumInfo.jsx';
 
-const FFT_SIZE = 2048;
 const FREQUENCY_TICKS = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+
+const blendSpectra = (from, to, progress) => {
+  if (progress <= 0) return from;
+  if (progress >= 1) return to;
+  if (!from || !to || from.frequencies.length !== to.frequencies.length ||
+    from.sampleRate !== to.sampleRate || from.fftSize !== to.fftSize) return to;
+  const count = from.frequencies.length;
+  const frequencies = new Float32Array(count);
+  const energies = new Float32Array(count);
+  for (let index = 0; index < count; index += 1) {
+    frequencies[index] = from.frequencies[index] + (to.frequencies[index] - from.frequencies[index]) * progress;
+    energies[index] = from.energies[index] + (to.energies[index] - from.energies[index]) * progress;
+  }
+  return { ...to, frequencies, energies, time: from.time + (to.time - from.time) * progress };
+};
 
 export default function SpectrumView({ tracks, time = 0, playing = false, audioRef, highlightedTrack = null }) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
-  const timeLabelRef = useRef(null);
-  const windowLabelRef = useRef(null);
   const latestRef = useRef(null);
   const sessionRef = useRef(null);
   const framesRef = useRef([]);
+  const renderedRef = useRef(null);
   const visibleRef = useRef(false);
   const reducedRef = useRef(false);
-  const animationRef = useRef(0);
+  const samplerAnimationRef = useRef(0);
+  const transitionAnimationRef = useRef(0);
   const requestRef = useRef(() => {});
   const drawRef = useRef(() => {});
   const syncRef = useRef(() => {});
   const [status, setStatus] = useState('loading');
   const [error, setError] = useState('');
   const [attempt, setAttempt] = useState(0);
+  const [metadata, setMetadata] = useState(null);
   latestRef.current = { tracks, time, playing, audioRef, highlightedTrack };
   const identity = JSON.stringify(tracks.map(track => track.url));
 
@@ -76,11 +92,23 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
       context.fillText(frequency >= 1000 ? `${frequency / 1000}k` : String(frequency), x, height - bottom + 15);
     }
     context.textAlign = 'center'; context.fillText('Frequency (Hz)', left + plotWidth / 2, height - 7);
+    const target = renderedRef.current;
+    // from/to are arrays of track frames, not individual frames with a time.
+    if (target?.from && target?.to && target.progress < 1) {
+      const elapsed = performance.now() - target.startedAt;
+      target.progress = Math.min(1, elapsed / target.duration);
+      target.rendered = target.from.map((from, index) => blendSpectra(from, target.to[index], target.progress));
+      if (target.progress < 1) {
+        cancelAnimationFrame(transitionAnimationRef.current);
+        transitionAnimationRef.current = requestAnimationFrame(drawRef.current);
+      }
+    }
     context.save(); context.beginPath(); context.rect(left - 2, top - 2, plotWidth + 4, plotHeight + 4); context.clip();
     frames.forEach((frame, index) => {
       const track = latestRef.current.tracks[index];
       if (!track) return;
-      const { frequencies, energies } = frame;
+      const rendered = target?.rendered?.[index] || frame;
+      const { frequencies, energies } = rendered;
       const nyquist = Math.min(20000, frame.sampleRate / 2);
       let first = 0;
       while (first < frequencies.length && frequencies[first] < 20) first += 1;
@@ -101,37 +129,42 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
       context.lineTo(x(last), baselineY); context.lineTo(x(first), baselineY); context.closePath(); context.fill();
       context.globalAlpha = dimming;
       context.strokeStyle = lineColor;
+      context.lineJoin = 'round'; context.lineCap = 'round';
       context.beginPath();
       context.moveTo(x(first), y(first));
-      for (let bin = first + 1; bin <= last; bin += 1) context.lineTo(x(bin), y(bin));
-      context.stroke(); context.fillStyle = track.pointColor || '#d97706';
-      let markedX = x(first);
-      for (let bin = first; bin <= last; bin += 1) {
-        const nextX = x(bin);
-        if (bin !== first && nextX - markedX < 12) continue;
-        markedX = nextX;
-        context.beginPath(); context.arc(nextX, y(bin), 2, 0, Math.PI * 2); context.fill();
+      for (let bin = first + 1; bin < last; bin += 1) {
+        const previous = bin - 1, next = bin + 1;
+        const controlX = (x(previous) + x(next)) / 2;
+        const controlY = (y(previous) + y(next)) / 2;
+        context.quadraticCurveTo(x(bin), y(bin), controlX, controlY);
       }
+      if (last > first) {
+        context.quadraticCurveTo(x(last - 1), y(last - 1), x(last), y(last));
+      }
+      context.stroke();
     });
     context.restore();
     const frame = frames[0];
     canvas.dataset.time = String(frame.time);
-    if (timeLabelRef.current) timeLabelRef.current.textContent = `t = ${frame.time.toFixed(2)} s`;
-    if (windowLabelRef.current) windowLabelRef.current.textContent = `${(frame.fftSize / frame.sampleRate * 1000).toFixed(1)} ms window`;
   };
 
   useEffect(() => {
     let cancelled = false;
     const currentTracks = latestRef.current.tracks.slice(0, 2);
-    const session = { workers: [], ready: currentTracks.map(() => false), received: [], id: 0, inFlight: false, pending: null, lastSent: -Infinity, disposed: false, audioUrl: null };
+    const session = { workers: [], ready: currentTracks.map(() => false), received: [], id: 0, inFlight: false, pending: null, lastSent: -Infinity, disposed: false, audioUrl: null, metadataSent: false };
     sessionRef.current = session;
     framesRef.current = [];
+    renderedRef.current = null;
+    setMetadata(null);
     setStatus('loading'); setError('');
     const fail = () => {
       if (cancelled || session.disposed) return;
       session.disposed = true;
       session.workers.forEach(worker => worker?.terminate());
-      cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(samplerAnimationRef.current);
+      samplerAnimationRef.current = 0;
+      cancelAnimationFrame(transitionAnimationRef.current);
+      transitionAnimationRef.current = 0;
       setError('Spectrum unavailable. Audio playback is still available.'); setStatus('error');
     };
     requestRef.current = (nextTime, force = false) => {
@@ -140,7 +173,7 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
       if (!force && performance.now() - session.lastSent < (reducedRef.current ? 250 : 50)) return;
       session.lastSent = performance.now(); session.inFlight = true; session.received = [];
       const id = ++session.id;
-      session.workers.forEach(worker => worker.postMessage({ type: 'frame', id, time: nextTime, fftSize: FFT_SIZE }));
+      session.workers.forEach(worker => worker.postMessage({ type: 'frame', id, time: nextTime }));
     };
     currentTracks.forEach((track, index) => {
       (async () => {
@@ -164,7 +197,22 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
           session.received[index] = data;
           if (currentTracks.every((_, position) => session.received[position])) {
             session.inFlight = false;
+            const previous = renderedRef.current?.rendered || framesRef.current;
             framesRef.current = session.received.slice();
+            if (!session.metadataSent) {
+              session.metadataSent = true;
+              const { sampleRate, fftSize, windowSize } = framesRef.current[0];
+              setMetadata({ sampleRate, fftSize, windowSize });
+            }
+            const active = latestRef.current.playing && !reducedRef.current && visibleRef.current && !document.hidden;
+            renderedRef.current = active ? {
+              from: previous.length ? previous : framesRef.current,
+              to: framesRef.current,
+              rendered: previous.length ? previous : framesRef.current,
+              progress: 0,
+              duration: reducedRef.current ? 0 : 160,
+              startedAt: performance.now()
+            } : null;
             drawRef.current(); setStatus(current => current === 'ready' ? current : 'ready');
             const pending = session.pending; session.pending = null;
             if (pending) requestRef.current(pending.time, pending.force);
@@ -178,24 +226,30 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
       cancelled = true; session.disposed = true;
       session.workers.forEach(worker => worker?.terminate());
       if (sessionRef.current === session) sessionRef.current = null;
-      cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(samplerAnimationRef.current);
+      samplerAnimationRef.current = 0;
+      cancelAnimationFrame(transitionAnimationRef.current);
+      transitionAnimationRef.current = 0;
     };
   }, [identity, attempt, readTime]);
 
   useEffect(() => {
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     reducedRef.current = media.matches;
-    const stop = () => { cancelAnimationFrame(animationRef.current); animationRef.current = 0; };
+    const stop = () => {
+      cancelAnimationFrame(samplerAnimationRef.current);
+      samplerAnimationRef.current = 0;
+    };
     const update = () => {
-      animationRef.current = 0;
+      samplerAnimationRef.current = 0;
       const session = sessionRef.current;
       if (!latestRef.current.playing || reducedRef.current || !visibleRef.current || document.hidden || session?.disposed) return;
       requestRef.current(readTime());
-      animationRef.current = requestAnimationFrame(update);
+      samplerAnimationRef.current = requestAnimationFrame(update);
     };
     syncRef.current = () => {
       stop();
-      if (latestRef.current.playing && !reducedRef.current && visibleRef.current && !document.hidden && !sessionRef.current?.disposed) animationRef.current = requestAnimationFrame(update);
+      if (latestRef.current.playing && !reducedRef.current && visibleRef.current && !document.hidden && !sessionRef.current?.disposed) samplerAnimationRef.current = requestAnimationFrame(update);
     };
     const refresh = () => {
       syncRef.current();
@@ -212,6 +266,8 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
     media.addEventListener('change', motion);
     return () => {
       stop(); observer.disconnect(); resize.disconnect();
+      cancelAnimationFrame(transitionAnimationRef.current);
+      transitionAnimationRef.current = 0;
       document.removeEventListener('visibilitychange', refresh); media.removeEventListener('change', motion);
       syncRef.current = () => {};
     };
@@ -219,18 +275,20 @@ export default function SpectrumView({ tracks, time = 0, playing = false, audioR
 
   useEffect(() => {
     requestRef.current(readTime(), !playing);
+    if (!playing) renderedRef.current = null;
+    drawRef.current();
   }, [time, playing, readTime]);
 
   useEffect(() => { syncRef.current(); }, [playing]);
 
-  useEffect(() => { drawRef.current(); }, [highlightedTrack, tracks]);
+  useEffect(() => {
+    renderedRef.current = null;
+    drawRef.current();
+  }, [highlightedTrack, tracks]);
 
   return <figure class="spectrum-view" ref={rootRef} aria-busy={status === 'loading'}>
-    <div class="spectrum-legend">{tracks.map(track => <span key={track.url}>
-      <i style={{ background: track.lineColor }} /><b style={{ background: track.pointColor }} />{track.label}
-    </span>)}</div>
     <canvas ref={canvasRef} class="spectrum-canvas" role="img" aria-label={`Experimental frequency energy spectrum for ${tracks.map(track => track.label).join(' and ')}. Frequency from 20 Hz to 20 kHz on a logarithmic scale, energy in dBFS. Use playback controls to inspect a time.`} />
-    <figcaption class="spectrum-meta"><span>Experimental</span><span ref={windowLabelRef} /><output ref={timeLabelRef} aria-label="Spectrum time" /></figcaption>
+    <SpectrumInfo metadata={metadata} />
     {status === 'loading' && <p class="spectrum-status" role="status">Loading spectrum...</p>}
     {status === 'error' && <div class="spectrum-status spectrum-error" role="status"><p>{error}</p><button type="button" onClick={() => setAttempt(value => value + 1)}>Retry spectrum</button></div>}
   </figure>;

@@ -13,6 +13,11 @@
   Pages deployment repository; its workflow deploys the site automatically.
 - Push to `origin` only when the user explicitly requests deployment. Routine
   development saves must not push to GitHub.
+- Every deployment push to `origin` follows this workflow: run end-to-end
+  functional tests; perform visual testing, including light and dark modes and
+  required responsive layouts; start (or keep running) the dev environment so
+  the user can test and explicitly confirm; only after that confirmation, push
+  to GitHub for deployment.
 
 ## Collaboration and independent judgment
 
@@ -79,8 +84,10 @@ Keep the background minimal and low contrast so content remains the focus.
 Default to light mode; preserve an explicitly saved theme. The welcome page follows the selected light reference: a large portrait
 left of the complete introduction, full-width interest and action rows,
 and Yo floating at the bottom-right on desktop. Phones hide the homepage companion
-and skip its automatic welcome dialog. Stack the portrait and introduction on phones. Keep hierarchy
-and spacing consistent. Scope homepage styles under `.home-ref`; academic
+and skip its automatic welcome dialog. At compact widths (up to 960px), place
+the portrait beside the name and three profile attributes, with the biography
+spanning the full width below them. Keep hierarchy and spacing consistent.
+Scope homepage styles under `.home-ref`; academic
 pages keep their own typography and layout.
 
 ### Readable type hierarchy
@@ -126,10 +133,10 @@ card or a welcome-page button. Order navigation About Me, News,
 Publications, Awards, Contact. On narrow screens, keep all five destinations visible
 in a bottom navigation bar, with icons above compact labels. Keep its outer
 glass shell frosted on narrow screens (the desktop shell keeps its clear
-optical refraction). On narrow screens the five destinations are uniform
-50×50 controls with icons above compact visible text labels, and
-the narrow-screen selection is an opaque white full-radius 64×50 pill,
-centered on the active one;
+optical refraction). On narrow screens the five destinations fill equal-width,
+50px-high cells with icons above compact visible text labels. The opaque white,
+fully rounded selection grows with its cell, leaving small side insets where
+space permits, and stays centered on the active destination;
 desktop uses the original glass selection, 12px taller than
 its shell. Center both vertically. Reserve space for content
 and position Yo above it. Links,
@@ -185,7 +192,8 @@ Do not add eager processing of all samples or browser-side spectrogram FFT.
 The experimental Spectrum mode is separate from the AVIF spectrogram: analyze
 only the current short-time frequency-energy frame in an on-demand Worker.
 Use a fixed logarithmic frequency axis from 20 Hz to 20 kHz, with energy in
-dBFS, different line and point colors, and a subtle area fill.
+dBFS, method theme colors, smooth curves without point markers, and a subtle
+area fill.
 Keep the frame aligned with playback, paused seeks and method/sample/budget
 changes. Stop continuous analysis offscreen or in hidden tabs, and terminate
 the spectrum Workers when the view closes. Do not precompute time-frequency grids.

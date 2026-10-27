@@ -418,6 +418,28 @@
     }
   },
   {
+    "id": "help-circle",
+    "label": "Help",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/help-circle-active-filled.svg",
+      "inactive": "/icons/help-circle-inactive.svg"
+    }
+  },
+  {
+    "id": "spectrum",
+    "label": "Spectrum",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff",
+    "variants": {
+      "active-filled": "/icons/spectrum-active-filled.svg",
+      "inactive": "/icons/spectrum-inactive.svg"
+    }
+  },
+  {
     "id": "line-chart",
     "label": "NFE curves",
     "group": "Charts",

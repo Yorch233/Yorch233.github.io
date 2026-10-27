@@ -267,6 +267,20 @@ export const uiIconCatalog = [
     "secondary": "#bfdfff"
   },
   {
+    "id": "help-circle",
+    "label": "Help",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
+    "id": "spectrum",
+    "label": "Spectrum",
+    "group": "Audio",
+    "color": "#3189f5",
+    "secondary": "#bfdfff"
+  },
+  {
     "id": "line-chart",
     "label": "NFE curves",
     "group": "Charts",

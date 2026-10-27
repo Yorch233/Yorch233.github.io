@@ -697,7 +697,7 @@ function WaveCompare({ sampleName, sampleIndex, methods, basePath, budgets, budg
 							options={[
 								{ key: 'waveform', label: 'Waveform', icon: 'wave', buttonClass: 'view-toggle-btn' },
 								{ key: 'spectrogram', label: 'Spectrogram', icon: 'spectrogram', buttonClass: 'view-toggle-btn' },
-								{ key: 'spectrum', label: 'Spectrum', icon: 'line-chart', buttonClass: 'view-toggle-btn' }
+								{ key: 'spectrum', label: 'Spectrum', icon: 'spectrum', buttonClass: 'view-toggle-btn' }
 							]}
 							onChange={handleViewChange}
 						/>

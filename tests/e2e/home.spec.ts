@@ -4,9 +4,62 @@ import { publications } from '../../src/data/publications.js';
 
 const profile = JSON.parse(await readFile('src/data/profile.json', 'utf8'));
 
-const homeViewports: Array<[number, number]> = [[1280, 800], [768, 1024], [390, 844], [375, 667], [320, 568], [667, 375], [844, 390]];
+const homeViewports: Array<[number, number]> = [[1280, 800], [849, 927], [768, 1024], [390, 844], [375, 667], [320, 568], [667, 375], [844, 390]];
 
 test.describe('Homepage layout, glass, theme & contact', () => {
+	test('cloud photo edges stay outside the viewport during resizing and motion', async ({ page }) => {
+		await seenWelcome(page);
+		await page.goto('/');
+		await waitForExpr(page, "document.documentElement.classList.contains('is-revealed')", 'The homepage never finished loading.');
+		for (const theme of ['light', 'dark']) {
+			if (theme === 'dark') {
+				await page.locator('.theme-toggle').click();
+				await waitForExpr(page, "document.documentElement.dataset.theme === 'dark' && !document.documentElement.dataset.themeTransition", 'Dark mode did not settle.');
+			}
+			for (const [width, height] of [[1600, 927], [1039, 1215], [802, 927], [768, 1024], [720, 320], [390, 844], [320, 568], [844, 390], [1280, 800]]) {
+				await page.setViewportSize({ width, height });
+				const exposed = await page.evaluate(async () => {
+					const failures: string[] = [];
+					for (const [index, layer] of [...document.querySelectorAll<HTMLElement>('.home-clouds span')].slice(0, 3).entries()) {
+						const photo = new Image();
+						photo.src = getComputedStyle(layer).backgroundImage.match(/url\(["']?(.*?)["']?\)/)![1];
+						await photo.decode();
+						const animation = layer.getAnimations()[0];
+						animation.pause();
+						const timing = animation.effect!.getTiming();
+						for (const phase of [.05, .25, .5, .75, .95]) {
+							animation.currentTime = Number(timing.duration) * phase + (timing.delay ?? 0);
+							const style = getComputedStyle(layer);
+							if (Number(style.opacity) < .01) continue;
+							const box = layer.getBoundingClientRect();
+							const scale = box.width / parseFloat(style.width);
+							const [sizeX, sizeY = 'auto'] = style.backgroundSize.split(' ');
+							let photoWidth: number, photoHeight: number;
+							if (sizeX === 'cover') {
+								const fit = Math.max(box.width / photo.naturalWidth, box.height / photo.naturalHeight);
+								photoWidth = photo.naturalWidth * fit;
+								photoHeight = photo.naturalHeight * fit;
+							} else if (sizeX === 'auto') {
+								photoHeight = sizeY.endsWith('%') ? box.height * parseFloat(sizeY) / 100 : parseFloat(sizeY) * scale;
+								photoWidth = photoHeight * photo.naturalWidth / photo.naturalHeight;
+							} else {
+								photoWidth = sizeX.endsWith('%') ? box.width * parseFloat(sizeX) / 100 : parseFloat(sizeX) * scale;
+								photoHeight = photoWidth * photo.naturalHeight / photo.naturalWidth;
+							}
+							const [positionX, positionY] = style.backgroundPosition.split(' ').map(value => parseFloat(value) / 100);
+							const left = box.left + (box.width - photoWidth) * positionX;
+							const top = box.top + (box.height - photoHeight) * positionY;
+							if (Math.max(left, box.left) > 1 || Math.max(top, box.top) > 1 || Math.min(left + photoWidth, box.right) < innerWidth - 1 || Math.min(top + photoHeight, box.bottom) < innerHeight - 1) {
+								failures.push(`layer ${index + 1}, phase ${phase}: ${JSON.stringify({ left, top, photoWidth, photoHeight })}`);
+							}
+						}
+					}
+					return failures;
+				});
+				expect(exposed, `Cloud photo edges become visible at ${width}×${height} in ${theme} mode.`).toEqual([]);
+			}
+		}
+	});
 	test('clouds, theme switch and reduced motion', async ({ page }) => {
 		test.setTimeout(240_000);
 		const requests = trackRequests(page);
@@ -71,12 +124,13 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 			await check(page, `(() => {
 				const left = document.querySelector('.topbar .brand').getBoundingClientRect(), shell = document.querySelector('.actions-pill').getBoundingClientRect();
 				const tools = document.querySelector('.home-utilities').getBoundingClientRect(), sel = document.querySelector('.home-nav-indicator').getBoundingClientRect();
-				/* Desktop glass runs 12px taller than the shell; on phones the five
-				   links are uniform 50×50 round icon buttons and the white
-				   selection mirrors their size, centered vertically. */
+				const active = document.querySelector('.toplink[aria-current]').getBoundingClientRect();
+				/* Compact cells share the bar evenly; the white selection leaves
+				   at most 6px on each side and stays centered on its clickable cell. */
+				const inset = (active.width - sel.width) / 2;
 				const sizeOk = innerWidth > 960
 					? Math.abs(sel.height - shell.height - 12) < 1
-					: Math.abs(sel.height - 50) < 1 && Math.abs(sel.width - 64) < 1;
+					: Math.abs(sel.height - 50) < 1 && inset >= -1 && inset <= 6.5 && Math.abs((active.left + active.right - sel.left - sel.right) / 2) < 1;
 				const vCentered = Math.abs((sel.top + sel.bottom) / 2 - (shell.top + shell.bottom) / 2) < (innerWidth > 960 ? 1 : 2);
 				const inside = left.left >= 0 && tools.right <= innerWidth && sizeOk && vCentered &&
 					(innerWidth > 960 || (sel.top >= shell.top && sel.bottom <= shell.bottom));
@@ -189,6 +243,39 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 			await check(page, 'document.documentElement.scrollWidth <= innerWidth', `Publication abstracts overflow at ${width}px.`);
 		}
 	});
+
+	for (const theme of ['light', 'dark']) {
+	test(`${theme}: header lens bounds follow live window resizing before the next paint`, async ({ page }) => {
+		await seenWelcome(page);
+		await page.addInitScript(value => localStorage.setItem('home-theme.v1', value), theme);
+		await page.setViewportSize({ width: 1600, height: 900 });
+		await page.goto('/#publications');
+		await waitForExpr(page, "document.documentElement.classList.contains('is-revealed')", 'Homepage reveal never settled.');
+		await page.evaluate(`(() => {
+			window.__headerLensFrames = [];
+			window.__headerLensObserver = new ResizeObserver(entries => {
+				if (innerWidth <= 960) return;
+				for (const { target } of entries) {
+					const id = target.style.getPropertyValue('--glass-refraction').match(/#([^)]*)/);
+					const filter = id && document.getElementById(id[1]);
+					if (!filter) continue;
+					window.__headerLensFrames.push({ viewport: innerWidth, control: target.className,
+						width: target.offsetWidth, height: target.offsetHeight,
+						filterWidth: Number(filter.getAttribute('width')), filterHeight: Number(filter.getAttribute('height')) });
+				}
+			});
+			document.querySelectorAll('.topbar .floating-capsule').forEach(el => window.__headerLensObserver.observe(el));
+		})()`);
+		for (const width of [1440, 1115, 1039, 961, 960, 390, 1280]) {
+			await page.setViewportSize({ width, height: 900 });
+			await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+		}
+		const frames = await page.evaluate<Array<{ viewport: number; control: string; width: number; height: number; filterWidth: number; filterHeight: number }>>('window.__headerLensFrames');
+		expect(frames.some(frame => frame.viewport === 1039)).toBe(true);
+		expect(frames.filter(frame => frame.width !== frame.filterWidth || frame.height !== frame.filterHeight), 'No resized header may paint through a stale rectangular lens.').toEqual([]);
+		await page.evaluate('window.__headerLensObserver.disconnect()');
+	});
+	}
 
 	test('glass tiers, lenses and navigation geometry', async ({ page }) => {
 		test.setTimeout(240_000);

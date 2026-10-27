@@ -1,16 +1,19 @@
 .spectrum-view { position: relative; min-width: 0; margin: 0; }
-.spectrum-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 8px; font: 380 13px/1.5 var(--sans); color: var(--muted); }
-.spectrum-legend > span { display: inline-flex; align-items: center; gap: 6px; }
-.spectrum-legend i { width: 18px; height: 2px; border-radius: 1px; }
-.spectrum-legend b { width: 5px; height: 5px; border-radius: 50%; margin-left: -18px; margin-right: 6px; }
+.wave-view:has(> .spectrum-view) { overflow: visible; }
 .spectrum-canvas { display: block; width: 100%; height: 236px; font-family: var(--sans); }
-.spectrum-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 380 13px/1.5 var(--sans); color: var(--muted); font-variant-numeric: tabular-nums; }
-.spectrum-meta output { margin-left: auto; }
+.spectrum-info { position: absolute; top: -10px; right: -6px; z-index: 4; width: 44px; height: 44px; }
+body:is(.rsb-body, .cof-body) .audio-demo-island .spectrum-view .spectrum-info .spectrum-info-button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent !important; box-shadow: none !important; color: var(--muted); cursor: help; }
+body:is(.rsb-body, .cof-body) .audio-demo-island .spectrum-view .spectrum-info .spectrum-info-button::before,
+body:is(.rsb-body, .cof-body) .audio-demo-island .spectrum-view .spectrum-info .spectrum-info-button::after { content: none !important; display: none !important; }
+body:is(.rsb-body, .cof-body) .audio-demo-island .spectrum-view .spectrum-info .spectrum-info-button:is(:hover, :focus-visible) { color: var(--accent-deep); }
+.spectrum-info-button:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.spectrum-info-button .ui-icon { width: 20px; height: 20px; }
+.spectrum-info-tooltip { position: absolute; top: calc(100% - 4px); right: 6px; z-index: 80; display: grid; gap: 2px; width: max-content; max-width: min(260px, calc(100vw - 104px)); padding: 10px 12px; border: 1px solid var(--line-soft); border-radius: 12px; background: var(--surface); color: var(--ink); box-shadow: var(--control-shadow); font: 380 13px/1.5 var(--sans); text-align: left; white-space: normal; font-variant-numeric: tabular-nums; visibility: hidden; opacity: 0; pointer-events: none; }
+.spectrum-info[data-open] .spectrum-info-tooltip { visibility: visible; opacity: 1; }
 .spectrum-status { position: absolute; inset: 28px 0 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 12px; margin: 0; background: rgb(247 250 255 / .94); color: var(--muted); text-align: center; font: 380 15px/1.65 var(--sans); }
 .spectrum-status p { margin: 0; }
 .spectrum-error button { min-height: 44px; padding: 8px 14px; border-radius: 999px; font: 450 13px/1.5 var(--sans); color: var(--accent-deep); cursor: pointer; }
 @media (max-width: 720px) {
   .spectrum-canvas { height: 200px; }
-  .spectrum-legend { gap: 4px 10px; }
-  .spectrum-meta { gap: 4px 8px; }
+  .mobile-visualization-content:has(.spectrum-view) { padding-top: 10px; }
 }
