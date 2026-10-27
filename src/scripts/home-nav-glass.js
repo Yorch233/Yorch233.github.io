@@ -1,4 +1,4 @@
-// Desktop keeps the original glass spring; mobile uses an inset white selection.
+// Desktop keeps the original glass spring; mobile uses an inset selection.
 const track = document.querySelector('.home-nav-links');
 const indicator = track.querySelector('.home-nav-indicator');
 const capsule = track.closest('.actions-pill');

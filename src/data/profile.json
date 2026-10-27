@@ -6,7 +6,6 @@
   "monogram": "QY",
   "role": "PhD Student in Speech & Audio Processing",
   "location": "Zhenjiang, China",
-  "advisor": "Prof. Qirong Mao",
   "bio": [
     "Hi, I'm Qing Yao, a Ph.D. student at Jiangsu University. My research focuses on **generative speech enhancement**, aiming to achieve high-fidelity speech reconstruction through efficient generative modeling.",
     "I explore two complementary directions: **continuous diffusion models**, particularly Schrödinger bridges, operating in the complex-valued time–frequency domain, and **discrete masked diffusion models** operating on acoustic tokens extracted from neural audio codecs.",

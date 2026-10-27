@@ -43,9 +43,12 @@ const compactInterestLabels = {
 export function AboutCard({ welcome = false }) {
 	const biography = <>{profile.bio.map((paragraph, index) => <p class={index === 0 ? 'lede' : 'about-copy'} data-yo-say={bioHints[index]} key={`bio-${index}`}>{renderBio(paragraph)}</p>)}</>;
 	const meta = <div class="meta profile-meta">
-		{welcome && <span class="profile-meta-item profile-education" data-yo-say={'Qing is at ' + profile.contact.institution + '.'}><Icon id="cap" /><span class="profile-meta-copy"><small class="profile-meta-label">Affiliation</small><span class="profile-meta-value">{profile.contact.institution}</span></span></span>}
-		<span class="profile-meta-item" data-yo-say={'Hello from ' + profile.location + '! This is where Qing is based.'}><Icon id="pin" /><span class="profile-meta-copy"><small class="profile-meta-label">Location</small><span class="profile-meta-value">{profile.location}</span></span></span>
-		<span class="profile-meta-item" data-yo-say={profile.advisor + ' is Qing\'s advisor.'}><Icon id="people" /><span class="profile-meta-copy"><small class="profile-meta-label">Advisor</small><span class="profile-meta-value">{profile.advisor}</span></span></span>
+		<div class="profile-identifiers" aria-label="ORCID, email, GitHub and Hugging Face">
+			<OrcidLink className="profile-orcid" />
+			<EmailLink />
+			<GithubLink />
+			<HuggingFaceLink />
+		</div>
 	</div>;
 	return <>
 		{welcome ? <div class="profile-overview">
@@ -54,12 +57,6 @@ export function AboutCard({ welcome = false }) {
 				<p class="hero-kicker" data-yo-say="Start here: meet Qing and get to know his research."><span aria-hidden="true">—</span> About Me</p>
 			<h1 class="hero-name" tabIndex={-1} data-yo-say="This is Qing Yao! He's a PhD student working on speech and generative models.">{profile.name}</h1>
 				{meta}{biography}
-				<div class="profile-identifiers" aria-label="Email, GitHub, Hugging Face and ORCID">
-					<EmailLink />
-					<GithubLink />
-					<HuggingFaceLink />
-					<OrcidLink className="profile-orcid" />
-				</div>
 			</div>
 		</div> : <>{meta}{biography}</>}
 		<section class="research-focus" aria-labelledby="research-focus-title" data-yo-say="Here’s what Qing likes working on. Hover one and I'll tell you a little more.">

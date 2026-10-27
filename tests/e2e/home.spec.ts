@@ -152,12 +152,14 @@ test.describe('Homepage layout, glass, theme & contact', () => {
 			const text = about.textContent;
 			const bio = ${JSON.stringify(profile.bio)}.map(paragraph => paragraph.replace(/\\*\\*/g, ''));
 			return bio.every(paragraph => text.includes(paragraph.slice(0, 60))) &&
-				text.includes('Advisor') && text.includes(${JSON.stringify(profile.advisor)}) &&
+				!text.includes('Advisor') && !text.includes('Location') &&
+				!text.includes('Research Areas') &&
 				about.querySelectorAll('.chip').length === ${JSON.stringify(profile.interests.length)};
 		})()`, 'Welcome page is missing complete About Me content.');
 		await check(page, `(() => {
 			const links = [...document.querySelectorAll('.profile-identifiers a')].map(link => link.href);
-			return links.length === 4 &&
+			const identifiers = document.querySelector('.profile-meta .profile-identifiers');
+			return identifiers && !!(identifiers.compareDocumentPosition(document.querySelector('.home-about .lede')) & Node.DOCUMENT_POSITION_FOLLOWING) && links.length === 4 &&
 				links.some(href => href.startsWith('mailto:')) &&
 				links.some(href => href.includes('github.com')) &&
 				links.some(href => href.includes('huggingface.co')) &&

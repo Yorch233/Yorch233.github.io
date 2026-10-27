@@ -146,7 +146,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 			await waitForExpr(page, `getComputedStyle(document.querySelector('.meet-bubble')).visibility === 'visible' && document.querySelector('.meet-bubble').textContent.includes(${JSON.stringify(expected)})`, `Hover narration never appeared for ${selector}.`);
 		};
 		const hoverCases: Array<[string, Array<[string, string]>]> = [
-			['about', [['.profile-portrait', "That's Qing"], ['.profile-education', 'Jiangsu University'], ['.home-about .meta > span:last-child', 'advisor'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-github', 'open-source work'], ['.profile-huggingface', 'Hugging Face'], ['.profile-orcid', 'ORCID'], ['.cv-btn', 'download availability'], ['.theme-toggle', 'comfy']]],
+			['about', [['.profile-portrait', "That's Qing"], ['.hero-name', 'PhD student'], ['.profile-email', 'email address'], ['.about-copy', 'Schrödinger bridges'], ['.chip:nth-child(3)', 'masked diffusion'], ['.profile-github', 'open-source work'], ['.profile-huggingface', 'Hugging Face'], ['.profile-orcid', 'ORCID'], ['.cv-btn', 'download availability'], ['.theme-toggle', 'comfy']]],
 			['publications', [['.pub-title a', 'Select the title'], ['.pub-authors b', 'helped write'], ['.pub-summary', publications[0]!.slug === 'RSB' ? 'RSB aims' : 'gives diffusion'], ['.pub-links .link-pill--primary', publications[0]!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub:last-of-type .link-pill--primary', publications.at(-1)!.slug === 'RSB' ? 'RSB Demo' : 'CoF Demo'], ['.pub-links a[href*=arxiv]', 'preprint'], ['.link-pill-copy', 'BibTeX citation']]],
 			['news', [['.timeline .is-latest .date', 'CoF is on arXiv'], ['.timeline .is-latest a[href*=arxiv]', 'research preprint'], ['.timeline .is-latest a[href="/CoF/"]', 'CoF Demo'], ['.news-toggle', 'earlier updates']]],
 			['awards', [['.award-title', 'National First Prize'], ['.tip', 'competition is called'], ['.award-topic', 'National First Prize']]],
@@ -245,7 +245,7 @@ test.describe('Yo mascot life, narration & actions', () => {
 		await check(page, `(() => {
 			const nav = document.querySelector('.actions-pill'), box = nav.getBoundingClientRect();
 			const pill = document.querySelector('.home-nav-indicator'), pillBox = pill.getBoundingClientRect();
-			return Math.abs(pillBox.width - 64) < 1 && Math.abs(pillBox.height - 50) < 1 && getComputedStyle(pill).backgroundColor === 'rgb(255, 255, 255)' &&
+			return Math.abs(pillBox.width - 64) < 1 && Math.abs(pillBox.height - 50) < 1 && getComputedStyle(pill).backgroundColor === 'rgb(235, 239, 241)' &&
 				getComputedStyle(nav).borderRadius === '999px' && getComputedStyle(pill).borderRadius === '999px' &&
 				getComputedStyle(document.querySelector('.home-nav-glass')).display === 'none' && getComputedStyle(nav).position === 'fixed' && box.bottom <= innerHeight && innerHeight - box.bottom <= 36 &&
 				box.left >= 0 && box.right <= innerWidth && !document.querySelector('.nav-toggle') &&

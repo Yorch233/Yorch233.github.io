@@ -78,15 +78,16 @@ cut as the default font, followed by the system CJK and system fallback stacks
 for headings, prose and controls. Keep soft toy depth, achromatic glass floating
 header capsules and rounded reading cards.
 Use three glass tiers: clear optical glass for floating header and return capsules, translucent tinted glass for body buttons, and native frosted glass on compact screens. Keep labels and focus outside the filtered layer; support white, blue, green (#31D73F) and custom tints. Each tier has a sharp upper highlight and soft lower reflection, with subtle colored spill.
-Use opacity and translucent gradient layers for softening backgrounds, scrims, dialogs and ordinary glass; do not add blur unless frosted glass is explicitly requested. On narrow screens the Homepage header capsules, the bottom navigation bar and its white selection go frosted (light 12px blur); at desktop size the Homepage header capsules retain optical refraction with 1px backdrop blur, while the primary navigation uses 5px blur above 720px. Compact demo capsules and body buttons keep their explicitly frosted tier.
+Use opacity and translucent gradient layers for softening backgrounds, scrims, dialogs and ordinary glass; do not add blur unless frosted glass is explicitly requested. On narrow screens the Homepage header capsules and bottom navigation bar go frosted (light 12px blur), with a softly tinted selection; at desktop size the Homepage header capsules retain optical refraction with 1px backdrop blur, while the primary navigation uses 5px blur above 720px. Compact demo capsules and body buttons keep their explicitly frosted tier.
 Homepage reading-card secondary actions use transparent outline capsules instead of raised glass. Publication resource pills are borderless with gray labels that turn blue on hover or focus, and their brand marks use the same color. Each paper shows a TLDR line; its abstract stays hidden until an inline Expand/Collapse text button reveals or hides it. Awards detail toggles are borderless text buttons with plus/minus icons; Contact research profiles retain their original glass rows, platform icons and right arrows, without shadows. Preserve filled blue primary actions.
 Keep the background minimal and low contrast so content remains the focus.
 Default to light mode; preserve an explicitly saved theme. The welcome page follows the selected light reference: a large portrait
 left of the complete introduction, full-width interest and action rows,
 and Yo floating at the bottom-right on desktop. Phones hide the homepage companion
 and skip its automatic welcome dialog. At compact widths (up to 960px), place
-the portrait beside the name and three profile attributes, with the biography
-spanning the full width below them. Keep hierarchy and spacing consistent.
+the portrait beside the name and, where space permits, the profile links. On narrow
+phones the links may span the full width below the identity row.
+The biography spans the full width below them. Keep hierarchy and spacing consistent.
 Scope homepage styles under `.home-ref`; academic
 pages keep their own typography and layout.
 
@@ -134,7 +135,7 @@ Publications, Awards, Contact. On narrow screens, keep all five destinations vis
 in a bottom navigation bar, with icons above compact labels. Keep its outer
 glass shell frosted on narrow screens (the desktop shell keeps its clear
 optical refraction). On narrow screens the five destinations fill equal-width,
-50px-high cells with icons above compact visible text labels. The opaque white,
+50px-high cells with icons above compact visible text labels. The softly tinted,
 fully rounded selection grows with its cell, leaving small side insets where
 space permits, and stays centered on the active destination;
 desktop uses the original glass selection, 12px taller than
